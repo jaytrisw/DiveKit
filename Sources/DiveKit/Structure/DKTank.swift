@@ -23,4 +23,10 @@ public struct DKTank {
     public var ratedPressure: Double
     public var volume: Double
     public var type: DKTankType
+    
+    public init(ratedPressure: Double, volume: Double, type: DKTankType) {
+        self.ratedPressure = ratedPressure
+        self.volume = volume
+        self.type = type
+    }
 }
