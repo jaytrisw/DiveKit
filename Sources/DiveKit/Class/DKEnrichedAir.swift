@@ -12,7 +12,7 @@ public class DKEnrichedAir {
     /**
      Calculates the maximum operating depth of a specified gas and maximum partial pressure of oxygen.
      - parameter fractionOxygen: Double representing the maximum partial pressure of oxygen.
-     - parameter gas: `DKGas` representing the gas to be used for calculation.
+     - parameter gas: `Gas` representing the gas to be used for calculation.
      - parameter decimalPlaces: Integer representing the desired number of decimal places to return.
      - returns: Double representing the maximum operating depth for specified gas and maximum partial pressure of oxygen.
      
@@ -22,7 +22,7 @@ public class DKEnrichedAir {
      ### Example
      ```swift
      let enrichedAirCalc = DKEnrichedAir.init(waterType: .saltWater, measurementUnit: .imperial)
-     let gas  = DKGas.enrichedAir(percentage: 32)
+     let gas = DKGas.enrichedAir(percentage: 32)
      do {
          // Calculate MOD for EANx32 with maximum fraction oxygen of 1.4
          let mod = try enrichedAirCalc.maximumOperatingDepth(fractionOxygen: 1.4, gas: gas)
@@ -36,22 +36,19 @@ public class DKEnrichedAir {
      */
     public func maximumOperatingDepth(
         fractionOxygen: Double,
-        gas: DKGas,
+        gas: Gas,
         decimalPlaces: Int = 0
     ) throws -> Double {
         guard fractionOxygen >= 0 else {
             throw DKError(title: "Invalid Parameter", description: "Fraction of oxygen parameter must be greater than 0")
-        }
-        guard gas.percentOxygen >= 0 else {
-            throw DKError(title: "Invalid Parameter", description: "Percentage of oxygen must be greater than 0")
         }
         guard decimalPlaces >= 0 else {
             throw DKError(title: "Invalid Parameter", description: "Decimal places parameter must be greater than 0")
         }
         // Calculate partial pressure of oxygen in gas
         // MOD =  { (Partial Pressure / Fraction of O2) - 1 } x 33 feet
-        let fractionOxygenOfBlend = try! DKGasCalculator(with: diveKit).partialPressure(of: gas)
-        let temp = fractionOxygen / fractionOxygenOfBlend.oxygen - 1
+        let fractionOxygenOfBlend = gas.partialPressure.fractionOxygen
+        let temp = fractionOxygen / fractionOxygenOfBlend - 1
         switch diveKit.measurementUnit {
         case .imperial:
             switch diveKit.waterType {
@@ -96,32 +93,29 @@ public class DKEnrichedAir {
      */
     public func equivalentAirDepth(
         depth: Double,
-        gas: DKGas,
+        gas: Gas,
         decimalPlaces: Int = 0
     ) throws -> Double {
         guard depth >= 0 else {
             throw DKError(title: "Invalid Parameter", description: "Depth parameter must be greater than 0")
         }
-        guard gas.percentOxygen >= 0 else {
-            throw DKError(title: "Invalid Parameter", description: "Percentage of oxygen must be greater than 0")
-        }
         guard decimalPlaces >= 0 else {
             throw DKError(title: "Invalid Parameter", description: "Decimal places parameter must be greater than 0")
         }
         // EAD = (Depth + 33) × Fraction of N2 / 0.79 − 33
-        let partialPressureBlend = try! DKGasCalculator(with: diveKit).partialPressure(of: gas)
-        let partialPressureAir = try! DKGasCalculator(with: diveKit).partialPressure(of: .air)
+        let partialPressureBlend = gas.partialPressure
+        let partialPressureAir = Gas.air.partialPressure
         switch diveKit.measurementUnit {
         case .imperial:
             let oneAtmosphere = DKConstants.imperial.oneAtmosphere
             switch diveKit.waterType {
             case .saltWater:
                 let depthCalc = depth + oneAtmosphere.saltWater
-                let nitrogenCalc = partialPressureBlend.nitrogen / partialPressureAir.nitrogen
+                let nitrogenCalc = partialPressureBlend.fractionNitrogen / partialPressureAir.fractionNitrogen
                 return (depthCalc * nitrogenCalc - oneAtmosphere.saltWater).roundTo(decimalPlaces: decimalPlaces)
             case .freshWater:
                 let depthCalc = depth + oneAtmosphere.freshWater
-                let nitrogenCalc = partialPressureBlend.nitrogen / partialPressureAir.nitrogen
+                let nitrogenCalc = partialPressureBlend.fractionNitrogen / partialPressureAir.fractionNitrogen
                 return (depthCalc * nitrogenCalc - oneAtmosphere.freshWater).roundTo(decimalPlaces: decimalPlaces)
             }
         case .metric:
@@ -129,11 +123,11 @@ public class DKEnrichedAir {
             switch diveKit.waterType {
             case .saltWater:
                 let depthCalc = depth + oneAtmosphere.saltWater
-                let nitrogenCalc = partialPressureBlend.nitrogen / partialPressureAir.nitrogen
+                let nitrogenCalc = partialPressureBlend.fractionNitrogen / partialPressureAir.fractionNitrogen
                 return (depthCalc * nitrogenCalc - oneAtmosphere.saltWater).roundTo(decimalPlaces: decimalPlaces)
             case .freshWater:
                 let depthCalc = depth + oneAtmosphere.freshWater
-                let nitrogenCalc = partialPressureBlend.nitrogen / partialPressureAir.nitrogen
+                let nitrogenCalc = partialPressureBlend.fractionNitrogen / partialPressureAir.fractionNitrogen
                 return (depthCalc * nitrogenCalc - oneAtmosphere.freshWater).roundTo(decimalPlaces: decimalPlaces)
             }
         }
@@ -143,7 +137,7 @@ public class DKEnrichedAir {
      Calculates the best blend of nitrox, EANx, for a given fraction of oxygen and a given depth.
      - parameter depth: Double presenting a depth.
      - parameter fractionOxygen: Double prepresenting the fraction of oxygen.
-     - returns: `DKGas` representing the calculated best blend for the given dive.
+     - returns: `Gas` representing the calculated best blend for the given dive.
      
      ### Definition
      The "best blend" for the dive provides the maximum no-decompression time compatible with acceptable oxygen exposure. An acceptable maximum partial pressure of oxygen is selected based on depth and planned bottom time, and this value is used to calculate the oxygen content of the best mix for the dive.
@@ -165,7 +159,7 @@ public class DKEnrichedAir {
     public func bestBlend(
         for depth: Double,
         fractionOxygen: Double
-    ) throws -> DKGas {
+    ) throws -> Gas {
         guard fractionOxygen > 0 else {
             throw DKError.partialPressureNeedsPositive
         }
@@ -174,14 +168,11 @@ public class DKEnrichedAir {
         }
         let ata = try! DKPhysics.init(with: diveKit).atmospheresAbsolute(depth: depth)
         let percentage = floor(fractionOxygen / ata * 100)
-        guard percentage >= 0 else {
-            throw DKError(title: "Invalid Parameter", description: "Percentage of oxygen must be greater than 0")
-        }
-        var gas = DKGas.enrichedAir(percentage: percentage)
+        var gas = try! Gas.enrichedAir(percentage)
         if try! exceedsMaximumOperatingDepth(with: gas, fractionOxygen: fractionOxygen, depth: depth) {
             let integerPercent = Int(percentage)
             for i in (integerPercent..<100) {
-                gas = DKGas.enrichedAir(percentage: Double(i))
+                gas = try! Gas.enrichedAir(Double(i))
                 if try! !exceedsMaximumOperatingDepth(with: gas, fractionOxygen: fractionOxygen, depth: depth) {
                     return gas
                 }
@@ -194,7 +185,7 @@ public class DKEnrichedAir {
      Calculates if the specified blend of nitrox, EANx, exceeds the maximum operating depth of specified depth and maximum partial pressure of oxygen.
      - parameter fractionOxygen: Double representing the fraction of oxygen.
      - parameter depth: Double presenting a depth.
-     - parameter gas: `DKGas` representing the gas to be used for calculation.
+     - parameter gas: `Gas` representing the gas to be used for calculation.
      - returns: Boolean determining if depth exceeds maximum operating depth for specified `DKGas`.
      
      ### Example
@@ -213,15 +204,12 @@ public class DKEnrichedAir {
      - since: 1.0
      */
     public func exceedsMaximumOperatingDepth(
-        with gas: DKGas,
+        with gas: Gas,
         fractionOxygen: Double,
         depth: Double
     ) throws -> Bool {
         guard fractionOxygen >= 0 else {
             throw DKError(title: "Invalid Parameter", description: "Fraction of oxygen parameter must be greater than 0")
-        }
-        guard gas.percentOxygen >= 0 else {
-            throw DKError(title: "Invalid Parameter", description: "Percentage of oxygen must be greater than 0")
         }
         guard depth >= 0 else {
             throw DKError(title: "Invalid Parameter", description: "Depth parameter must be greater than 0")

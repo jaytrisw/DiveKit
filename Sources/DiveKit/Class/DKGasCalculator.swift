@@ -14,7 +14,7 @@ public class DKGasCalculator {
     /**
      Calculates the partial pressure of a gas at sea-level or a specified depth.
      
-     - parameter gas: `DKGas` to calculate the partial pressure.
+     - parameter gas: `Gas` to calculate the partial pressure.
      - parameter depth: Double presenting a depth, defaults to sea level.
      - returns: `DKPartialPressure` of constituent gases in input `DKGas` at surface pressure or input depth
      
@@ -37,28 +37,17 @@ public class DKGasCalculator {
      - since: 1.0
      */
     public func partialPressure(
-        of gas: DKGas,
+        of gas: Gas,
         at depth: Double = 0
-    ) throws -> DKPartialPressure {
-        guard gas.percentOxygen >= 0 else {
-            throw DKError(title: "Invalid Parameter", description: "Percentage of oxygen must be greater than 0")
-        }
+    ) throws -> PartialPressure {
         guard depth >= 0 else {
             throw DKError(title: "Invalid Parameter", description: "Depth parameter must be greater than 0")
         }
-        let ata = try! DKPhysics(with: diveKit).atmospheresAbsolute(depth: depth)
-        switch gas {
-        case .air:
-            if depth > 0 {
-                return DKPartialPressure(oxygen: DKGas.air.partialPressure.oxygen * ata, nitrogen: DKGas.air.partialPressure.nitrogen * ata, trace: DKGas.air.partialPressure.trace * ata)
-            }
-        case .enrichedAir(let blend):
-            if depth > 0 {
-                return DKPartialPressure(oxygen: DKGas.enrichedAir(percentage: blend).partialPressure.oxygen * ata, nitrogen: DKGas.enrichedAir(percentage: blend).partialPressure.nitrogen * ata, trace: DKGas.enrichedAir(percentage: blend).partialPressure.trace * ata)
-            }
-        }
-        return gas.partialPressure
+        var temp = gas
+        try! temp.setDepth(depth, diveKit: diveKit)
+        return temp.partialPressure
     }
+    
     
     // MARK: - Calculation Methods
     /**

@@ -47,15 +47,12 @@ final class DiveKitTests: XCTestCase {
     }
     func testPartialPressure() {
         diveKit = DiveKit.init()
-        let gas = DKGas.air
-        let errorGas = DKGas.enrichedAir(percentage: -20)
+        let gas = Gas.air
         gasCalculator = DKGasCalculator.init(with: diveKit)
-        let airPartialPressure = DKPartialPressure.init(oxygen: 0.209, nitrogen: 0.79, trace: 0.001)
-        XCTAssertEqual(try gasCalculator.partialPressure(of: .air).oxygen, airPartialPressure.oxygen)
-        XCTAssertEqual(try gasCalculator.partialPressure(of: .air).nitrogen, airPartialPressure.nitrogen)
-        XCTAssertEqual(try gasCalculator.partialPressure(of: .air).trace, airPartialPressure.trace)
-        
-        XCTAssertThrowsError(try gasCalculator.partialPressure(of: errorGas, at: 20))
+        let airPartialPressure = gas.partialPressure
+        XCTAssertEqual(try gasCalculator.partialPressure(of: .air).fractionOxygen, airPartialPressure.fractionOxygen)
+        XCTAssertEqual(try gasCalculator.partialPressure(of: .air).fractionNitrogen, airPartialPressure.fractionNitrogen)
+        XCTAssertEqual(try gasCalculator.partialPressure(of: .air).fractionTraceGases, airPartialPressure.fractionTraceGases)
         XCTAssertThrowsError(try gasCalculator.partialPressure(of: gas, at: -20))
     }
     func testConstants() {
@@ -78,8 +75,8 @@ final class DiveKitTests: XCTestCase {
         XCTAssertEqual(error.localizedDescription, "A positive value was expected")
         XCTAssertEqual(error.failureReason, error.localizedDescription)    }
     func testGasType() {
-        XCTAssertEqual(DKGas.enrichedAir(percentage: 32).percentOxygen, 32)
-        XCTAssertEqual(DKGas.air.percentOxygen, 20.9)
+        XCTAssertEqual(try Gas.enrichedAir(32).percentOxygen, 32)
+        XCTAssertEqual(Gas.air.percentOxygen, 20.9)
     }
     
     // MARK: - Inititalizers
