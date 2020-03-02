@@ -217,10 +217,10 @@ final class DKEnrichedAirTests: XCTestCase {
     // MARK: - Best Blend
     func testBestBlend() {
         enrichedAir = DKEnrichedAir(waterType: .saltWater, measurementUnit: .metric)
-        XCTAssertEqual(try! enrichedAir.bestBlend(for: 35, fractionOxygen: 1.4).percentOxygen, 32)
+        XCTAssertEqual(try! enrichedAir.bestBlend(for: 35, fractionOxygen: 1.4).percentOxygen, 31)
         XCTAssertEqual(try! enrichedAir.bestBlend(for: 25, fractionOxygen: 1.4).percentOxygen, 40)
         enrichedAir = DKEnrichedAir(waterType: .saltWater, measurementUnit: .imperial)
-        XCTAssertEqual(try! enrichedAir.bestBlend(for: 100, fractionOxygen: 1.4).percentOxygen, 35)
+        XCTAssertEqual(try! enrichedAir.bestBlend(for: 100, fractionOxygen: 1.4).percentOxygen, 34)
     }
     
     // MARK: - Inititalizers

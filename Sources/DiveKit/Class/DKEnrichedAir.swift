@@ -211,7 +211,7 @@ public class DKEnrichedAir {
             throw DKError(title: "Invalid Parameter", description: "Depth parameter must be greater than 0")
         }
         let mod = try! maximumOperatingDepth(fractionOxygen: fractionOxygen, gas: gas, decimalPlaces: 10)
-        if mod > depth {
+        if mod < depth {
             return true
         }
         return false

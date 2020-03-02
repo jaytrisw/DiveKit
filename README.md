@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-<a href="https://swift.org/"><img src="https://github.com/jaytrisw/DiveKit/workflows/Swift/badge.svg" alt="Swift" title="Swift"></a> <a href="https://travis-ci.com/jaytrisw/DiveKit"><img src="https://travis-ci.com/jaytrisw/DiveKit.svg?branch=master"></a> <a href='https://jaytrisw.github.io/DiveKit'> <img src='https://readthedocs.org/projects/divekit/badge/?version=latest' alt='Documentation Status' /></a>
+<a href="https://swift.org/"><img src="https://github.com/jaytrisw/DiveKit/workflows/Swift/badge.svg" alt="Swift" title="Swift"></a> <a href="https://travis-ci.com/jaytrisw/DiveKit"><img src="https://travis-ci.com/jaytrisw/DiveKit.svg?branch=master"></a> <a href='https://jaytrisw.github.io/DiveKit'> <img src='https://jaytrisw.github.io/DiveKit/badge.svg' alt='Documentation Status' /></a>
 <br />
 <a href="https://codeclimate.com/github/jaytrisw/DiveKit/maintainability"><img src="https://api.codeclimate.com/v1/badges/1b7039fc233efcc5187e/maintainability" /></a> <a href="https://www.codefactor.io/repository/github/jaytrisw/divekit/overview/master"><img src="https://www.codefactor.io/repository/github/jaytrisw/divekit/badge/master" alt="CodeFactor" /></a> <a href="https://codecov.io/gh/jaytrisw/DiveKit"><img src="https://codecov.io/gh/jaytrisw/DiveKit/branch/master/graph/badge.svg" /></a>
 <br /> 
