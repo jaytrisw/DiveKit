@@ -20,7 +20,7 @@ public struct DKTank {
         case steel
     }
     
-    var ratedPressure: Double
-    var volume: Double
-    var type: DKTankType
+    public var ratedPressure: Double
+    public var volume: Double
+    public var type: DKTankType
 }
