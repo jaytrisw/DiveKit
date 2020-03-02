@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>DKGas Enumeration Reference</title>
+    <title>DKPartialPressure Structure Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset="utf-8">
@@ -14,9 +14,9 @@
   </head>
   <body>
 
-    <a name="//apple_ref/swift/Enum/DKGas" class="dashAnchor"></a>
+    <a name="//apple_ref/swift/Struct/DKPartialPressure" class="dashAnchor"></a>
 
-    <a title="DKGas Enumeration Reference"></a>
+    <a title="DKPartialPressure Structure Reference"></a>
 
     <header class="header">
       <p class="header-col header-col--primary">
@@ -38,7 +38,7 @@
     <p class="breadcrumbs">
       <a class="breadcrumb" href="../index.html">DiveKit Reference</a>
       <img class="carat" src="../img/carat.png" />
-      DKGas Enumeration Reference
+      DKPartialPressure Structure Reference
     </p>
 
     <div class="content-wrapper">
@@ -116,14 +116,14 @@
 
         <section class="section">
           <div class="section-content top-matter">
-            <h1>DKGas</h1>
+            <h1>DKPartialPressure</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">DKGas</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">DKPartialPressure</span></code></pre>
 
                 </div>
               </div>
-            <p>An object that represents a breathing gas used during scuba diving.</p>
+            <p>An object that contains values for the partial pressures of the components of diving gases.</p>
 
           </div>
         </section>
@@ -135,9 +135,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7DiveKit5DKGasO3airyA2CmF"></a>
-                    <a name="//apple_ref/swift/Element/air" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7DiveKit5DKGasO3airyA2CmF">air</a>
+                    <a name="/s:7DiveKit17DKPartialPressureV6oxygen8nitrogen5traceACSd_S2dtcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(oxygen:nitrogen:trace:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7DiveKit17DKPartialPressureV6oxygen8nitrogen5traceACSd_S2dtcfc">init(oxygen:nitrogen:trace:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -145,120 +145,64 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>A property that represents compressed atmospheric air.</p>
+                        <p>Initializes <code>DKPartialPressure</code> with the specified values.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">air</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">oxygen</span><span class="p">:</span> <span class="kt">Double</span><span class="p">,</span> <span class="nv">nitrogen</span><span class="p">:</span> <span class="kt">Double</span><span class="p">,</span> <span class="nv">trace</span><span class="p">:</span> <span class="kt">Double</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:7DiveKit5DKGasO11enrichedAiryACSd_tcACmF"></a>
-                    <a name="//apple_ref/swift/Element/enrichedAir(percentage:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7DiveKit5DKGasO11enrichedAiryACSd_tcACmF">enrichedAir(percentage:)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>A property that represents a gas containing a percentage of oxygen greater than 20.9%</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">enrichedAir</span><span class="p">(</span><span class="nv">percentage</span><span class="p">:</span> <span class="kt">Double</span><span class="p">)</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <div class="task-name-container">
-                <a name="/Computed%20Properties"></a>
-                <a name="//apple_ref/swift/Section/Computed Properties" class="dashAnchor"></a>
-                <div class="section-name-container">
-                  <a class="section-name-link" href="#/Computed%20Properties"></a>
-                  <h3 class="section-name"><p>Computed Properties</p>
-</h3>
-                </div>
-              </div>
-              <ul class="item-container">
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:7DiveKit5DKGasO15partialPressureAA09DKPartialE0Vvp"></a>
-                    <a name="//apple_ref/swift/Property/partialPressure" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7DiveKit5DKGasO15partialPressureAA09DKPartialE0Vvp">partialPressure</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>A property that represents the partial pressures, as a <code><a href="../Structs/DKPartialPressure.html">DKPartialPressure</a></code> object, of the constituent gases in a specific diving gas.</p>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>oxygen</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Double representing the fraction of oxygen.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>nitrogen</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Double representing the fraction of nitrogen.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>trace</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Double representing the fraction of trace gases.
 <div class="aside aside-since">
     <p class="aside-title">Since</p>
     1.0
 
-</div>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">partialPressure</span><span class="p">:</span> <span class="kt"><a href="../Structs/DKPartialPressure.html">DKPartialPressure</a></span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:7DiveKit5DKGasO13percentOxygenSdvp"></a>
-                    <a name="//apple_ref/swift/Property/percentOxygen" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7DiveKit5DKGasO13percentOxygenSdvp">percentOxygen</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>A property that represents the percentage of oxygen in a specific diving gas.</p>
-<div class="aside aside-since">
-    <p class="aside-title">Since</p>
-    1.0
-
-</div>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">percentOxygen</span><span class="p">:</span> <span class="kt">Double</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
-
-                        </div>
+</div></p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>

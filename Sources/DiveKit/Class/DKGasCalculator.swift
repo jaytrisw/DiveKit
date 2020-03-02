@@ -4,7 +4,7 @@ import Foundation
 
 /**
  Object used to perform gas calculations.
- - since: 0.9
+ - since: 1.0
  */
 public class DKGasCalculator {
     
@@ -24,10 +24,17 @@ public class DKGasCalculator {
      # Example #
      ```
      let gasCalculator = DKGasCalculator.init()
-     let partialPressure = gasCalculator.partialPressure(of: .air, at: 33)
-     print(partialPressure) // DKPartialPressure(oxygen: 0.418, nitrogen: 1.58, trace: 0.002)
+     do {
+         // Calculate partial pressure of component gases in EANx32 at 99 feet.
+         let gas = DKGas.enrichedAir(percentage: 32)
+         let partialPressure = try gasCalculator.partialPressure(of: gas, at: 99)
+         print(partialPressure) // DKPartialPressure(oxygen: 1.28, nitrogen: 2.72, trace: 0.0)
+     } catch {
+         // Handle Error
+         print(error.localizedDescription)
+     }
      ```
-     - since: 0.9
+     - since: 1.0
      */
     public func partialPressure(
         of gas: DKGas,
@@ -57,21 +64,30 @@ public class DKGasCalculator {
     /**
      Calculates surface air consumption of a diver
      
-     - parameter depth: The depth, expressed in **feet** or **metres**, that this calculation was performed.
-     - parameter time: The length of time, expressed in minutes, that this calculation was performed.
-     - parameter gasConsumed: The amount of air, expressed in **PSI** or **Bar**, that was consumed during this calculation.
-     - returns: Double, representing consumed pressure of air per minute calculated for surface pressure.  Expressed in psi or bar per minute
+     - parameter depth: Double representing the depth expressed in feet or meters that the calculation was performed.
+     - parameter time: Double representing the time expressed in minutes that the calculation was performed.
+     - parameter gasConsumed: Double representing the amount of gas consumed expressed in psi or bar per minute during the calculation.
+     - returns: Double, representing the consumed psi or bar per minute calculated for surface pressure.
+     
+     ### Definition
+     Your Surface Air Consumption rate is a measurement of the amount of air you consume while breathing for one minute, on the surface. These values are given in the same unit of measurement you would use to measure the air in your cylinder, i.e. psi in the United States (as we use the metric system) and bar in most the rest of the world. Note, however, that your SAC rate is tank specific, meaning that it only applies to the exact size of the cylinder you will be using on your dive. For example, if you regularly dive with an 80 cubic foot tank but switch to a smaller 60 cubic foot cylinder for your next dive, you would need to recalculate your SAC rate.
      
      # Example #
      ```
-     let diveKit = DiveKit.init()
-     let gasCalculator = DKGasCalculator.init(with: diveKit)
-     gasCalculator.surfaceAirConsumption(
-         time: 10,
-         depth: 33,
-         gasConsumed: 200)
+     let gasCalculator = DKGasCalculator.init()
+     do {
+         // Calculate SAC rate
+         let sac = try gasCalculator.surfaceAirConsumption(
+             time: 10,
+             depth: 33,
+             gasConsumed: 200)
+         print(sac) // 10.0 (psi/min)
+     } catch {
+         // Handle Error
+         print(error.localizedDescription)
+     }
      ```
-     - since: 0.9
+     - since: 1.0
      */
     public func surfaceAirConsumption(
         time: Double,
@@ -92,26 +108,35 @@ public class DKGasCalculator {
     }
     
     /**
-     Calculates respiratory minute volume of a diver.
+     Calculates the respiratory minute volume of a diver.
      - parameter gasConsumed: Double, representing the amount of air that was consumed during this calculation, expressed in psi or bar
      - parameter tank: `DKTank`, representing the tank used when this calculation was performed, expressed in psi or bar.
-     - parameter depth: Double, representing the depth, expressed in feet or metres, that this calculation was performed.
+     - parameter depth: Double, representing the depth, expressed in feet or meters, that this calculation was performed.
      - parameter time: Double, representing the length of time, expressed in minutes, that this calculation was performed.
-          
-     - returns: Double, representing consumed volume of air per minute calculated for surface pressure.  Expressed in cubic feet per minute or litres per minute
-     - since: 0.9
-     - version: 0.9.0.3
+        
+     - returns: Double, representing the consumed volume of air per minute express in cubic feet per minute or liters per minute calculated for surface pressure.
+     
+     ### Definition
+     Respiratory Minute Volume is a measurement of the breathing gas that a diver consumes in one minute on the surface. RMV rates are expressed in cubic feet per minute (imperial) or liters per minute (metric), Unlike a SAC rate, an RMV rate can be used for calculations with tanks of any volume. A diver who breathes 8 cubic feet of air a minute will always breathe 8 cubic feet of air a minute regardless of the size of the tank holding the air.
+     
+     - since: 1.0
      
      #### Example
      ```
-     let diveKit = DiveKit.init()
-     let gasCalculator = DKGasCalculator.init(with: diveKit)
-     let tank - DKTank(ratedPressure: 3000, volume: 80, type: .aluminumStandard)
-     let rmv = gasCalculator.respiratoryMinuteVolume(
-         gasConsumed: 200,
-         tank: tank,
-         depth: 33,
-         time: 10)
+     let gasCalculator = DKGasCalculator.init()
+     do {
+         // Calculate RMV Rate
+         let tank = DKTank(ratedPressure: 3000, volume: 80, type: .aluminumStandard)
+         let rmv = try gasCalculator.respiratoryMinuteVolume(
+             gasConsumed: 200,
+             tank: tank,
+             depth: 33,
+             time: 10)
+         print(rmv) // 0.27 (ft3/min)
+     } catch {
+         // Handle Error
+         print(error.localizedDescription)
+     }
      ```
      */
     public func respiratoryMinuteVolume(
@@ -142,39 +167,39 @@ public class DKGasCalculator {
     
     // MARK: - Initializers
     /**
-     Initializes `DKEnrichedAir` and `DiveKit` objects with default values of `DiveKit.WaterType.saltWater` and `DiveKit.MeasurementUnit.imperial`
-     - since: 0.9
+     Initializes `DKGasCalculator` and `DiveKit` objects with default values of `DiveKit.WaterType.saltWater` and `DiveKit.MeasurementUnit.imperial`
+     - since: 1.0
      */
     public init() {
         diveKit = DiveKit()
     }
     /**
-     Initialzes a `DKEnrichedAir` object with a `DiveKit` object.
-     - since: 0.9
+     Initializes a `DKGasCalculator` object with a `DiveKit` object.
+     - since: 1.0
      */
     public convenience init(with diveKit: DiveKit) {
         self.init()
         self.diveKit = diveKit
     }
     /**
-     Initializes `DKEnrichedAir` and `DiveKit` objects with values for `DiveKit.WaterType` and `DiveKit.MeasurementUnit`
-     - since: 0.9
+     Initializes `DKGasCalculator` and `DiveKit` objects with values for `DiveKit.WaterType` and `DiveKit.MeasurementUnit`
+     - since: 1.0
      */
     public convenience init(waterType: DiveKit.WaterType, measurementUnit: DiveKit.MeasurementUnit) {
         self.init()
         diveKit = DiveKit(waterType: waterType, measurementUnit: measurementUnit)
     }
     /**
-     Initializes `DKEnrichedAir` and `DiveKit` objects with value for `DiveKit.WaterType` and default value of `DiveKit.MeasurementUnit.imperial`
-     - since: 0.9
+     Initializes `DKGasCalculator` and `DiveKit` objects with value for `DiveKit.WaterType` and default value of `DiveKit.MeasurementUnit.imperial`
+     - since: 1.0
      */
     public convenience init(waterType: DiveKit.WaterType) {
         self.init()
         diveKit = DiveKit(waterType: waterType)
     }
     /**
-     Initializes `DKEnrichedAir` and `DiveKit` objects with value for `DiveKit.MeasurementUnit` and default value of `DiveKit.WaterType.saltWater`
-     - since: 0.9
+     Initializes `DKGasCalculator` and `DiveKit` objects with value for `DiveKit.MeasurementUnit` and default value of `DiveKit.WaterType.saltWater`
+     - since: 1.0
      */
     public convenience init(measurementUnit: DiveKit.MeasurementUnit) {
         self.init()

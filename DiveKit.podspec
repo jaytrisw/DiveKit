@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
 spec.name         = "DiveKit"
-spec.version      = "0.9.1"
+spec.version      = "0.9.5"
 spec.summary      = "A framework to perform various scuba diving calculations."
 spec.description  = <<-DESC
 A framework to perform various scuba diving calculations, written in Swift.

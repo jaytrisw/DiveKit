@@ -12,7 +12,7 @@ public enum DKGas {
     // MARK: - Computed Properties
     /**
      A property that represents the partial pressures, as a `DKPartialPressure` object, of the constituent gases in a specific diving gas.
-     - since: 0.9
+     - since: 1.0
      */
     public var partialPressure: DKPartialPressure {
         switch self {
@@ -22,7 +22,7 @@ public enum DKGas {
     }
     /**
     A property that represents the percentage of oxygen in a specific diving gas.
-    - since: 0.9
+    - since: 1.0
     */
     public var percentOxygen: Double {
         switch self {

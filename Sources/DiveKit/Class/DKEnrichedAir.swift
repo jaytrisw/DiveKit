@@ -10,25 +10,29 @@ public class DKEnrichedAir {
     
     // MARK: - Calculation Methods
     /**
-     Calculates the maximum operating depth of a specified gas and maximum partial presure of oxygen.
-     - parameter fractionOxygen: Double representing the maximum partial presure of oxygen.
+     Calculates the maximum operating depth of a specified gas and maximum partial pressure of oxygen.
+     - parameter fractionOxygen: Double representing the maximum partial pressure of oxygen.
      - parameter gas: `DKGas` representing the gas to be used for calculation.
-     - parameter accuracy: Integer representing the dersired number of decimal place to return.
+     - parameter decimalPlaces: Integer representing the desired number of decimal places to return.
      - returns: Double representing the maximum operating depth for specified gas and maximum partial pressure of oxygen.
      
      ### Definition
-     The maximum operating depth (MOD) of a breathing gas is the depth below which the partial pressure of oxygen of the gas mix exceeds an acceptable limit. This limit is based on risk of central nervous system oxygen toxicity, and is somewhat arbitrary, and varies depending on the diver training agency or Code of Practice, the level of underwater exertion planned and the planned duration of the dive, but is normally in the range of 1.2 to 1.6 bar.
+     The maximum operating depth (MOD) of breathing gas is the depth below which the partial pressure of oxygen of the gas mix exceeds an acceptable limit. This limit is based on the risk of central nervous system oxygen toxicity, and is somewhat arbitrary, and varies depending on the diver training agency or Code of Practice, the level of underwater exertion planned and the planned duration of the dive, but is normally in the range of 1.2 to 1.6 bar.
      
      ### Example
+     ```swift
+     let enrichedAirCalc = DKEnrichedAir.init(waterType: .saltWater, measurementUnit: .imperial)
+     let gas  = DKGas.enrichedAir(percentage: 32)
+     do {
+         // Calculate MOD for EANx32 with maximum fraction oxygen of 1.4
+         let mod = try enrichedAirCalc.maximumOperatingDepth(fractionOxygen: 1.4, gas: gas)
+         print(mod) // 111 (feet)
+     } catch {
+         // Handle Error
+         print(error.localizedDescription)
+     }
      ```
-     // Calculate MOD for EANx32 with imperial units in saltwater
-     let diveKit = DiveKit.init()
-     let enrichedAir = DKEnrichedAir.init(with: diveKit)
-     let gas = DKGas.enrichedAir(percentage: 32)
-     let mod = enrichedAir.maximumOperatingDepth(fractionOxygen: 1.4, gas: gas)
-     print(mod) // 111
-     ```
-     - since: 0.9
+     - since: 1.0
      */
     public func maximumOperatingDepth(
         fractionOxygen: Double,
@@ -66,10 +70,10 @@ public class DKEnrichedAir {
         }
     }
     /**
-     Calculates the equivalent air depth of a specified gas and maximum partial presure of oxygen.
+     Calculates the equivalent air depth of a specified gas and maximum partial pressure of oxygen.
      - parameter depth: Double representing the depth to be used for calculation.
      - parameter gas: `DKGas` representing the gas to be used for calculation.
-     - parameter accuracy: Integer representing the dersired number of decimal place to return.
+     - parameter decimalPlaces: Integer representing the desired number of decimal places to return.
      - returns: Double representing the equivalent air depth for specified gas and depth.
      
      ### Definition
@@ -77,14 +81,18 @@ public class DKEnrichedAir {
      
      ### Example
      ```
-     // Calculate EAD for EANx36 with imperial units in saltwater
-     let diveKit = DiveKit.init()
-     let enrichedAir = DKEnrichedAir.init(with: diveKit)
-     let gas = DKGas.enrichedAir(percentage: 36)
-     let ead = enrichedAir.equivalentAirDepth(depth: 89, gas: gas)
-     print(ead) // 66
+     let enrichedAirCalc = DKEnrichedAir.init(waterType: .saltWater, measurementUnit: .imperial)
+     let gas  = DKGas.enrichedAir(percentage: 32)
+     do {
+         // Calculate EAD for EANx32 at 109 feet
+         let ead = try enrichedAirCalc.equivalentAirDepth(depth: 109, gas: gas)
+         print(ead) // 89 (feet)
+     } catch {
+         // Handle Error
+         print(error.localizedDescription)
+     }
      ```
-     - since: 0.9
+     - since: 1.0
      */
     public func equivalentAirDepth(
         depth: Double,
@@ -142,19 +150,22 @@ public class DKEnrichedAir {
      
      ### Example
      ```
-     let enrichedAir = DKEnrichedAir.init()
+     let enrichedAirCalc = DKEnrichedAir.init(waterType: .saltWater, measurementUnit: .imperial)
      do {
-     let blend = try enrichedAir.bestBlend(for: 1.4, to: 100)
-     print(blend) // DKGas.enrichedAir(percentage: 35)
+         // Calculate 'best blend' for to 90 feet with maximum fraction oxygen of 1.4
+         let bestBlend = try enrichedAirCalc.bestBlend(for: 90, fractionOxygen: 1.4)
+         print(bestBlend.percentOxygen) // 37.0 (% oxygen)
      } catch {
-     print(error.localizedDescription)
-     // Handle potential error
+         // Handle Error
+         print(error.localizedDescription)
      }
      ```
-     - since: 0.9
+     - since: 1.0
      */
-    public func bestBlend(for depth: Double,
-                          fractionOxygen: Double) throws -> DKGas {
+    public func bestBlend(
+        for depth: Double,
+        fractionOxygen: Double
+    ) throws -> DKGas {
         guard fractionOxygen > 0 else {
             throw DKError.partialPressureNeedsPositive
         }
@@ -177,24 +188,29 @@ public class DKEnrichedAir {
             }
         }
         return gas
-        
     }
     
     /**
-     Calculates if the specified blend of nitrox, EANx, exceed the maximum operating depth of specified depth and maximum partial pressure of oxygen.
-     - parameter fractionOxygen: Double prepresenting the fraction of oxygen.
+     Calculates if the specified blend of nitrox, EANx, exceeds the maximum operating depth of specified depth and maximum partial pressure of oxygen.
+     - parameter fractionOxygen: Double representing the fraction of oxygen.
      - parameter depth: Double presenting a depth.
      - parameter gas: `DKGas` representing the gas to be used for calculation.
-     - returns: Boolean detemining if depth exceeds maximum operating depth for specified `DKGas`.
+     - returns: Boolean determining if depth exceeds maximum operating depth for specified `DKGas`.
      
      ### Example
      ```
-     let enrichedAir = DKEnrichedAir.init()
-     let gas = DKGas.enrichedAir(percentage: 36)
-     let exceedsMOD = enrichedAir.exceedsMaximumOperatingDepth(with: gas, fractionOxygen: 1.4, depth: 130)
-     print(exceedsMOD) // true
+     let enrichedAirCalc = DKEnrichedAir.init(waterType: .saltWater, measurementUnit: .imperial)
+     let gas  = DKGas.enrichedAir(percentage: 32)
+     do {
+         // Calculate if 127 feet exceeds MOD for EANx32 at maximum fraction of oxygen of 1.4
+         let exceedsMod = try enrichedAirCalc.exceedsMaximumOperatingDepth(with: gas, fractionOxygen: 1.4, depth: 127)
+         print(exceedsMod) // true
+     } catch {
+         // Handle Error
+         print(error.localizedDescription)
+     }
      ```
-     - since: 0.9
+     - since: 1.0
      */
     public func exceedsMaximumOperatingDepth(
         with gas: DKGas,
@@ -215,20 +231,19 @@ public class DKEnrichedAir {
             return true
         }
         return false
-        
     }
     
     // MARK: - Initializers
     /**
      Initializes `DKEnrichedAir` and `DiveKit` objects with default values of `DiveKit.WaterType.saltWater` and `DiveKit.MeasurementUnit.imperial`
-     - since: 0.9
+     - since: 1.0
      */
     public init() {
         diveKit = DiveKit()
     }
     /**
-     Initialzes a `DKEnrichedAir` object with a `DiveKit` object.
-     - since: 0.9
+     Initializes a `DKEnrichedAir` object with a `DiveKit` object.
+     - since: 1.0
      */
     public convenience init(with diveKit: DiveKit) {
         self.init()
@@ -238,7 +253,7 @@ public class DKEnrichedAir {
      Initializes `DKEnrichedAir` and `DiveKit` objects with values for `DiveKit.WaterType` and `DiveKit.MeasurementUnit`
      - parameter waterType: `DiveKit.WaterType`
      - parameter measurementUnit: `DiveKit.MeasurementUnit`
-     - since: 0.9
+     - since: 1.0
      */
     public convenience init(waterType: DiveKit.WaterType, measurementUnit: DiveKit.MeasurementUnit) {
         self.init()
@@ -247,7 +262,7 @@ public class DKEnrichedAir {
     /**
      Initializes `DKEnrichedAir` and `DiveKit` objects with value for `DiveKit.WaterType` and default value of `DiveKit.MeasurementUnit.imperial`
      - parameter waterType: `DiveKit.WaterType`
-     - since: 0.9
+     - since: 1.0
      */
     public convenience init(waterType: DiveKit.WaterType) {
         self.init()
@@ -256,7 +271,7 @@ public class DKEnrichedAir {
     /**
      Initializes `DKEnrichedAir` and `DiveKit` objects with value for `DiveKit.MeasurementUnit` and default value of `DiveKit.WaterType.saltWater`
      - parameter measurementUnit: `DiveKit.MeasurementUnit`
-     - since: 0.9
+     - since: 1.0
      */
     public convenience init(measurementUnit: DiveKit.MeasurementUnit) {
         self.init()

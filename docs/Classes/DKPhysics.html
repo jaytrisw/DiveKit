@@ -23,7 +23,7 @@
         <a class="header-link" href="../index.html">
           DiveKit Docs
         </a>
-         (98% documented)
+         (100% documented)
       </p>
     
       <p class="header-col--secondary">
@@ -94,7 +94,7 @@
                 <a class="nav-group-task-link" href="../Structs/DKAtmosphereContants.html">DKAtmosphereContants</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Structs.html#/s:7DiveKit17DKPartialPressureV">DKPartialPressure</a>
+                <a class="nav-group-task-link" href="../Structs/DKPartialPressure.html">DKPartialPressure</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/DKPressureChange.html">DKPressureChange</a>
@@ -126,7 +126,7 @@
             <p>An object used to perform dive physics calculations.</p>
 <div class="aside aside-since">
     <p class="aside-title">Since</p>
-    0.9
+    1.0
 
 </div>
 
@@ -149,9 +149,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7DiveKit9DKPhysicsC19atmospheresAbsolute5depthS2d_tF"></a>
-                    <a name="//apple_ref/swift/Method/atmospheresAbsolute(depth:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7DiveKit9DKPhysicsC19atmospheresAbsolute5depthS2d_tF">atmospheresAbsolute(depth:)</a>
+                    <a name="/s:7DiveKit9DKPhysicsC19atmospheresAbsolute5depth13decimalPlacesS2d_SitKF"></a>
+                    <a name="//apple_ref/swift/Method/atmospheresAbsolute(depth:decimalPlaces:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7DiveKit9DKPhysicsC19atmospheresAbsolute5depth13decimalPlacesS2d_SitKF">atmospheresAbsolute(depth:decimalPlaces:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -162,15 +162,22 @@
                         <p>Calculates atmospheres absolute of a depth.</p>
 <div class="aside aside-since">
     <p class="aside-title">Since</p>
-    <p>0.9</p>
+    1.0
 
 </div>
+<h3 id='definition' class='heading'>Definition</h3>
+
+<p>The sum of barometric, or the pressure exerted by the atmosphere, and hydrostatic, or the pressure exerted by a water column, pressures.</p>
 <h4 id='example' class='heading'>Example</h4>
-<pre class="highlight swift"><code><span class="c1">// Calculate atmospheres absolute at 33 feet of salt water.</span>
-<span class="k">let</span> <span class="nv">diveKit</span> <span class="o">=</span> <span class="kt">DiveKit</span><span class="o">.</span><span class="nf">init</span><span class="p">()</span>
-<span class="k">let</span> <span class="nv">physics</span> <span class="o">=</span> <span class="kt">DKPhysics</span><span class="o">.</span><span class="nf">init</span><span class="p">(</span><span class="nv">with</span><span class="p">:</span> <span class="n">diveKit</span><span class="p">)</span>
-<span class="k">let</span> <span class="nv">ata</span> <span class="o">=</span> <span class="n">physics</span><span class="o">.</span><span class="nf">atmospheresAbsolute</span><span class="p">(</span><span class="nv">depth</span><span class="p">:</span> <span class="mi">33</span><span class="p">)</span>
-<span class="nf">print</span><span class="p">(</span><span class="n">ata</span><span class="p">)</span> <span class="c1">// 2</span>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">physicsCalculator</span> <span class="o">=</span> <span class="kt">DKPhysics</span><span class="o">.</span><span class="nf">init</span><span class="p">(</span><span class="nv">waterType</span><span class="p">:</span> <span class="o">.</span><span class="n">saltWater</span><span class="p">,</span> <span class="nv">measurementUnit</span><span class="p">:</span> <span class="o">.</span><span class="n">imperial</span><span class="p">)</span>
+<span class="k">do</span> <span class="p">{</span>
+    <span class="c1">// Calculate atmospheres absolute at 32 feet rounding to four decimal places.</span>
+    <span class="k">let</span> <span class="nv">ata</span> <span class="o">=</span> <span class="k">try</span> <span class="n">physicsCalculator</span><span class="o">.</span><span class="nf">atmospheresAbsolute</span><span class="p">(</span><span class="nv">depth</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span> <span class="nv">decimalPlaces</span><span class="p">:</span> <span class="mi">4</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">ata</span><span class="p">)</span> <span class="c1">// 1.9697 (ata)</span>
+<span class="p">}</span> <span class="k">catch</span> <span class="p">{</span>
+    <span class="c1">// Handle Error</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">error</span><span class="o">.</span><span class="n">localizedDescription</span><span class="p">)</span>
+<span class="p">}</span>
 </code></pre>
 
                       </div>
@@ -179,8 +186,9 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">atmospheresAbsolute</span><span class="p">(</span>
-    <span class="nv">depth</span><span class="p">:</span> <span class="kt">Double</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Double</span></code></pre>
+    <span class="nv">depth</span><span class="p">:</span> <span class="kt">Double</span><span class="p">,</span>
+    <span class="nv">decimalPlaces</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="p">)</span>  <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">Double</span></code></pre>
 
                         </div>
                       </div>
@@ -196,7 +204,19 @@
                               </td>
                               <td>
                                 <div>
-                                  <p>Double, representing a depth, expressed in feet or metres,.</p>
+                                  <p>Double, representing a depth, expressed in feet or meters.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>decimalPlaces</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Integer, representing the number of decimal places to round calculation to, defaults to two decimal places.</p>
                                 </div>
                               </td>
                             </tr>
@@ -206,6 +226,90 @@
                       <div>
                         <h4>Return Value</h4>
                         <p>Double, representing absolute pressure at input depth.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7DiveKit9DKPhysicsC13gaugePressure5depth13decimalPlacesS2d_SitKF"></a>
+                    <a name="//apple_ref/swift/Method/gaugePressure(depth:decimalPlaces:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7DiveKit9DKPhysicsC13gaugePressure5depth13decimalPlacesS2d_SitKF">gaugePressure(depth:decimalPlaces:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Calculates gauge pressure at a given depth.</p>
+<div class="aside aside-since">
+    <p class="aside-title">Since</p>
+    <p>1.0</p>
+
+</div>
+<h3 id='definition' class='heading'>Definition</h3>
+
+<p>As you climb above sea level, the atmospheric pressure decreases because the amount of air above you weighs less. If you dive below sea level, the opposite occurs (the pressure increases) because water has weight that is greater than air. Thus, the deeper one descends underwater the greater the pressure.</p>
+<h4 id='example' class='heading'>Example</h4>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">physicsCalculator</span> <span class="o">=</span> <span class="kt">DKPhysics</span><span class="o">.</span><span class="nf">init</span><span class="p">(</span><span class="nv">waterType</span><span class="p">:</span> <span class="o">.</span><span class="n">saltWater</span><span class="p">,</span> <span class="nv">measurementUnit</span><span class="p">:</span> <span class="o">.</span><span class="n">imperial</span><span class="p">)</span>
+<span class="k">do</span> <span class="p">{</span>
+    <span class="c1">// Calculate gauge pressure at 46 feet rounding to one decimal place.</span>
+    <span class="k">let</span> <span class="nv">gaugePressure</span> <span class="o">=</span> <span class="k">try</span> <span class="n">physicsCalculator</span><span class="o">.</span><span class="nf">gaugePressure</span><span class="p">(</span><span class="nv">depth</span><span class="p">:</span> <span class="mi">46</span><span class="p">,</span> <span class="nv">decimalPlaces</span><span class="p">:</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">gaugePressure</span><span class="p">)</span> <span class="c1">// 1.4 (ata)</span>
+<span class="p">}</span> <span class="k">catch</span> <span class="p">{</span>
+    <span class="c1">// Handle Error</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">error</span><span class="o">.</span><span class="n">localizedDescription</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">gaugePressure</span><span class="p">(</span>
+    <span class="nv">depth</span><span class="p">:</span> <span class="kt">Double</span><span class="p">,</span>
+    <span class="nv">decimalPlaces</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">Double</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>depth</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Double, representing a depth, expressed in feet or meters.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>decimalPlaces</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Integer, representing the number of decimal places to round calculation to, defaults to two decimal places.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>Double, representing ambient pressure at input depth.</p>
                       </div>
                     </section>
                   </div>
@@ -223,7 +327,23 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Calculates pressure change from a given depth to another.</p>
+<div class="aside aside-since">
+    <p class="aside-title">Since</p>
+    <p>1.0</p>
+
+</div>
+<h4 id='example' class='heading'>Example</h4>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">physicsCalculator</span> <span class="o">=</span> <span class="kt">DKPhysics</span><span class="o">.</span><span class="nf">init</span><span class="p">(</span><span class="nv">waterType</span><span class="p">:</span> <span class="o">.</span><span class="n">saltWater</span><span class="p">,</span> <span class="nv">measurementUnit</span><span class="p">:</span> <span class="o">.</span><span class="n">imperial</span><span class="p">)</span>
+<span class="k">do</span> <span class="p">{</span>
+    <span class="c1">// Calculate pressure change from at 33 feet to 99 feet.</span>
+    <span class="k">let</span> <span class="nv">pressureChange</span> <span class="o">=</span> <span class="k">try</span> <span class="n">physicsCalculator</span><span class="o">.</span><span class="nf">pressureChange</span><span class="p">(</span><span class="nv">from</span><span class="p">:</span> <span class="mi">33</span><span class="p">,</span> <span class="nv">to</span><span class="p">:</span> <span class="mi">99</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">pressureChange</span><span class="p">)</span> <span class="c1">// 2 (ata)</span>
+<span class="p">}</span> <span class="k">catch</span> <span class="p">{</span>
+    <span class="c1">// Handle Error</span>
+    <span class="nf">print</span><span class="p">(</span><span class="n">error</span><span class="o">.</span><span class="n">localizedDescription</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre>
 
                       </div>
                       <div class="declaration">
@@ -236,6 +356,41 @@
 <span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">Double</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>firstDepth</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Double, representing the first depth, expressed in feet or meters.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>secondDepth</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Double, representing the second depth, expressed in feet or meters.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>Double, representing the pressure change from one depth to a second expressed in atmospheres absolute.</p>
                       </div>
                     </section>
                   </div>
@@ -269,7 +424,7 @@
                         <p>Initializes <code>DKPhysics</code> and <code><a href="../Classes/DiveKit.html">DiveKit</a></code> objects with default values of <code><a href="../Classes/DiveKit/WaterType.html#/s:7DiveKitAAC9WaterTypeO04saltC0yA2DmF">DiveKit.WaterType.saltWater</a></code> and <code><a href="../Classes/DiveKit/MeasurementUnit.html#/s:7DiveKitAAC15MeasurementUnitO8imperialyA2DmF">DiveKit.MeasurementUnit.imperial</a></code></p>
 <div class="aside aside-since">
     <p class="aside-title">Since</p>
-    0.9
+    1.0
 
 </div>
 
@@ -301,7 +456,7 @@
                         <p>Initialzes a <code>DKPhysics</code> object with a <code><a href="../Classes/DiveKit.html">DiveKit</a></code> object.</p>
 <div class="aside aside-since">
     <p class="aside-title">Since</p>
-    0.9
+    1.0
 
 </div>
 
@@ -333,7 +488,7 @@
                         <p>Initializes <code>DKPhysics</code> and <code><a href="../Classes/DiveKit.html">DiveKit</a></code> objects with values for <code><a href="../Classes/DiveKit/WaterType.html">DiveKit.WaterType</a></code> and <code><a href="../Classes/DiveKit/MeasurementUnit.html">DiveKit.MeasurementUnit</a></code></p>
 <div class="aside aside-since">
     <p class="aside-title">Since</p>
-    0.9
+    1.0
 
 </div>
 
@@ -365,7 +520,7 @@
                         <p>Initializes <code>DKPhysics</code> and <code><a href="../Classes/DiveKit.html">DiveKit</a></code> objects with value for <code><a href="../Classes/DiveKit/WaterType.html">DiveKit.WaterType</a></code> and default value of <code><a href="../Classes/DiveKit/MeasurementUnit.html#/s:7DiveKitAAC15MeasurementUnitO8imperialyA2DmF">DiveKit.MeasurementUnit.imperial</a></code></p>
 <div class="aside aside-since">
     <p class="aside-title">Since</p>
-    0.9
+    1.0
 
 </div>
 
@@ -397,7 +552,7 @@
                         <p>Initializes <code>DKPhysics</code> and <code><a href="../Classes/DiveKit.html">DiveKit</a></code> objects with value for <code><a href="../Classes/DiveKit/MeasurementUnit.html">DiveKit.MeasurementUnit</a></code> and default value of <code><a href="../Classes/DiveKit/WaterType.html#/s:7DiveKitAAC9WaterTypeO04saltC0yA2DmF">DiveKit.WaterType.saltWater</a></code></p>
 <div class="aside aside-since">
     <p class="aside-title">Since</p>
-    0.9
+    1.0
 
 </div>
 

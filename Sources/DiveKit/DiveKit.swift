@@ -28,14 +28,14 @@ public class DiveKit {
     // MARK: - Initializers
     /**
      Initializes a DiveKit object using default values of salt water with imperial units.
-     - since: 0.9
+     - since: 1.0
      */
     public init() {}
     /**
      Initializes a DiveKit object using provided parameters
      - parameter waterType: `DiveKit.WaterType`
      - parameter measurementUnit: `DiveKit.MeasurementUnit`
-     - since: 0.9
+     - since: 1.0
      */
     public convenience init(waterType: DiveKit.WaterType, measurementUnit: DiveKit.MeasurementUnit) {
         self.init()
@@ -45,7 +45,7 @@ public class DiveKit {
     /**
      Initializes a DiveKit object using provided parameter for water type and default value of imperial units
      - parameter waterType: `DiveKit.WaterType`
-     - since: 0.9
+     - since: 1.0
      */
     public convenience init(waterType: DiveKit.WaterType) {
         self.init()
@@ -54,7 +54,7 @@ public class DiveKit {
     /**
      Initializes a DiveKit object using provided parameter for unit of measure and default value of salt water.
      - parameter measurementUnit: `DiveKit.MeasurementUnit`
-     - since: 0.9
+     - since: 1.0
      */
     public convenience init(measurementUnit: DiveKit.MeasurementUnit) {
         self.init()

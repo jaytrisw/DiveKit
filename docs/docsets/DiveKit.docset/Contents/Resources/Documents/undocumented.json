@@ -1,0 +1,40 @@
+{
+  "warnings": [
+    {
+      "file": "/Users/jtw/Developer/Packages/DiveKit/Sources/DiveKit/Structure/DKPartialPressure.swift",
+      "line": 11,
+      "symbol": "DKPartialPressure.init(oxygen:nitrogen:trace:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jtw/Developer/Packages/DiveKit/Sources/DiveKit/Structure/DKTank.swift",
+      "line": 23,
+      "symbol": "DKTank.ratedPressure",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jtw/Developer/Packages/DiveKit/Sources/DiveKit/Structure/DKTank.swift",
+      "line": 24,
+      "symbol": "DKTank.volume",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jtw/Developer/Packages/DiveKit/Sources/DiveKit/Structure/DKTank.swift",
+      "line": 25,
+      "symbol": "DKTank.type",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jtw/Developer/Packages/DiveKit/Sources/DiveKit/Structure/DKTank.swift",
+      "line": 27,
+      "symbol": "DKTank.init(ratedPressure:volume:type:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    }
+  ],
+  "source_directory": "/Users/jtw/Developer/Packages/DiveKit"
+}
