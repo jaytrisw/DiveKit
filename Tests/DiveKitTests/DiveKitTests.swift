@@ -47,11 +47,16 @@ final class DiveKitTests: XCTestCase {
     }
     func testPartialPressure() {
         diveKit = DiveKit.init()
+        let gas = DKGas.air
+        let errorGas = DKGas.enrichedAir(percentage: -20)
         gasCalculator = DKGasCalculator.init(with: diveKit)
         let airPartialPressure = DKPartialPressure.init(oxygen: 0.209, nitrogen: 0.79, trace: 0.001)
-        XCTAssertEqual(gasCalculator.partialPressure(of: .air).oxygen, airPartialPressure.oxygen)
-        XCTAssertEqual(gasCalculator.partialPressure(of: .air).nitrogen, airPartialPressure.nitrogen)
-        XCTAssertEqual(gasCalculator.partialPressure(of: .air).trace, airPartialPressure.trace)
+        XCTAssertEqual(try gasCalculator.partialPressure(of: .air).oxygen, airPartialPressure.oxygen)
+        XCTAssertEqual(try gasCalculator.partialPressure(of: .air).nitrogen, airPartialPressure.nitrogen)
+        XCTAssertEqual(try gasCalculator.partialPressure(of: .air).trace, airPartialPressure.trace)
+        
+        XCTAssertThrowsError(try gasCalculator.partialPressure(of: errorGas, at: 20))
+        XCTAssertThrowsError(try gasCalculator.partialPressure(of: gas, at: -20))
     }
     func testConstants() {
         XCTAssertEqual(DKConstants.imperial.pressureChange.saltWater, 0.0303)
@@ -147,9 +152,19 @@ final class DiveKitTests: XCTestCase {
         XCTAssertEqual(gasCalculator.diveKit.waterType, DiveKit.WaterType.freshWater)
         gasCalculator = DKGasCalculator.init(waterType: .saltWater, measurementUnit: .imperial)
         let tank = DKTank(ratedPressure: 3000, volume: 80, type: .aluminumStandard)
-        XCTAssertEqual(gasCalculator.respiratoryMinuteVolume(gasConsumed: 900, tank: tank, depth: 66, time: 10), 0.8)
-        XCTAssertEqual(gasCalculator.surfaceAirConsumption(time: 10, depth: 90, gasConsumed: 600).roundTo(decimalPlaces: 1), 16.1)
+        XCTAssertEqual(try gasCalculator.respiratoryMinuteVolume(gasConsumed: 900, tank: tank, depth: 66, time: 10), 0.8)
+        XCTAssertEqual(try gasCalculator.surfaceAirConsumption(time: 10, depth: 90, gasConsumed: 600).roundTo(decimalPlaces: 1), 16.1)
         
+        XCTAssertThrowsError(try gasCalculator.surfaceAirConsumption(time: -10, depth: 90, gasConsumed: 600))
+        XCTAssertThrowsError(try gasCalculator.surfaceAirConsumption(time: 10, depth: -90, gasConsumed: 600))
+        XCTAssertThrowsError(try gasCalculator.surfaceAirConsumption(time: 10, depth: 90, gasConsumed: -600))
+        let negativeRatedPressure = DKTank(ratedPressure: -3000, volume: 80, type: .aluminumStandard)
+        let negativeCapacity = DKTank(ratedPressure: 3000, volume: -80, type: .aluminumStandard)
+        XCTAssertThrowsError(try gasCalculator.respiratoryMinuteVolume(gasConsumed: -900, tank: tank, depth: 66, time: 10))
+        XCTAssertThrowsError(try gasCalculator.respiratoryMinuteVolume(gasConsumed: 900, tank: negativeRatedPressure, depth: 66, time: 10))
+        XCTAssertThrowsError(try gasCalculator.respiratoryMinuteVolume(gasConsumed: 900, tank: negativeCapacity, depth: 66, time: 10))
+        XCTAssertThrowsError(try gasCalculator.respiratoryMinuteVolume(gasConsumed: 900, tank: tank, depth: -66, time: 10))
+        XCTAssertThrowsError(try gasCalculator.respiratoryMinuteVolume(gasConsumed: 900, tank: tank, depth: 66, time: -10))
     }
 
     static var allTests = [

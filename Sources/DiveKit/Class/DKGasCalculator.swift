@@ -29,15 +29,24 @@ public class DKGasCalculator {
      ```
      - since: 0.9
      */
-    public func partialPressure(of gas: DKGas, at depth: Double = 0) -> DKPartialPressure {
+    public func partialPressure(
+        of gas: DKGas,
+        at depth: Double = 0
+    ) throws -> DKPartialPressure {
+        guard gas.percentOxygen >= 0 else {
+            throw DKError(title: "Invalid Parameter", description: "Percentage of oxygen must be greater than 0")
+        }
+        guard depth >= 0 else {
+            throw DKError(title: "Invalid Parameter", description: "Depth parameter must be greater than 0")
+        }
         let ata = try! DKPhysics(with: diveKit).atmospheresAbsolute(depth: depth)
         switch gas {
         case .air:
-            if depth >= 0 {
+            if depth > 0 {
                 return DKPartialPressure(oxygen: DKGas.air.partialPressure.oxygen * ata, nitrogen: DKGas.air.partialPressure.nitrogen * ata, trace: DKGas.air.partialPressure.trace * ata)
             }
         case .enrichedAir(let blend):
-            if depth >= 0 {
+            if depth > 0 {
                 return DKPartialPressure(oxygen: DKGas.enrichedAir(percentage: blend).partialPressure.oxygen * ata, nitrogen: DKGas.enrichedAir(percentage: blend).partialPressure.nitrogen * ata, trace: DKGas.enrichedAir(percentage: blend).partialPressure.trace * ata)
             }
         }
@@ -68,7 +77,16 @@ public class DKGasCalculator {
         time: Double,
         depth: Double,
         gasConsumed: Double
-    ) -> Double {
+    ) throws -> Double {
+        guard gasConsumed >= 0 else {
+            throw DKError(title: "Invalid Parameter", description: "Gas consumed parameter must be greater than 0")
+        }
+        guard depth >= 0 else {
+            throw DKError(title: "Invalid Parameter", description: "Depth parameter must be greater than 0")
+        }
+        guard time >= 0 else {
+            throw DKError(title: "Invalid Parameter", description: "Time parameter must be greater than 0")
+        }
         let ata = try! DKPhysics(with: diveKit).atmospheresAbsolute(depth: depth)
         return (gasConsumed / time / ata).roundTo(decimalPlaces: 2)
     }
@@ -101,7 +119,22 @@ public class DKGasCalculator {
         tank: DKTank,
         depth: Double,
         time: Double
-    ) -> Double {
+    ) throws -> Double {
+        guard gasConsumed >= 0 else {
+            throw DKError(title: "Invalid Parameter", description: "Gas consumed parameter must be greater than 0")
+        }
+        guard depth >= 0 else {
+            throw DKError(title: "Invalid Parameter", description: "Depth parameter must be greater than 0")
+        }
+        guard time >= 0 else {
+            throw DKError(title: "Invalid Parameter", description: "Time parameter must be greater than 0")
+        }
+        guard tank.ratedPressure >= 0 else {
+            throw DKError(title: "Invalid Parameter", description: "Tank rated pressure parameter must be greater than 0")
+        }
+        guard tank.volume >= 0 else {
+            throw DKError(title: "Invalid Parameter", description: "Tank volume parameter must be greater than 0")
+        }
         let ata = try! DKPhysics(with: diveKit).atmospheresAbsolute(depth: depth)
         let rmv = (((gasConsumed / tank.ratedPressure) * tank.volume) / ata) / time
         return rmv.roundTo(decimalPlaces: 2)
