@@ -13,7 +13,8 @@ public class DKPhysics {
     // MARK: - Calculation Methods
     /**
      Calculates atmospheres absolute of a depth.
-     - parameter depth: Double, representing a depth, expressed in feet or metres,.
+     - parameter depth: Double, representing a depth, expressed in feet or metres.
+     - parameter decimalPlaces: Integer, representing the number of decimal places to round calculation to, defaults to two deciaml places.
      
      - returns: Double, representing absolute pressure at input depth.
      - since: 0.9
@@ -28,22 +29,58 @@ public class DKPhysics {
      ```
      */
     public func atmospheresAbsolute(
-        depth: Double
-    ) -> Double {
+        depth: Double,
+        decimalPlaces: Int = 2
+    )  throws -> Double {
+           guard depth >= 0 else {
+               throw DKError(title: "Invalid Parameter", description: "Depth parameter must be a positive number")
+           }
+           guard decimalPlaces >= 0 else {
+               throw DKError(title: "Invalid Parameter", description: "Decimal places parameter must be a positive number")
+           }
+        return try! gaugePressure(depth: depth, decimalPlaces: decimalPlaces) + 1
+    }
+    /**
+     Calculates gauge pressure at given depth.
+     - parameter depth: Double, representing a depth, expressed in feet or metres.
+     - parameter decimalPlaces: Integer, representing the number of decimal places to round calculation to, defaults to two deciaml places.
+     
+     - returns: Double, representing absolute pressure at input depth.
+     - since: 0.9
+     
+     #### Example
+     ```
+     // Calculate gauge pressure at 33 feet of salt water.
+     let diveKit = DiveKit.init()
+     let physics = DKPhysics.init(with: diveKit)
+     let gauge = physics.gaugePressure(depth: 33)
+     print(gauge) // 1
+     ```
+     */
+    public func gaugePressure(
+        depth: Double,
+        decimalPlaces: Int = 2
+    ) throws -> Double {
+        guard depth >= 0 else {
+            throw DKError(title: "Invalid Parameter", description: "Depth parameter must be a positive number")
+        }
+        guard decimalPlaces >= 0 else {
+            throw DKError(title: "Invalid Parameter", description: "Decimal places parameter must be a positive number")
+        }
         switch diveKit.measurementUnit {
         case .imperial:
             switch diveKit.waterType {
             case .saltWater:
-                return ((depth / DKConstants.imperial.oneAtmosphere.saltWater) + 1).roundTo(decimalPlaces: 2)
+                return ((depth / DKConstants.imperial.oneAtmosphere.saltWater)).roundTo(decimalPlaces: decimalPlaces)
             case .freshWater:
-                return ((depth / DKConstants.imperial.oneAtmosphere.freshWater) + 1).roundTo(decimalPlaces: 2)
+                return ((depth / DKConstants.imperial.oneAtmosphere.freshWater)).roundTo(decimalPlaces: decimalPlaces)
             }
         case .metric:
             switch diveKit.waterType {
             case .saltWater:
-                return ((depth / DKConstants.metric.oneAtmosphere.saltWater) + 1).roundTo(decimalPlaces: 2)
+                return (depth / DKConstants.metric.oneAtmosphere.saltWater).roundTo(decimalPlaces: decimalPlaces)
             case .freshWater:
-                return ((depth / DKConstants.metric.oneAtmosphere.freshWater) + 1).roundTo(decimalPlaces: 2)
+                return (depth / DKConstants.metric.oneAtmosphere.freshWater).roundTo(decimalPlaces: decimalPlaces)
             }
         }
     }
@@ -58,8 +95,8 @@ public class DKPhysics {
         guard secondDepth >= 0 else {
             throw DKError(title: "Invalid Second Parameter", description: "Second depth parameter must be a positive number")
         }
-        let firstATA = atmospheresAbsolute(depth: firstDepth)
-        let secondATA = atmospheresAbsolute(depth: secondDepth)
+        let firstATA = try! atmospheresAbsolute(depth: firstDepth)
+        let secondATA = try! atmospheresAbsolute(depth: secondDepth)
         return (secondATA - firstATA)
     }
     

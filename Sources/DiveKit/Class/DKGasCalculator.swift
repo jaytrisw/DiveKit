@@ -30,7 +30,7 @@ public class DKGasCalculator {
      - since: 0.9
      */
     public func partialPressure(of gas: DKGas, at depth: Double = 0) -> DKPartialPressure {
-        let ata = DKPhysics(with: diveKit).atmospheresAbsolute(depth: depth)
+        let ata = try! DKPhysics(with: diveKit).atmospheresAbsolute(depth: depth)
         switch gas {
         case .air:
             if depth >= 0 {
@@ -69,7 +69,7 @@ public class DKGasCalculator {
         depth: Double,
         gasConsumed: Double
     ) -> Double {
-        let ata = DKPhysics(with: diveKit).atmospheresAbsolute(depth: depth)
+        let ata = try! DKPhysics(with: diveKit).atmospheresAbsolute(depth: depth)
         return (gasConsumed / time / ata).roundTo(decimalPlaces: 2)
     }
     
@@ -102,7 +102,7 @@ public class DKGasCalculator {
         depth: Double,
         time: Double
     ) -> Double {
-        let ata = DKPhysics(with: diveKit).atmospheresAbsolute(depth: depth)
+        let ata = try! DKPhysics(with: diveKit).atmospheresAbsolute(depth: depth)
         let rmv = (((gasConsumed / tank.ratedPressure) * tank.volume) / ata) / time
         return rmv.roundTo(decimalPlaces: 2)
     }

@@ -123,11 +123,12 @@
 </p>
 
 <p align="center">
-<a href="https://travis-ci.com/jaytrisw/DiveKit"><img src="https://travis-ci.com/jaytrisw/DiveKit.svg?branch=master"></a> <a href='https://jaytrisw.github.io/DiveKit'> <img src='https://readthedocs.org/projects/divekit/badge/?version=latest' alt='Documentation Status' /></a>
+<a href="https://swift.org/"><img src="https://github.com/jaytrisw/DiveKit/workflows/Swift/badge.svg" alt="Swift" title="Swift"></a> <a href="https://travis-ci.com/jaytrisw/DiveKit"><img src="https://travis-ci.com/jaytrisw/DiveKit.svg?branch=master"></a> <a href='https://jaytrisw.github.io/DiveKit'> <img src='https://readthedocs.org/projects/divekit/badge/?version=latest' alt='Documentation Status' /></a>
 <br />
 <a href="https://codeclimate.com/github/jaytrisw/DiveKit/maintainability"><img src="https://api.codeclimate.com/v1/badges/1b7039fc233efcc5187e/maintainability" /></a> <a href="https://www.codefactor.io/repository/github/jaytrisw/divekit/overview/master"><img src="https://www.codefactor.io/repository/github/jaytrisw/divekit/badge/master" alt="CodeFactor" /></a> <a href="https://codecov.io/gh/jaytrisw/DiveKit"><img src="https://codecov.io/gh/jaytrisw/DiveKit/branch/master/graph/badge.svg" /></a>
 <br /> 
-<a href="https://swift.org/"><img src="https://github.com/jaytrisw/DiveKit/workflows/Swift/badge.svg" alt="Swift" title="Swift"></a> <a href="https://github.com/apple/swift-package-manager"><img src="https://img.shields.io/badge/Swift%20Package%20Manager-compatible-green" alt="Swift Package Manager compatible" title="Swift Package Manager compatible"></a>
+<a href="https://github.com/apple/swift-package-manager"><img src="https://img.shields.io/badge/Swift%20Package%20Manager-compatible-green" alt="Swift Package Manager compatible" title="Swift Package Manager compatible"></a>
+<a href="https://cocoapods.org/pods/DiveKit"><img src="https://img.shields.io/cocoapods/v/DiveKit.svg" alt="CocoaPods" title="CocoaPods"></a> 
 </p>
 
 <p>The development of DiveKit started to fulfill the need for diving calculations in the ongoing rewrite if my iOS application, Guam Dive Guide.  My goal for DiveKit is to be a robust library of scuba diving calculations.</p>
@@ -166,10 +167,16 @@
 <span class="nf">print</span><span class="p">(</span><span class="n">mod</span><span class="p">)</span> <span class="c1">// 111</span>
 </code></pre>
 <h2 id='installation' class='heading'>Installation</h2>
+<h4 id='cocoapods' class='heading'>CocoaPods</h4>
+
+<p>DiveKit is available through <a href="https://cocoapods.org">CocoaPods</a>. To install
+it, simply add the following line to your Podfile:</p>
+<pre class="highlight ruby"><code><span class="n">pod</span> <span class="s1">'DiveKit'</span>
+</code></pre>
 <h4 id='swift-package-manager-with-xcode-11' class='heading'>Swift Package Manager with Xcode 11</h4>
 
 <p>Add the following line to the dependencies in your <code>Package.swift</code> file:</p>
-<pre class="highlight swift"><code><span class="o">.</span><span class="nf">package</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="s">"https://github.com/jaytrisw/DiveKit.git"</span><span class="p">,</span> <span class="nv">from</span><span class="p">:</span> <span class="s">"0.9.0"</span><span class="p">),</span>
+<pre class="highlight swift"><code><span class="o">.</span><span class="nf">package</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="s">"https://github.com/jaytrisw/DiveKit.git"</span><span class="p">,</span> <span class="nv">from</span><span class="p">:</span> <span class="s">"0.8.0"</span><span class="p">),</span>
 </code></pre>
 
 <p>&hellip;and then include <code>&quot;DiveKit&quot;</code> as a dependency for your executable target:</p>

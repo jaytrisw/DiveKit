@@ -33,8 +33,17 @@ public class DKEnrichedAir {
     public func maximumOperatingDepth(
         fractionOxygen: Double,
         gas: DKGas,
-        accuracy: Int = 0
-    ) -> Double {
+        decimalPlaces: Int = 0
+    ) throws -> Double {
+        guard fractionOxygen >= 0 else {
+            throw DKError(title: "Invalid Parameter", description: "Fraction of oxygen parameter must be greater than 0")
+        }
+        guard gas.percentOxygen >= 0 else {
+            throw DKError(title: "Invalid Parameter", description: "Percentage of oxygen must be greater than 0")
+        }
+        guard decimalPlaces >= 0 else {
+            throw DKError(title: "Invalid Parameter", description: "Decimal places parameter must be greater than 0")
+        }
         // Calculate partial pressure of oxygen in gas
         // MOD =  { (Partial Pressure / Fraction of O2) - 1 } x 33 feet
         let fractionOxygenOfBlend = DKGasCalculator(with: diveKit).partialPressure(of: gas)
@@ -50,9 +59,9 @@ public class DKEnrichedAir {
         case .metric:
             switch diveKit.waterType {
             case .saltWater:
-                return (temp * DKConstants.metric.oneAtmosphere.saltWater).roundTo(decimalPlaces: accuracy)
+                return (temp * DKConstants.metric.oneAtmosphere.saltWater).roundTo(decimalPlaces: decimalPlaces)
             case .freshWater:
-                return (temp * DKConstants.metric.oneAtmosphere.freshWater).roundTo(decimalPlaces: accuracy)
+                return (temp * DKConstants.metric.oneAtmosphere.freshWater).roundTo(decimalPlaces: decimalPlaces)
             }
         }
     }
@@ -80,8 +89,17 @@ public class DKEnrichedAir {
     public func equivalentAirDepth(
         depth: Double,
         gas: DKGas,
-        accuracy: Int = 0
-    ) -> Double {
+        decimalPlaces: Int = 0
+    ) throws -> Double {
+        guard depth >= 0 else {
+            throw DKError(title: "Invalid Parameter", description: "Depth parameter must be greater than 0")
+        }
+        guard gas.percentOxygen >= 0 else {
+            throw DKError(title: "Invalid Parameter", description: "Percentage of oxygen must be greater than 0")
+        }
+        guard decimalPlaces >= 0 else {
+            throw DKError(title: "Invalid Parameter", description: "Decimal places parameter must be greater than 0")
+        }
         // EAD = (Depth + 33) × Fraction of N2 / 0.79 − 33
         let partialPressureBlend = DKGasCalculator(with: diveKit).partialPressure(of: gas)
         let partialPressureAir = DKGasCalculator(with: diveKit).partialPressure(of: .air)
@@ -92,11 +110,11 @@ public class DKEnrichedAir {
             case .saltWater:
                 let depthCalc = depth + oneAtmosphere.saltWater
                 let nitrogenCalc = partialPressureBlend.nitrogen / partialPressureAir.nitrogen
-                return (depthCalc * nitrogenCalc - oneAtmosphere.saltWater).roundTo(decimalPlaces: accuracy)
+                return (depthCalc * nitrogenCalc - oneAtmosphere.saltWater).roundTo(decimalPlaces: decimalPlaces)
             case .freshWater:
                 let depthCalc = depth + oneAtmosphere.freshWater
                 let nitrogenCalc = partialPressureBlend.nitrogen / partialPressureAir.nitrogen
-                return (depthCalc * nitrogenCalc - oneAtmosphere.freshWater).roundTo(decimalPlaces: accuracy)
+                return (depthCalc * nitrogenCalc - oneAtmosphere.freshWater).roundTo(decimalPlaces: decimalPlaces)
             }
         case .metric:
             let oneAtmosphere = DKConstants.metric.oneAtmosphere
@@ -104,11 +122,11 @@ public class DKEnrichedAir {
             case .saltWater:
                 let depthCalc = depth + oneAtmosphere.saltWater
                 let nitrogenCalc = partialPressureBlend.nitrogen / partialPressureAir.nitrogen
-                return (depthCalc * nitrogenCalc - oneAtmosphere.saltWater).roundTo(decimalPlaces: accuracy)
+                return (depthCalc * nitrogenCalc - oneAtmosphere.saltWater).roundTo(decimalPlaces: decimalPlaces)
             case .freshWater:
                 let depthCalc = depth + oneAtmosphere.freshWater
                 let nitrogenCalc = partialPressureBlend.nitrogen / partialPressureAir.nitrogen
-                return (depthCalc * nitrogenCalc - oneAtmosphere.freshWater).roundTo(decimalPlaces: accuracy)
+                return (depthCalc * nitrogenCalc - oneAtmosphere.freshWater).roundTo(decimalPlaces: decimalPlaces)
             }
         }
     }
@@ -143,20 +161,24 @@ public class DKEnrichedAir {
         guard depth > 0 else {
             throw DKError.depthNeedsPositive
         }
-        let ata = DKPhysics.init(with: diveKit).atmospheresAbsolute(depth: depth)
-        
-        let percentage = floor(fractionOxygen / ata * 100)
-        var gas = DKGas.enrichedAir(percentage: percentage)
-        if exceedsMaximumOperatingDepth(with: gas, fractionOxygen: fractionOxygen, depth: depth) {
-            let integerPercent = Int(percentage)
-            for i in (integerPercent..<100) {
-                gas = DKGas.enrichedAir(percentage: Double(i))
-                if !exceedsMaximumOperatingDepth(with: gas, fractionOxygen: fractionOxygen, depth: depth) {
-                    return gas
+        do {
+            let ata = try DKPhysics.init(with: diveKit).atmospheresAbsolute(depth: depth)
+            let percentage = floor(fractionOxygen / ata * 100)
+            var gas = DKGas.enrichedAir(percentage: percentage)
+            if try exceedsMaximumOperatingDepth(with: gas, fractionOxygen: fractionOxygen, depth: depth) {
+                let integerPercent = Int(percentage)
+                for i in (integerPercent..<100) {
+                    gas = DKGas.enrichedAir(percentage: Double(i))
+                    if try !exceedsMaximumOperatingDepth(with: gas, fractionOxygen: fractionOxygen, depth: depth) {
+                        return gas
+                    }
                 }
             }
+            return gas
+        } catch {
+            throw error
         }
-        return gas
+        
     }
     
     /**
@@ -175,15 +197,31 @@ public class DKEnrichedAir {
      ```
      - since: 0.9
      */
-    public func exceedsMaximumOperatingDepth(with gas: DKGas,
-                                             fractionOxygen: Double,
-                                             depth: Double) -> Bool {
-        let mod = maximumOperatingDepth(fractionOxygen: fractionOxygen, gas: gas, accuracy: 10)
-        if mod > depth {
-            print(mod, ">",  depth)
-            return true
+    public func exceedsMaximumOperatingDepth(
+        with gas: DKGas,
+        fractionOxygen: Double,
+        depth: Double
+    ) throws -> Bool {
+        guard fractionOxygen >= 0 else {
+            throw DKError(title: "Invalid Parameter", description: "Fraction of oxygen parameter must be greater than 0")
         }
-        return false
+        guard gas.percentOxygen >= 0 else {
+            throw DKError(title: "Invalid Parameter", description: "Percentage of oxygen must be greater than 0")
+        }
+        guard depth >= 0 else {
+            throw DKError(title: "Invalid Parameter", description: "Depth parameter must be greater than 0")
+        }
+        do {
+            let mod = try maximumOperatingDepth(fractionOxygen: fractionOxygen, gas: gas, decimalPlaces: 10)
+            if mod > depth {
+                print(mod, ">",  depth)
+                return true
+            }
+            return false
+        } catch {
+            throw error
+        }
+        
     }
     
     // MARK: - Initializers
