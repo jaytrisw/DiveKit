@@ -23,7 +23,7 @@
         <a class="header-link" href="../index.html">
           DiveKit Docs
         </a>
-         (100% documented)
+         (75% documented)
       </p>
     
       <p class="header-col--secondary">
@@ -77,9 +77,6 @@
                 <a class="nav-group-task-link" href="../Enums/DKConstants.html">DKConstants</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Enums/DKGas.html">DKGas</a>
-              </li>
-              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Enums/DKUnitsOfMeasure.html">DKUnitsOfMeasure</a>
               </li>
               <li class="nav-group-task">
@@ -94,9 +91,6 @@
                 <a class="nav-group-task-link" href="../Structs/DKAtmosphereContants.html">DKAtmosphereContants</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Structs/DKPartialPressure.html">DKPartialPressure</a>
-              </li>
-              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/DKPressureChange.html">DKPressureChange</a>
               </li>
               <li class="nav-group-task">
@@ -107,6 +101,12 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/DKWeightOfWater.html">DKWeightOfWater</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Gas.html">Gas</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/PartialPressure.html">PartialPressure</a>
               </li>
             </ul>
           </li>
@@ -144,9 +144,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7DiveKit13DKEnrichedAirC21maximumOperatingDepth14fractionOxygen3gas13decimalPlacesS2d_AA5DKGasOSitKF"></a>
+                    <a name="/s:7DiveKit13DKEnrichedAirC21maximumOperatingDepth14fractionOxygen3gas13decimalPlacesS2d_AA3GasVSitKF"></a>
                     <a name="//apple_ref/swift/Method/maximumOperatingDepth(fractionOxygen:gas:decimalPlaces:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7DiveKit13DKEnrichedAirC21maximumOperatingDepth14fractionOxygen3gas13decimalPlacesS2d_AA5DKGasOSitKF">maximumOperatingDepth(fractionOxygen:gas:decimalPlaces:)</a>
+                    <a class="token" href="#/s:7DiveKit13DKEnrichedAirC21maximumOperatingDepth14fractionOxygen3gas13decimalPlacesS2d_AA3GasVSitKF">maximumOperatingDepth(fractionOxygen:gas:decimalPlaces:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -160,7 +160,7 @@
 <p>The maximum operating depth (MOD) of breathing gas is the depth below which the partial pressure of oxygen of the gas mix exceeds an acceptable limit. This limit is based on the risk of central nervous system oxygen toxicity, and is somewhat arbitrary, and varies depending on the diver training agency or Code of Practice, the level of underwater exertion planned and the planned duration of the dive, but is normally in the range of 1.2 to 1.6 bar.</p>
 <h3 id='example' class='heading'>Example</h3>
 <pre class="highlight swift"><code><span class="k">let</span> <span class="nv">enrichedAirCalc</span> <span class="o">=</span> <span class="kt">DKEnrichedAir</span><span class="o">.</span><span class="nf">init</span><span class="p">(</span><span class="nv">waterType</span><span class="p">:</span> <span class="o">.</span><span class="n">saltWater</span><span class="p">,</span> <span class="nv">measurementUnit</span><span class="p">:</span> <span class="o">.</span><span class="n">imperial</span><span class="p">)</span>
-<span class="k">let</span> <span class="nv">gas</span>  <span class="o">=</span> <span class="kt">DKGas</span><span class="o">.</span><span class="nf">enrichedAir</span><span class="p">(</span><span class="nv">percentage</span><span class="p">:</span> <span class="mi">32</span><span class="p">)</span>
+<span class="k">let</span> <span class="nv">gas</span> <span class="o">=</span> <span class="kt">DKGas</span><span class="o">.</span><span class="nf">enrichedAir</span><span class="p">(</span><span class="nv">percentage</span><span class="p">:</span> <span class="mi">32</span><span class="p">)</span>
 <span class="k">do</span> <span class="p">{</span>
     <span class="c1">// Calculate MOD for EANx32 with maximum fraction oxygen of 1.4</span>
     <span class="k">let</span> <span class="nv">mod</span> <span class="o">=</span> <span class="k">try</span> <span class="n">enrichedAirCalc</span><span class="o">.</span><span class="nf">maximumOperatingDepth</span><span class="p">(</span><span class="nv">fractionOxygen</span><span class="p">:</span> <span class="mf">1.4</span><span class="p">,</span> <span class="nv">gas</span><span class="p">:</span> <span class="n">gas</span><span class="p">)</span>
@@ -183,7 +183,7 @@
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">maximumOperatingDepth</span><span class="p">(</span>
     <span class="nv">fractionOxygen</span><span class="p">:</span> <span class="kt">Double</span><span class="p">,</span>
-    <span class="nv">gas</span><span class="p">:</span> <span class="kt"><a href="../Enums/DKGas.html">DKGas</a></span><span class="p">,</span>
+    <span class="nv">gas</span><span class="p">:</span> <span class="kt"><a href="../Structs/Gas.html">Gas</a></span><span class="p">,</span>
     <span class="nv">decimalPlaces</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">Double</span></code></pre>
 
@@ -213,7 +213,7 @@
                               </td>
                               <td>
                                 <div>
-                                  <p><code><a href="../Enums/DKGas.html">DKGas</a></code> representing the gas to be used for calculation.</p>
+                                  <p><code><a href="../Structs/Gas.html">Gas</a></code> representing the gas to be used for calculation.</p>
                                 </div>
                               </td>
                             </tr>
@@ -242,9 +242,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7DiveKit13DKEnrichedAirC010equivalentD5Depth5depth3gas13decimalPlacesS2d_AA5DKGasOSitKF"></a>
+                    <a name="/s:7DiveKit13DKEnrichedAirC010equivalentD5Depth5depth3gas13decimalPlacesS2d_AA3GasVSitKF"></a>
                     <a name="//apple_ref/swift/Method/equivalentAirDepth(depth:gas:decimalPlaces:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7DiveKit13DKEnrichedAirC010equivalentD5Depth5depth3gas13decimalPlacesS2d_AA5DKGasOSitKF">equivalentAirDepth(depth:gas:decimalPlaces:)</a>
+                    <a class="token" href="#/s:7DiveKit13DKEnrichedAirC010equivalentD5Depth5depth3gas13decimalPlacesS2d_AA3GasVSitKF">equivalentAirDepth(depth:gas:decimalPlaces:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -281,7 +281,7 @@
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">equivalentAirDepth</span><span class="p">(</span>
     <span class="nv">depth</span><span class="p">:</span> <span class="kt">Double</span><span class="p">,</span>
-    <span class="nv">gas</span><span class="p">:</span> <span class="kt"><a href="../Enums/DKGas.html">DKGas</a></span><span class="p">,</span>
+    <span class="nv">gas</span><span class="p">:</span> <span class="kt"><a href="../Structs/Gas.html">Gas</a></span><span class="p">,</span>
     <span class="nv">decimalPlaces</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">Double</span></code></pre>
 
@@ -311,7 +311,7 @@
                               </td>
                               <td>
                                 <div>
-                                  <p><code><a href="../Enums/DKGas.html">DKGas</a></code> representing the gas to be used for calculation.</p>
+                                  <p><code>DKGas</code> representing the gas to be used for calculation.</p>
                                 </div>
                               </td>
                             </tr>
@@ -340,9 +340,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7DiveKit13DKEnrichedAirC9bestBlend3for14fractionOxygenAA5DKGasOSd_SdtKF"></a>
+                    <a name="/s:7DiveKit13DKEnrichedAirC9bestBlend3for14fractionOxygenAA3GasVSd_SdtKF"></a>
                     <a name="//apple_ref/swift/Method/bestBlend(for:fractionOxygen:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7DiveKit13DKEnrichedAirC9bestBlend3for14fractionOxygenAA5DKGasOSd_SdtKF">bestBlend(for:fractionOxygen:)</a>
+                    <a class="token" href="#/s:7DiveKit13DKEnrichedAirC9bestBlend3for14fractionOxygenAA3GasVSd_SdtKF">bestBlend(for:fractionOxygen:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -379,7 +379,7 @@
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">bestBlend</span><span class="p">(</span>
     <span class="k">for</span> <span class="nv">depth</span><span class="p">:</span> <span class="kt">Double</span><span class="p">,</span>
     <span class="nv">fractionOxygen</span><span class="p">:</span> <span class="kt">Double</span>
-<span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Enums/DKGas.html">DKGas</a></span></code></pre>
+<span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Structs/Gas.html">Gas</a></span></code></pre>
 
                         </div>
                       </div>
@@ -416,7 +416,7 @@
                       </div>
                       <div>
                         <h4>Return Value</h4>
-                        <p><code><a href="../Enums/DKGas.html">DKGas</a></code> representing the calculated best blend for the given dive.</p>
+                        <p><code><a href="../Structs/Gas.html">Gas</a></code> representing the calculated best blend for the given dive.</p>
                       </div>
                     </section>
                   </div>
@@ -424,9 +424,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7DiveKit13DKEnrichedAirC28exceedsMaximumOperatingDepth4with14fractionOxygen5depthSbAA5DKGasO_S2dtKF"></a>
+                    <a name="/s:7DiveKit13DKEnrichedAirC28exceedsMaximumOperatingDepth4with14fractionOxygen5depthSbAA3GasV_S2dtKF"></a>
                     <a name="//apple_ref/swift/Method/exceedsMaximumOperatingDepth(with:fractionOxygen:depth:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7DiveKit13DKEnrichedAirC28exceedsMaximumOperatingDepth4with14fractionOxygen5depthSbAA5DKGasO_S2dtKF">exceedsMaximumOperatingDepth(with:fractionOxygen:depth:)</a>
+                    <a class="token" href="#/s:7DiveKit13DKEnrichedAirC28exceedsMaximumOperatingDepth4with14fractionOxygen5depthSbAA3GasV_S2dtKF">exceedsMaximumOperatingDepth(with:fractionOxygen:depth:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -459,7 +459,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">exceedsMaximumOperatingDepth</span><span class="p">(</span>
-    <span class="n">with</span> <span class="nv">gas</span><span class="p">:</span> <span class="kt"><a href="../Enums/DKGas.html">DKGas</a></span><span class="p">,</span>
+    <span class="n">with</span> <span class="nv">gas</span><span class="p">:</span> <span class="kt"><a href="../Structs/Gas.html">Gas</a></span><span class="p">,</span>
     <span class="nv">fractionOxygen</span><span class="p">:</span> <span class="kt">Double</span><span class="p">,</span>
     <span class="nv">depth</span><span class="p">:</span> <span class="kt">Double</span>
 <span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
@@ -502,7 +502,7 @@
                               </td>
                               <td>
                                 <div>
-                                  <p><code><a href="../Enums/DKGas.html">DKGas</a></code> representing the gas to be used for calculation.</p>
+                                  <p><code><a href="../Structs/Gas.html">Gas</a></code> representing the gas to be used for calculation.</p>
                                 </div>
                               </td>
                             </tr>
@@ -511,7 +511,7 @@
                       </div>
                       <div>
                         <h4>Return Value</h4>
-                        <p>Boolean determining if depth exceeds maximum operating depth for specified <code><a href="../Enums/DKGas.html">DKGas</a></code>.</p>
+                        <p>Boolean determining if depth exceeds maximum operating depth for specified <code>DKGas</code>.</p>
                       </div>
                     </section>
                   </div>

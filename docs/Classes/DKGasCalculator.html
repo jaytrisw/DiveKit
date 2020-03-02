@@ -23,7 +23,7 @@
         <a class="header-link" href="../index.html">
           DiveKit Docs
         </a>
-         (100% documented)
+         (75% documented)
       </p>
     
       <p class="header-col--secondary">
@@ -77,9 +77,6 @@
                 <a class="nav-group-task-link" href="../Enums/DKConstants.html">DKConstants</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Enums/DKGas.html">DKGas</a>
-              </li>
-              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Enums/DKUnitsOfMeasure.html">DKUnitsOfMeasure</a>
               </li>
               <li class="nav-group-task">
@@ -94,9 +91,6 @@
                 <a class="nav-group-task-link" href="../Structs/DKAtmosphereContants.html">DKAtmosphereContants</a>
               </li>
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Structs/DKPartialPressure.html">DKPartialPressure</a>
-              </li>
-              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/DKPressureChange.html">DKPressureChange</a>
               </li>
               <li class="nav-group-task">
@@ -107,6 +101,12 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/DKWeightOfWater.html">DKWeightOfWater</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Gas.html">Gas</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/PartialPressure.html">PartialPressure</a>
               </li>
             </ul>
           </li>
@@ -149,9 +149,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7DiveKit15DKGasCalculatorC15partialPressure2of2atAA09DKPartialF0VAA0C0O_SdtKF"></a>
+                    <a name="/s:7DiveKit15DKGasCalculatorC15partialPressure2of2atAA07PartialF0VAA3GasV_SdtKF"></a>
                     <a name="//apple_ref/swift/Method/partialPressure(of:at:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7DiveKit15DKGasCalculatorC15partialPressure2of2atAA09DKPartialF0VAA0C0O_SdtKF">partialPressure(of:at:)</a>
+                    <a class="token" href="#/s:7DiveKit15DKGasCalculatorC15partialPressure2of2atAA07PartialF0VAA3GasV_SdtKF">partialPressure(of:at:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -187,9 +187,9 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">partialPressure</span><span class="p">(</span>
-    <span class="n">of</span> <span class="nv">gas</span><span class="p">:</span> <span class="kt"><a href="../Enums/DKGas.html">DKGas</a></span><span class="p">,</span>
+    <span class="n">of</span> <span class="nv">gas</span><span class="p">:</span> <span class="kt"><a href="../Structs/Gas.html">Gas</a></span><span class="p">,</span>
     <span class="n">at</span> <span class="nv">depth</span><span class="p">:</span> <span class="kt">Double</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Structs/DKPartialPressure.html">DKPartialPressure</a></span></code></pre>
+<span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Structs/PartialPressure.html">PartialPressure</a></span></code></pre>
 
                         </div>
                       </div>
@@ -205,7 +205,7 @@
                               </td>
                               <td>
                                 <div>
-                                  <p><code><a href="../Enums/DKGas.html">DKGas</a></code> to calculate the partial pressure.</p>
+                                  <p><code><a href="../Structs/Gas.html">Gas</a></code> to calculate the partial pressure.</p>
                                 </div>
                               </td>
                             </tr>
@@ -226,7 +226,7 @@
                       </div>
                       <div>
                         <h4>Return Value</h4>
-                        <p><code><a href="../Structs/DKPartialPressure.html">DKPartialPressure</a></code> of constituent gases in input <code><a href="../Enums/DKGas.html">DKGas</a></code> at surface pressure or input depth</p>
+                        <p><code>DKPartialPressure</code> of constituent gases in input <code>DKGas</code> at surface pressure or input depth</p>
                       </div>
                     </section>
                   </div>

@@ -51,9 +51,8 @@ import DiveKit
 
 // Calclate MOD for EANx32 at PPO2 of 1.4 (Salt Water and Imperial Units)
 let enrichedAirCalc = DKEnrichedAir.init(waterType: .saltWater, measurementUnit: .imperial)
-let gas  = DKGas.enrichedAir(percentage: 32)
 do {
-    // Calculate MOD for EANx32 with maximum fraction oxygen of 1.4
+    let gas = try Gas.enrichedAir(32)
     let mod = try enrichedAirCalc.maximumOperatingDepth(fractionOxygen: 1.4, gas: gas)
     print(mod) // 111 (feet)
 } catch {
@@ -62,7 +61,6 @@ do {
 }
 ```
 
-
 ## Installation
 
 #### CocoaPods
@@ -70,7 +68,7 @@ do {
 DiveKit is available through [CocoaPods](https://cocoapods.org). To install it, simply add the following line to your Podfile:
 
 ```ruby
-pod 'DiveKit', '~> 0.9.5'
+pod 'DiveKit', '~> 0.10.0'
 ```
 
 #### Swift Package Manager with Xcode 11
@@ -78,7 +76,7 @@ pod 'DiveKit', '~> 0.9.5'
 Add the following line to the dependencies in your `Package.swift` file:
 
 ```swift
-.package(url: "https://github.com/jaytrisw/DiveKit.git", from: "0.9.0"),
+.package(url: "https://github.com/jaytrisw/DiveKit.git", from: "0.10.0"),
 ```
 
 ...and then include `"DiveKit"` as a dependency for your executable target:
