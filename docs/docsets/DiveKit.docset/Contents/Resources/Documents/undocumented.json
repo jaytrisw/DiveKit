@@ -1,54 +1,6 @@
 {
   "warnings": [
-    {
-      "file": "/Users/jtw/Developer/Packages/DiveKit/Sources/DiveKit/Structure/Gas.swift",
-      "line": 35,
-      "symbol": "Gas.partialPressure",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/jtw/Developer/Packages/DiveKit/Sources/DiveKit/Structure/PartialPressure.swift",
-      "line": 10,
-      "symbol": "PartialPressure",
-      "symbol_kind": "source.lang.swift.decl.struct",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/jtw/Developer/Packages/DiveKit/Sources/DiveKit/Structure/PartialPressure.swift",
-      "line": 12,
-      "symbol": "PartialPressure.fractionOxygen",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/jtw/Developer/Packages/DiveKit/Sources/DiveKit/Structure/PartialPressure.swift",
-      "line": 13,
-      "symbol": "PartialPressure.fractionNitrogen",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/jtw/Developer/Packages/DiveKit/Sources/DiveKit/Structure/PartialPressure.swift",
-      "line": 14,
-      "symbol": "PartialPressure.fractionHelium",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/jtw/Developer/Packages/DiveKit/Sources/DiveKit/Structure/PartialPressure.swift",
-      "line": 15,
-      "symbol": "PartialPressure.fractionContaminantGases",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/jtw/Developer/Packages/DiveKit/Sources/DiveKit/Structure/PartialPressure.swift",
-      "line": 16,
-      "symbol": "PartialPressure.fractionTraceGases",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    }
+
   ],
   "source_directory": "/Users/jtw/Developer/Packages/DiveKit"
 }
