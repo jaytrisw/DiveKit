@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>DKPhysics Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset="utf-8">
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+    <script src="../js/lunr.min.js" defer></script>
+    <script src="../js/typeahead.jquery.js" defer></script>
+    <script src="../js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+
+    <a name="//apple_ref/swift/Class/DKPhysics" class="dashAnchor"></a>
+
+    <a title="DKPhysics Class Reference"></a>
+
+    <header class="header">
+      <p class="header-col header-col--primary">
+        <a class="header-link" href="../index.html">
+          DiveKit Docs
+        </a>
+         (98% documented)
+      </p>
+    
+      <p class="header-col--secondary">
+        <form role="search" action="../search.json">
+          <input type="text" placeholder="Search documentation" data-typeahead>
+        </form>
+      </p>
+    
+    
+    </header>
+
+    <p class="breadcrumbs">
+      <a class="breadcrumb" href="../index.html">DiveKit Reference</a>
+      <img class="carat" src="../img/carat.png" />
+      DKPhysics Class Reference
+    </p>
+
+    <div class="content-wrapper">
+      <nav class="navigation">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DKEnrichedAir.html">DKEnrichedAir</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DKGasCalculator.html">DKGasCalculator</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DKPhysics.html">DKPhysics</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DiveKit.html">DiveKit</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DiveKit/WaterType.html">– WaterType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DiveKit/MeasurementUnit.html">– MeasurementUnit</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/DKBuoyancy.html">DKBuoyancy</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/DKConstants.html">DKConstants</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/DKGas.html">DKGas</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/DKUnitsOfMeasure.html">DKUnitsOfMeasure</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/DKUnitsOfVolume.html">DKUnitsOfVolume</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Structs.html">Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/DKAtmosphereContants.html">DKAtmosphereContants</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs.html#/s:7DiveKit17DKPartialPressureV">DKPartialPressure</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/DKPressureChange.html">DKPressureChange</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/DKTank.html">DKTank</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/DKTank/DKTankType.html">– DKTankType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/DKWeightOfWater.html">DKWeightOfWater</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+
+        <section class="section">
+          <div class="section-content top-matter">
+            <h1>DKPhysics</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">DKPhysics</span></code></pre>
+
+                </div>
+              </div>
+            <p>An object used to perform dive physics calculations.</p>
+<div class="aside aside-since">
+    <p class="aside-title">Since</p>
+    0.9
+
+</div>
+
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-content">
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Calculation%20Methods"></a>
+                <a name="//apple_ref/swift/Section/Calculation Methods" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/Calculation%20Methods"></a>
+                  <h3 class="section-name"><p>Calculation Methods</p>
+</h3>
+                </div>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7DiveKit9DKPhysicsC19atmospheresAbsolute5depthS2d_tF"></a>
+                    <a name="//apple_ref/swift/Method/atmospheresAbsolute(depth:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7DiveKit9DKPhysicsC19atmospheresAbsolute5depthS2d_tF">atmospheresAbsolute(depth:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Calculates atmospheres absolute of a depth.</p>
+<div class="aside aside-since">
+    <p class="aside-title">Since</p>
+    <p>0.9</p>
+
+</div>
+<h4 id='example' class='heading'>Example</h4>
+<pre class="highlight swift"><code><span class="c1">// Calculate atmospheres absolute at 33 feet of salt water.</span>
+<span class="k">let</span> <span class="nv">diveKit</span> <span class="o">=</span> <span class="kt">DiveKit</span><span class="o">.</span><span class="nf">init</span><span class="p">()</span>
+<span class="k">let</span> <span class="nv">physics</span> <span class="o">=</span> <span class="kt">DKPhysics</span><span class="o">.</span><span class="nf">init</span><span class="p">(</span><span class="nv">with</span><span class="p">:</span> <span class="n">diveKit</span><span class="p">)</span>
+<span class="k">let</span> <span class="nv">ata</span> <span class="o">=</span> <span class="n">physics</span><span class="o">.</span><span class="nf">atmospheresAbsolute</span><span class="p">(</span><span class="nv">depth</span><span class="p">:</span> <span class="mi">33</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">ata</span><span class="p">)</span> <span class="c1">// 2</span>
+</code></pre>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">atmospheresAbsolute</span><span class="p">(</span>
+    <span class="nv">depth</span><span class="p">:</span> <span class="kt">Double</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Double</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>depth</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Double, representing a depth, expressed in feet or metres,.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>Double, representing absolute pressure at input depth.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7DiveKit9DKPhysicsC14pressureChange4from2toS2d_SdtKF"></a>
+                    <a name="//apple_ref/swift/Method/pressureChange(from:to:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7DiveKit9DKPhysicsC14pressureChange4from2toS2d_SdtKF">pressureChange(from:to:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">pressureChange</span><span class="p">(</span>
+    <span class="n">from</span> <span class="nv">firstDepth</span><span class="p">:</span> <span class="kt">Double</span><span class="p">,</span>
+    <span class="n">to</span> <span class="nv">secondDepth</span><span class="p">:</span> <span class="kt">Double</span>
+<span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">Double</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Initializers"></a>
+                <a name="//apple_ref/swift/Section/Initializers" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/Initializers"></a>
+                  <h3 class="section-name"><p>Initializers</p>
+</h3>
+                </div>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7DiveKit9DKPhysicsCACycfc"></a>
+                    <a name="//apple_ref/swift/Method/init()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7DiveKit9DKPhysicsCACycfc">init()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Initializes <code>DKPhysics</code> and <code><a href="../Classes/DiveKit.html">DiveKit</a></code> objects with default values of <code><a href="../Classes/DiveKit/WaterType.html#/s:7DiveKitAAC9WaterTypeO04saltC0yA2DmF">DiveKit.WaterType.saltWater</a></code> and <code><a href="../Classes/DiveKit/MeasurementUnit.html#/s:7DiveKitAAC15MeasurementUnitO8imperialyA2DmF">DiveKit.MeasurementUnit.imperial</a></code></p>
+<div class="aside aside-since">
+    <p class="aside-title">Since</p>
+    0.9
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7DiveKit9DKPhysicsC4withAc2AC_tcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(with:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7DiveKit9DKPhysicsC4withAc2AC_tcfc">init(with:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Initialzes a <code>DKPhysics</code> object with a <code><a href="../Classes/DiveKit.html">DiveKit</a></code> object.</p>
+<div class="aside aside-since">
+    <p class="aside-title">Since</p>
+    0.9
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">convenience</span> <span class="nf">init</span><span class="p">(</span><span class="n">with</span> <span class="nv">diveKit</span><span class="p">:</span> <span class="kt"><a href="../Classes/DiveKit.html">DiveKit</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7DiveKit9DKPhysicsC9waterType15measurementUnitAc2AC05WaterE0O_AF011MeasurementG0Otcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(waterType:measurementUnit:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7DiveKit9DKPhysicsC9waterType15measurementUnitAc2AC05WaterE0O_AF011MeasurementG0Otcfc">init(waterType:measurementUnit:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Initializes <code>DKPhysics</code> and <code><a href="../Classes/DiveKit.html">DiveKit</a></code> objects with values for <code><a href="../Classes/DiveKit/WaterType.html">DiveKit.WaterType</a></code> and <code><a href="../Classes/DiveKit/MeasurementUnit.html">DiveKit.MeasurementUnit</a></code></p>
+<div class="aside aside-since">
+    <p class="aside-title">Since</p>
+    0.9
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">convenience</span> <span class="nf">init</span><span class="p">(</span><span class="nv">waterType</span><span class="p">:</span> <span class="kt"><a href="../Classes/DiveKit.html">DiveKit</a></span><span class="o">.</span><span class="kt">WaterType</span><span class="p">,</span> <span class="nv">measurementUnit</span><span class="p">:</span> <span class="kt"><a href="../Classes/DiveKit.html">DiveKit</a></span><span class="o">.</span><span class="kt">MeasurementUnit</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7DiveKit9DKPhysicsC9waterTypeAc2AC05WaterE0O_tcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(waterType:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7DiveKit9DKPhysicsC9waterTypeAc2AC05WaterE0O_tcfc">init(waterType:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Initializes <code>DKPhysics</code> and <code><a href="../Classes/DiveKit.html">DiveKit</a></code> objects with value for <code><a href="../Classes/DiveKit/WaterType.html">DiveKit.WaterType</a></code> and default value of <code><a href="../Classes/DiveKit/MeasurementUnit.html#/s:7DiveKitAAC15MeasurementUnitO8imperialyA2DmF">DiveKit.MeasurementUnit.imperial</a></code></p>
+<div class="aside aside-since">
+    <p class="aside-title">Since</p>
+    0.9
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">convenience</span> <span class="nf">init</span><span class="p">(</span><span class="nv">waterType</span><span class="p">:</span> <span class="kt"><a href="../Classes/DiveKit.html">DiveKit</a></span><span class="o">.</span><span class="kt">WaterType</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7DiveKit9DKPhysicsC15measurementUnitAc2AC011MeasurementE0O_tcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(measurementUnit:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7DiveKit9DKPhysicsC15measurementUnitAc2AC011MeasurementE0O_tcfc">init(measurementUnit:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Initializes <code>DKPhysics</code> and <code><a href="../Classes/DiveKit.html">DiveKit</a></code> objects with value for <code><a href="../Classes/DiveKit/MeasurementUnit.html">DiveKit.MeasurementUnit</a></code> and default value of <code><a href="../Classes/DiveKit/WaterType.html#/s:7DiveKitAAC9WaterTypeO04saltC0yA2DmF">DiveKit.WaterType.saltWater</a></code></p>
+<div class="aside aside-since">
+    <p class="aside-title">Since</p>
+    0.9
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">convenience</span> <span class="nf">init</span><span class="p">(</span><span class="nv">measurementUnit</span><span class="p">:</span> <span class="kt"><a href="../Classes/DiveKit.html">DiveKit</a></span><span class="o">.</span><span class="kt">MeasurementUnit</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+      </article>
+    </div>
+    <section class="footer">
+      <p>&copy; 2020 <a class="link" href="https://github.com/jaytrisw/DiveKit" target="_blank" rel="external">author</a>. All rights reserved. (Last updated: 2020-03-02)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.1</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+    </section>
+  </body>
+</div>
+</html>

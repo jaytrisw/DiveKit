@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>DiveKit  Reference</title>
+    <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="css/highlight.css" />
+    <meta charset="utf-8">
+    <script src="js/jquery.min.js" defer></script>
+    <script src="js/jazzy.js" defer></script>
+    
+    <script src="js/lunr.min.js" defer></script>
+    <script src="js/typeahead.jquery.js" defer></script>
+    <script src="js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+
+
+    <a title="DiveKit  Reference"></a>
+
+    <header class="header">
+      <p class="header-col header-col--primary">
+        <a class="header-link" href="index.html">
+          DiveKit Docs
+        </a>
+         (98% documented)
+      </p>
+    
+      <p class="header-col--secondary">
+        <form role="search" action="search.json">
+          <input type="text" placeholder="Search documentation" data-typeahead>
+        </form>
+      </p>
+    
+    
+    </header>
+
+    <p class="breadcrumbs">
+      <a class="breadcrumb" href="index.html">DiveKit Reference</a>
+      <img class="carat" src="img/carat.png" />
+      DiveKit  Reference
+    </p>
+
+    <div class="content-wrapper">
+      <nav class="navigation">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DKEnrichedAir.html">DKEnrichedAir</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DKGasCalculator.html">DKGasCalculator</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DKPhysics.html">DKPhysics</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DiveKit.html">DiveKit</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DiveKit/WaterType.html">– WaterType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Classes/DiveKit/MeasurementUnit.html">– MeasurementUnit</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/DKBuoyancy.html">DKBuoyancy</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/DKConstants.html">DKConstants</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/DKGas.html">DKGas</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/DKUnitsOfMeasure.html">DKUnitsOfMeasure</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Enums/DKUnitsOfVolume.html">DKUnitsOfVolume</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="Structs.html">Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/DKAtmosphereContants.html">DKAtmosphereContants</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs.html#/s:7DiveKit17DKPartialPressureV">DKPartialPressure</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/DKPressureChange.html">DKPressureChange</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/DKTank.html">DKTank</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/DKTank/DKTankType.html">– DKTankType</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="Structs/DKWeightOfWater.html">DKWeightOfWater</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+
+        <section class="section">
+          <div class="section-content top-matter">
+            
+            <h1 id='divekit' class='heading'>DiveKit</h1>
+
+<p align="center">
+<img src="https://jaytrisw.github.io/DiveKit/DiveKit.jpg" alt="DiveKit" title="DiveKit" width="500"/>
+</p>
+
+<p align="center">
+<a href="https://travis-ci.com/jaytrisw/DiveKit"><img src="https://travis-ci.com/jaytrisw/DiveKit.svg?branch=master"></a> <a href='https://jaytrisw.github.io/DiveKit'> <img src='https://readthedocs.org/projects/divekit/badge/?version=latest' alt='Documentation Status' /></a>
+<br />
+<a href="https://codeclimate.com/github/jaytrisw/DiveKit/maintainability"><img src="https://api.codeclimate.com/v1/badges/1b7039fc233efcc5187e/maintainability" /></a> <a href="https://www.codefactor.io/repository/github/jaytrisw/divekit/overview/master"><img src="https://www.codefactor.io/repository/github/jaytrisw/divekit/badge/master" alt="CodeFactor" /></a> <a href="https://codecov.io/gh/jaytrisw/DiveKit"><img src="https://codecov.io/gh/jaytrisw/DiveKit/branch/master/graph/badge.svg" /></a>
+<br /> 
+<a href="https://swift.org/"><img src="https://github.com/jaytrisw/DiveKit/workflows/Swift/badge.svg" alt="Swift" title="Swift"></a> <a href="https://github.com/apple/swift-package-manager"><img src="https://img.shields.io/badge/Swift%20Package%20Manager-compatible-green" alt="Swift Package Manager compatible" title="Swift Package Manager compatible"></a>
+</p>
+
+<p>The development of DiveKit started to fulfill the need for diving calculations in the ongoing rewrite if my iOS application, Guam Dive Guide.  My goal for DiveKit is to be a robust library of scuba diving calculations.</p>
+
+<p>I will continue to develop this codebase to include more calculations and refactor code to provide the most accurate calculations with syntax that is both easy to use and easy to understand.</p>
+<h2 id='initialization' class='heading'>Initialization</h2>
+<pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">UIKit</span>
+<span class="kd">import</span> <span class="kt">DiveKit</span>
+
+<span class="kd">class</span> <span class="kt">ViewController</span><span class="p">:</span> <span class="kt">UIViewController</span> <span class="p">{</span>
+
+    <span class="k">var</span> <span class="nv">diveKit</span><span class="p">:</span> <span class="kt">DiveKit</span><span class="o">!</span>
+
+    <span class="k">override</span> <span class="kd">func</span> <span class="nf">viewDidLoad</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">super</span><span class="o">.</span><span class="nf">viewDidLoad</span><span class="p">()</span>
+        <span class="c1">// Initialize diveKit with default values of salt water and imperial units</span>
+        <span class="n">diveKit</span> <span class="o">=</span> <span class="kt">DiveKit</span><span class="o">.</span><span class="nf">init</span><span class="p">()</span>
+        <span class="c1">// Initialize diveKit with fresh water and metric units</span>
+        <span class="n">diveKit</span> <span class="o">=</span> <span class="kt">DiveKit</span><span class="o">.</span><span class="nf">init</span><span class="p">(</span><span class="nv">waterType</span><span class="p">:</span> <span class="o">.</span><span class="n">freshWater</span><span class="p">,</span> <span class="nv">measurementUnit</span><span class="p">:</span> <span class="o">.</span><span class="n">metric</span><span class="p">)</span>
+        <span class="c1">// Initialize diveKit with water type of fresh water and default value of imperial</span>
+        <span class="n">diveKit</span> <span class="o">=</span> <span class="kt">DiveKit</span><span class="o">.</span><span class="nf">init</span><span class="p">(</span><span class="nv">waterType</span><span class="p">:</span> <span class="o">.</span><span class="n">freshWater</span><span class="p">)</span>
+        <span class="c1">// Initialize diveKit with metric measurements and default water type of salt water</span>
+        <span class="n">diveKit</span> <span class="o">=</span> <span class="kt">DiveKit</span><span class="o">.</span><span class="nf">init</span><span class="p">(</span><span class="nv">measurementUnit</span><span class="p">:</span> <span class="o">.</span><span class="n">metric</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+<h2 id='usage' class='heading'>Usage</h2>
+<h4 id='calculate-mod-of-an-enriched-air-nitrox-eanx-blend' class='heading'>Calculate MOD of an Enriched Air Nitrox (EANx) Blend</h4>
+<pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">DiveKit</span>
+
+<span class="c1">// Calclate MOD for EANx32 at PPO2 of 1.4 (Salt Water and Imperial Units)</span>
+<span class="k">let</span> <span class="nv">diveKit</span> <span class="o">=</span> <span class="kt">DiveKit</span><span class="o">.</span><span class="nf">init</span><span class="p">()</span>
+<span class="k">let</span> <span class="nv">enrichedAir</span> <span class="o">=</span> <span class="kt">DKEnrichedAir</span><span class="o">.</span><span class="nf">init</span><span class="p">(</span><span class="nv">with</span><span class="p">:</span> <span class="n">diveKit</span><span class="p">)</span>
+<span class="k">let</span> <span class="nv">gas</span> <span class="o">=</span> <span class="kt">DKGas</span><span class="o">.</span><span class="nf">enrichedAir</span><span class="p">(</span><span class="nv">percentage</span><span class="p">:</span> <span class="mi">32</span><span class="p">)</span>
+<span class="k">let</span> <span class="nv">mod</span> <span class="o">=</span> <span class="n">enrichedAir</span><span class="o">.</span><span class="nf">maximumOperatingDepth</span><span class="p">(</span><span class="nv">fractionOxygen</span><span class="p">:</span> <span class="mf">1.4</span><span class="p">,</span> <span class="nv">gas</span><span class="p">:</span> <span class="n">gas</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">mod</span><span class="p">)</span> <span class="c1">// 111</span>
+</code></pre>
+<h2 id='installation' class='heading'>Installation</h2>
+<h4 id='swift-package-manager-with-xcode-11' class='heading'>Swift Package Manager with Xcode 11</h4>
+
+<p>Add the following line to the dependencies in your <code>Package.swift</code> file:</p>
+<pre class="highlight swift"><code><span class="o">.</span><span class="nf">package</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="s">"https://github.com/jaytrisw/DiveKit.git"</span><span class="p">,</span> <span class="nv">from</span><span class="p">:</span> <span class="s">"0.9.0"</span><span class="p">),</span>
+</code></pre>
+
+<p>&hellip;and then include <code>&quot;DiveKit&quot;</code> as a dependency for your executable target:</p>
+<pre class="highlight swift"><code><span class="o">.</span><span class="nf">product</span><span class="p">(</span><span class="nv">name</span><span class="p">:</span> <span class="s">"DiveKit"</span><span class="p">,</span> <span class="nv">package</span><span class="p">:</span> <span class="s">"DiveKit"</span><span class="p">),</span>
+</code></pre>
+
+<blockquote>
+<p><strong>Note:</strong> Because <code><a href="Classes/DiveKit.html">DiveKit</a></code> is under active development,
+source-stability will only guaranteed after the release of version <code>1.0</code>, breaking changes may occur until then.</p>
+</blockquote>
+
+<p><a href="https://developer.apple.com/documentation/swift_packages/adding_package_dependencies_to_your_app">View Apple Documentation</a>.</p>
+<h2 id='author' class='heading'>Author</h2>
+
+<p>Joshua T. Wood <a href="mailto:joshuatw@gmail.com">joshuatw@gmail.com</a> | <a href="https://twitter.com/joshuatw">@joshuatw</a></p>
+<h2 id='license' class='heading'>License</h2>
+
+<p>DiveKit is available under the MIT license. See the LICENSE file for more info.</p>
+
+          </div>
+        </section>
+
+
+      </article>
+    </div>
+    <section class="footer">
+      <p>&copy; 2020 <a class="link" href="https://github.com/jaytrisw/DiveKit" target="_blank" rel="external">author</a>. All rights reserved. (Last updated: 2020-03-02)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.1</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+    </section>
+  </body>
+</div>
+</html>

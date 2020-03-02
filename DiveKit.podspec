@@ -13,5 +13,4 @@ spec.platforms = { :ios => "11.0", :osx => "10.13", :watchos => "4.0", :tvos => 
 spec.swift_version = "5.1"
 spec.source       = { :git => "https://github.com/jaytrisw/DiveKit.git", :tag => "#{spec.version}" }
 spec.source_files  = "Sources/DiveKit/**/*.swift"
-spec.xcconfig = { "SWIFT_VERSION" => "5.1" }
 end

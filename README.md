@@ -59,12 +59,21 @@ print(mod) // 111
 
 ## Installation
 
+#### CocoaPods
+
+DiveKit is available through [CocoaPods](https://cocoapods.org). To install
+it, simply add the following line to your Podfile:
+
+```ruby
+pod 'DiveKit'
+```
+
 #### Swift Package Manager with Xcode 11
 
 Add the following line to the dependencies in your `Package.swift` file:
 
 ```swift
-.package(url: "https://github.com/jaytrisw/DiveKit.git", from: "0.9.0"),
+.package(url: "https://github.com/jaytrisw/DiveKit.git", from: "0.8.0"),
 ```
 
 ...and then include `"DiveKit"` as a dependency for your executable target:
