@@ -134,6 +134,52 @@ public class DKPhysics {
         return (secondATA - firstATA)
     }
     
+    public func airVolumeFromSurface(
+        volume: Double,
+        depth: Double,
+        decimalPlaces: Int = 0
+    ) throws -> Double {
+        guard depth >= 0 else {
+            throw DKError(title: "Invalid Parameter", description: "Depth parameter must be a positive number")
+        }
+        guard volume >= 0 else {
+            throw DKError(title: "Invalid Parameter", description: "Volume parameter must be a positive number")
+        }
+        guard decimalPlaces >= 0 else {
+            throw DKError(title: "Invalid Parameter", description: "Decimal places parameter must be a positive number")
+        }
+        let ata = try! atmospheresAbsolute(depth: depth)
+        return (volume / ata).roundTo(decimalPlaces: decimalPlaces)
+    }
+    
+    public func airVolumeToSurface(volume: Double, depth: Double) -> Double {
+        let ata = try! atmospheresAbsolute(depth: depth)
+        return volume * ata
+    }
+    
+    public func minutesForCylinderAtDepth(surfaceTime: Double, depth: Double) -> Double {
+        let ata = try! atmospheresAbsolute(depth: depth)
+        return surfaceTime / ata
+    }
+    
+    public func effectivePercentageOfGasAtDepth(percentage: Double, depth: Double) -> Double {
+        let ata = try! atmospheresAbsolute(depth: depth)
+        return percentage * ata
+    }
+    
+    public func effectivePercentage(of gas: Gas, toDepth depth: Double) -> [String: Double] {
+        var gasCopy = gas
+        try! gasCopy.setDepth(depth, diveKit: diveKit)
+        var array = [String: Double]()
+        array.updateValue(gasCopy.effectivePercentage(gasCopy.percentOxygen), forKey: "percentOxygen")
+        array.updateValue(gasCopy.effectivePercentage(gasCopy.percentNitrogen), forKey: "percentNitrogen")
+        array.updateValue(gasCopy.effectivePercentage(gasCopy.percentHelium), forKey: "percentHelium")
+        array.updateValue(gasCopy.effectivePercentage(gasCopy.percentTraceGases), forKey: "percentTraceGases")
+        array.updateValue(gasCopy.effectivePercentage(gasCopy.percentContaminantGases), forKey: "percentContaminantGases")
+        
+        return array
+    }
+    
     // MARK: - Initializers
     /**
      Initializes `DKPhysics` and `DiveKit` objects with default values of `DiveKit.WaterType.saltWater` and `DiveKit.MeasurementUnit.imperial`

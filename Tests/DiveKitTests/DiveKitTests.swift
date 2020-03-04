@@ -79,6 +79,11 @@ final class DiveKitTests: XCTestCase {
         XCTAssertEqual(Gas.air.percentOxygen, 20.9)
     }
     
+    func testStevePrior() {
+        let diveKit = DiveKit.init(waterType: .saltWater, measurementUnit: .metric)
+        XCTAssertEqual(try DKPhysics(with: diveKit).airVolumeFromSurface(volume: 6, depth: 20), 2)
+    }
+    
     // MARK: - Inititalizers
     func testDiveKitInititalizers() {
         diveKit = DiveKit.init()
