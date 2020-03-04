@@ -38,13 +38,17 @@ public class DKPhysics {
         depth: Double,
         decimalPlaces: Int = 2
     )  throws -> Double {
-           guard depth >= 0 else {
-               throw DKError(title: "Invalid Parameter", description: "Depth parameter must be a positive number")
-           }
-           guard decimalPlaces >= 0 else {
-               throw DKError(title: "Invalid Parameter", description: "Decimal places parameter must be a positive number")
-           }
-        return try! gaugePressure(depth: depth, decimalPlaces: decimalPlaces) + 1
+        guard depth >= 0 else {
+            throw DKError(title: "Invalid Parameter", description: "Depth parameter must be a positive number")
+        }
+        guard decimalPlaces >= 0 else {
+            throw DKError(title: "Invalid Parameter", description: "Decimal places parameter must be a positive number")
+        }
+        do {
+            return try gaugePressure(depth: depth, decimalPlaces: decimalPlaces) + 1
+        } catch {
+            throw error
+        }
     }
     /**
      Calculates gauge pressure at a given depth.
@@ -121,7 +125,8 @@ public class DKPhysics {
     */
     public func pressureChange(
         from firstDepth: Double,
-        to secondDepth: Double
+        to secondDepth: Double,
+        decimalPlaces: Int = 2
     ) throws -> Double {
         guard firstDepth >= 0 else {
             throw DKError(title: "Invalid First Parameter", description: "First depth parameter must be a positive number")
@@ -129,9 +134,14 @@ public class DKPhysics {
         guard secondDepth >= 0 else {
             throw DKError(title: "Invalid Second Parameter", description: "Second depth parameter must be a positive number")
         }
-        let firstATA = try! atmospheresAbsolute(depth: firstDepth)
-        let secondATA = try! atmospheresAbsolute(depth: secondDepth)
-        return (secondATA - firstATA)
+        do {
+            let firstATA = try atmospheresAbsolute(depth: firstDepth)
+            let secondATA = try atmospheresAbsolute(depth: secondDepth)
+            return (secondATA - firstATA).roundTo(decimalPlaces: decimalPlaces)
+        } catch {
+            throw error
+        }
+        
     }
     
     public func airVolumeFromSurface(
@@ -148,36 +158,68 @@ public class DKPhysics {
         guard decimalPlaces >= 0 else {
             throw DKError(title: "Invalid Parameter", description: "Decimal places parameter must be a positive number")
         }
-        let ata = try! atmospheresAbsolute(depth: depth)
-        return (volume / ata).roundTo(decimalPlaces: decimalPlaces)
+        do {
+            let ata = try atmospheresAbsolute(depth: depth)
+            return (volume / ata).roundTo(decimalPlaces: decimalPlaces)
+        } catch {
+            throw error
+        }
     }
     
-    public func airVolumeToSurface(volume: Double, depth: Double) -> Double {
-        let ata = try! atmospheresAbsolute(depth: depth)
-        return volume * ata
+    public func airVolumeToSurface(
+        volume: Double,
+        depth: Double,
+        decimalPlaces: Int = 0
+    ) throws -> Double {
+        guard depth >= 0 else {
+            throw DKError(title: "Invalid Parameter", description: "Depth parameter must be a positive number")
+        }
+        guard volume >= 0 else {
+            throw DKError(title: "Invalid Parameter", description: "Volume parameter must be a positive number")
+        }
+        guard decimalPlaces >= 0 else {
+            throw DKError(title: "Invalid Parameter", description: "Decimal places parameter must be a positive number")
+        }
+        do {
+            let ata = try atmospheresAbsolute(depth: depth)
+            return (volume / ata).roundTo(decimalPlaces: decimalPlaces)
+        } catch {
+            throw error
+        }
     }
     
-    public func minutesForCylinderAtDepth(surfaceTime: Double, depth: Double) -> Double {
-        let ata = try! atmospheresAbsolute(depth: depth)
-        return surfaceTime / ata
+    public func minutesForCylinderAtDepth(surfaceTime: Double, depth: Double) throws -> Double {
+        do {
+            let ata = try atmospheresAbsolute(depth: depth)
+            return surfaceTime / ata
+        } catch {
+            throw error
+        }
     }
     
-    public func effectivePercentageOfGasAtDepth(percentage: Double, depth: Double) -> Double {
-        let ata = try! atmospheresAbsolute(depth: depth)
-        return percentage * ata
+    public func effectivePercentageOfGasAtDepth(percentage: Double, depth: Double) throws -> Double {
+        do {
+            let ata = try atmospheresAbsolute(depth: depth)
+            return percentage * ata
+        } catch {
+            throw error
+        }
     }
     
-    public func effectivePercentage(of gas: Gas, toDepth depth: Double) -> [String: Double] {
-        var gasCopy = gas
-        try! gasCopy.setDepth(depth, diveKit: diveKit)
-        var array = [String: Double]()
-        array.updateValue(gasCopy.effectivePercentage(gasCopy.percentOxygen), forKey: "percentOxygen")
-        array.updateValue(gasCopy.effectivePercentage(gasCopy.percentNitrogen), forKey: "percentNitrogen")
-        array.updateValue(gasCopy.effectivePercentage(gasCopy.percentHelium), forKey: "percentHelium")
-        array.updateValue(gasCopy.effectivePercentage(gasCopy.percentTraceGases), forKey: "percentTraceGases")
-        array.updateValue(gasCopy.effectivePercentage(gasCopy.percentContaminantGases), forKey: "percentContaminantGases")
-        
-        return array
+    public func effectivePercentage(of gas: Gas, toDepth depth: Double) throws -> [String: Double] {
+        do {
+            var gasCopy = gas
+            try gasCopy.setDepth(depth, diveKit: diveKit)
+            var array = [String: Double]()
+            array.updateValue(gasCopy.effectivePercentage(gasCopy.percentOxygen), forKey: "percentOxygen")
+            array.updateValue(gasCopy.effectivePercentage(gasCopy.percentNitrogen), forKey: "percentNitrogen")
+            array.updateValue(gasCopy.effectivePercentage(gasCopy.percentHelium), forKey: "percentHelium")
+            array.updateValue(gasCopy.effectivePercentage(gasCopy.percentTraceGases), forKey: "percentTraceGases")
+            array.updateValue(gasCopy.effectivePercentage(gasCopy.percentContaminantGases), forKey: "percentContaminantGases")
+            return array
+        } catch {
+            throw error
+        }
     }
     
     // MARK: - Initializers

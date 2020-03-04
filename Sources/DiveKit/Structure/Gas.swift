@@ -125,7 +125,7 @@ public struct Gas {
      
      - since: 1.0
      */
-    static var air: Gas {
+    public static var air: Gas {
         return try! Gas(percentOxygen: 20.9, percentNitrogen: 79, percentTraceGases: 0.1)
     }
     /**
@@ -134,7 +134,7 @@ public struct Gas {
      
      - since: 1.0
      */
-    static func enrichedAir(_ percentOxygen : Double) throws -> Gas {
+    public static func enrichedAir(_ percentOxygen : Double) throws -> Gas {
         guard percentOxygen >= 0, percentOxygen <= 100 else {
             throw DKError(title: "Oxygen Percentage", description: "The percentage of oxygen must be a positive number between 0 and 100.")
         }

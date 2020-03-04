@@ -221,6 +221,10 @@ final class DKEnrichedAirTests: XCTestCase {
         XCTAssertEqual(try! enrichedAir.bestBlend(for: 25, fractionOxygen: 1.4).percentOxygen, 40)
         enrichedAir = DKEnrichedAir(waterType: .saltWater, measurementUnit: .imperial)
         XCTAssertEqual(try! enrichedAir.bestBlend(for: 100, fractionOxygen: 1.4).percentOxygen, 34)
+        XCTAssertEqual(try! enrichedAir.bestBlendFor(depth: 35, fractionOxygen: 1.4).percentOxygen, 31)
+        XCTAssertEqual(try! enrichedAir.bestBlendFor(depth: 25, fractionOxygen: 1.4).percentOxygen, 40)
+        enrichedAir = DKEnrichedAir(waterType: .saltWater, measurementUnit: .imperial)
+        XCTAssertEqual(try! enrichedAir.bestBlendFor(depth: 100, fractionOxygen: 1.4).percentOxygen, 34)
     }
     
     // MARK: - Inititalizers
@@ -248,6 +252,8 @@ final class DKEnrichedAirTests: XCTestCase {
         XCTAssertThrowsError(try Gas.enrichedAir(-20))
         XCTAssertThrowsError(try enrichedAir.bestBlend(for: 25, fractionOxygen: -1.4))
         XCTAssertThrowsError(try enrichedAir.bestBlend(for: -25, fractionOxygen: 1.4))
+        XCTAssertThrowsError(try enrichedAir.bestBlendFor(depth: 25, fractionOxygen: -1.4))
+        XCTAssertThrowsError(try enrichedAir.bestBlendFor(depth: -25, fractionOxygen: 1.4))
         XCTAssertThrowsError(try enrichedAir.maximumOperatingDepth(fractionOxygen: -2, gas: gas, decimalPlaces: 2))
         XCTAssertThrowsError(try enrichedAir.maximumOperatingDepth(fractionOxygen: 2, gas: gas, decimalPlaces: -2))
         
