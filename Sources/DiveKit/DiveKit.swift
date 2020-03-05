@@ -12,6 +12,15 @@ public class DiveKit {
         case saltWater
         /// Water which does not contain salt, typically found in lakes and rivers.
         case freshWater
+        
+        var description: String {
+            switch self {
+            case .saltWater:
+                return "Saltwater"
+            case .freshWater:
+                return "Freshwater"
+            }
+        }
     }
     /// The unit of measurement to use when performing calculations, also which unit of measure calculations will be returned in.
     public enum MeasurementUnit {
@@ -19,6 +28,15 @@ public class DiveKit {
         case imperial
         /// The unit of measure used by literally the rest of the world.
         case metric
+        
+        var description: String {
+            switch self {
+            case .imperial:
+                return "Imperial"
+            case .metric:
+                return "Metric"
+            }
+        }
     }
     
     public struct Constants {
