@@ -20,11 +20,38 @@ public class DiveKit {
         /// The unit of measure used by literally the rest of the world.
         case metric
     }
+    
+    public struct Constants {
+        private(set) public var weightOfWater: Double
+        private(set) public var oneAtmosphere: Double
+        private(set) public var pressureChange: Double
+        private(set) public var weightUnit: String
+        private(set) public var depthUnit: String
+    }
     // MARK: - Instance Properties
     /// Property storing the water type to be used by an instance of a DiveKit object.
     private(set) public var waterType: DiveKit.WaterType = .saltWater
     /// Property storing the unit measure to be used by an instance of a DiveKit object.
     private(set) public var measurementUnit: DiveKit.MeasurementUnit = .imperial
+    
+    public var constants: DiveKit.Constants {
+        switch waterType {
+        case .saltWater:
+            switch measurementUnit {
+            case .imperial:
+                return Constants(weightOfWater: 64, oneAtmosphere: 33, pressureChange: 0.0303, weightUnit: "pound", depthUnit: "foot")
+            case .metric:
+                return Constants(weightOfWater: 1.03, oneAtmosphere: 10, pressureChange: 0.1, weightUnit: "kilogram", depthUnit: "meter")
+            }
+        case .freshWater:
+            switch measurementUnit {
+            case .imperial:
+                return Constants(weightOfWater: 62.4, oneAtmosphere: 34, pressureChange: 0.0294, weightUnit: "pound", depthUnit: "foot")
+            case .metric:
+                return Constants(weightOfWater: 1, oneAtmosphere: 10.3, pressureChange: 0.097, weightUnit: "kilogram", depthUnit: "meter")
+            }
+        }
+    }
     // MARK: - Initializers
     /**
      Initializes a DiveKit object using default values of salt water with imperial units.

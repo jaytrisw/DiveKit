@@ -114,7 +114,7 @@ public class DKEnrichedAir {
                 let nitrogenCalc = partialPressureBlend.fractionNitrogen / partialPressureAir.fractionNitrogen
                 let returnValue = (depthCalc * nitrogenCalc - oneAtmosphere.saltWater).roundTo(decimalPlaces: decimalPlaces)
                 if returnValue > 0 {
-                    return floor(returnValue)
+                    return returnValue
                 } else {
                     throw DKError(title: "Negative Depth", description: "Calculation produced a negative value.")
                 }
@@ -136,7 +136,7 @@ public class DKEnrichedAir {
                 let nitrogenCalc = partialPressureBlend.fractionNitrogen / partialPressureAir.fractionNitrogen
                 let returnValue = (depthCalc * nitrogenCalc - oneAtmosphere.saltWater).roundTo(decimalPlaces: decimalPlaces)
                 if returnValue > 0 {
-                    return floor(returnValue)
+                    return returnValue
                 } else {
                     throw DKError(title: "Negative Depth", description: "Calculation produced a negative value.")
                 }
