@@ -13,7 +13,7 @@ public class DiveKit {
         /// Water which does not contain salt, typically found in lakes and rivers.
         case freshWater
         
-        var description: String {
+        public var description: String {
             switch self {
             case .saltWater:
                 return "Saltwater"
@@ -29,7 +29,7 @@ public class DiveKit {
         /// The unit of measure used by literally the rest of the world.
         case metric
         
-        var description: String {
+        public var description: String {
             switch self {
             case .imperial:
                 return "Imperial"
