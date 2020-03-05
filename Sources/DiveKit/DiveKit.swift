@@ -37,15 +37,39 @@ public class DiveKit {
                 return "Metric"
             }
         }
+        
+        public var units: Units {
+            switch self {
+            case .imperial:
+                return Units(depthUnit: "foot", depthUnitShort: "ft", depthUnitPlural: "feet", depthUnitPluralShort: "ft", weightUnit: "pound", weightUnitShort: "lb", weightUnitPlural: "Pounds", weightUnitPluralShort: "lbs", volumeUnit: "cubic foot", volumeUnitShort: "ft³", volumeUnitPlural: "cubic feet", volumeUnitPluralShort: "ft³", pressureUnit: "pounds per square inch", pressureUnitShort: "psi")
+            case .metric:
+                return Units(depthUnit: "metre", depthUnitShort: "m", depthUnitPlural: "metres", depthUnitPluralShort: "m", weightUnit: "kilogram", weightUnitShort: "kg", weightUnitPlural: "kilograms", weightUnitPluralShort: "kg", volumeUnit: "litre", volumeUnitShort: "l", volumeUnitPlural: "litres", volumeUnitPluralShort: "l", pressureUnit: "bar", pressureUnitShort: "bar")
+            }
+        }
     }
     
     public struct Constants {
         private(set) public var weightOfWater: Double
         private(set) public var oneAtmosphere: Double
         private(set) public var pressureChange: Double
-        private(set) public var weightUnit: String
-        private(set) public var depthUnit: String
     }
+    public struct Units {
+        private(set) public var depthUnit: String
+        private(set) public var depthUnitShort: String
+        private(set) public var depthUnitPlural: String
+        private(set) public var depthUnitPluralShort: String
+        private(set) public var weightUnit: String
+        private(set) public var weightUnitShort: String
+        private(set) public var weightUnitPlural: String
+        private(set) public var weightUnitPluralShort: String
+        private(set) public var volumeUnit: String
+        private(set) public var volumeUnitShort: String
+        private(set) public var volumeUnitPlural: String
+        private(set) public var volumeUnitPluralShort: String
+        private(set) public var pressureUnit: String
+        private(set) public var pressureUnitShort: String
+    }
+    
     // MARK: - Instance Properties
     /// Property storing the water type to be used by an instance of a DiveKit object.
     private(set) public var waterType: DiveKit.WaterType = .saltWater
@@ -57,16 +81,16 @@ public class DiveKit {
         case .saltWater:
             switch measurementUnit {
             case .imperial:
-                return Constants(weightOfWater: 64, oneAtmosphere: 33, pressureChange: 0.0303, weightUnit: "pound", depthUnit: "foot")
+                return Constants(weightOfWater: 64, oneAtmosphere: 33, pressureChange: 0.0303)
             case .metric:
-                return Constants(weightOfWater: 1.03, oneAtmosphere: 10, pressureChange: 0.1, weightUnit: "kilogram", depthUnit: "meter")
+                return Constants(weightOfWater: 1.03, oneAtmosphere: 10, pressureChange: 0.1)
             }
         case .freshWater:
             switch measurementUnit {
             case .imperial:
-                return Constants(weightOfWater: 62.4, oneAtmosphere: 34, pressureChange: 0.0294, weightUnit: "pound", depthUnit: "foot")
+                return Constants(weightOfWater: 62.4, oneAtmosphere: 34, pressureChange: 0.0294)
             case .metric:
-                return Constants(weightOfWater: 1, oneAtmosphere: 10.3, pressureChange: 0.097, weightUnit: "kilogram", depthUnit: "meter")
+                return Constants(weightOfWater: 1, oneAtmosphere: 10.3, pressureChange: 0.097)
             }
         }
     }
