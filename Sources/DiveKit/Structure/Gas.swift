@@ -126,7 +126,7 @@ public struct Gas {
      - since: 1.0
      */
     public static var air: Gas {
-        return try! Gas(percentOxygen: 20.9, percentNitrogen: 79, percentTraceGases: 0.1)
+        return Gas(percentOxygen: 20.9, percentNitrogen: 79, percentTraceGases: 0.1)
     }
     /**
      A singleton gas object prepresenting enriched air blend of a specified percentage of oxygen.
@@ -135,11 +135,11 @@ public struct Gas {
      - since: 1.0
      */
     public static func enrichedAir(_ percentOxygen : Double) throws -> Gas {
-        guard percentOxygen >= 0, percentOxygen <= 100 else {
-            throw DKError(title: "Oxygen Percentage", description: "The percentage of oxygen must be a positive number between 0 and 100.")
+        guard percentOxygen >= 21, percentOxygen <= 100 else {
+            throw DKError(title: "Oxygen Percentage", description: "The percentage of oxygen must be a positive number between 21 and 100.")
         }
         let percentNitrogen = 100 - percentOxygen
-        return try! Gas(percentOxygen: percentOxygen, percentNitrogen: percentNitrogen)
+        return Gas(percentOxygen: percentOxygen, percentNitrogen: percentNitrogen)
     }
     
     // MARK: - Initializer
@@ -176,5 +176,14 @@ public struct Gas {
         self.percentNitrogen = percentNitrogen
         self.percentTraceGases = percentTraceGases
         self.percentContaminantGases = percentContaminantGases
+    }
+    
+    private init(
+        percentOxygen: Double,
+        percentNitrogen: Double,
+        percentTraceGases: Double = 0) {
+        self.percentOxygen = percentOxygen
+        self.percentNitrogen = percentNitrogen
+        self.percentTraceGases = percentTraceGases
     }
 }

@@ -1,43 +1,31 @@
 //  DiveKit.swift
 //  Copyright © 2020 Joshua Wood. All rights reserved.
 
-/**
- DiveKit object holds values for water type and unit of measurenments.
- */
+/// DiveKit object holds values for water type and unit of measurenments.
 public class DiveKit {
     // MARK: - Enumerations
     /// The type of water to use when performing calculations.
-    public enum WaterType {
+    public enum WaterType: String {
         /// Water which contains salt, typically found in the ocean.
-        case saltWater
+        case saltWater = "Saltwater"
         /// Water which does not contain salt, typically found in lakes and rivers.
-        case freshWater
-        
+        case freshWater = "Freshwater"
+        /// Returns string descibing enumeration case.
         public var description: String {
-            switch self {
-            case .saltWater:
-                return "Saltwater"
-            case .freshWater:
-                return "Freshwater"
-            }
+            return self.rawValue
         }
     }
     /// The unit of measurement to use when performing calculations, also which unit of measure calculations will be returned in.
-    public enum MeasurementUnit {
+    public enum MeasurementUnit: String {
         /// The unit of meansure used primarily by the United States.
-        case imperial
+        case imperial = "Imperial"
         /// The unit of measure used by literally the rest of the world.
-        case metric
-        
+        case metric = "Metric"
+        /// Returns string descibing enumeration case.
         public var description: String {
-            switch self {
-            case .imperial:
-                return "Imperial"
-            case .metric:
-                return "Metric"
-            }
+            return self.rawValue
         }
-        
+        /// Units describing units for depth, weight, volume and pressure.
         public var units: Units {
             switch self {
             case .imperial:
@@ -48,25 +36,45 @@ public class DiveKit {
         }
     }
     
+    /// An object to hold values for contants.
     public struct Constants {
+        /// The weight of a volume of water
         private(set) public var weightOfWater: Double
+        /// Depth representing the increase in pressure by one atmosphere
         private(set) public var oneAtmosphere: Double
+        /// The change in pressure per unit of depth
         private(set) public var pressureChange: Double
     }
+    
+    /// An object to hold string representations of units for depth, weight, volume and pressure.
     public struct Units {
+        /// Singular unit for depth
         private(set) public var depthUnit: String
+        /// Singular unit for depth
         private(set) public var depthUnitShort: String
+        /// Plural unit for depth
         private(set) public var depthUnitPlural: String
+        /// Plural unit for depth
         private(set) public var depthUnitPluralShort: String
+        /// Singular unit for weight
         private(set) public var weightUnit: String
+        /// Singular unit for weight
         private(set) public var weightUnitShort: String
+        /// Plural unit for weight
         private(set) public var weightUnitPlural: String
+        /// Plural unit for weight
         private(set) public var weightUnitPluralShort: String
+        /// Singular unit for volume
         private(set) public var volumeUnit: String
+        /// Singular unit for volume
         private(set) public var volumeUnitShort: String
+        /// Plural unit for volume
         private(set) public var volumeUnitPlural: String
+        /// Plural unit for volume
         private(set) public var volumeUnitPluralShort: String
+        /// Singular unit for pressure
         private(set) public var pressureUnit: String
+        /// Singular unit for pressure
         private(set) public var pressureUnitShort: String
     }
     
@@ -75,7 +83,7 @@ public class DiveKit {
     private(set) public var waterType: DiveKit.WaterType = .saltWater
     /// Property storing the unit measure to be used by an instance of a DiveKit object.
     private(set) public var measurementUnit: DiveKit.MeasurementUnit = .imperial
-    
+    /// Property storing constant values based on `DiveKit.WaterType` and `DiveKit.MeasurementUnit`
     public var constants: DiveKit.Constants {
         switch waterType {
         case .saltWater:

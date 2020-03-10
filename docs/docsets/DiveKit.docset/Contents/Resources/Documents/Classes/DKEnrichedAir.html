@@ -23,7 +23,7 @@
         <a class="header-link" href="../index.html">
           DiveKit Docs
         </a>
-         (100% documented)
+         (95% documented)
       </p>
     
       <p class="header-col--secondary">
@@ -65,6 +65,12 @@
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DiveKit/MeasurementUnit.html">– MeasurementUnit</a>
               </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DiveKit/Constants.html">– Constants</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DiveKit/Units.html">– Units</a>
+              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -73,34 +79,16 @@
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Enums/DKBuoyancy.html">DKBuoyancy</a>
               </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Enums/DKConstants.html">DKConstants</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Enums/DKUnitsOfMeasure.html">DKUnitsOfMeasure</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Enums/DKUnitsOfVolume.html">DKUnitsOfVolume</a>
-              </li>
             </ul>
           </li>
           <li class="nav-group-name">
             <a class="nav-group-name-link" href="../Structs.html">Structures</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Structs/DKAtmosphereContants.html">DKAtmosphereContants</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Structs/DKPressureChange.html">DKPressureChange</a>
-              </li>
-              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/DKTank.html">DKTank</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/DKTank/DKTankType.html">– DKTankType</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Structs/DKWeightOfWater.html">DKWeightOfWater</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/Gas.html">Gas</a>
@@ -184,7 +172,7 @@
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">maximumOperatingDepth</span><span class="p">(</span>
     <span class="nv">fractionOxygen</span><span class="p">:</span> <span class="kt">Double</span><span class="p">,</span>
     <span class="nv">gas</span><span class="p">:</span> <span class="kt"><a href="../Structs/Gas.html">Gas</a></span><span class="p">,</span>
-    <span class="nv">decimalPlaces</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="nv">decimalPlaces</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">2</span>
 <span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">Double</span></code></pre>
 
                         </div>
@@ -282,7 +270,7 @@
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">equivalentAirDepth</span><span class="p">(</span>
     <span class="nv">depth</span><span class="p">:</span> <span class="kt">Double</span><span class="p">,</span>
     <span class="nv">gas</span><span class="p">:</span> <span class="kt"><a href="../Structs/Gas.html">Gas</a></span><span class="p">,</span>
-    <span class="nv">decimalPlaces</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="nv">decimalPlaces</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">2</span>
 <span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">Double</span></code></pre>
 
                         </div>
@@ -340,9 +328,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7DiveKit13DKEnrichedAirC9bestBlend3for14fractionOxygenAA3GasVSd_SdtKF"></a>
-                    <a name="//apple_ref/swift/Method/bestBlend(for:fractionOxygen:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7DiveKit13DKEnrichedAirC9bestBlend3for14fractionOxygenAA3GasVSd_SdtKF">bestBlend(for:fractionOxygen:)</a>
+                    <a name="/s:7DiveKit13DKEnrichedAirC12bestBlendFor5depth14fractionOxygenAA3GasVSd_SdtKF"></a>
+                    <a name="//apple_ref/swift/Method/bestBlendFor(depth:fractionOxygen:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7DiveKit13DKEnrichedAirC12bestBlendFor5depth14fractionOxygenAA3GasVSd_SdtKF">bestBlendFor(depth:fractionOxygen:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -351,14 +339,19 @@
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Calculates the best blend of nitrox, EANx, for a given fraction of oxygen and a given depth.</p>
-<h3 id='definition' class='heading'>Definition</h3>
+<div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    DKError
+
+</div>
+<h4 id='definition' class='heading'>Definition</h4>
 
 <p>The &ldquo;best blend&rdquo; for the dive provides the maximum no-decompression time compatible with acceptable oxygen exposure. An acceptable maximum partial pressure of oxygen is selected based on depth and planned bottom time, and this value is used to calculate the oxygen content of the best mix for the dive.</p>
 <h3 id='example' class='heading'>Example</h3>
 <pre class="highlight swift"><code><span class="k">let</span> <span class="nv">enrichedAirCalc</span> <span class="o">=</span> <span class="kt">DKEnrichedAir</span><span class="o">.</span><span class="nf">init</span><span class="p">(</span><span class="nv">waterType</span><span class="p">:</span> <span class="o">.</span><span class="n">saltWater</span><span class="p">,</span> <span class="nv">measurementUnit</span><span class="p">:</span> <span class="o">.</span><span class="n">imperial</span><span class="p">)</span>
 <span class="k">do</span> <span class="p">{</span>
     <span class="c1">// Calculate 'best blend' for to 90 feet with maximum fraction oxygen of 1.4</span>
-    <span class="k">let</span> <span class="nv">bestBlend</span> <span class="o">=</span> <span class="k">try</span> <span class="n">enrichedAirCalc</span><span class="o">.</span><span class="nf">bestBlend</span><span class="p">(</span><span class="nv">for</span><span class="p">:</span> <span class="mi">90</span><span class="p">,</span> <span class="nv">fractionOxygen</span><span class="p">:</span> <span class="mf">1.4</span><span class="p">)</span>
+    <span class="k">let</span> <span class="nv">bestBlend</span> <span class="o">=</span> <span class="k">try</span> <span class="n">enrichedAirCalc</span><span class="o">.</span><span class="nf">bestBlendFor</span><span class="p">(</span><span class="nv">depth</span><span class="p">:</span> <span class="mi">90</span><span class="p">,</span> <span class="nv">fractionOxygen</span><span class="p">:</span> <span class="mf">1.4</span><span class="p">)</span>
     <span class="nf">print</span><span class="p">(</span><span class="n">bestBlend</span><span class="o">.</span><span class="n">percentOxygen</span><span class="p">)</span> <span class="c1">// 37.0 (% oxygen)</span>
 <span class="p">}</span> <span class="k">catch</span> <span class="p">{</span>
     <span class="c1">// Handle Error</span>
@@ -376,8 +369,8 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">bestBlend</span><span class="p">(</span>
-    <span class="k">for</span> <span class="nv">depth</span><span class="p">:</span> <span class="kt">Double</span><span class="p">,</span>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">bestBlendFor</span><span class="p">(</span>
+    <span class="nv">depth</span><span class="p">:</span> <span class="kt">Double</span><span class="p">,</span>
     <span class="nv">fractionOxygen</span><span class="p">:</span> <span class="kt">Double</span>
 <span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Structs/Gas.html">Gas</a></span></code></pre>
 
@@ -424,9 +417,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7DiveKit13DKEnrichedAirC28exceedsMaximumOperatingDepth4with14fractionOxygen5depthSbAA3GasV_S2dtKF"></a>
+                    <a name="/s:7DiveKit13DKEnrichedAirC28exceedsMaximumOperatingDepth4with14fractionOxygen5depthSbAA3GasV_S2dtF"></a>
                     <a name="//apple_ref/swift/Method/exceedsMaximumOperatingDepth(with:fractionOxygen:depth:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7DiveKit13DKEnrichedAirC28exceedsMaximumOperatingDepth4with14fractionOxygen5depthSbAA3GasV_S2dtKF">exceedsMaximumOperatingDepth(with:fractionOxygen:depth:)</a>
+                    <a class="token" href="#/s:7DiveKit13DKEnrichedAirC28exceedsMaximumOperatingDepth4with14fractionOxygen5depthSbAA3GasV_S2dtF">exceedsMaximumOperatingDepth(with:fractionOxygen:depth:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -462,7 +455,7 @@
     <span class="n">with</span> <span class="nv">gas</span><span class="p">:</span> <span class="kt"><a href="../Structs/Gas.html">Gas</a></span><span class="p">,</span>
     <span class="nv">fractionOxygen</span><span class="p">:</span> <span class="kt">Double</span><span class="p">,</span>
     <span class="nv">depth</span><span class="p">:</span> <span class="kt">Double</span>
-<span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
 
                         </div>
                       </div>
@@ -766,7 +759,7 @@
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2020 <a class="link" href="https://github.com/jaytrisw/DiveKit" target="_blank" rel="external">author</a>. All rights reserved. (Last updated: 2020-03-02)</p>
+      <p>&copy; 2020 <a class="link" href="https://github.com/jaytrisw/DiveKit" target="_blank" rel="external">author</a>. All rights reserved. (Last updated: 2020-03-10)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.1</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>

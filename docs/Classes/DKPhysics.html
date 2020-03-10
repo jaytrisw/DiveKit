@@ -23,7 +23,7 @@
         <a class="header-link" href="../index.html">
           DiveKit Docs
         </a>
-         (100% documented)
+         (95% documented)
       </p>
     
       <p class="header-col--secondary">
@@ -65,6 +65,12 @@
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DiveKit/MeasurementUnit.html">– MeasurementUnit</a>
               </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DiveKit/Constants.html">– Constants</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DiveKit/Units.html">– Units</a>
+              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -73,34 +79,16 @@
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Enums/DKBuoyancy.html">DKBuoyancy</a>
               </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Enums/DKConstants.html">DKConstants</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Enums/DKUnitsOfMeasure.html">DKUnitsOfMeasure</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Enums/DKUnitsOfVolume.html">DKUnitsOfVolume</a>
-              </li>
             </ul>
           </li>
           <li class="nav-group-name">
             <a class="nav-group-name-link" href="../Structs.html">Structures</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Structs/DKAtmosphereContants.html">DKAtmosphereContants</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Structs/DKPressureChange.html">DKPressureChange</a>
-              </li>
-              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/DKTank.html">DKTank</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/DKTank/DKTankType.html">– DKTankType</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Structs/DKWeightOfWater.html">DKWeightOfWater</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/Gas.html">Gas</a>
@@ -317,9 +305,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7DiveKit9DKPhysicsC14pressureChange4from2toS2d_SdtKF"></a>
-                    <a name="//apple_ref/swift/Method/pressureChange(from:to:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7DiveKit9DKPhysicsC14pressureChange4from2toS2d_SdtKF">pressureChange(from:to:)</a>
+                    <a name="/s:7DiveKit9DKPhysicsC14pressureChange4from2to13decimalPlacesS2d_SdSitKF"></a>
+                    <a name="//apple_ref/swift/Method/pressureChange(from:to:decimalPlaces:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7DiveKit9DKPhysicsC14pressureChange4from2to13decimalPlacesS2d_SdSitKF">pressureChange(from:to:decimalPlaces:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -352,7 +340,8 @@
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">pressureChange</span><span class="p">(</span>
     <span class="n">from</span> <span class="nv">firstDepth</span><span class="p">:</span> <span class="kt">Double</span><span class="p">,</span>
-    <span class="n">to</span> <span class="nv">secondDepth</span><span class="p">:</span> <span class="kt">Double</span>
+    <span class="n">to</span> <span class="nv">secondDepth</span><span class="p">:</span> <span class="kt">Double</span><span class="p">,</span>
+    <span class="nv">decimalPlaces</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">2</span>
 <span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">Double</span></code></pre>
 
                         </div>
@@ -391,6 +380,68 @@
                       <div>
                         <h4>Return Value</h4>
                         <p>Double, representing the pressure change from one depth to a second expressed in atmospheres absolute.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7DiveKit9DKPhysicsC20airVolumeFromSurface6volume5depth13decimalPlacesS2d_SdSitKF"></a>
+                    <a name="//apple_ref/swift/Method/airVolumeFromSurface(volume:depth:decimalPlaces:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7DiveKit9DKPhysicsC20airVolumeFromSurface6volume5depth13decimalPlacesS2d_SdSitKF">airVolumeFromSurface(volume:depth:decimalPlaces:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">airVolumeFromSurface</span><span class="p">(</span>
+    <span class="nv">volume</span><span class="p">:</span> <span class="kt">Double</span><span class="p">,</span>
+    <span class="nv">depth</span><span class="p">:</span> <span class="kt">Double</span><span class="p">,</span>
+    <span class="nv">decimalPlaces</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">Double</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7DiveKit9DKPhysicsC18airVolumeToSurface6volume5depth13decimalPlacesS2d_SdSitKF"></a>
+                    <a name="//apple_ref/swift/Method/airVolumeToSurface(volume:depth:decimalPlaces:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7DiveKit9DKPhysicsC18airVolumeToSurface6volume5depth13decimalPlacesS2d_SdSitKF">airVolumeToSurface(volume:depth:decimalPlaces:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">airVolumeToSurface</span><span class="p">(</span>
+    <span class="nv">volume</span><span class="p">:</span> <span class="kt">Double</span><span class="p">,</span>
+    <span class="nv">depth</span><span class="p">:</span> <span class="kt">Double</span><span class="p">,</span>
+    <span class="nv">decimalPlaces</span><span class="p">:</span> <span class="kt">Int</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">Double</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>
@@ -576,7 +627,7 @@
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2020 <a class="link" href="https://github.com/jaytrisw/DiveKit" target="_blank" rel="external">author</a>. All rights reserved. (Last updated: 2020-03-02)</p>
+      <p>&copy; 2020 <a class="link" href="https://github.com/jaytrisw/DiveKit" target="_blank" rel="external">author</a>. All rights reserved. (Last updated: 2020-03-10)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.1</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>

@@ -44,11 +44,7 @@ public class DKPhysics {
         guard decimalPlaces >= 0 else {
             throw DKError(title: "Invalid Parameter", description: "Decimal places parameter must be a positive number")
         }
-        do {
-            return try gaugePressure(depth: depth, decimalPlaces: decimalPlaces) + 1
-        } catch {
-            throw error
-        }
+        return try! gaugePressure(depth: depth, decimalPlaces: decimalPlaces) + 1
     }
     /**
      Calculates gauge pressure at a given depth.
@@ -84,22 +80,9 @@ public class DKPhysics {
         guard decimalPlaces >= 0 else {
             throw DKError(title: "Invalid Parameter", description: "Decimal places parameter must be a positive number")
         }
-        switch diveKit.measurementUnit {
-        case .imperial:
-            switch diveKit.waterType {
-            case .saltWater:
-                return ((depth / DKConstants.imperial.oneAtmosphere.saltWater)).roundTo(decimalPlaces: decimalPlaces)
-            case .freshWater:
-                return ((depth / DKConstants.imperial.oneAtmosphere.freshWater)).roundTo(decimalPlaces: decimalPlaces)
-            }
-        case .metric:
-            switch diveKit.waterType {
-            case .saltWater:
-                return (depth / DKConstants.metric.oneAtmosphere.saltWater).roundTo(decimalPlaces: decimalPlaces)
-            case .freshWater:
-                return (depth / DKConstants.metric.oneAtmosphere.freshWater).roundTo(decimalPlaces: decimalPlaces)
-            }
-        }
+        // Depth / One Atmosphere Depth
+        let gaugePressure = depth / diveKit.constants.oneAtmosphere
+        return gaugePressure.roundTo(decimalPlaces: decimalPlaces)
     }
     
     /**
@@ -134,16 +117,22 @@ public class DKPhysics {
         guard secondDepth >= 0 else {
             throw DKError(title: "Invalid Second Parameter", description: "Second depth parameter must be a positive number")
         }
-        do {
-            let firstATA = try atmospheresAbsolute(depth: firstDepth)
-            let secondATA = try atmospheresAbsolute(depth: secondDepth)
-            return (secondATA - firstATA).roundTo(decimalPlaces: decimalPlaces)
-        } catch {
-            throw error
+        guard decimalPlaces >= 0 else {
+            throw DKError(title: "Invalid Parameter", description: "Decimal places parameter must be a positive number")
         }
+        let firstATA = try! atmospheresAbsolute(depth: firstDepth)
+        let secondATA = try! atmospheresAbsolute(depth: secondDepth)
+        return (secondATA - firstATA).roundTo(decimalPlaces: decimalPlaces)
         
     }
     
+    /// Calculates the volume of a specified volume of air on the surface to a specified depth
+    /// - Parameters:
+    ///   - volume: The volume of air to calculate
+    ///   - depth: The depth to perform calculation
+    ///   - decimalPlaces: The number of decimal places to round calcuation to
+    /// - Throws: DKError
+    /// - Returns: The volume of air at specified depth
     public func airVolumeFromSurface(
         volume: Double,
         depth: Double,
@@ -158,14 +147,17 @@ public class DKPhysics {
         guard decimalPlaces >= 0 else {
             throw DKError(title: "Invalid Parameter", description: "Decimal places parameter must be a positive number")
         }
-        do {
-            let ata = try atmospheresAbsolute(depth: depth)
-            return (volume / ata).roundTo(decimalPlaces: decimalPlaces)
-        } catch {
-            throw error
-        }
+        let ata = try! atmospheresAbsolute(depth: depth)
+        return (volume / ata).roundTo(decimalPlaces: decimalPlaces)
     }
     
+    /// Calculates the surface volume of a specified volume of air at a specified depth
+    /// - Parameters:
+    ///   - volume: The volume of air to calculate
+    ///   - depth: The depth to perform calculation
+    ///   - decimalPlaces: The number of decimal places to round calcuation to
+    /// - Throws: DKError
+    /// - Returns: The volume of air at surface pressure
     public func airVolumeToSurface(
         volume: Double,
         depth: Double,
@@ -180,46 +172,8 @@ public class DKPhysics {
         guard decimalPlaces >= 0 else {
             throw DKError(title: "Invalid Parameter", description: "Decimal places parameter must be a positive number")
         }
-        do {
-            let ata = try atmospheresAbsolute(depth: depth)
-            return (volume / ata).roundTo(decimalPlaces: decimalPlaces)
-        } catch {
-            throw error
-        }
-    }
-    
-    public func minutesForCylinderAtDepth(surfaceTime: Double, depth: Double) throws -> Double {
-        do {
-            let ata = try atmospheresAbsolute(depth: depth)
-            return surfaceTime / ata
-        } catch {
-            throw error
-        }
-    }
-    
-    public func effectivePercentageOfGasAtDepth(percentage: Double, depth: Double) throws -> Double {
-        do {
-            let ata = try atmospheresAbsolute(depth: depth)
-            return percentage * ata
-        } catch {
-            throw error
-        }
-    }
-    
-    public func effectivePercentage(of gas: Gas, toDepth depth: Double) throws -> [String: Double] {
-        do {
-            var gasCopy = gas
-            try gasCopy.setDepth(depth, diveKit: diveKit)
-            var array = [String: Double]()
-            array.updateValue(gasCopy.effectivePercentage(gasCopy.percentOxygen), forKey: "percentOxygen")
-            array.updateValue(gasCopy.effectivePercentage(gasCopy.percentNitrogen), forKey: "percentNitrogen")
-            array.updateValue(gasCopy.effectivePercentage(gasCopy.percentHelium), forKey: "percentHelium")
-            array.updateValue(gasCopy.effectivePercentage(gasCopy.percentTraceGases), forKey: "percentTraceGases")
-            array.updateValue(gasCopy.effectivePercentage(gasCopy.percentContaminantGases), forKey: "percentContaminantGases")
-            return array
-        } catch {
-            throw error
-        }
+        let ata = try! atmospheresAbsolute(depth: depth)
+        return (volume * ata).roundTo(decimalPlaces: decimalPlaces)
     }
     
     // MARK: - Initializers

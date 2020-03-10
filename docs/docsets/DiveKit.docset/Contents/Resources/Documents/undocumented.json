@@ -1,6 +1,180 @@
 {
   "warnings": [
-
+    {
+      "file": "/Users/jtw/Developer/Packages/DiveKit/Sources/DiveKit/Class/DKPhysics.swift",
+      "line": 129,
+      "symbol": "DKPhysics.airVolumeFromSurface(volume:depth:decimalPlaces:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jtw/Developer/Packages/DiveKit/Sources/DiveKit/Class/DKPhysics.swift",
+      "line": 147,
+      "symbol": "DKPhysics.airVolumeToSurface(volume:depth:decimalPlaces:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jtw/Developer/Packages/DiveKit/Sources/DiveKit/DiveKit.swift",
+      "line": 14,
+      "symbol": "DiveKit.WaterType.description",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jtw/Developer/Packages/DiveKit/Sources/DiveKit/DiveKit.swift",
+      "line": 25,
+      "symbol": "DiveKit.MeasurementUnit.description",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jtw/Developer/Packages/DiveKit/Sources/DiveKit/DiveKit.swift",
+      "line": 29,
+      "symbol": "DiveKit.MeasurementUnit.units",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jtw/Developer/Packages/DiveKit/Sources/DiveKit/DiveKit.swift",
+      "line": 39,
+      "symbol": "DiveKit.Constants",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jtw/Developer/Packages/DiveKit/Sources/DiveKit/DiveKit.swift",
+      "line": 40,
+      "symbol": "DiveKit.Constants.weightOfWater",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jtw/Developer/Packages/DiveKit/Sources/DiveKit/DiveKit.swift",
+      "line": 41,
+      "symbol": "DiveKit.Constants.oneAtmosphere",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jtw/Developer/Packages/DiveKit/Sources/DiveKit/DiveKit.swift",
+      "line": 42,
+      "symbol": "DiveKit.Constants.pressureChange",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jtw/Developer/Packages/DiveKit/Sources/DiveKit/DiveKit.swift",
+      "line": 44,
+      "symbol": "DiveKit.Units",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jtw/Developer/Packages/DiveKit/Sources/DiveKit/DiveKit.swift",
+      "line": 45,
+      "symbol": "DiveKit.Units.depthUnit",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jtw/Developer/Packages/DiveKit/Sources/DiveKit/DiveKit.swift",
+      "line": 46,
+      "symbol": "DiveKit.Units.depthUnitShort",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jtw/Developer/Packages/DiveKit/Sources/DiveKit/DiveKit.swift",
+      "line": 47,
+      "symbol": "DiveKit.Units.depthUnitPlural",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jtw/Developer/Packages/DiveKit/Sources/DiveKit/DiveKit.swift",
+      "line": 48,
+      "symbol": "DiveKit.Units.depthUnitPluralShort",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jtw/Developer/Packages/DiveKit/Sources/DiveKit/DiveKit.swift",
+      "line": 49,
+      "symbol": "DiveKit.Units.weightUnit",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jtw/Developer/Packages/DiveKit/Sources/DiveKit/DiveKit.swift",
+      "line": 50,
+      "symbol": "DiveKit.Units.weightUnitShort",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jtw/Developer/Packages/DiveKit/Sources/DiveKit/DiveKit.swift",
+      "line": 51,
+      "symbol": "DiveKit.Units.weightUnitPlural",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jtw/Developer/Packages/DiveKit/Sources/DiveKit/DiveKit.swift",
+      "line": 52,
+      "symbol": "DiveKit.Units.weightUnitPluralShort",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jtw/Developer/Packages/DiveKit/Sources/DiveKit/DiveKit.swift",
+      "line": 53,
+      "symbol": "DiveKit.Units.volumeUnit",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jtw/Developer/Packages/DiveKit/Sources/DiveKit/DiveKit.swift",
+      "line": 54,
+      "symbol": "DiveKit.Units.volumeUnitShort",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jtw/Developer/Packages/DiveKit/Sources/DiveKit/DiveKit.swift",
+      "line": 55,
+      "symbol": "DiveKit.Units.volumeUnitPlural",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jtw/Developer/Packages/DiveKit/Sources/DiveKit/DiveKit.swift",
+      "line": 56,
+      "symbol": "DiveKit.Units.volumeUnitPluralShort",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jtw/Developer/Packages/DiveKit/Sources/DiveKit/DiveKit.swift",
+      "line": 57,
+      "symbol": "DiveKit.Units.pressureUnit",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jtw/Developer/Packages/DiveKit/Sources/DiveKit/DiveKit.swift",
+      "line": 58,
+      "symbol": "DiveKit.Units.pressureUnitShort",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jtw/Developer/Packages/DiveKit/Sources/DiveKit/DiveKit.swift",
+      "line": 67,
+      "symbol": "DiveKit.constants",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    }
   ],
   "source_directory": "/Users/jtw/Developer/Packages/DiveKit"
 }

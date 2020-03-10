@@ -3,17 +3,16 @@
 import Foundation
 
 struct DKError: LocalizedError {
-    let title: String
+    let title: String?
     var errorDescription: String? { return _description }
     var failureReason: String? { return _description }
     private var _description: String
     
-    static let positiveValueRequired = DKError(title: "Positive Value Expected", description: "A positive value was expected")
-    static let partialPressureNeedsPositive = DKError(title: "Invalid Partial Pressure", description: "Partial pressure cannot be a negative value")
-    static let depthNeedsPositive = DKError(title: "Invalid Depth Parameter", description: "Depth parameter cannot be a negative value")
+    static let partialPressure = DKError(title: "Invalid Partial Pressure", description: "Partial pressure parameter must be a positive value.")
+    static let depth = DKError(title: "Invalid Depth", description: "Depth parameter must be a positive value.")
     
     init(title: String?, description: String) {
-        self.title = title ?? "Error"
+        self.title = title
         self._description = description
     }
 }

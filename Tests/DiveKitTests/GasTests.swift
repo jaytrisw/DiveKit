@@ -37,8 +37,8 @@ final class GasTests: XCTestCase {
         XCTAssertThrowsError(try Gas.enrichedAir(101))
         XCTAssertThrowsError(try Gas.enrichedAir(-101))
     }
-    func testContaminantGas() {
-        var gas = try! Gas.init(
+    func testContaminantGas() throws {
+        var gas = try Gas.init(
             percentOxygen: 20.7,
             percentNitrogen: 79,
             percentTraceGases: 0.1,
