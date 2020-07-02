@@ -13,7 +13,7 @@
 <a href="https://cocoapods.org/pods/DiveKit"><img src="https://img.shields.io/cocoapods/v/DiveKit.svg" alt="CocoaPods" title="CocoaPods"></a> 
 </p>
 
-The development of DiveKit started to fulfill the need for diving calculations in the ongoing rewrite if my iOS application, Guam Dive Guide.  My goal for DiveKit is to be a robust library of scuba diving calculations.
+The development of DiveKit started to fulfill the need for diving calculations in the ongoing rewrite of my iOS application, Guam Dive Guide.  My goal for DiveKit is to be a robust library of scuba diving calculations.
 
 I will continue to develop this codebase to include more calculations and refactor code to provide the most accurate calculations with syntax that is both easy to use and easy to understand.
 
@@ -97,3 +97,12 @@ Joshua T. Wood <joshuatw@gmail.com> | [@joshuatw](https://twitter.com/joshuatw)
 ## License
 
 DiveKit is available under the MIT license. See the LICENSE file for more info.
+
+## Project that use DiveKit
+
+#### Guam Dive Guide
+App_Store_Badge.svg
+<a href='https://apps.apple.com/us/app/id1383968687'> <img src='https://jaytrisw.github.io/DiveKit/App_Store_Badge.svg' alt='Download on the App Store' /></a>
+
+#### Scuba Calculator
+<a href='https://apps.apple.com/us/app/id1502584393'> <img src='https://jaytrisw.github.io/DiveKit/App_Store_Badge.svg' alt='Download on the App Store' /></a>
