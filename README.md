@@ -101,7 +101,6 @@ DiveKit is available under the MIT license. See the LICENSE file for more info.
 ## Project that use DiveKit
 
 #### Guam Dive Guide
-App_Store_Badge.svg
 <a href='https://apps.apple.com/us/app/id1383968687'> <img src='https://jaytrisw.github.io/DiveKit/App_Store_Badge.svg' alt='Download on the App Store' /></a>
 
 #### Scuba Calculator
