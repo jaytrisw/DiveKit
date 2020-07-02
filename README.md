@@ -98,7 +98,7 @@ Joshua T. Wood <joshuatw@gmail.com> | [@joshuatw](https://twitter.com/joshuatw)
 
 DiveKit is available under the MIT license. See the LICENSE file for more info.
 
-## Project that use DiveKit
+## Projects that use DiveKit
 
 #### Guam Dive Guide
 <a href='https://apps.apple.com/us/app/id1383968687'> <img src='https://jaytrisw.github.io/DiveKit/App_Store_Badge.svg' alt='Download on the App Store' /></a>
