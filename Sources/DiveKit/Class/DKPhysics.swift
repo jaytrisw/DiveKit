@@ -39,7 +39,7 @@ public class DKPhysics {
         decimalPlaces: Int = 2
     )  throws -> Double {
         guard depth >= 0 else {
-            throw DKError(title: "Invalid Parameter", description: "Depth parameter must be a positive number")
+            throw DiveKit.Error.positiveValueRequired(title: .depth, value: depth)
         }
         guard decimalPlaces >= 0 else {
             throw DKError(title: "Invalid Parameter", description: "Decimal places parameter must be a positive number")
@@ -75,7 +75,7 @@ public class DKPhysics {
         decimalPlaces: Int = 2
     ) throws -> Double {
         guard depth >= 0 else {
-            throw DKError(title: "Invalid Parameter", description: "Depth parameter must be a positive number")
+            throw DiveKit.Error.positiveValueRequired(title: .depth, value: depth)
         }
         guard decimalPlaces >= 0 else {
             throw DKError(title: "Invalid Parameter", description: "Decimal places parameter must be a positive number")
@@ -139,7 +139,7 @@ public class DKPhysics {
         decimalPlaces: Int = 0
     ) throws -> Double {
         guard depth >= 0 else {
-            throw DKError(title: "Invalid Parameter", description: "Depth parameter must be a positive number")
+            throw DiveKit.Error.positiveValueRequired(title: .depth, value: depth)
         }
         guard volume >= 0 else {
             throw DKError(title: "Invalid Parameter", description: "Volume parameter must be a positive number")
@@ -164,7 +164,7 @@ public class DKPhysics {
         decimalPlaces: Int = 0
     ) throws -> Double {
         guard depth >= 0 else {
-            throw DKError(title: "Invalid Parameter", description: "Depth parameter must be a positive number")
+            throw DiveKit.Error.positiveValueRequired(title: .depth, value: depth)
         }
         guard volume >= 0 else {
             throw DKError(title: "Invalid Parameter", description: "Volume parameter must be a positive number")

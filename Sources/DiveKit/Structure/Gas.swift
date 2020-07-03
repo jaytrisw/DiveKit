@@ -87,7 +87,7 @@ public struct Gas {
      */
     public mutating func setDepth(_ depth: Double, diveKit: DiveKit) throws {
         guard depth >= 0 else {
-            throw DKError(title: "Invalid Parameter", description: "Depth parameter must be a positive number")
+            throw DiveKit.Error.positiveValueRequired(title: .depth, value: depth)
         }
         let ata = try! DKPhysics.init(with: diveKit).atmospheresAbsolute(depth: depth)
         pressure = ata

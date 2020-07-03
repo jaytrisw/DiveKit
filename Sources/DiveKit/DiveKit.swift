@@ -1,6 +1,8 @@
 //  DiveKit.swift
 //  Copyright © 2020 Joshua Wood. All rights reserved.
 
+import Foundation
+
 /// DiveKit object holds values for water type and unit of measurements.
 public class DiveKit {
     // MARK: - Enumerations
@@ -118,5 +120,36 @@ public class DiveKit {
         self.init()
         self.waterType = waterType
         self.measurementUnit = measurementUnit
+    }
+}
+
+extension DiveKit {
+    public enum Error: LocalizedError {
+        case positiveValueRequired(title: ErrorTitle, value: Double)
+        
+        public var title: String? {
+            switch self {
+            case .positiveValueRequired(let title, _): return "\(title.rawValue) Error"
+            }
+        }
+        public var errorDescription: String? {
+            switch self {
+            case .positiveValueRequired(let title, let value): return "\(title.rawValue) requires a positive value (\(value)) provided."
+            }
+        }
+        public var failureReason: String? {
+            switch self {
+            case .positiveValueRequired(let title, let value): return "\(title.rawValue) requires a positive value (\(value)) provided."
+            }
+        }
+        public var recoverySuggestion: String? {
+            switch self {
+            case .positiveValueRequired(let title, let value): return "\(title.rawValue) requires a positive value (\(value)) provided."
+            }
+        }
+    }
+    public enum ErrorTitle: String {
+        case depth = "Depth"
+        case fractionOxygen = "Fraction Oxygen"
     }
 }

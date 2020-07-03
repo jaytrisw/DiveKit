@@ -41,7 +41,7 @@ public class DKGasCalculator {
         at depth: Double = 0
     ) throws -> PartialPressure {
         guard depth >= 0 else {
-            throw DKError(title: "Invalid Parameter", description: "Depth parameter must be greater than 0")
+            throw DiveKit.Error.positiveValueRequired(title: .depth, value: depth)
         }
         var gas = inputGas
         try! gas.setDepth(depth, diveKit: diveKit)
@@ -87,7 +87,7 @@ public class DKGasCalculator {
             throw DKError(title: "Invalid Parameter", description: "Gas consumed parameter must be greater than 0")
         }
         guard depth >= 0 else {
-            throw DKError(title: "Invalid Parameter", description: "Depth parameter must be greater than 0")
+            throw DiveKit.Error.positiveValueRequired(title: .depth, value: depth)
         }
         guard time >= 0 else {
             throw DKError(title: "Invalid Parameter", description: "Time parameter must be greater than 0")
@@ -138,7 +138,7 @@ public class DKGasCalculator {
             throw DKError(title: "Invalid Parameter", description: "Gas consumed parameter must be greater than 0")
         }
         guard depth >= 0 else {
-            throw DKError(title: "Invalid Parameter", description: "Depth parameter must be greater than 0")
+            throw DiveKit.Error.positiveValueRequired(title: .depth, value: depth)
         }
         guard time >= 0 else {
             throw DKError(title: "Invalid Parameter", description: "Time parameter must be greater than 0")

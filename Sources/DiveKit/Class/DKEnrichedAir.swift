@@ -40,7 +40,7 @@ public class DKEnrichedAir {
         decimalPlaces: Int = 2
     ) throws -> Double {
         guard fractionOxygen >= 0 else {
-            throw DKError(title: "Invalid Parameter", description: "Fraction of oxygen parameter must be greater than 0")
+            throw DiveKit.Error.positiveValueRequired(title: .fractionOxygen, value: fractionOxygen)
         }
         guard decimalPlaces >= 0 else {
             throw DKError(title: "Invalid Parameter", description: "Decimal places parameter must be greater than 0")
@@ -83,8 +83,7 @@ public class DKEnrichedAir {
         decimalPlaces: Int = 2
     ) throws -> Double {
         guard depth >= 0 else {
-            throw DKError.depth
-        }
+            throw DiveKit.Error.positiveValueRequired(title: .depth, value: depth)        }
         guard decimalPlaces >= 0 else {
             throw DKError(title: "Invalid Parameter", description: "Decimal places parameter must be greater than 0")
         }
@@ -126,8 +125,8 @@ public class DKEnrichedAir {
         depth: Double,
         fractionOxygen: Double
     ) throws -> Gas {
-        guard fractionOxygen > 0 else { throw DKError.partialPressure }
-        guard depth > 0 else { throw DKError.depth }
+        guard fractionOxygen > 0 else { throw DiveKit.Error.positiveValueRequired(title: .fractionOxygen, value: fractionOxygen) }
+        guard depth > 0 else { throw DiveKit.Error.positiveValueRequired(title: .depth, value: depth) }
         let ata = try! DKPhysics.init(with: diveKit).atmospheresAbsolute(depth: depth)
         let percentage = floor(fractionOxygen / ata * 100)
         let gas = try! Gas.enrichedAir(percentage)

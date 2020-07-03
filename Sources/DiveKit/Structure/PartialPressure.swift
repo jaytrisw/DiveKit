@@ -75,7 +75,7 @@ public struct PartialPressure {
             throw DKError(title: "Fraction of Trace Gases", description: "The fraction of trace gases must be a positive number between 0 and 1, not \(fractionTraceGases).")
         }
         guard fractionOxygen + fractionNitrogen + fractionHelium + fractionContaminantGases + fractionTraceGases == 1 else {
-            throw DKError(title: "Component Gas Missing", description: "The sum of the compenent gases must equal 1.")
+            throw DKError(title: "Component Gas Missing", description: "The sum of the component gases must equal 1.")
         }
         self.fractionOxygen = fractionOxygen
         self.fractionNitrogen = fractionNitrogen
