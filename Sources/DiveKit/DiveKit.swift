@@ -1,7 +1,7 @@
 //  DiveKit.swift
 //  Copyright © 2020 Joshua Wood. All rights reserved.
 
-/// DiveKit object holds values for water type and unit of measurenments.
+/// DiveKit object holds values for water type and unit of measurements.
 public class DiveKit {
     // MARK: - Enumerations
     /// The type of water to use when performing calculations.
@@ -10,18 +10,18 @@ public class DiveKit {
         case saltWater = "Saltwater"
         /// Water which does not contain salt, typically found in lakes and rivers.
         case freshWater = "Freshwater"
-        /// Returns string descibing enumeration case.
+        /// Returns string describing enumeration case.
         public var description: String {
             return self.rawValue
         }
     }
     /// The unit of measurement to use when performing calculations, also which unit of measure calculations will be returned in.
     public enum MeasurementUnit: String {
-        /// The unit of meansure used primarily by the United States.
+        /// The unit of measure used primarily by the United States.
         case imperial = "Imperial"
         /// The unit of measure used by literally the rest of the world.
         case metric = "Metric"
-        /// Returns string descibing enumeration case.
+        /// Returns string describing enumeration case.
         public var description: String {
             return self.rawValue
         }
@@ -36,7 +36,7 @@ public class DiveKit {
         }
     }
     
-    /// An object to hold values for contants.
+    /// An object to hold values for constants.
     public struct Constants {
         /// The weight of a volume of water
         private(set) public var weightOfWater: Double

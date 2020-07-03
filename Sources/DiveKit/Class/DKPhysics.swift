@@ -130,7 +130,7 @@ public class DKPhysics {
     /// - Parameters:
     ///   - volume: The volume of air to calculate
     ///   - depth: The depth to perform calculation
-    ///   - decimalPlaces: The number of decimal places to round calcuation to
+    ///   - decimalPlaces: The number of decimal places to round calculation to
     /// - Throws: DKError
     /// - Returns: The volume of air at specified depth
     public func airVolumeFromSurface(
@@ -155,7 +155,7 @@ public class DKPhysics {
     /// - Parameters:
     ///   - volume: The volume of air to calculate
     ///   - depth: The depth to perform calculation
-    ///   - decimalPlaces: The number of decimal places to round calcuation to
+    ///   - decimalPlaces: The number of decimal places to round calculation to
     /// - Throws: DKError
     /// - Returns: The volume of air at surface pressure
     public func airVolumeToSurface(
@@ -185,7 +185,7 @@ public class DKPhysics {
         diveKit = DiveKit()
     }
     /**
-     Initialzes a `DKPhysics` object with a `DiveKit` object.
+     Initializes a `DKPhysics` object with a `DiveKit` object.
      - since: 1.0
      */
     public convenience init(with diveKit: DiveKit) {

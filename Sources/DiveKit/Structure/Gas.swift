@@ -16,7 +16,7 @@ public struct Gas {
     private(set) public var percentOxygen: Double = 0
     /// Percentage of nitrogen in gas blend.
     private(set) public var percentNitrogen: Double = 0
-    /// Percentage of helium in gas blend, not currently avaiable though any initializers.
+    /// Percentage of helium in gas blend, not currently available though any initializers.
     private(set) public var percentHelium: Double = 0
     /// Percentage of contaminant gases in gas blend
     private(set) public var percentContaminantGases: Double = 0
@@ -121,7 +121,7 @@ public struct Gas {
     
     // MARK: - Static Instances
     /**
-     A singleton gas object prepresenting compressed air.
+     A singleton gas object representing compressed air.
      
      - since: 1.0
      */
@@ -129,7 +129,7 @@ public struct Gas {
         return Gas(percentOxygen: 20.9, percentNitrogen: 79, percentTraceGases: 0.1)
     }
     /**
-     A singleton gas object prepresenting enriched air blend of a specified percentage of oxygen.
+     A singleton gas object representing enriched air blend of a specified percentage of oxygen.
      - parameter percentOxygen: Double representing the percentage of oxygen in gad blend, value must be a positive number less than 100.
      
      - since: 1.0

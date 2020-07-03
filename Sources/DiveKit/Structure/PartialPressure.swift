@@ -26,7 +26,7 @@ public struct PartialPressure {
     
     /**
     Sets contaminant and its percentage.
-    - parameter pressure: Double representing the pressure to calculate properites to.
+    - parameter pressure: Double representing the pressure to calculate properties to.
     
     - since: 1.0
     */

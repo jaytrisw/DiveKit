@@ -101,7 +101,7 @@ public class DKEnrichedAir {
      Calculates the best blend of nitrox, EANx, for a given fraction of oxygen and a given depth.
      - Parameters:
         - depth: Double presenting a depth.
-        - fractionOxygen: Double prepresenting the fraction of oxygen.
+        - fractionOxygen: Double representing the fraction of oxygen.
      - Returns: `Gas` representing the calculated best blend for the given dive.
      - Throws: DKError
      
