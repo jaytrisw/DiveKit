@@ -189,30 +189,12 @@ public class DKEnrichedAir {
     }
     /**
      Initializes `DKEnrichedAir` and `DiveKit` objects with values for `DiveKit.WaterType` and `DiveKit.MeasurementUnit`
-     - parameter waterType: `DiveKit.WaterType`
-     - parameter measurementUnit: `DiveKit.MeasurementUnit`
+     - parameter waterType: `DiveKit.WaterType` default value `DiveKit.WaterType.saltWater`
+     - parameter measurementUnit: `DiveKit.MeasurementUnit` default value `DiveKit.MeasurementUnit.imperial`
      - since: 1.0
      */
-    public convenience init(waterType: DiveKit.WaterType, measurementUnit: DiveKit.MeasurementUnit) {
+    public convenience init(waterType: DiveKit.WaterType = .saltWater, measurementUnit: DiveKit.MeasurementUnit = .imperial) {
         self.init()
         diveKit = DiveKit(waterType: waterType, measurementUnit: measurementUnit)
-    }
-    /**
-     Initializes `DKEnrichedAir` and `DiveKit` objects with value for `DiveKit.WaterType` and default value of `DiveKit.MeasurementUnit.imperial`
-     - parameter waterType: `DiveKit.WaterType`
-     - since: 1.0
-     */
-    public convenience init(waterType: DiveKit.WaterType) {
-        self.init()
-        diveKit = DiveKit(waterType: waterType)
-    }
-    /**
-     Initializes `DKEnrichedAir` and `DiveKit` objects with value for `DiveKit.MeasurementUnit` and default value of `DiveKit.WaterType.saltWater`
-     - parameter measurementUnit: `DiveKit.MeasurementUnit`
-     - since: 1.0
-     */
-    public convenience init(measurementUnit: DiveKit.MeasurementUnit) {
-        self.init()
-        diveKit = DiveKit(measurementUnit: measurementUnit)
     }
 }

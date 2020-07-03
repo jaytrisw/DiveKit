@@ -104,37 +104,19 @@ public class DiveKit {
     }
     // MARK: - Initializers
     /**
-     Initializes a DiveKit object using default values of salt water with imperial units.
+     Initializes a `DiveKit` object using default values of `DiveKit.WaterType.saltWater` and `DiveKit.MeasurementUnit.imperial`.
      - since: 1.0
      */
     public init() {}
     /**
-     Initializes a DiveKit object using provided parameters
-     - parameter waterType: `DiveKit.WaterType`
-     - parameter measurementUnit: `DiveKit.MeasurementUnit`
+     Initializes a `DiveKit` object using provided parameters
+     - parameter waterType: `DiveKit.WaterType` default value `DiveKit.WaterType.saltWater`
+     - parameter measurementUnit: `DiveKit.MeasurementUnit` default value `DiveKit.MeasurementUnit.imperial`
      - since: 1.0
      */
-    public convenience init(waterType: DiveKit.WaterType, measurementUnit: DiveKit.MeasurementUnit) {
+    public convenience init(waterType: DiveKit.WaterType = .saltWater, measurementUnit: DiveKit.MeasurementUnit = .imperial) {
         self.init()
         self.waterType = waterType
-        self.measurementUnit = measurementUnit
-    }
-    /**
-     Initializes a DiveKit object using provided parameter for water type and default value of imperial units
-     - parameter waterType: `DiveKit.WaterType`
-     - since: 1.0
-     */
-    public convenience init(waterType: DiveKit.WaterType) {
-        self.init()
-        self.waterType = waterType
-    }
-    /**
-     Initializes a DiveKit object using provided parameter for unit of measure and default value of salt water.
-     - parameter measurementUnit: `DiveKit.MeasurementUnit`
-     - since: 1.0
-     */
-    public convenience init(measurementUnit: DiveKit.MeasurementUnit) {
-        self.init()
         self.measurementUnit = measurementUnit
     }
 }
