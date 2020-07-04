@@ -62,9 +62,7 @@ public struct Gas {
         contaminants.forEach { (contaminant, percentage) in
             totalPercentage += percentage
         }
-        guard percentContaminantGases == totalPercentage else {
-            throw DKError(title: "Contaminant Gases Percentage", description: "The sum of the contaminants set does not match the percentage of contaminant gases for this gas blend.")
-        }
+        guard percentContaminantGases == totalPercentage else { throw DiveKit.Error.percentage(title: .percentContaminantGas, value: totalPercentage) }
         self.contaminants = contaminants
     }
     
@@ -86,9 +84,7 @@ public struct Gas {
      - since: 1.0
      */
     public mutating func setDepth(_ depth: Double, diveKit: DiveKit) throws {
-        guard depth >= 0 else {
-            throw DiveKit.Error.positiveValueRequired(title: .depth, value: depth)
-        }
+        guard depth >= 0 else { throw DiveKit.Error.positiveValueRequired(title: .depth, value: depth) }
         let ata = try! DKPhysics.init(with: diveKit).atmospheresAbsolute(depth: depth)
         pressure = ata
         fractionVolume = 1 / ata
@@ -135,9 +131,7 @@ public struct Gas {
      - since: 1.0
      */
     public static func enrichedAir(_ percentOxygen : Double) throws -> Gas {
-        guard percentOxygen >= 21, percentOxygen <= 100 else {
-            throw DKError(title: "Oxygen Percentage", description: "The percentage of oxygen must be a positive number between 21 and 100.")
-        }
+        guard percentOxygen >= 21, percentOxygen <= 100 else { throw DiveKit.Error.percentage(title: .percentOxygen, value: percentOxygen) }
         let percentNitrogen = 100 - percentOxygen
         return Gas(percentOxygen: percentOxygen, percentNitrogen: percentNitrogen)
     }
@@ -157,21 +151,11 @@ public struct Gas {
         percentNitrogen: Double,
         percentTraceGases: Double = 0,
         percentContaminantGases: Double = 0) throws {
-        guard percentOxygen >= 0 else {
-            throw DKError(title: "Oxygen Percentage", description: "The percentage of oxygen must be a positive number.")
-        }
-        guard percentNitrogen >= 0 else {
-            throw DKError(title: "Nitrogen Percentage", description: "The percentage of nitrogen must be a positive number.")
-        }
-        guard percentTraceGases >= 0 else {
-            throw DKError(title: "Trace Gases Percentage", description: "The percentage of trace gases must be a positive number.")
-        }
-        guard percentContaminantGases >= 0 else {
-            throw DKError(title: "Contaminant Gases Percentage", description: "The percentage of contaminant gases must be a positive number.")
-        }
-        guard percentOxygen + percentNitrogen + percentTraceGases + percentContaminantGases == 100 else {
-            throw DKError(title: "Component Gas Missing", description: "The sum of the compenent gases must equal 100%.")
-        }
+        guard percentOxygen >= 0 else { throw DiveKit.Error.percentage(title: .percentOxygen, value: percentOxygen) }
+        guard percentNitrogen >= 0 else { throw DiveKit.Error.percentage(title: .percentNitrogen, value: percentNitrogen) }
+        guard percentTraceGases >= 0 else { throw DiveKit.Error.percentage(title: .percentTraceGas, value: percentTraceGases) }
+        guard percentContaminantGases >= 0 else { throw DiveKit.Error.percentage(title: .percentContaminantGas, value: percentContaminantGases) }
+        guard percentOxygen + percentNitrogen + percentTraceGases + percentContaminantGases == 100 else { throw DiveKit.Error.totalPercent(value: percentOxygen + percentNitrogen + percentTraceGases + percentContaminantGases) }
         self.percentOxygen = percentOxygen
         self.percentNitrogen = percentNitrogen
         self.percentTraceGases = percentTraceGases

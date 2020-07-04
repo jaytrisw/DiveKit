@@ -126,30 +126,62 @@ public class DiveKit {
 extension DiveKit {
     public enum Error: LocalizedError {
         case positiveValueRequired(title: ErrorTitle, value: Double)
+        case percentage(title: ErrorTitle, value: Double)
+        case totalPercent(value: Double)
+        case decimal(value: Double)
         
         public var title: String? {
             switch self {
             case .positiveValueRequired(let title, _): return "\(title.rawValue) Error"
+            case .percentage(let title, _): return "\(title.rawValue) Error"
+            case .totalPercent: return "Percentage Error"
+            case .decimal: return "Decimal Error"
             }
         }
         public var errorDescription: String? {
             switch self {
-            case .positiveValueRequired(let title, let value): return "\(title.rawValue) requires a positive value (\(value)) provided."
+            case .positiveValueRequired(let title, let value): return "\(title.rawValue) requires a positive value, \(value) was provided."
+            case .percentage(let title, let value): return "\(title.rawValue) requires a value between 0 and 100, \(value) was provided."
+            case .totalPercent(let value): return "Sum of the provided gas percentages does not equal 100%, \(value) was provided."
+            case .decimal(let value): return "The provided decimal value should be within range of 0 and 1, \(value) was provided."
             }
         }
         public var failureReason: String? {
             switch self {
-            case .positiveValueRequired(let title, let value): return "\(title.rawValue) requires a positive value (\(value)) provided."
+            case .positiveValueRequired(let title, let value): return "\(title.rawValue) requires a positive value, \(value) was provided."
+            case .percentage(let title, let value): return "\(title.rawValue) requires a value between 0 and 100, \(value) was provided."
+            case .totalPercent(let value): return "Sum of the provided gas percentages does not equal 100%, \(value) was provided."
+            case .decimal(let value): return "The provided decimal value should be within range of 0 and 1, \(value) was provided."
             }
         }
         public var recoverySuggestion: String? {
             switch self {
-            case .positiveValueRequired(let title, let value): return "\(title.rawValue) requires a positive value (\(value)) provided."
+            case .positiveValueRequired(let title, let value): return "Provide a positive value for the \(title.rawValue.lowercased()) parameter, rather than \(value)"
+            case .percentage(let title, let value): return "Provide a value between 0 and 100 for the \(title.rawValue.lowercased()) parameter, rather than \(value)"
+            case .totalPercent(let value): return "Insure you are providing percentages of gassed that totals to 100%, \(value) was provided."
+            case .decimal(let value): return "The provided decimal value should be within range of 0 and 1, \(value) was provided."
             }
         }
-    }
-    public enum ErrorTitle: String {
-        case depth = "Depth"
-        case fractionOxygen = "Fraction Oxygen"
+        public var value: Double {
+            switch self {
+                case .positiveValueRequired(_, let value): return value
+                case .percentage(_, let value): return value
+                case .totalPercent(let value): return value
+                case .decimal(let value): return value
+            }
+        }
+        public enum ErrorTitle: String {
+            case depth = "Depth"
+            case fractionOxygen = "Fraction Oxygen"
+            case time = "Time"
+            case gasConsumed = "Gas Consumed"
+            case volume = "Volume"
+            case tankPressure = "Tank Pressure"
+            case decimalPlaces = "Decimal Places"
+            case percentOxygen = "Percent Oxygen"
+            case percentNitrogen = "Percent Nitrogen"
+            case percentTraceGas = "Percent Trace Gas"
+            case percentContaminantGas = "Percent Contaminant Gas"
+        }
     }
 }

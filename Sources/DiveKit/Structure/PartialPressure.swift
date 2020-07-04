@@ -59,24 +59,12 @@ public struct PartialPressure {
         fractionContaminantGases: Double = 0,
         fractionTraceGases: Double = 0
     ) throws {
-        guard fractionOxygen >= 0, fractionOxygen <= 1 else {
-            throw DKError(title: "Fraction of Oxygen", description: "The fraction of oxygen must be a positive number between 0 and 1, not \(fractionOxygen).")
-        }
-        guard fractionNitrogen >= 0, fractionNitrogen <= 1 else {
-            throw DKError(title: "Fraction of Nitrogen", description: "The fraction of nitrogen must be a positive number between 0 and 1, not \(fractionNitrogen).")
-        }
-        guard fractionHelium >= 0, fractionHelium <= 1 else {
-            throw DKError(title: "Fraction of Helium", description: "The fraction of helium must be a positive number between 0 and 1, not \(fractionHelium).")
-        }
-        guard fractionContaminantGases >= 0, fractionContaminantGases <= 1 else {
-            throw DKError(title: "Fraction of Contaminant Gases", description: "The fraction of contaminant gases must be a positive number between 0 and 1, not \(fractionContaminantGases).")
-        }
-        guard fractionTraceGases >= 0, fractionTraceGases <= 1 else {
-            throw DKError(title: "Fraction of Trace Gases", description: "The fraction of trace gases must be a positive number between 0 and 1, not \(fractionTraceGases).")
-        }
-        guard fractionOxygen + fractionNitrogen + fractionHelium + fractionContaminantGases + fractionTraceGases == 1 else {
-            throw DKError(title: "Component Gas Missing", description: "The sum of the component gases must equal 1.")
-        }
+        guard fractionOxygen >= 0, fractionOxygen <= 1 else { throw DiveKit.Error.decimal(value: fractionOxygen) }
+        guard fractionNitrogen >= 0, fractionNitrogen <= 1 else { throw DiveKit.Error.decimal(value: fractionNitrogen) }
+        guard fractionHelium >= 0, fractionHelium <= 1 else { throw DiveKit.Error.decimal(value: fractionHelium) }
+        guard fractionContaminantGases >= 0, fractionContaminantGases <= 1 else { throw DiveKit.Error.decimal(value: fractionContaminantGases) }
+        guard fractionTraceGases >= 0, fractionTraceGases <= 1 else { throw DiveKit.Error.decimal(value: fractionTraceGases) }
+        guard fractionOxygen + fractionNitrogen + fractionHelium + fractionContaminantGases + fractionTraceGases == 1 else { throw DiveKit.Error.decimal(value: fractionOxygen + fractionNitrogen + fractionHelium + fractionContaminantGases + fractionTraceGases) }
         self.fractionOxygen = fractionOxygen
         self.fractionNitrogen = fractionNitrogen
         self.fractionHelium = fractionHelium

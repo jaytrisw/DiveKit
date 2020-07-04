@@ -39,12 +39,8 @@ public class DKEnrichedAir {
         gas: Gas,
         decimalPlaces: Int = 2
     ) throws -> Double {
-        guard fractionOxygen >= 0 else {
-            throw DiveKit.Error.positiveValueRequired(title: .fractionOxygen, value: fractionOxygen)
-        }
-        guard decimalPlaces >= 0 else {
-            throw DKError(title: "Invalid Parameter", description: "Decimal places parameter must be greater than 0")
-        }
+        guard fractionOxygen >= 0 else { throw DiveKit.Error.positiveValueRequired(title: .fractionOxygen, value: fractionOxygen) }
+        guard decimalPlaces >= 0 else { throw DiveKit.Error.positiveValueRequired(title: .decimalPlaces, value: Double(decimalPlaces)) }
         // Calculate partial pressure of oxygen in gas
         // MOD =  { (Partial Pressure / Fraction of O2) - 1 } x 33 feet
         let fractionOxygenOfBlend = gas.partialPressure.fractionOxygen
@@ -82,11 +78,8 @@ public class DKEnrichedAir {
         gas: Gas,
         decimalPlaces: Int = 2
     ) throws -> Double {
-        guard depth >= 0 else {
-            throw DiveKit.Error.positiveValueRequired(title: .depth, value: depth)        }
-        guard decimalPlaces >= 0 else {
-            throw DKError(title: "Invalid Parameter", description: "Decimal places parameter must be greater than 0")
-        }
+        guard depth >= 0 else { throw DiveKit.Error.positiveValueRequired(title: .depth, value: depth) }
+        guard decimalPlaces >= 0 else { throw DiveKit.Error.positiveValueRequired(title: .decimalPlaces, value: Double(decimalPlaces)) }
         // EAD = (Depth + 33) × Fraction of N2 / 0.79 − 33
         let partialPressureBlend = gas.partialPressure
         let partialPressureAir = Gas.air.partialPressure

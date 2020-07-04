@@ -24,9 +24,11 @@ final class GasCalculatorTests: XCTestCase {
         XCTAssertEqual(diveKit.constants.oneAtmosphere, 33)
     }
     func testDKError() {
-        let error = DKError.depth
-        XCTAssertEqual(error.title, "Invalid Depth")
-        XCTAssertEqual(error.localizedDescription, "Depth parameter must be a positive value.")
+        let error = DiveKit.Error.positiveValueRequired(title: .depth, value: -30)
+        XCTAssertEqual(error.title, "Depth Error")
+        XCTAssertEqual(error.localizedDescription, "Depth requires a positive value, -30.0 was provided.")
+        XCTAssertEqual(error.recoverySuggestion, "Provide a positive value for the depth parameter, rather than -30.0")
+        
         XCTAssertEqual(error.failureReason, error.localizedDescription)
     }
     

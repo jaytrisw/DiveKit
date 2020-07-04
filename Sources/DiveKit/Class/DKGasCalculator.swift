@@ -40,9 +40,7 @@ public class DKGasCalculator {
         of inputGas: Gas,
         at depth: Double = 0
     ) throws -> PartialPressure {
-        guard depth >= 0 else {
-            throw DiveKit.Error.positiveValueRequired(title: .depth, value: depth)
-        }
+        guard depth >= 0 else { throw DiveKit.Error.positiveValueRequired(title: .depth, value: depth) }
         var gas = inputGas
         try! gas.setDepth(depth, diveKit: diveKit)
         return gas.partialPressure
@@ -83,15 +81,9 @@ public class DKGasCalculator {
         depth: Double,
         gasConsumed: Double
     ) throws -> Double {
-        guard gasConsumed >= 0 else {
-            throw DKError(title: "Invalid Parameter", description: "Gas consumed parameter must be greater than 0")
-        }
-        guard depth >= 0 else {
-            throw DiveKit.Error.positiveValueRequired(title: .depth, value: depth)
-        }
-        guard time >= 0 else {
-            throw DKError(title: "Invalid Parameter", description: "Time parameter must be greater than 0")
-        }
+        guard gasConsumed >= 0 else { throw DiveKit.Error.positiveValueRequired(title: .gasConsumed, value: gasConsumed) }
+        guard depth >= 0 else { throw DiveKit.Error.positiveValueRequired(title: .depth, value: depth) }
+        guard time >= 0 else { throw DiveKit.Error.positiveValueRequired(title: .time, value: time) }
         let ata = try! DKPhysics(with: diveKit).atmospheresAbsolute(depth: depth)
         return (gasConsumed / time / ata).roundTo(decimalPlaces: 2)
     }
@@ -134,21 +126,11 @@ public class DKGasCalculator {
         depth: Double,
         time: Double
     ) throws -> Double {
-        guard gasConsumed >= 0 else {
-            throw DKError(title: "Invalid Parameter", description: "Gas consumed parameter must be greater than 0")
-        }
-        guard depth >= 0 else {
-            throw DiveKit.Error.positiveValueRequired(title: .depth, value: depth)
-        }
-        guard time >= 0 else {
-            throw DKError(title: "Invalid Parameter", description: "Time parameter must be greater than 0")
-        }
-        guard tank.ratedPressure >= 0 else {
-            throw DKError(title: "Invalid Parameter", description: "Tank rated pressure parameter must be greater than 0")
-        }
-        guard tank.volume >= 0 else {
-            throw DKError(title: "Invalid Parameter", description: "Tank volume parameter must be greater than 0")
-        }
+        guard gasConsumed >= 0 else { throw DiveKit.Error.positiveValueRequired(title: .gasConsumed, value: gasConsumed) }
+        guard depth >= 0 else { throw DiveKit.Error.positiveValueRequired(title: .depth, value: depth) }
+        guard time >= 0 else { throw DiveKit.Error.positiveValueRequired(title: .time, value: time) }
+        guard tank.ratedPressure >= 0 else { throw DiveKit.Error.positiveValueRequired(title: .tankPressure, value: tank.ratedPressure) }
+        guard tank.volume >= 0 else { throw DiveKit.Error.positiveValueRequired(title: .volume, value: tank.volume) }
         let ata = try! DKPhysics(with: diveKit).atmospheresAbsolute(depth: depth)
         let rmv = (((gasConsumed / tank.ratedPressure) * tank.volume) / ata) / time
         return rmv.roundTo(decimalPlaces: 2)
