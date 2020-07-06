@@ -9,7 +9,7 @@ import Foundation
 public class DKGasCalculator {
     
     // MARK: - Instance Properties
-    private(set) var diveKit: DiveKit!
+    private(set) var diveKit: DiveKit
     
     /**
      Calculates the partial pressure of a gas at sea-level or a specified depth.
@@ -40,9 +40,9 @@ public class DKGasCalculator {
         of inputGas: Gas,
         at depth: Double = 0
     ) throws -> PartialPressure {
-        guard depth >= 0 else { throw DiveKit.Error.positiveValueRequired(title: .depth, value: depth) }
+        guard depth >= 0 else { throw DiveKit.Error.positiveValueRequired(parameter: .depth, value: depth) }
         var gas = inputGas
-        try! gas.setDepth(depth, diveKit: diveKit)
+        try gas.setDepth(depth, diveKit: diveKit)
         return gas.partialPressure
     }
     
@@ -64,11 +64,11 @@ public class DKGasCalculator {
      let gasCalculator = DKGasCalculator.init()
      do {
          // Calculate SAC rate
-         let sac = try gasCalculator.surfaceAirConsumption(
+         let surfaceAirConsumption = try gasCalculator.surfaceAirConsumption(
              time: 10,
              depth: 33,
              gasConsumed: 200)
-         print(sac) // 10.0 (psi/min)
+         print(surfaceAirConsumption) // 10.0 (psi/min)
      } catch {
          // Handle Error
          print(error.localizedDescription)
@@ -81,11 +81,49 @@ public class DKGasCalculator {
         depth: Double,
         gasConsumed: Double
     ) throws -> Double {
-        guard gasConsumed >= 0 else { throw DiveKit.Error.positiveValueRequired(title: .gasConsumed, value: gasConsumed) }
-        guard depth >= 0 else { throw DiveKit.Error.positiveValueRequired(title: .depth, value: depth) }
-        guard time >= 0 else { throw DiveKit.Error.positiveValueRequired(title: .time, value: time) }
-        let ata = try! DKPhysics(with: diveKit).atmospheresAbsolute(depth: depth)
-        return (gasConsumed / time / ata).roundTo(decimalPlaces: 2)
+        guard gasConsumed >= 0 else { throw DiveKit.Error.positiveValueRequired(parameter: .gasConsumed, value: gasConsumed) }
+        guard depth >= 0 else { throw DiveKit.Error.positiveValueRequired(parameter: .depth, value: depth) }
+        guard time >= 0 else { throw DiveKit.Error.positiveValueRequired(parameter: .time, value: time) }
+        let atmospheresAbsolute = try DKPhysics(with: diveKit).atmospheresAbsolute(depth: depth)
+        let depthAirConsumption = try self.depthAirConsumption(gasConsumed: gasConsumed, time: time)
+        return (depthAirConsumption / atmospheresAbsolute).roundTo(decimalPlaces: 2)
+    }
+    
+    // MARK: - Calculation Methods
+    /**
+     Calculates air consumption of a diver at depth
+     
+     - parameter time: Double representing the time expressed in minutes that the calculation was performed.
+     - parameter gasConsumed: Double representing the amount of gas consumed expressed in psi or bar per minute during the calculation.
+     - returns: Double, representing the consumed psi or bar per minute calculated for ambient pressure.
+     - throws: `DiveKit.Error`
+     
+     ### Definition
+     Your Depth Air Consumption rate is a measurement of the amount of air you consume while breathing for one minute, at depth. These values are given in the same unit of measurement you would use to measure the air in your cylinder, i.e. psi in the United States (as we use the metric system) and bar in most the rest of the world. Note, however, that your DAC rate is tank specific, meaning that it only applies to the exact size of the cylinder you will be using on your dive. For example, if you regularly dive with an 80 cubic foot tank but switch to a smaller 60 cubic foot cylinder for your next dive, you would need to recalculate your DAC rate.
+     
+     # Example #
+     ```
+     let gasCalculator = DKGasCalculator.init()
+     do {
+         // Calculate DAC rate
+         let depthAirConsumption = try gasCalculator.depthAirConsumption(
+             gasConsumed: 200,
+             time: 10)
+         print(depthAirConsumption) // 20.0 (psi/min)
+     } catch {
+         // Handle Error
+         print(error.localizedDescription)
+     }
+     ```
+     - since: 1.0
+     */
+    public func depthAirConsumption(
+        gasConsumed: Double,
+        time: Double
+    ) throws -> Double {
+        guard gasConsumed >= 0 else { throw DiveKit.Error.positiveValueRequired(parameter: .gasConsumed, value: gasConsumed) }
+        guard time >= 0 else { throw DiveKit.Error.positiveValueRequired(parameter: .time, value: time) }
+        return gasConsumed / time
     }
     
     /**
@@ -108,12 +146,12 @@ public class DKGasCalculator {
      do {
          // Calculate RMV Rate
          let tank = DKTank(ratedPressure: 3000, volume: 80, type: .aluminumStandard)
-         let rmv = try gasCalculator.respiratoryMinuteVolume(
+         let respiratoryMinuteVolume = try gasCalculator.respiratoryMinuteVolume(
              gasConsumed: 200,
              tank: tank,
              depth: 33,
              time: 10)
-         print(rmv) // 0.27 (ft3/min)
+         print(respiratoryMinuteVolume) // 0.27 (ft3/min)
      } catch {
          // Handle Error
          print(error.localizedDescription)
@@ -126,14 +164,14 @@ public class DKGasCalculator {
         depth: Double,
         time: Double
     ) throws -> Double {
-        guard gasConsumed >= 0 else { throw DiveKit.Error.positiveValueRequired(title: .gasConsumed, value: gasConsumed) }
-        guard depth >= 0 else { throw DiveKit.Error.positiveValueRequired(title: .depth, value: depth) }
-        guard time >= 0 else { throw DiveKit.Error.positiveValueRequired(title: .time, value: time) }
-        guard tank.ratedPressure >= 0 else { throw DiveKit.Error.positiveValueRequired(title: .tankPressure, value: tank.ratedPressure) }
-        guard tank.volume >= 0 else { throw DiveKit.Error.positiveValueRequired(title: .volume, value: tank.volume) }
-        let ata = try! DKPhysics(with: diveKit).atmospheresAbsolute(depth: depth)
-        let rmv = (((gasConsumed / tank.ratedPressure) * tank.volume) / ata) / time
-        return rmv.roundTo(decimalPlaces: 2)
+        guard gasConsumed >= 0 else { throw DiveKit.Error.positiveValueRequired(parameter: .gasConsumed, value: gasConsumed) }
+        guard depth >= 0 else { throw DiveKit.Error.positiveValueRequired(parameter: .depth, value: depth) }
+        guard time >= 0 else { throw DiveKit.Error.positiveValueRequired(parameter: .time, value: time) }
+        guard tank.ratedPressure >= 0 else { throw DiveKit.Error.positiveValueRequired(parameter: .tankPressure, value: tank.ratedPressure) }
+        guard tank.volume >= 0 else { throw DiveKit.Error.positiveValueRequired(parameter: .volume, value: tank.volume) }
+        let atmospheresAbsolute = try DKPhysics(with: diveKit).atmospheresAbsolute(depth: depth)
+        let respiratoryMinuteVolume = (((gasConsumed / tank.ratedPressure) * tank.volume) / atmospheresAbsolute) / time
+        return respiratoryMinuteVolume.roundTo(decimalPlaces: 2)
     }
     
     // MARK: - Initializers

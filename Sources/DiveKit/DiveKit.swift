@@ -124,44 +124,58 @@ public class DiveKit {
 }
 
 extension DiveKit {
+    /// `DiveKit.Error` is the error type returned by DikeKit. It encompasses a few different types of errors, each with their own associated reasons.
     public enum Error: LocalizedError {
-        case positiveValueRequired(title: ErrorTitle, value: Double)
-        case percentage(title: ErrorTitle, value: Double)
+        /// `DiveKit.Error` representing the need for a positive parameter to be passed, associated values for `ErrorParameter` representing the parameter passed and `Double` representing the value passed.
+        case positiveValueRequired(parameter: ErrorParameter, value: Double)
+        /// `DiveKit.Error` representing the need for a parameter for a percentage passed that does not fall in range of 0% - 100%, associated values for `ErrorParameter` representing the parameter passed and `Double` representing the value passed.
+        case percentage(title: ErrorParameter, value: Double)
+        /// `DiveKit.Error` representing the the sum of the passed parameters to equal 100%, associated value of `Double` representing the sum of the values passed.
         case totalPercent(value: Double)
+        /// `DiveKit.Error` representing the need for a parameter for a decimal passed that does not fall in range of 0.0 - 1.0, associated value of `Double` representing the decimal value passed.
         case decimal(value: Double)
         
+        /// Returns an optional string that describes the title of the error.
         public var title: String? {
             switch self {
-            case .positiveValueRequired(let title, _): return "\(title.rawValue) Error"
-            case .percentage(let title, _): return "\(title.rawValue) Error"
+            case .positiveValueRequired(let parameter, _): return "\(parameter.rawValue) Error"
+            case .percentage(let parameter, _): return "\(parameter.rawValue) Error"
             case .totalPercent: return "Percentage Error"
             case .decimal: return "Decimal Error"
             }
         }
+        
+        /// Returns an optional string that describes the error.
         public var errorDescription: String? {
             switch self {
-            case .positiveValueRequired(let title, let value): return "\(title.rawValue) requires a positive value, \(value) was provided."
-            case .percentage(let title, let value): return "\(title.rawValue) requires a value between 0 and 100, \(value) was provided."
+            case .positiveValueRequired(let parameter, let value): return "\(parameter.rawValue) requires a positive value, \(value) was provided."
+            case .percentage(let parameter, let value): return "\(parameter.rawValue) requires a value between 0 and 100, \(value) was provided."
             case .totalPercent(let value): return "Sum of the provided gas percentages does not equal 100%, \(value) was provided."
             case .decimal(let value): return "The provided decimal value should be within range of 0 and 1, \(value) was provided."
             }
         }
+        
+        /// Returns an optional string that describes reason for the error.
         public var failureReason: String? {
             switch self {
-            case .positiveValueRequired(let title, let value): return "\(title.rawValue) requires a positive value, \(value) was provided."
-            case .percentage(let title, let value): return "\(title.rawValue) requires a value between 0 and 100, \(value) was provided."
+            case .positiveValueRequired(let parameter, let value): return "\(parameter.rawValue) requires a positive value, \(value) was provided."
+            case .percentage(let parameter, let value): return "\(parameter.rawValue) requires a value between 0 and 100, \(value) was provided."
             case .totalPercent(let value): return "Sum of the provided gas percentages does not equal 100%, \(value) was provided."
             case .decimal(let value): return "The provided decimal value should be within range of 0 and 1, \(value) was provided."
             }
         }
+        
+        /// Returns an optional string that possible ways to recover from the error.
         public var recoverySuggestion: String? {
             switch self {
-            case .positiveValueRequired(let title, let value): return "Provide a positive value for the \(title.rawValue.lowercased()) parameter, rather than \(value)"
-            case .percentage(let title, let value): return "Provide a value between 0 and 100 for the \(title.rawValue.lowercased()) parameter, rather than \(value)"
+            case .positiveValueRequired(let parameter, let value): return "Provide a positive value for the \(parameter.rawValue.lowercased()) parameter, rather than \(value)"
+            case .percentage(let parameter, let value): return "Provide a value between 0 and 100 for the \(parameter.rawValue.lowercased()) parameter, rather than \(value)"
             case .totalPercent(let value): return "Insure you are providing percentages of gassed that totals to 100%, \(value) was provided."
             case .decimal(let value): return "The provided decimal value should be within range of 0 and 1, \(value) was provided."
             }
         }
+        
+        /// Returns a Double representing the value passed, which triggered the error.
         public var value: Double {
             switch self {
                 case .positiveValueRequired(_, let value): return value
@@ -170,17 +184,29 @@ extension DiveKit {
                 case .decimal(let value): return value
             }
         }
-        public enum ErrorTitle: String {
+        /// `ErrorParameter` allows for a simple method for passing the error inducing parameter a `DiveKit.Error`.
+        public enum ErrorParameter: String {
+            /// Depth
             case depth = "Depth"
+            /// Fraction of oxygen
             case fractionOxygen = "Fraction Oxygen"
+            /// Time
             case time = "Time"
+            /// Gas consumed
             case gasConsumed = "Gas Consumed"
+            /// Volume
             case volume = "Volume"
+            /// Tank pressure
             case tankPressure = "Tank Pressure"
+            /// Decimal places
             case decimalPlaces = "Decimal Places"
+            /// percentage of oxygen
             case percentOxygen = "Percent Oxygen"
+            /// percentage of nitrogen
             case percentNitrogen = "Percent Nitrogen"
+            /// percentage of trace gasses
             case percentTraceGas = "Percent Trace Gas"
+            /// percentage of contaminant gas(es)
             case percentContaminantGas = "Percent Contaminant Gas"
         }
     }

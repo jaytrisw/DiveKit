@@ -84,7 +84,7 @@ public struct Gas {
      - since: 1.0
      */
     public mutating func setDepth(_ depth: Double, diveKit: DiveKit) throws {
-        guard depth >= 0 else { throw DiveKit.Error.positiveValueRequired(title: .depth, value: depth) }
+        guard depth >= 0 else { throw DiveKit.Error.positiveValueRequired(parameter: .depth, value: depth) }
         let ata = try! DKPhysics.init(with: diveKit).atmospheresAbsolute(depth: depth)
         pressure = ata
         fractionVolume = 1 / ata

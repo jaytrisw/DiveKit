@@ -38,8 +38,8 @@ public class DKPhysics {
         depth: Double,
         decimalPlaces: Int = 2
     )  throws -> Double {
-        guard depth >= 0 else { throw DiveKit.Error.positiveValueRequired(title: .depth, value: depth) }
-        guard decimalPlaces >= 0 else { throw DiveKit.Error.positiveValueRequired(title: .decimalPlaces, value: Double(decimalPlaces)) }
+        guard depth >= 0 else { throw DiveKit.Error.positiveValueRequired(parameter: .depth, value: depth) }
+        guard decimalPlaces >= 0 else { throw DiveKit.Error.positiveValueRequired(parameter: .decimalPlaces, value: Double(decimalPlaces)) }
         return try! gaugePressure(depth: depth, decimalPlaces: decimalPlaces) + 1
     }
     /**
@@ -70,8 +70,8 @@ public class DKPhysics {
         depth: Double,
         decimalPlaces: Int = 2
     ) throws -> Double {
-        guard depth >= 0 else { throw DiveKit.Error.positiveValueRequired(title: .depth, value: depth) }
-        guard decimalPlaces >= 0 else { throw DiveKit.Error.positiveValueRequired(title: .decimalPlaces, value: Double(decimalPlaces)) }
+        guard depth >= 0 else { throw DiveKit.Error.positiveValueRequired(parameter: .depth, value: depth) }
+        guard decimalPlaces >= 0 else { throw DiveKit.Error.positiveValueRequired(parameter: .decimalPlaces, value: Double(decimalPlaces)) }
         // Depth / One Atmosphere Depth
         let gaugePressure = depth / diveKit.constants.oneAtmosphere
         return gaugePressure.roundTo(decimalPlaces: decimalPlaces)
@@ -103,9 +103,9 @@ public class DKPhysics {
         to secondDepth: Double,
         decimalPlaces: Int = 2
     ) throws -> Double {
-        guard firstDepth >= 0 else { throw DiveKit.Error.positiveValueRequired(title: .depth, value: firstDepth) }
-        guard secondDepth >= 0 else { throw DiveKit.Error.positiveValueRequired(title: .depth, value: secondDepth) }
-        guard decimalPlaces >= 0 else { throw DiveKit.Error.positiveValueRequired(title: .decimalPlaces, value: Double(decimalPlaces)) }
+        guard firstDepth >= 0 else { throw DiveKit.Error.positiveValueRequired(parameter: .depth, value: firstDepth) }
+        guard secondDepth >= 0 else { throw DiveKit.Error.positiveValueRequired(parameter: .depth, value: secondDepth) }
+        guard decimalPlaces >= 0 else { throw DiveKit.Error.positiveValueRequired(parameter: .decimalPlaces, value: Double(decimalPlaces)) }
         let firstATA = try! atmospheresAbsolute(depth: firstDepth)
         let secondATA = try! atmospheresAbsolute(depth: secondDepth)
         return (secondATA - firstATA).roundTo(decimalPlaces: decimalPlaces)
@@ -124,9 +124,9 @@ public class DKPhysics {
         depth: Double,
         decimalPlaces: Int = 0
     ) throws -> Double {
-        guard depth >= 0 else { throw DiveKit.Error.positiveValueRequired(title: .depth, value: depth) }
-        guard volume >= 0 else { throw DiveKit.Error.positiveValueRequired(title: .volume, value: volume) }
-        guard decimalPlaces >= 0 else { throw DiveKit.Error.positiveValueRequired(title: .decimalPlaces, value: Double(decimalPlaces)) }
+        guard depth >= 0 else { throw DiveKit.Error.positiveValueRequired(parameter: .depth, value: depth) }
+        guard volume >= 0 else { throw DiveKit.Error.positiveValueRequired(parameter: .volume, value: volume) }
+        guard decimalPlaces >= 0 else { throw DiveKit.Error.positiveValueRequired(parameter: .decimalPlaces, value: Double(decimalPlaces)) }
         let ata = try! atmospheresAbsolute(depth: depth)
         return (volume / ata).roundTo(decimalPlaces: decimalPlaces)
     }
@@ -143,9 +143,9 @@ public class DKPhysics {
         depth: Double,
         decimalPlaces: Int = 0
     ) throws -> Double {
-        guard depth >= 0 else { throw DiveKit.Error.positiveValueRequired(title: .depth, value: depth) }
-        guard volume >= 0 else { throw DiveKit.Error.positiveValueRequired(title: .volume, value: volume) }
-        guard decimalPlaces >= 0 else { throw DiveKit.Error.positiveValueRequired(title: .decimalPlaces, value: Double(decimalPlaces)) }
+        guard depth >= 0 else { throw DiveKit.Error.positiveValueRequired(parameter: .depth, value: depth) }
+        guard volume >= 0 else { throw DiveKit.Error.positiveValueRequired(parameter: .volume, value: volume) }
+        guard decimalPlaces >= 0 else { throw DiveKit.Error.positiveValueRequired(parameter: .decimalPlaces, value: Double(decimalPlaces)) }
         let ata = try! atmospheresAbsolute(depth: depth)
         return (volume * ata).roundTo(decimalPlaces: decimalPlaces)
     }

@@ -24,11 +24,12 @@ final class GasCalculatorTests: XCTestCase {
         XCTAssertEqual(diveKit.constants.oneAtmosphere, 33)
     }
     func testDKError() {
-        let error = DiveKit.Error.positiveValueRequired(title: .depth, value: -30)
+        let error = DiveKit.Error.positiveValueRequired(parameter: .depth, value: -30)
         XCTAssertEqual(error.title, "Depth Error")
         XCTAssertEqual(error.localizedDescription, "Depth requires a positive value, -30.0 was provided.")
         XCTAssertEqual(error.recoverySuggestion, "Provide a positive value for the depth parameter, rather than -30.0")
-        
+        XCTAssertEqual(error.value, -30)
+
         XCTAssertEqual(error.failureReason, error.localizedDescription)
     }
     
@@ -38,9 +39,9 @@ final class GasCalculatorTests: XCTestCase {
     }
     
     
-    // MARK: - Inititalizers
+    // MARK: - Initializers
     
-    func testGasCalculatorInititalizers() {
+    func testGasCalculatorInitializers() {
         gasCalculator = DKGasCalculator.init()
         XCTAssertEqual(gasCalculator.diveKit.measurementUnit, DiveKit.MeasurementUnit.imperial)
         XCTAssertEqual(gasCalculator.diveKit.waterType, DiveKit.WaterType.saltWater)
@@ -58,11 +59,14 @@ final class GasCalculatorTests: XCTestCase {
         XCTAssertEqual(gasCalculator.diveKit.measurementUnit, DiveKit.MeasurementUnit.metric)
         XCTAssertEqual(gasCalculator.diveKit.waterType, DiveKit.WaterType.freshWater)
     }
-    func testGasesInititalizers() {
+    func testGasesInitializers() {
         gasCalculator = DKGasCalculator.init(waterType: .saltWater, measurementUnit: .imperial)
         let tank = DKTank(ratedPressure: 3000, volume: 80, type: .aluminumStandard)
         XCTAssertEqual(try gasCalculator.respiratoryMinuteVolume(gasConsumed: 900, tank: tank, depth: 66, time: 10), 0.8)
         XCTAssertEqual(try gasCalculator.surfaceAirConsumption(time: 10, depth: 90, gasConsumed: 600).roundTo(decimalPlaces: 1), 16.1)
+        
+        XCTAssertThrowsError(try gasCalculator.depthAirConsumption(gasConsumed: -200, time: 200))
+        XCTAssertThrowsError(try gasCalculator.depthAirConsumption(gasConsumed: 200, time: -200))
         
         XCTAssertThrowsError(try gasCalculator.surfaceAirConsumption(time: -10, depth: 90, gasConsumed: 600))
         XCTAssertThrowsError(try gasCalculator.surfaceAirConsumption(time: 10, depth: -90, gasConsumed: 600))
@@ -80,7 +84,7 @@ final class GasCalculatorTests: XCTestCase {
         ("testPartialPressure", testPartialPressure),
         ("testConstants", testConstants),
         ("testDKError", testDKError),
-        ("testGasCalculatorInititalizers", testGasCalculatorInititalizers),
-        ("testGasesInititalizers", testGasesInititalizers)
+        ("testGasCalculatorInitializers", testGasCalculatorInitializers),
+        ("testGasesInitializers", testGasesInitializers)
     ]
 }

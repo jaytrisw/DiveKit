@@ -39,8 +39,8 @@ public class DKEnrichedAir {
         gas: Gas,
         decimalPlaces: Int = 2
     ) throws -> Double {
-        guard fractionOxygen >= 0 else { throw DiveKit.Error.positiveValueRequired(title: .fractionOxygen, value: fractionOxygen) }
-        guard decimalPlaces >= 0 else { throw DiveKit.Error.positiveValueRequired(title: .decimalPlaces, value: Double(decimalPlaces)) }
+        guard fractionOxygen >= 0 else { throw DiveKit.Error.positiveValueRequired(parameter: .fractionOxygen, value: fractionOxygen) }
+        guard decimalPlaces >= 0 else { throw DiveKit.Error.positiveValueRequired(parameter: .decimalPlaces, value: Double(decimalPlaces)) }
         // Calculate partial pressure of oxygen in gas
         // MOD =  { (Partial Pressure / Fraction of O2) - 1 } x 33 feet
         let fractionOxygenOfBlend = gas.partialPressure.fractionOxygen
@@ -78,8 +78,8 @@ public class DKEnrichedAir {
         gas: Gas,
         decimalPlaces: Int = 2
     ) throws -> Double {
-        guard depth >= 0 else { throw DiveKit.Error.positiveValueRequired(title: .depth, value: depth) }
-        guard decimalPlaces >= 0 else { throw DiveKit.Error.positiveValueRequired(title: .decimalPlaces, value: Double(decimalPlaces)) }
+        guard depth >= 0 else { throw DiveKit.Error.positiveValueRequired(parameter: .depth, value: depth) }
+        guard decimalPlaces >= 0 else { throw DiveKit.Error.positiveValueRequired(parameter: .decimalPlaces, value: Double(decimalPlaces)) }
         // EAD = (Depth + 33) × Fraction of N2 / 0.79 − 33
         let partialPressureBlend = gas.partialPressure
         let partialPressureAir = Gas.air.partialPressure
@@ -118,8 +118,8 @@ public class DKEnrichedAir {
         depth: Double,
         fractionOxygen: Double
     ) throws -> Gas {
-        guard fractionOxygen > 0 else { throw DiveKit.Error.positiveValueRequired(title: .fractionOxygen, value: fractionOxygen) }
-        guard depth > 0 else { throw DiveKit.Error.positiveValueRequired(title: .depth, value: depth) }
+        guard fractionOxygen > 0 else { throw DiveKit.Error.positiveValueRequired(parameter: .fractionOxygen, value: fractionOxygen) }
+        guard depth > 0 else { throw DiveKit.Error.positiveValueRequired(parameter: .depth, value: depth) }
         let ata = try! DKPhysics.init(with: diveKit).atmospheresAbsolute(depth: depth)
         let percentage = floor(fractionOxygen / ata * 100)
         let gas = try! Gas.enrichedAir(percentage)
