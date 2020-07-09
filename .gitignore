@@ -1,6 +1,7 @@
 .DS_Store
 DiveKitTests.xctest.coverage.txt
 
+
 # Xcode
 #
 # gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
