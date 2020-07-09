@@ -6,7 +6,7 @@ import Foundation
 public class DKEnrichedAir {
     
     // MARK: - Instance Properties
-    private(set) var diveKit: DiveKit!
+    private(set) var diveKit: DiveKit
     
     // MARK: - Calculation Methods
     /**
@@ -120,9 +120,9 @@ public class DKEnrichedAir {
     ) throws -> Gas {
         guard fractionOxygen > 0 else { throw DiveKit.Error.positiveValueRequired(parameter: .fractionOxygen, value: fractionOxygen) }
         guard depth > 0 else { throw DiveKit.Error.positiveValueRequired(parameter: .depth, value: depth) }
-        let ata = try! DKPhysics.init(with: diveKit).atmospheresAbsolute(depth: depth)
+        let ata = try DKPhysics.init(with: diveKit).atmospheresAbsolute(depth: depth)
         let percentage = floor(fractionOxygen / ata * 100)
-        let gas = try! Gas.enrichedAir(percentage)
+        let gas = try Gas.enrichedAir(percentage)
         return gas
         
     }
@@ -155,9 +155,13 @@ public class DKEnrichedAir {
         depth: Double
     ) -> Bool {
         if depth > 0 && fractionOxygen > 0 {
-            let mod = try! maximumOperatingDepth(fractionOxygen: fractionOxygen, gas: gas, decimalPlaces: 10)
-            if mod < depth {
-                return true
+            do {
+                let mod = try maximumOperatingDepth(fractionOxygen: fractionOxygen, gas: gas, decimalPlaces: 10)
+                if mod < depth {
+                    return true
+                }
+            } catch {
+                return false
             }
         }
         return false
