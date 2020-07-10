@@ -16,9 +16,6 @@ public class DKEnrichedAir {
      - parameter decimalPlaces: Integer representing the desired number of decimal places to return.
      - returns: Double representing the maximum operating depth for specified gas and maximum partial pressure of oxygen.
      
-     ### Definition
-     The maximum operating depth (MOD) of breathing gas is the depth below which the partial pressure of oxygen of the gas mix exceeds an acceptable limit. This limit is based on the risk of central nervous system oxygen toxicity, and is somewhat arbitrary, and varies depending on the diver training agency or Code of Practice, the level of underwater exertion planned and the planned duration of the dive, but is normally in the range of 1.2 to 1.6 bar.
-     
      ### Example
      ```swift
      let enrichedAirCalc = DKEnrichedAir.init(waterType: .saltWater, measurementUnit: .imperial)
@@ -54,9 +51,6 @@ public class DKEnrichedAir {
      - parameter gas: `DKGas` representing the gas to be used for calculation.
      - parameter decimalPlaces: Integer representing the desired number of decimal places to return.
      - returns: Double representing the equivalent air depth for specified gas and depth.
-     
-     ### Definition
-     Equivalent air depth (EAD) is a way of approximating the decompression requirements of breathing gas mixtures that contain nitrogen and oxygen in different proportions to those in air. The equivalent air depth, for a given gas and depth, is the depth of a dive when breathing air that would have the same partial pressure of nitrogen.
      
      ### Example
      ```
@@ -96,9 +90,6 @@ public class DKEnrichedAir {
         - fractionOxygen: Double representing the fraction of oxygen.
      - Returns: `Gas` representing the calculated best blend for the given dive.
      - Throws: DKError
-     
-     #### Definition
-     The "best blend" for the dive provides the maximum no-decompression time compatible with acceptable oxygen exposure. An acceptable maximum partial pressure of oxygen is selected based on depth and planned bottom time, and this value is used to calculate the oxygen content of the best mix for the dive.
      
      ### Example
      ```

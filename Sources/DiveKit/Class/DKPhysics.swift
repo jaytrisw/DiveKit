@@ -18,9 +18,6 @@ public class DKPhysics {
      - returns: Double, representing absolute pressure at input depth.
      - since: 1.0
      
-     ### Definition
-     The sum of barometric, or the pressure exerted by the atmosphere, and hydrostatic, or the pressure exerted by a water column, pressures.
-     
      #### Example
      ```
      let physicsCalculator = DKPhysics.init(waterType: .saltWater, measurementUnit: .imperial)
@@ -49,9 +46,6 @@ public class DKPhysics {
      
      - returns: Double, representing ambient pressure at input depth.
      - since: 1.0
-     
-     ### Definition
-     As you climb above sea level, the atmospheric pressure decreases because the amount of air above you weighs less. If you dive below sea level, the opposite occurs (the pressure increases) because water has weight that is greater than air. Thus, the deeper one descends underwater the greater the pressure.
      
      #### Example
      ```

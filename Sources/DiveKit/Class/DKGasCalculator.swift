@@ -18,9 +18,6 @@ public class DKGasCalculator {
      - parameter depth: Double presenting a depth, defaults to sea level.
      - returns: `DKPartialPressure` of constituent gases in input `DKGas` at surface pressure or input depth
      
-     ### Definition
-     In a mixture of gases, each constituent gas has a partial pressure which is the notional pressure of that constituent gas if it alone occupied the entire volume of the original mixture at the same temperature. The total pressure of an ideal gas mixture is the sum of the partial pressures of the gases in the mixture.
-     
      # Example #
      ```
      let gasCalculator = DKGasCalculator.init()
@@ -55,9 +52,6 @@ public class DKGasCalculator {
      - parameter time: Double representing the time expressed in minutes that the calculation was performed.
      - parameter gasConsumed: Double representing the amount of gas consumed expressed in psi or bar per minute during the calculation.
      - returns: Double, representing the consumed psi or bar per minute calculated for surface pressure.
-     
-     ### Definition
-     Your Surface Air Consumption rate is a measurement of the amount of air you consume while breathing for one minute, on the surface. These values are given in the same unit of measurement you would use to measure the air in your cylinder, i.e. psi in the United States (as we use the metric system) and bar in most the rest of the world. Note, however, that your SAC rate is tank specific, meaning that it only applies to the exact size of the cylinder you will be using on your dive. For example, if you regularly dive with an 80 cubic foot tank but switch to a smaller 60 cubic foot cylinder for your next dive, you would need to recalculate your SAC rate.
      
      # Example #
      ```
@@ -98,9 +92,6 @@ public class DKGasCalculator {
      - returns: Double, representing the consumed psi or bar per minute calculated for ambient pressure.
      - throws: `DiveKit.Error`
      
-     ### Definition
-     Your Depth Air Consumption rate is a measurement of the amount of air you consume while breathing for one minute, at depth. These values are given in the same unit of measurement you would use to measure the air in your cylinder, i.e. psi in the United States (as we use the metric system) and bar in most the rest of the world. Note, however, that your DAC rate is tank specific, meaning that it only applies to the exact size of the cylinder you will be using on your dive. For example, if you regularly dive with an 80 cubic foot tank but switch to a smaller 60 cubic foot cylinder for your next dive, you would need to recalculate your DAC rate.
-     
      # Example #
      ```
      let gasCalculator = DKGasCalculator.init()
@@ -134,9 +125,6 @@ public class DKGasCalculator {
      - parameter time: Double, representing the length of time, expressed in minutes, that this calculation was performed.
         
      - returns: Double, representing the consumed volume of air per minute express in cubic feet per minute or liters per minute calculated for surface pressure.
-     
-     ### Definition
-     Respiratory Minute Volume is a measurement of the breathing gas that a diver consumes in one minute on the surface. RMV rates are expressed in cubic feet per minute (imperial) or liters per minute (metric), Unlike a SAC rate, an RMV rate can be used for calculations with tanks of any volume. A diver who breathes 8 cubic feet of air a minute will always breathe 8 cubic feet of air a minute regardless of the size of the tank holding the air.
      
      - since: 1.0
      
