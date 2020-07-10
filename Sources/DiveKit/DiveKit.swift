@@ -11,7 +11,7 @@ public class DiveKit {
      Initializes a `DiveKit` object using default values of `DiveKit.WaterType.saltWater` and `DiveKit.MeasurementUnit.imperial`.
      - since: 1.0
      */
-    static let `default` = DiveKit()
+    public static let `default` = DiveKit()
     
     // MARK: - Enumerations
     /// The type of water to use when performing calculations.
