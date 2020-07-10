@@ -6,9 +6,7 @@ import Foundation
 An object used to perform dive physics calculations.
 - since: 1.0
 */
-public class DKPhysics {
-    
-    private(set) var diveKit: DiveKit
+public class DKPhysics: DiveCalculator {
     
     // MARK: - Calculation Methods
     /**
@@ -144,30 +142,30 @@ public class DKPhysics {
         return (volume * ata).roundTo(decimalPlaces: decimalPlaces)
     }
     
-    // MARK: - Initializers
-    /**
-     Initializes `DKPhysics` and `DiveKit` objects with default values of `DiveKit.WaterType.saltWater` and `DiveKit.MeasurementUnit.imperial`
-     - since: 1.0
-     */
-    public init() {
-        diveKit = DiveKit()
-    }
-    /**
-     Initializes a `DKPhysics` object with a `DiveKit` object.
-     - since: 1.0
-     */
-    public convenience init(with diveKit: DiveKit) {
-        self.init()
-        self.diveKit = diveKit
-    }
-    /**
-     Initializes `DKPhysics` and `DiveKit` objects with values for `DiveKit.WaterType` and `DiveKit.MeasurementUnit`
-     - parameter waterType: `DiveKit.WaterType` default value `DiveKit.WaterType.saltWater`
-     - parameter measurementUnit: `DiveKit.MeasurementUnit` default value `DiveKit.MeasurementUnit.imperial`
-     - since: 1.0
-     */
-    public convenience init(waterType: DiveKit.WaterType = .saltWater, measurementUnit: DiveKit.MeasurementUnit = .imperial) {
-        self.init()
-        diveKit = DiveKit(waterType: waterType, measurementUnit: measurementUnit)
-    }
+//    // MARK: - Initializers
+//    /**
+//     Initializes `DKPhysics` and `DiveKit` objects with default values of `DiveKit.WaterType.saltWater` and `DiveKit.MeasurementUnit.imperial`
+//     - since: 1.0
+//     */
+//    public convenience init() {
+//        self.init(with: DiveKit.default)
+//    }
+//    /**
+//     Initializes a `DKPhysics` object with a `DiveKit` object.
+//     - since: 1.0
+//     */
+//    public convenience init(with diveKit: DiveKit) {
+//        self.init()
+//        self.diveKit = diveKit
+//    }
+//    /**
+//     Initializes `DKPhysics` and `DiveKit` objects with values for `DiveKit.WaterType` and `DiveKit.MeasurementUnit`
+//     - parameter waterType: `DiveKit.WaterType` default value `DiveKit.WaterType.saltWater`
+//     - parameter measurementUnit: `DiveKit.MeasurementUnit` default value `DiveKit.MeasurementUnit.imperial`
+//     - since: 1.0
+//     */
+//    public convenience init(waterType: DiveKit.WaterType = .saltWater, measurementUnit: DiveKit.MeasurementUnit = .imperial) {
+//        self.init()
+//        diveKit = DiveKit(waterType: waterType, measurementUnit: measurementUnit)
+//    }
 }

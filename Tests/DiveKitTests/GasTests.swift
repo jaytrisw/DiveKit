@@ -11,11 +11,11 @@ final class GasTests: XCTestCase {
         XCTAssertEqual(air.percentContaminantGases, 0.0)
         XCTAssertEqual(air.percentOxygen, 20.9)
         XCTAssertEqual(air.percentNitrogen, 79.0)
-        try! air.setDepth(33, diveKit: DiveKit.init())
+        try! air.setDepth(33, diveKit: DiveKit.default)
         XCTAssertEqual(air.density, 2)
         XCTAssertEqual(air.pressure, 2)
         XCTAssertEqual(air.fractionVolume, 0.5)
-        XCTAssertThrowsError(try air.setDepth(-33, diveKit: DiveKit.init()))
+        XCTAssertThrowsError(try air.setDepth(-33, diveKit: DiveKit.default))
         let partialPressure = air.partialPressure
         XCTAssertEqual(partialPressure.fractionOxygen, 0.418)
         XCTAssertEqual(partialPressure.fractionNitrogen, 1.58)
@@ -52,7 +52,7 @@ final class GasTests: XCTestCase {
         XCTAssertEqual(partialPressure.fractionHelium, 0)
         XCTAssertEqual(partialPressure.fractionContaminantGases, 0.002)
         XCTAssertEqual(partialPressure.fractionTraceGases, 0.001)
-        try! gas.setDepth(99, diveKit: DiveKit.init())
+        try! gas.setDepth(99, diveKit: DiveKit.default)
         XCTAssertEqual(gas.pressure, 4)
         XCTAssertEqual(gas.effectivePercentage(gas.percentContaminantGases), 0.8)
     }

@@ -99,7 +99,7 @@ public struct Gas {
      ```
      do {
      var gas = try Gas.init(percentOxygen: 20.8, percentNitrogen: 79, percentTraceGases: 0.1, percentContaminantGases: 0.1)
-     try gas.setDepth(99, diveKit: DiveKit.init())
+     try gas.setDepth(99, diveKit: DiveKit.default)
      
      let effectivePercent = gas.effectivePercentage(gas.percentContaminantGases)
      print(effectivePercent) // 0.4 (%)

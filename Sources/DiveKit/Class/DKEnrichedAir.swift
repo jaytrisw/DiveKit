@@ -3,10 +3,7 @@
 import Foundation
 
 /// Object to perform calculations involving Enriched Air Nitrox or EANx.
-public class DKEnrichedAir {
-    
-    // MARK: - Instance Properties
-    private(set) var diveKit: DiveKit
+public class DKEnrichedAir: DiveCalculator {
     
     // MARK: - Calculation Methods
     /**
@@ -156,32 +153,5 @@ public class DKEnrichedAir {
             }
         }
         return false
-    }
-    
-    // MARK: - Initializers
-    /**
-     Initializes `DKEnrichedAir` and `DiveKit` objects with default values of `DiveKit.WaterType.saltWater` and `DiveKit.MeasurementUnit.imperial`
-     - since: 1.0
-     */
-    public init() {
-        diveKit = DiveKit()
-    }
-    /**
-     Initializes a `DKEnrichedAir` object with a `DiveKit` object.
-     - since: 1.0
-     */
-    public convenience init(with diveKit: DiveKit) {
-        self.init()
-        self.diveKit = diveKit
-    }
-    /**
-     Initializes `DKEnrichedAir` and `DiveKit` objects with values for `DiveKit.WaterType` and `DiveKit.MeasurementUnit`
-     - parameter waterType: `DiveKit.WaterType` default value `DiveKit.WaterType.saltWater`
-     - parameter measurementUnit: `DiveKit.MeasurementUnit` default value `DiveKit.MeasurementUnit.imperial`
-     - since: 1.0
-     */
-    public convenience init(waterType: DiveKit.WaterType = .saltWater, measurementUnit: DiveKit.MeasurementUnit = .imperial) {
-        self.init()
-        diveKit = DiveKit(waterType: waterType, measurementUnit: measurementUnit)
     }
 }

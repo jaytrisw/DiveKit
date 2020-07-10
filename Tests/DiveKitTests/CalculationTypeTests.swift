@@ -10,7 +10,7 @@ import XCTest
 
 final class CalculationTypeTests: XCTestCase {
     func testCalculationType() {
-        let calculation = Calculation.respiratoryMinuteVolume(value: 15.55, diveKit: DiveKit.init())
+        let calculation = Calculation.respiratoryMinuteVolume(value: 15.55, diveKit: DiveKit.default)
         XCTAssertEqual(calculation, 15.55)
         XCTAssertEqual(calculation.round(to: 1), 15.6)
         let calculationFromString = Calculation("1000")

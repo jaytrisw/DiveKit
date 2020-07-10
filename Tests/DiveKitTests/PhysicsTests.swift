@@ -4,7 +4,7 @@ import XCTest
 final class PhysicsTests: XCTestCase {
     
     var physicsCalculator = DKPhysics.init()
-    var diveKit = DiveKit.init()
+    var diveKit = DiveKit.default
     
     func testErrors() throws {
         XCTAssertThrowsError(try physicsCalculator.airVolumeFromSurface(volume: -10, depth: 10, decimalPlaces: 10))

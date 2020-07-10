@@ -31,7 +31,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Initialize diveKit with default values of salt water and imperial units
-        diveKit = DiveKit.init()
+        diveKit = DiveKit.default
         // Initialize diveKit with fresh water and metric units
         diveKit = DiveKit.init(waterType: .freshWater, measurementUnit: .metric)
         // Initialize diveKit with water type of fresh water and default value of imperial

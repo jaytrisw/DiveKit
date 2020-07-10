@@ -57,6 +57,9 @@
                 <a class="nav-group-task-link" href="../Classes/DKPhysics.html">DKPhysics</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DiveCalculator.html">DiveCalculator</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DiveKit.html">DiveKit</a>
               </li>
               <li class="nav-group-task">
@@ -110,7 +113,7 @@
             <h1>DKGasCalculator</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">DKGasCalculator</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">DKGasCalculator</span> <span class="p">:</span> <span class="kt"><a href="../Classes/DiveCalculator.html">DiveCalculator</a></span></code></pre>
 
                 </div>
               </div>
@@ -127,15 +130,6 @@
         <section class="section">
           <div class="section-content">
             <div class="task-group">
-              <div class="task-name-container">
-                <a name="/Instance%20Properties"></a>
-                <a name="//apple_ref/swift/Section/Instance Properties" class="dashAnchor"></a>
-                <div class="section-name-container">
-                  <a class="section-name-link" href="#/Instance%20Properties"></a>
-                  <h3 class="section-name"><p>Instance Properties</p>
-</h3>
-                </div>
-              </div>
               <ul class="item-container">
                 <li class="item">
                   <div>
@@ -151,9 +145,6 @@
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Calculates the partial pressure of a gas at sea-level or a specified depth.</p>
-<h3 id='definition' class='heading'>Definition</h3>
-
-<p>In a mixture of gases, each constituent gas has a partial pressure which is the notional pressure of that constituent gas if it alone occupied the entire volume of the original mixture at the same temperature. The total pressure of an ideal gas mixture is the sum of the partial pressures of the gases in the mixture.</p>
 <h1 id='example' class='heading'>Example</h1>
 <pre class="highlight swift"><code><span class="k">let</span> <span class="nv">gasCalculator</span> <span class="o">=</span> <span class="kt">DKGasCalculator</span><span class="o">.</span><span class="nf">init</span><span class="p">()</span>
 <span class="k">do</span> <span class="p">{</span>
@@ -249,9 +240,6 @@
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Calculates surface air consumption of a diver</p>
-<h3 id='definition' class='heading'>Definition</h3>
-
-<p>Your Surface Air Consumption rate is a measurement of the amount of air you consume while breathing for one minute, on the surface. These values are given in the same unit of measurement you would use to measure the air in your cylinder, i.e. psi in the United States (as we use the metric system) and bar in most the rest of the world. Note, however, that your SAC rate is tank specific, meaning that it only applies to the exact size of the cylinder you will be using on your dive. For example, if you regularly dive with an 80 cubic foot tank but switch to a smaller 60 cubic foot cylinder for your next dive, you would need to recalculate your SAC rate.</p>
 <h1 id='example' class='heading'>Example</h1>
 <pre class="highlight swift"><code><span class="k">let</span> <span class="nv">gasCalculator</span> <span class="o">=</span> <span class="kt">DKGasCalculator</span><span class="o">.</span><span class="nf">init</span><span class="p">()</span>
 <span class="k">do</span> <span class="p">{</span>
@@ -354,9 +342,6 @@
     <code><a href="../Classes/DiveKit/Error.html">DiveKit.Error</a></code>
 
 </div>
-<h3 id='definition' class='heading'>Definition</h3>
-
-<p>Your Depth Air Consumption rate is a measurement of the amount of air you consume while breathing for one minute, at depth. These values are given in the same unit of measurement you would use to measure the air in your cylinder, i.e. psi in the United States (as we use the metric system) and bar in most the rest of the world. Note, however, that your DAC rate is tank specific, meaning that it only applies to the exact size of the cylinder you will be using on your dive. For example, if you regularly dive with an 80 cubic foot tank but switch to a smaller 60 cubic foot cylinder for your next dive, you would need to recalculate your DAC rate.</p>
 <h1 id='example' class='heading'>Example</h1>
 <pre class="highlight swift"><code><span class="k">let</span> <span class="nv">gasCalculator</span> <span class="o">=</span> <span class="kt">DKGasCalculator</span><span class="o">.</span><span class="nf">init</span><span class="p">()</span>
 <span class="k">do</span> <span class="p">{</span>
@@ -440,12 +425,9 @@
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Calculates the respiratory minute volume of a diver.</p>
-<h3 id='definition' class='heading'>Definition</h3>
-
-<p>Respiratory Minute Volume is a measurement of the breathing gas that a diver consumes in one minute on the surface. RMV rates are expressed in cubic feet per minute (imperial) or liters per minute (metric), Unlike a SAC rate, an RMV rate can be used for calculations with tanks of any volume. A diver who breathes 8 cubic feet of air a minute will always breathe 8 cubic feet of air a minute regardless of the size of the tank holding the air.</p>
 <div class="aside aside-since">
     <p class="aside-title">Since</p>
-    1.0
+    <p>1.0</p>
 
 </div>
 <h4 id='example' class='heading'>Example</h4>
@@ -543,153 +525,13 @@
                 </li>
               </ul>
             </div>
-            <div class="task-group">
-              <div class="task-name-container">
-                <a name="/Initializers"></a>
-                <a name="//apple_ref/swift/Section/Initializers" class="dashAnchor"></a>
-                <div class="section-name-container">
-                  <a class="section-name-link" href="#/Initializers"></a>
-                  <h3 class="section-name"><p>Initializers</p>
-</h3>
-                </div>
-              </div>
-              <ul class="item-container">
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:7DiveKit15DKGasCalculatorCACycfc"></a>
-                    <a name="//apple_ref/swift/Method/init()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7DiveKit15DKGasCalculatorCACycfc">init()</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Initializes <code>DKGasCalculator</code> and <code><a href="../Classes/DiveKit.html">DiveKit</a></code> objects with default values of <code><a href="../Classes/DiveKit/WaterType.html#/s:7DiveKitAAC9WaterTypeO04saltC0yA2DmF">DiveKit.WaterType.saltWater</a></code> and <code><a href="../Classes/DiveKit/MeasurementUnit.html#/s:7DiveKitAAC15MeasurementUnitO8imperialyA2DmF">DiveKit.MeasurementUnit.imperial</a></code></p>
-<div class="aside aside-since">
-    <p class="aside-title">Since</p>
-    1.0
-
-</div>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">()</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:7DiveKit15DKGasCalculatorC4withAc2AC_tcfc"></a>
-                    <a name="//apple_ref/swift/Method/init(with:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7DiveKit15DKGasCalculatorC4withAc2AC_tcfc">init(with:<wbr>)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Initializes a <code>DKGasCalculator</code> object with a <code><a href="../Classes/DiveKit.html">DiveKit</a></code> object.</p>
-<div class="aside aside-since">
-    <p class="aside-title">Since</p>
-    1.0
-
-</div>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">convenience</span> <span class="nf">init</span><span class="p">(</span><span class="n">with</span> <span class="nv">diveKit</span><span class="p">:</span> <span class="kt"><a href="../Classes/DiveKit.html">DiveKit</a></span><span class="p">)</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:7DiveKit15DKGasCalculatorC9waterType15measurementUnitAc2AC05WaterF0O_AF011MeasurementH0Otcfc"></a>
-                    <a name="//apple_ref/swift/Method/init(waterType:measurementUnit:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7DiveKit15DKGasCalculatorC9waterType15measurementUnitAc2AC05WaterF0O_AF011MeasurementH0Otcfc">init(waterType:<wbr>measurementUnit:<wbr>)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Initializes <code>DKGasCalculator</code> and <code><a href="../Classes/DiveKit.html">DiveKit</a></code> objects with values for <code><a href="../Classes/DiveKit/WaterType.html">DiveKit.WaterType</a></code> and <code><a href="../Classes/DiveKit/MeasurementUnit.html">DiveKit.MeasurementUnit</a></code></p>
-<div class="aside aside-since">
-    <p class="aside-title">Since</p>
-    1.0
-
-</div>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">convenience</span> <span class="nf">init</span><span class="p">(</span><span class="nv">waterType</span><span class="p">:</span> <span class="kt"><a href="../Classes/DiveKit.html">DiveKit</a></span><span class="o">.</span><span class="kt">WaterType</span> <span class="o">=</span> <span class="o">.</span><span class="n">saltWater</span><span class="p">,</span> <span class="nv">measurementUnit</span><span class="p">:</span> <span class="kt"><a href="../Classes/DiveKit.html">DiveKit</a></span><span class="o">.</span><span class="kt">MeasurementUnit</span> <span class="o">=</span> <span class="o">.</span><span class="n">imperial</span><span class="p">)</span></code></pre>
-
-                        </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>waterType</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p><code><a href="../Classes/DiveKit/WaterType.html">DiveKit.WaterType</a></code> default value <code><a href="../Classes/DiveKit/WaterType.html#/s:7DiveKitAAC9WaterTypeO04saltC0yA2DmF">DiveKit.WaterType.saltWater</a></code></p>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>measurementUnit</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p><code><a href="../Classes/DiveKit/MeasurementUnit.html">DiveKit.MeasurementUnit</a></code> default value <code><a href="../Classes/DiveKit/MeasurementUnit.html#/s:7DiveKitAAC15MeasurementUnitO8imperialyA2DmF">DiveKit.MeasurementUnit.imperial</a></code></p>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
           </div>
         </section>
 
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2020 <a class="link" href="https://github.com/jaytrisw/DiveKit" target="_blank" rel="external">author</a>. All rights reserved. (Last updated: 2020-07-06)</p>
+      <p>&copy; 2020 <a class="link" href="https://github.com/jaytrisw/DiveKit" target="_blank" rel="external">author</a>. All rights reserved. (Last updated: 2020-07-10)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.4</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>

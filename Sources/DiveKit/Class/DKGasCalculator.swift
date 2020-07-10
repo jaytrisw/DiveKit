@@ -6,11 +6,7 @@ import Foundation
  Object used to perform gas calculations.
  - since: 1.0
  */
-public class DKGasCalculator {
-    
-    // MARK: - Instance Properties
-    private(set) var diveKit: DiveKit
-    
+public class DKGasCalculator: DiveCalculator {    
     /**
      Calculates the partial pressure of a gas at sea-level or a specified depth.
      
@@ -160,32 +156,5 @@ public class DKGasCalculator {
         let atmospheresAbsolute = try DKPhysics(with: diveKit).atmospheresAbsolute(depth: depth)
         let respiratoryMinuteVolume = (((gasConsumed / tank.ratedPressure) * tank.volume) / atmospheresAbsolute) / time
         return respiratoryMinuteVolume.roundTo(decimalPlaces: 2)
-    }
-    
-    // MARK: - Initializers
-    /**
-     Initializes `DKGasCalculator` and `DiveKit` objects with default values of `DiveKit.WaterType.saltWater` and `DiveKit.MeasurementUnit.imperial`
-     - since: 1.0
-     */
-    public init() {
-        diveKit = DiveKit()
-    }
-    /**
-     Initializes a `DKGasCalculator` object with a `DiveKit` object.
-     - since: 1.0
-     */
-    public convenience init(with diveKit: DiveKit) {
-        self.init()
-        self.diveKit = diveKit
-    }
-    /**
-     Initializes `DKGasCalculator` and `DiveKit` objects with values for `DiveKit.WaterType` and `DiveKit.MeasurementUnit`
-     - parameter waterType: `DiveKit.WaterType` default value `DiveKit.WaterType.saltWater`
-     - parameter measurementUnit: `DiveKit.MeasurementUnit` default value `DiveKit.MeasurementUnit.imperial`
-     - since: 1.0
-     */
-    public convenience init(waterType: DiveKit.WaterType = .saltWater, measurementUnit: DiveKit.MeasurementUnit = .imperial) {
-        self.init()
-        diveKit = DiveKit(waterType: waterType, measurementUnit: measurementUnit)
     }
 }

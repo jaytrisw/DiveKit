@@ -4,7 +4,7 @@ import XCTest
 final class DiveKitTests: XCTestCase {
 
     func testInitializers() {
-        var diveKit = DiveKit.init()
+        var diveKit = DiveKit.default
         XCTAssertEqual(diveKit.measurementUnit, DiveKit.MeasurementUnit.imperial)
         XCTAssertEqual(diveKit.waterType, DiveKit.WaterType.saltWater)
         XCTAssertEqual(diveKit.measurementUnit.units.depthUnit, "foot")

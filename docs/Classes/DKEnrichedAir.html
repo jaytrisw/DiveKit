@@ -57,6 +57,9 @@
                 <a class="nav-group-task-link" href="../Classes/DKPhysics.html">DKPhysics</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DiveCalculator.html">DiveCalculator</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DiveKit.html">DiveKit</a>
               </li>
               <li class="nav-group-task">
@@ -110,7 +113,7 @@
             <h1>DKEnrichedAir</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">DKEnrichedAir</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">DKEnrichedAir</span> <span class="p">:</span> <span class="kt"><a href="../Classes/DiveCalculator.html">DiveCalculator</a></span></code></pre>
 
                 </div>
               </div>
@@ -146,9 +149,6 @@
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Calculates the maximum operating depth of a specified gas and maximum partial pressure of oxygen.</p>
-<h3 id='definition' class='heading'>Definition</h3>
-
-<p>The maximum operating depth (MOD) of breathing gas is the depth below which the partial pressure of oxygen of the gas mix exceeds an acceptable limit. This limit is based on the risk of central nervous system oxygen toxicity, and is somewhat arbitrary, and varies depending on the diver training agency or Code of Practice, the level of underwater exertion planned and the planned duration of the dive, but is normally in the range of 1.2 to 1.6 bar.</p>
 <h3 id='example' class='heading'>Example</h3>
 <pre class="highlight swift"><code><span class="k">let</span> <span class="nv">enrichedAirCalc</span> <span class="o">=</span> <span class="kt">DKEnrichedAir</span><span class="o">.</span><span class="nf">init</span><span class="p">(</span><span class="nv">waterType</span><span class="p">:</span> <span class="o">.</span><span class="n">saltWater</span><span class="p">,</span> <span class="nv">measurementUnit</span><span class="p">:</span> <span class="o">.</span><span class="n">imperial</span><span class="p">)</span>
 <span class="k">let</span> <span class="nv">gas</span> <span class="o">=</span> <span class="kt">DKGas</span><span class="o">.</span><span class="nf">enrichedAir</span><span class="p">(</span><span class="nv">percentage</span><span class="p">:</span> <span class="mi">32</span><span class="p">)</span>
@@ -244,9 +244,6 @@
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Calculates the equivalent air depth of a specified gas and maximum partial pressure of oxygen.</p>
-<h3 id='definition' class='heading'>Definition</h3>
-
-<p>Equivalent air depth (EAD) is a way of approximating the decompression requirements of breathing gas mixtures that contain nitrogen and oxygen in different proportions to those in air. The equivalent air depth, for a given gas and depth, is the depth of a dive when breathing air that would have the same partial pressure of nitrogen.</p>
 <h3 id='example' class='heading'>Example</h3>
 <pre class="highlight swift"><code><span class="k">let</span> <span class="nv">enrichedAirCalc</span> <span class="o">=</span> <span class="kt">DKEnrichedAir</span><span class="o">.</span><span class="nf">init</span><span class="p">(</span><span class="nv">waterType</span><span class="p">:</span> <span class="o">.</span><span class="n">saltWater</span><span class="p">,</span> <span class="nv">measurementUnit</span><span class="p">:</span> <span class="o">.</span><span class="n">imperial</span><span class="p">)</span>
 <span class="k">let</span> <span class="nv">gas</span>  <span class="o">=</span> <span class="kt">DKGas</span><span class="o">.</span><span class="nf">enrichedAir</span><span class="p">(</span><span class="nv">percentage</span><span class="p">:</span> <span class="mi">32</span><span class="p">)</span>
@@ -347,9 +344,6 @@
     DKError
 
 </div>
-<h4 id='definition' class='heading'>Definition</h4>
-
-<p>The &ldquo;best blend&rdquo; for the dive provides the maximum no-decompression time compatible with acceptable oxygen exposure. An acceptable maximum partial pressure of oxygen is selected based on depth and planned bottom time, and this value is used to calculate the oxygen content of the best mix for the dive.</p>
 <h3 id='example' class='heading'>Example</h3>
 <pre class="highlight swift"><code><span class="k">let</span> <span class="nv">enrichedAirCalc</span> <span class="o">=</span> <span class="kt">DKEnrichedAir</span><span class="o">.</span><span class="nf">init</span><span class="p">(</span><span class="nv">waterType</span><span class="p">:</span> <span class="o">.</span><span class="n">saltWater</span><span class="p">,</span> <span class="nv">measurementUnit</span><span class="p">:</span> <span class="o">.</span><span class="n">imperial</span><span class="p">)</span>
 <span class="k">do</span> <span class="p">{</span>
@@ -514,153 +508,13 @@
                 </li>
               </ul>
             </div>
-            <div class="task-group">
-              <div class="task-name-container">
-                <a name="/Initializers"></a>
-                <a name="//apple_ref/swift/Section/Initializers" class="dashAnchor"></a>
-                <div class="section-name-container">
-                  <a class="section-name-link" href="#/Initializers"></a>
-                  <h3 class="section-name"><p>Initializers</p>
-</h3>
-                </div>
-              </div>
-              <ul class="item-container">
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:7DiveKit13DKEnrichedAirCACycfc"></a>
-                    <a name="//apple_ref/swift/Method/init()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7DiveKit13DKEnrichedAirCACycfc">init()</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Initializes <code>DKEnrichedAir</code> and <code><a href="../Classes/DiveKit.html">DiveKit</a></code> objects with default values of <code><a href="../Classes/DiveKit/WaterType.html#/s:7DiveKitAAC9WaterTypeO04saltC0yA2DmF">DiveKit.WaterType.saltWater</a></code> and <code><a href="../Classes/DiveKit/MeasurementUnit.html#/s:7DiveKitAAC15MeasurementUnitO8imperialyA2DmF">DiveKit.MeasurementUnit.imperial</a></code></p>
-<div class="aside aside-since">
-    <p class="aside-title">Since</p>
-    1.0
-
-</div>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">()</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:7DiveKit13DKEnrichedAirC4withAc2AC_tcfc"></a>
-                    <a name="//apple_ref/swift/Method/init(with:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7DiveKit13DKEnrichedAirC4withAc2AC_tcfc">init(with:<wbr>)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Initializes a <code>DKEnrichedAir</code> object with a <code><a href="../Classes/DiveKit.html">DiveKit</a></code> object.</p>
-<div class="aside aside-since">
-    <p class="aside-title">Since</p>
-    1.0
-
-</div>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">convenience</span> <span class="nf">init</span><span class="p">(</span><span class="n">with</span> <span class="nv">diveKit</span><span class="p">:</span> <span class="kt"><a href="../Classes/DiveKit.html">DiveKit</a></span><span class="p">)</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:7DiveKit13DKEnrichedAirC9waterType15measurementUnitAc2AC05WaterF0O_AF011MeasurementH0Otcfc"></a>
-                    <a name="//apple_ref/swift/Method/init(waterType:measurementUnit:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7DiveKit13DKEnrichedAirC9waterType15measurementUnitAc2AC05WaterF0O_AF011MeasurementH0Otcfc">init(waterType:<wbr>measurementUnit:<wbr>)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Initializes <code>DKEnrichedAir</code> and <code><a href="../Classes/DiveKit.html">DiveKit</a></code> objects with values for <code><a href="../Classes/DiveKit/WaterType.html">DiveKit.WaterType</a></code> and <code><a href="../Classes/DiveKit/MeasurementUnit.html">DiveKit.MeasurementUnit</a></code></p>
-<div class="aside aside-since">
-    <p class="aside-title">Since</p>
-    1.0
-
-</div>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">convenience</span> <span class="nf">init</span><span class="p">(</span><span class="nv">waterType</span><span class="p">:</span> <span class="kt"><a href="../Classes/DiveKit.html">DiveKit</a></span><span class="o">.</span><span class="kt">WaterType</span> <span class="o">=</span> <span class="o">.</span><span class="n">saltWater</span><span class="p">,</span> <span class="nv">measurementUnit</span><span class="p">:</span> <span class="kt"><a href="../Classes/DiveKit.html">DiveKit</a></span><span class="o">.</span><span class="kt">MeasurementUnit</span> <span class="o">=</span> <span class="o">.</span><span class="n">imperial</span><span class="p">)</span></code></pre>
-
-                        </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>waterType</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p><code><a href="../Classes/DiveKit/WaterType.html">DiveKit.WaterType</a></code> default value <code><a href="../Classes/DiveKit/WaterType.html#/s:7DiveKitAAC9WaterTypeO04saltC0yA2DmF">DiveKit.WaterType.saltWater</a></code></p>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>measurementUnit</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p><code><a href="../Classes/DiveKit/MeasurementUnit.html">DiveKit.MeasurementUnit</a></code> default value <code><a href="../Classes/DiveKit/MeasurementUnit.html#/s:7DiveKitAAC15MeasurementUnitO8imperialyA2DmF">DiveKit.MeasurementUnit.imperial</a></code></p>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
           </div>
         </section>
 
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2020 <a class="link" href="https://github.com/jaytrisw/DiveKit" target="_blank" rel="external">author</a>. All rights reserved. (Last updated: 2020-07-06)</p>
+      <p>&copy; 2020 <a class="link" href="https://github.com/jaytrisw/DiveKit" target="_blank" rel="external">author</a>. All rights reserved. (Last updated: 2020-07-10)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.4</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>

@@ -5,6 +5,14 @@ import Foundation
 
 /// DiveKit object holds values for water type and unit of measurements.
 public class DiveKit {
+    
+    // MARK: - Singleton
+    /**
+     Initializes a `DiveKit` object using default values of `DiveKit.WaterType.saltWater` and `DiveKit.MeasurementUnit.imperial`.
+     - since: 1.0
+     */
+    static let `default` = DiveKit()
+    
     // MARK: - Enumerations
     /// The type of water to use when performing calculations.
     public enum WaterType: String {
@@ -109,7 +117,7 @@ public class DiveKit {
      Initializes a `DiveKit` object using default values of `DiveKit.WaterType.saltWater` and `DiveKit.MeasurementUnit.imperial`.
      - since: 1.0
      */
-    public init() {}
+    private init() {}
     /**
      Initializes a `DiveKit` object using provided parameters
      - parameter waterType: `DiveKit.WaterType` default value `DiveKit.WaterType.saltWater`

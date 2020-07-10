@@ -57,6 +57,9 @@
                 <a class="nav-group-task-link" href="../Classes/DKPhysics.html">DKPhysics</a>
               </li>
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DiveCalculator.html">DiveCalculator</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Classes/DiveKit.html">DiveKit</a>
               </li>
               <li class="nav-group-task">
@@ -110,7 +113,7 @@
             <h1>DKPhysics</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">DKPhysics</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">DKPhysics</span> <span class="p">:</span> <span class="kt"><a href="../Classes/DiveCalculator.html">DiveCalculator</a></span></code></pre>
 
                 </div>
               </div>
@@ -156,9 +159,6 @@
     1.0
 
 </div>
-<h3 id='definition' class='heading'>Definition</h3>
-
-<p>The sum of barometric, or the pressure exerted by the atmosphere, and hydrostatic, or the pressure exerted by a water column, pressures.</p>
 <h4 id='example' class='heading'>Example</h4>
 <pre class="highlight swift"><code><span class="k">let</span> <span class="nv">physicsCalculator</span> <span class="o">=</span> <span class="kt">DKPhysics</span><span class="o">.</span><span class="nf">init</span><span class="p">(</span><span class="nv">waterType</span><span class="p">:</span> <span class="o">.</span><span class="n">saltWater</span><span class="p">,</span> <span class="nv">measurementUnit</span><span class="p">:</span> <span class="o">.</span><span class="n">imperial</span><span class="p">)</span>
 <span class="k">do</span> <span class="p">{</span>
@@ -240,9 +240,6 @@
     <p>1.0</p>
 
 </div>
-<h3 id='definition' class='heading'>Definition</h3>
-
-<p>As you climb above sea level, the atmospheric pressure decreases because the amount of air above you weighs less. If you dive below sea level, the opposite occurs (the pressure increases) because water has weight that is greater than air. Thus, the deeper one descends underwater the greater the pressure.</p>
 <h4 id='example' class='heading'>Example</h4>
 <pre class="highlight swift"><code><span class="k">let</span> <span class="nv">physicsCalculator</span> <span class="o">=</span> <span class="kt">DKPhysics</span><span class="o">.</span><span class="nf">init</span><span class="p">(</span><span class="nv">waterType</span><span class="p">:</span> <span class="o">.</span><span class="n">saltWater</span><span class="p">,</span> <span class="nv">measurementUnit</span><span class="p">:</span> <span class="o">.</span><span class="n">imperial</span><span class="p">)</span>
 <span class="k">do</span> <span class="p">{</span>
@@ -555,153 +552,13 @@
                 </li>
               </ul>
             </div>
-            <div class="task-group">
-              <div class="task-name-container">
-                <a name="/Initializers"></a>
-                <a name="//apple_ref/swift/Section/Initializers" class="dashAnchor"></a>
-                <div class="section-name-container">
-                  <a class="section-name-link" href="#/Initializers"></a>
-                  <h3 class="section-name"><p>Initializers</p>
-</h3>
-                </div>
-              </div>
-              <ul class="item-container">
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:7DiveKit9DKPhysicsCACycfc"></a>
-                    <a name="//apple_ref/swift/Method/init()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7DiveKit9DKPhysicsCACycfc">init()</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Initializes <code>DKPhysics</code> and <code><a href="../Classes/DiveKit.html">DiveKit</a></code> objects with default values of <code><a href="../Classes/DiveKit/WaterType.html#/s:7DiveKitAAC9WaterTypeO04saltC0yA2DmF">DiveKit.WaterType.saltWater</a></code> and <code><a href="../Classes/DiveKit/MeasurementUnit.html#/s:7DiveKitAAC15MeasurementUnitO8imperialyA2DmF">DiveKit.MeasurementUnit.imperial</a></code></p>
-<div class="aside aside-since">
-    <p class="aside-title">Since</p>
-    1.0
-
-</div>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">()</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:7DiveKit9DKPhysicsC4withAc2AC_tcfc"></a>
-                    <a name="//apple_ref/swift/Method/init(with:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7DiveKit9DKPhysicsC4withAc2AC_tcfc">init(with:<wbr>)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Initializes a <code>DKPhysics</code> object with a <code><a href="../Classes/DiveKit.html">DiveKit</a></code> object.</p>
-<div class="aside aside-since">
-    <p class="aside-title">Since</p>
-    1.0
-
-</div>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">convenience</span> <span class="nf">init</span><span class="p">(</span><span class="n">with</span> <span class="nv">diveKit</span><span class="p">:</span> <span class="kt"><a href="../Classes/DiveKit.html">DiveKit</a></span><span class="p">)</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:7DiveKit9DKPhysicsC9waterType15measurementUnitAc2AC05WaterE0O_AF011MeasurementG0Otcfc"></a>
-                    <a name="//apple_ref/swift/Method/init(waterType:measurementUnit:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7DiveKit9DKPhysicsC9waterType15measurementUnitAc2AC05WaterE0O_AF011MeasurementG0Otcfc">init(waterType:<wbr>measurementUnit:<wbr>)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Initializes <code>DKPhysics</code> and <code><a href="../Classes/DiveKit.html">DiveKit</a></code> objects with values for <code><a href="../Classes/DiveKit/WaterType.html">DiveKit.WaterType</a></code> and <code><a href="../Classes/DiveKit/MeasurementUnit.html">DiveKit.MeasurementUnit</a></code></p>
-<div class="aside aside-since">
-    <p class="aside-title">Since</p>
-    1.0
-
-</div>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">convenience</span> <span class="nf">init</span><span class="p">(</span><span class="nv">waterType</span><span class="p">:</span> <span class="kt"><a href="../Classes/DiveKit.html">DiveKit</a></span><span class="o">.</span><span class="kt">WaterType</span> <span class="o">=</span> <span class="o">.</span><span class="n">saltWater</span><span class="p">,</span> <span class="nv">measurementUnit</span><span class="p">:</span> <span class="kt"><a href="../Classes/DiveKit.html">DiveKit</a></span><span class="o">.</span><span class="kt">MeasurementUnit</span> <span class="o">=</span> <span class="o">.</span><span class="n">imperial</span><span class="p">)</span></code></pre>
-
-                        </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>waterType</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p><code><a href="../Classes/DiveKit/WaterType.html">DiveKit.WaterType</a></code> default value <code><a href="../Classes/DiveKit/WaterType.html#/s:7DiveKitAAC9WaterTypeO04saltC0yA2DmF">DiveKit.WaterType.saltWater</a></code></p>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>measurementUnit</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p><code><a href="../Classes/DiveKit/MeasurementUnit.html">DiveKit.MeasurementUnit</a></code> default value <code><a href="../Classes/DiveKit/MeasurementUnit.html#/s:7DiveKitAAC15MeasurementUnitO8imperialyA2DmF">DiveKit.MeasurementUnit.imperial</a></code></p>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
           </div>
         </section>
 
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2020 <a class="link" href="https://github.com/jaytrisw/DiveKit" target="_blank" rel="external">author</a>. All rights reserved. (Last updated: 2020-07-06)</p>
+      <p>&copy; 2020 <a class="link" href="https://github.com/jaytrisw/DiveKit" target="_blank" rel="external">author</a>. All rights reserved. (Last updated: 2020-07-10)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.4</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>

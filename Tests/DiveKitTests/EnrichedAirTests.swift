@@ -42,7 +42,7 @@ final class EnrichedAirTests: XCTestCase {
         enrichedAir = DKEnrichedAir.init()
         XCTAssertEqual(enrichedAir.diveKit.measurementUnit, DiveKit.MeasurementUnit.imperial)
         XCTAssertEqual(enrichedAir.diveKit.waterType, DiveKit.WaterType.saltWater)
-        let diveKit = DiveKit.init()
+        let diveKit = DiveKit.default
         enrichedAir = DKEnrichedAir.init(with: diveKit)
         XCTAssertEqual(enrichedAir.diveKit.measurementUnit, DiveKit.MeasurementUnit.imperial)
         XCTAssertEqual(enrichedAir.diveKit.waterType, DiveKit.WaterType.saltWater)

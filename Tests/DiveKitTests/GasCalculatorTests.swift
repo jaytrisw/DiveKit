@@ -4,13 +4,13 @@ import XCTest
 final class GasCalculatorTests: XCTestCase {
     
     // MARK: - Instance Properties
-    var diveKit = DiveKit.init()
+    var diveKit = DiveKit.default
     //var physics = DKPhysics.init()
     var gasCalculator = DKGasCalculator.init()
     
     // MARK: - Calculation Methods
     func testPartialPressure() {
-        diveKit = DiveKit.init()
+        diveKit = DiveKit.default
         let gas = Gas.air
         gasCalculator = DKGasCalculator.init(with: diveKit)
         let airPartialPressure = gas.partialPressure
@@ -20,7 +20,7 @@ final class GasCalculatorTests: XCTestCase {
         XCTAssertThrowsError(try gasCalculator.partialPressure(of: gas, at: -20))
     }
     func testConstants() {
-        diveKit = DiveKit.init()
+        diveKit = DiveKit.default
         XCTAssertEqual(diveKit.constants.oneAtmosphere, 33)
     }
     func testDKError() {
@@ -45,7 +45,7 @@ final class GasCalculatorTests: XCTestCase {
         gasCalculator = DKGasCalculator.init()
         XCTAssertEqual(gasCalculator.diveKit.measurementUnit, DiveKit.MeasurementUnit.imperial)
         XCTAssertEqual(gasCalculator.diveKit.waterType, DiveKit.WaterType.saltWater)
-        diveKit = DiveKit.init()
+        diveKit = DiveKit.default
         gasCalculator = DKGasCalculator.init(with: diveKit)
         XCTAssertEqual(gasCalculator.diveKit.measurementUnit, DiveKit.MeasurementUnit.imperial)
         XCTAssertEqual(gasCalculator.diveKit.waterType, DiveKit.WaterType.saltWater)
