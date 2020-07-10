@@ -120,11 +120,11 @@ public class DiveKit {
     private init() {}
     /**
      Initializes a `DiveKit` object using provided parameters
-     - parameter waterType: `DiveKit.WaterType` default value `DiveKit.WaterType.saltWater`
-     - parameter measurementUnit: `DiveKit.MeasurementUnit` default value `DiveKit.MeasurementUnit.imperial`
+     - parameter waterType: `DiveKit.WaterType`
+     - parameter measurementUnit: `DiveKit.MeasurementUnit`
      - since: 1.0
      */
-    public convenience init(waterType: DiveKit.WaterType = .saltWater, measurementUnit: DiveKit.MeasurementUnit = .imperial) {
+    public convenience init(waterType: DiveKit.WaterType, measurementUnit: DiveKit.MeasurementUnit) {
         self.init()
         self.waterType = waterType
         self.measurementUnit = measurementUnit
@@ -165,12 +165,7 @@ extension DiveKit {
         
         /// Returns an optional string that describes reason for the error.
         public var failureReason: String? {
-            switch self {
-            case .positiveValueRequired(let parameter, let value): return "\(parameter.rawValue) requires a positive value, \(value) was provided."
-            case .percentage(let parameter, let value): return "\(parameter.rawValue) requires a value between 0 and 100, \(value) was provided."
-            case .totalPercent(let value): return "Sum of the provided gas percentages does not equal 100%, \(value) was provided."
-            case .decimal(let value): return "The provided decimal value should be within range of 0 and 1, \(value) was provided."
-            }
+            return errorDescription
         }
         
         /// Returns an optional string that possible ways to recover from the error.

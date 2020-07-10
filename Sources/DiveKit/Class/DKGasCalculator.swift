@@ -1,12 +1,15 @@
 //  DKGasCalculator.swift
 
-import Foundation
+public typealias Depth = Double
+public typealias Minutes = Double
+public typealias Pressure = Double
+public typealias SurfaceAirConsumption = Calculation
 
 /**
  Object used to perform gas calculations.
  - since: 1.0
  */
-public class DKGasCalculator: DiveCalculator {    
+public class DKGasCalculator: DiveCalculator {
     /**
      Calculates the partial pressure of a gas at sea-level or a specified depth.
      
@@ -31,7 +34,7 @@ public class DKGasCalculator: DiveCalculator {
      */
     public func partialPressure(
         of inputGas: Gas,
-        at depth: Double = 0
+        at depth: Depth = 0
     ) throws -> PartialPressure {
         guard depth >= 0 else { throw DiveKit.Error.positiveValueRequired(parameter: .depth, value: depth) }
         var gas = inputGas
@@ -41,42 +44,80 @@ public class DKGasCalculator: DiveCalculator {
     
     
     // MARK: - Calculation Methods
+    
+    public func surfaceAirConsumption(
+        at depth: Depth,
+        for minutes: Minutes,
+        consuming gasConsumed: Pressure
+    ) throws -> Calculation {
+        // Handle Error Cases
+        let atmospheresAbsolute = try DKPhysics(with: diveKit).atmospheresAbsolute(depth: depth)
+        let depthAirConsumption = try self.depthAirConsumption(for: minutes, consuming: gasConsumed)
+        let surfaceAirConsumption = depthAirConsumption.value / atmospheresAbsolute
+        return Calculation.surfaceAirConsumption(
+            value: surfaceAirConsumption,
+            diveKit: self.diveKit
+        )
+    }
+    
+    public func surfaceAirConsumption(
+        at depth: Depth,
+        for minutes: Minutes,
+        startGas: Pressure,
+        endGas: Pressure
+    ) throws -> Calculation {
+        // Handle Error Cases
+        let gasConsumed = startGas - endGas
+        return try surfaceAirConsumption(
+            at: depth,
+            for: minutes,
+            consuming: gasConsumed
+        )
+    }
+    
+    public func respiratoryMinuteVolume(
+        at depth: Depth,
+        for minutes: Minutes,
+        with tank: DKTank,
+        consuming gasConsumed: Pressure
+    ) throws -> Calculation {
+        guard gasConsumed >= 0 else { throw DiveKit.Error.positiveValueRequired(parameter: .gasConsumed, value: gasConsumed) }
+        guard depth >= 0 else { throw DiveKit.Error.positiveValueRequired(parameter: .depth, value: depth) }
+        guard minutes >= 0 else { throw DiveKit.Error.positiveValueRequired(parameter: .time, value: minutes) }
+        guard tank.ratedPressure >= 0 else { throw DiveKit.Error.positiveValueRequired(parameter: .tankPressure, value: tank.ratedPressure) }
+        guard tank.volume >= 0 else { throw DiveKit.Error.positiveValueRequired(parameter: .volume, value: tank.volume) }
+        let surfaceAirConsumption = try self.surfaceAirConsumption(at: depth, for: minutes, consuming: gasConsumed)
+        return try self.respiratoryMinuteVolume(for: surfaceAirConsumption, with: tank)
+    }
+    
     /**
-     Calculates surface air consumption of a diver
-     
-     - parameter depth: Double representing the depth expressed in feet or meters that the calculation was performed.
-     - parameter time: Double representing the time expressed in minutes that the calculation was performed.
-     - parameter gasConsumed: Double representing the amount of gas consumed expressed in psi or bar per minute during the calculation.
-     - returns: Double, representing the consumed psi or bar per minute calculated for surface pressure.
+     Calculates the respiratory minute volume of a diver.
      
      # Example #
      ```
      let gasCalculator = DKGasCalculator.init()
      do {
-         // Calculate SAC rate
-         let surfaceAirConsumption = try gasCalculator.surfaceAirConsumption(
-             time: 10,
-             depth: 33,
-             gasConsumed: 200)
-         print(surfaceAirConsumption) // 10.0 (psi/min)
+         let tank = DKTank(ratedPressure: 3000, volume: 80, type: .aluminumStandard)
+         let surfaceAirConsumption = try gasCalculator.surfaceAirConsumption(at: 33, for: 10, startGas: 1700, endGas: 1500)
+         let respiratoryMinuteVolume = try gasCalculator.respiratoryMinuteVolume(for: surfaceAirConsumption, with: tank)
+         print(respiratoryMinuteVolume.round(to: 2)) // 0.27 (ft3/min)
      } catch {
          // Handle Error
          print(error.localizedDescription)
      }
      ```
-     - since: 1.0
      */
-    public func surfaceAirConsumption(
-        time: Double,
-        depth: Double,
-        gasConsumed: Double
-    ) throws -> Double {
-        guard gasConsumed >= 0 else { throw DiveKit.Error.positiveValueRequired(parameter: .gasConsumed, value: gasConsumed) }
-        guard depth >= 0 else { throw DiveKit.Error.positiveValueRequired(parameter: .depth, value: depth) }
-        guard time >= 0 else { throw DiveKit.Error.positiveValueRequired(parameter: .time, value: time) }
-        let atmospheresAbsolute = try DKPhysics(with: diveKit).atmospheresAbsolute(depth: depth)
-        let depthAirConsumption = try self.depthAirConsumption(gasConsumed: gasConsumed, time: time)
-        return (depthAirConsumption / atmospheresAbsolute).roundTo(decimalPlaces: 2)
+    public func respiratoryMinuteVolume(
+        for surfaceAirConsumption: SurfaceAirConsumption,
+        with tank: DKTank
+    ) throws -> Calculation {
+        // Handle Error Cases
+        let tankConversionFactor = tank.volume / tank.ratedPressure
+        let respiratoryMinuteVolume = surfaceAirConsumption.value * tankConversionFactor
+        return Calculation.respiratoryMinuteVolume(
+            value: respiratoryMinuteVolume,
+            diveKit: self.diveKit
+        )
     }
     
     // MARK: - Calculation Methods
@@ -104,15 +145,19 @@ public class DKGasCalculator: DiveCalculator {
      ```
      - since: 1.0
      */
-    public func depthAirConsumption(
-        gasConsumed: Double,
-        time: Double
-    ) throws -> Double {
-        guard gasConsumed >= 0 else { throw DiveKit.Error.positiveValueRequired(parameter: .gasConsumed, value: gasConsumed) }
-        guard time >= 0 else { throw DiveKit.Error.positiveValueRequired(parameter: .time, value: time) }
-        return gasConsumed / time
-    }
     
+    public func depthAirConsumption(
+        for minutes: Minutes,
+        consuming gasConsumed: Pressure
+    ) throws -> Calculation {
+        guard gasConsumed >= 0 else { throw DiveKit.Error.positiveValueRequired(parameter: .gasConsumed, value: gasConsumed) }
+        guard minutes >= 0 else { throw DiveKit.Error.positiveValueRequired(parameter: .time, value: minutes) }
+        let depthAirConsumption =  gasConsumed / minutes
+        return Calculation.depthAirConsumption(value: depthAirConsumption, diveKit: diveKit)
+    }
+}
+
+extension DKGasCalculator {
     /**
      Calculates the respiratory minute volume of a diver.
      - parameter gasConsumed: Double, representing the amount of air that was consumed during this calculation, expressed in psi or bar
@@ -142,19 +187,34 @@ public class DKGasCalculator: DiveCalculator {
      }
      ```
      */
-    public func respiratoryMinuteVolume(
-        gasConsumed: Double,
-        tank: DKTank,
-        depth: Double,
-        time: Double
-    ) throws -> Double {
-        guard gasConsumed >= 0 else { throw DiveKit.Error.positiveValueRequired(parameter: .gasConsumed, value: gasConsumed) }
-        guard depth >= 0 else { throw DiveKit.Error.positiveValueRequired(parameter: .depth, value: depth) }
-        guard time >= 0 else { throw DiveKit.Error.positiveValueRequired(parameter: .time, value: time) }
-        guard tank.ratedPressure >= 0 else { throw DiveKit.Error.positiveValueRequired(parameter: .tankPressure, value: tank.ratedPressure) }
-        guard tank.volume >= 0 else { throw DiveKit.Error.positiveValueRequired(parameter: .volume, value: tank.volume) }
-        let atmospheresAbsolute = try DKPhysics(with: diveKit).atmospheresAbsolute(depth: depth)
-        let respiratoryMinuteVolume = (((gasConsumed / tank.ratedPressure) * tank.volume) / atmospheresAbsolute) / time
-        return respiratoryMinuteVolume.roundTo(decimalPlaces: 2)
-    }
+    @available(*, deprecated, renamed: "respiratoryMinuteVolume(at:for:with:consuming:)")
+    public func respiratoryMinuteVolume( gasConsumed: Double, tank: DKTank, depth: Double, time: Double) {}
+    
+    /**
+     Calculates surface air consumption of a diver
+     
+     - parameter depth: Double representing the depth expressed in feet or meters that the calculation was performed.
+     - parameter time: Double representing the time expressed in minutes that the calculation was performed.
+     - parameter gasConsumed: Double representing the amount of gas consumed expressed in psi or bar per minute during the calculation.
+     - returns: Double, representing the consumed psi or bar per minute calculated for surface pressure.
+     
+     # Example #
+     ```
+     let gasCalculator = DKGasCalculator.init()
+     do {
+         // Calculate SAC rate
+         let surfaceAirConsumption = try gasCalculator.surfaceAirConsumption(
+             time: 10,
+             depth: 33,
+             gasConsumed: 200)
+         print(surfaceAirConsumption) // 10.0 (psi/min)
+     } catch {
+         // Handle Error
+         print(error.localizedDescription)
+     }
+     ```
+     - since: 1.0
+     */
+    @available(*, deprecated, renamed: "surfaceAirConsumption(at:for:consuming:)")
+    public func surfaceAirConsumption(time: Double, depth: Double, gasConsumed: Double) {}
 }
