@@ -3,6 +3,7 @@
 public typealias Depth = Double
 public typealias Minutes = Double
 public typealias Pressure = Double
+public typealias Volume = Double
 public typealias SurfaceAirConsumption = Calculation
 
 /**
@@ -43,23 +44,20 @@ public class DKGasCalculator: DiveCalculator {
     }
     
     
-    // MARK: - Calculation Methods
-    
     public func surfaceAirConsumption(
         at depth: Depth,
         for minutes: Minutes,
         consuming gasConsumed: Pressure
     ) throws -> Calculation {
         // Handle Error Cases
-        let atmospheresAbsolute = try DKPhysics(with: diveKit).atmospheresAbsolute(depth: depth)
+        let atmospheresAbsolute = try DKPhysics(with: diveKit).atmospheresAbsolute(at: depth)
         let depthAirConsumption = try self.depthAirConsumption(for: minutes, consuming: gasConsumed)
-        let surfaceAirConsumption = depthAirConsumption.value / atmospheresAbsolute
+        let surfaceAirConsumption = depthAirConsumption.value / atmospheresAbsolute.value
         return Calculation.surfaceAirConsumption(
             value: surfaceAirConsumption,
             diveKit: self.diveKit
         )
     }
-    
     public func surfaceAirConsumption(
         at depth: Depth,
         for minutes: Minutes,
@@ -89,7 +87,6 @@ public class DKGasCalculator: DiveCalculator {
         let surfaceAirConsumption = try self.surfaceAirConsumption(at: depth, for: minutes, consuming: gasConsumed)
         return try self.respiratoryMinuteVolume(for: surfaceAirConsumption, with: tank)
     }
-    
     /**
      Calculates the respiratory minute volume of a diver.
      
@@ -121,6 +118,7 @@ public class DKGasCalculator: DiveCalculator {
     }
     
     // MARK: - Calculation Methods
+    
     /**
      Calculates air consumption of a diver at depth
      
