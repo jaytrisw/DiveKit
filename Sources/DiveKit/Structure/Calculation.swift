@@ -27,11 +27,18 @@ public struct Calculation {
         return Calculation(value: value, for: .surfaceAirConsumption, waterType: diveKit.waterType, measurementUnit: diveKit.measurementUnit)
     }
     
-    init(value: Double = 0, for calculationType: CalculationType = .unspecified, waterType: DiveKit.WaterType = .saltWater, measurementUnit: DiveKit.MeasurementUnit = .imperial) {
+    init(value: Double, for calculationType: CalculationType, waterType: DiveKit.WaterType = .saltWater, measurementUnit: DiveKit.MeasurementUnit = .imperial) {
         self.value = value
         self.calculationType = calculationType
         self.waterType = waterType
         self.measurementUnit = measurementUnit
+    }
+    
+    init(value: Double, for calculationType: CalculationType, diveKit: DiveKit) {
+        self.value = value
+        self.calculationType = calculationType
+        self.waterType = diveKit.waterType
+        self.measurementUnit = diveKit.measurementUnit
     }
 }
 
@@ -81,6 +88,6 @@ extension Calculation: LosslessStringConvertible {
 
 extension Calculation {
     public enum CalculationType {
-        case unspecified, depthAirConsumption, respiratoryMinuteVolume, surfaceAirConsumption
+        case unspecified, depthAirConsumption, respiratoryMinuteVolume, surfaceAirConsumption, atmospheresAbsolute, gaugePressure, pressureChange, airVolumeToSurface, airVolumeFromSurface
     }
 }
