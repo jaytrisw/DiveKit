@@ -34,7 +34,7 @@ final class PhysicsTests: XCTestCase {
         diveKit = DiveKit.init(waterType: .saltWater, measurementUnit: .imperial)
         physicsCalculator = DKPhysics.init(with: diveKit)
         
-        XCTAssertEqual(try physicsCalculator.pressureChange(from: 0, to: 1).roundTo(decimalPlaces: 2), 0.03)
+        XCTAssertEqual(try physicsCalculator.pressureChange(from: 0, to: 1).round(to: 2), 0.03)
         // Test Sea Water and Imperial
         XCTAssertEqual(try physicsCalculator.atmospheresAbsolute(depth: 0), 1)
         XCTAssertEqual(try physicsCalculator.atmospheresAbsolute(depth: 33), 2)

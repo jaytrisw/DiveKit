@@ -24,8 +24,8 @@ final class EnrichedAirTests: XCTestCase {
         var gas = Gas.air
         XCTAssertThrowsError(try Gas.enrichedAir(-20))
         
-        XCTAssertThrowsError(try enrichedAir.bestBlendFor(depth: 25, fractionOxygen: -1.4))
-        XCTAssertThrowsError(try enrichedAir.bestBlendFor(depth: -25, fractionOxygen: 1.4))
+        XCTAssertThrowsError(try enrichedAir.bestBlend(for: 25, fractionOxygen: -1.4))
+        XCTAssertThrowsError(try enrichedAir.bestBlend(for: -25, fractionOxygen: 1.4))
         
         XCTAssertThrowsError(try enrichedAir.maximumOperatingDepth(fractionOxygen: -2, gas: gas, decimalPlaces: 2))
         XCTAssertThrowsError(try enrichedAir.maximumOperatingDepth(fractionOxygen: 2, gas: gas, decimalPlaces: -2))
@@ -89,29 +89,5 @@ final class EnrichedAirTests: XCTestCase {
         enrichedAir = DKEnrichedAir.init(waterType: .freshWater, measurementUnit: .imperial)
         ead = try enrichedAir.equivalentAirDepth(depth: 110, gas: gas)
         XCTAssertEqual(ceil(ead), 90)
-    }
-    func testExceeds() throws {
-        XCTAssertEqual(try enrichedAir.bestBlendFor(depth: 111, fractionOxygen: 1.4).percentOxygen, 32)
-        XCTAssertEqual(try enrichedAir.bestBlendFor(depth: 110, fractionOxygen: 1.4).percentOxygen, 32)
-        XCTAssertEqual(try enrichedAir.bestBlendFor(depth: 112, fractionOxygen: 1.4).percentOxygen, 31)
-        XCTAssertEqual(try enrichedAir.bestBlendFor(depth: 102, fractionOxygen: 1.4).percentOxygen, 34)
-        XCTAssertEqual(try enrichedAir.bestBlendFor(depth: 62, fractionOxygen: 1.4).percentOxygen, 48)
-        XCTAssertEqual(try enrichedAir.bestBlendFor(depth: 105, fractionOxygen: 1.4).percentOxygen, 33)
-        XCTAssertEqual(try enrichedAir.bestBlendFor(depth: 49, fractionOxygen: 1.4).percentOxygen, 56)
-        enrichedAir = DKEnrichedAir.init(measurementUnit: .metric)
-        XCTAssertEqual(try enrichedAir.bestBlendFor(depth: 26, fractionOxygen: 1.4).percentOxygen, 38)
-        XCTAssertEqual(try enrichedAir.bestBlendFor(depth: 27, fractionOxygen: 1.4).percentOxygen, 37)
-        XCTAssertEqual(try enrichedAir.bestBlendFor(depth: 28, fractionOxygen: 1.4).percentOxygen, 36)
-        XCTAssertEqual(try enrichedAir.bestBlendFor(depth: 29, fractionOxygen: 1.4).percentOxygen, 35)
-        
-    }
-    
-    // MARK: - Best Blend
-    func testBestBlend() {
-        enrichedAir = DKEnrichedAir(waterType: .saltWater, measurementUnit: .metric)
-        XCTAssertEqual(try! enrichedAir.bestBlendFor(depth: 35, fractionOxygen: 1.4).percentOxygen, 31)
-        XCTAssertEqual(try! enrichedAir.bestBlendFor(depth: 25, fractionOxygen: 1.4).percentOxygen, 40)
-        enrichedAir = DKEnrichedAir(waterType: .saltWater, measurementUnit: .imperial)
-        XCTAssertEqual(try! enrichedAir.bestBlendFor(depth: 100, fractionOxygen: 1.4).percentOxygen, 34)
     }
 }

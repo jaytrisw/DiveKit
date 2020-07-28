@@ -91,6 +91,12 @@
             <a class="nav-group-name-link" href="../Structs.html">Structures</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Calculation.html">Calculation</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Calculation/CalculationType.html">– CalculationType</a>
+              </li>
+              <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/DKTank.html">DKTank</a>
               </li>
               <li class="nav-group-task">
@@ -101,6 +107,29 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Structs/PartialPressure.html">PartialPressure</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Typealiases.html">Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:7DiveKit5Deptha">Depth</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:7DiveKit14FractionOxygena">FractionOxygen</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:7DiveKit7Minutesa">Minutes</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:7DiveKit8Pressurea">Pressure</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:7DiveKit21SurfaceAirConsumptiona">SurfaceAirConsumption</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:7DiveKit6Volumea">Volume</a>
               </li>
             </ul>
           </li>
@@ -124,6 +153,51 @@
 
         <section class="section">
           <div class="section-content">
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Singleton"></a>
+                <a name="//apple_ref/swift/Section/Singleton" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/Singleton"></a>
+                  <h3 class="section-name"><p>Singleton</p>
+</h3>
+                </div>
+              </div>
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7DiveKitAAC7defaultABvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/default" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7DiveKitAAC7defaultABvpZ">default</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Initializes a <code>DiveKit</code> object using default values of <code><a href="../Classes/DiveKit/WaterType.html#/s:7DiveKitAAC9WaterTypeO04saltC0yA2DmF">DiveKit.WaterType.saltWater</a></code> and <code><a href="../Classes/DiveKit/MeasurementUnit.html#/s:7DiveKitAAC15MeasurementUnitO8imperialyA2DmF">DiveKit.MeasurementUnit.imperial</a></code>.</p>
+<div class="aside aside-since">
+    <p class="aside-title">Since</p>
+    1.0
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">let</span> <span class="p">`</span><span class="nv">default</span><span class="p">`:</span> <span class="kt">DiveKit</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
             <div class="task-group">
               <div class="task-name-container">
                 <a name="/Enumerations"></a>
@@ -156,7 +230,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">WaterType</span> <span class="p">:</span> <span class="kt">String</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">WaterType</span> <span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="kt">Codable</span></code></pre>
 
                         </div>
                       </div>
@@ -184,7 +258,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">MeasurementUnit</span> <span class="p">:</span> <span class="kt">String</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">MeasurementUnit</span> <span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="kt">Codable</span></code></pre>
 
                         </div>
                       </div>
@@ -379,7 +453,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">convenience</span> <span class="nf">init</span><span class="p">(</span><span class="nv">waterType</span><span class="p">:</span> <span class="kt">DiveKit</span><span class="o">.</span><span class="kt"><a href="../Classes/DiveKit/WaterType.html">WaterType</a></span> <span class="o">=</span> <span class="o">.</span><span class="n">saltWater</span><span class="p">,</span> <span class="nv">measurementUnit</span><span class="p">:</span> <span class="kt">DiveKit</span><span class="o">.</span><span class="kt"><a href="../Classes/DiveKit/MeasurementUnit.html">MeasurementUnit</a></span> <span class="o">=</span> <span class="o">.</span><span class="n">imperial</span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">convenience</span> <span class="nf">init</span><span class="p">(</span><span class="nv">waterType</span><span class="p">:</span> <span class="kt">DiveKit</span><span class="o">.</span><span class="kt"><a href="../Classes/DiveKit/WaterType.html">WaterType</a></span><span class="p">,</span> <span class="nv">measurementUnit</span><span class="p">:</span> <span class="kt">DiveKit</span><span class="o">.</span><span class="kt"><a href="../Classes/DiveKit/MeasurementUnit.html">MeasurementUnit</a></span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -395,7 +469,7 @@
                               </td>
                               <td>
                                 <div>
-                                  <p><code><a href="../Classes/DiveKit/WaterType.html">DiveKit.WaterType</a></code> default value <code><a href="../Classes/DiveKit/WaterType.html#/s:7DiveKitAAC9WaterTypeO04saltC0yA2DmF">DiveKit.WaterType.saltWater</a></code></p>
+                                  <p><code><a href="../Classes/DiveKit/WaterType.html">DiveKit.WaterType</a></code></p>
                                 </div>
                               </td>
                             </tr>
@@ -407,7 +481,7 @@
                               </td>
                               <td>
                                 <div>
-                                  <p><code><a href="../Classes/DiveKit/MeasurementUnit.html">DiveKit.MeasurementUnit</a></code> default value <code><a href="../Classes/DiveKit/MeasurementUnit.html#/s:7DiveKitAAC15MeasurementUnitO8imperialyA2DmF">DiveKit.MeasurementUnit.imperial</a></code></p>
+                                  <p><code><a href="../Classes/DiveKit/MeasurementUnit.html">DiveKit.MeasurementUnit</a></code></p>
                                 </div>
                               </td>
                             </tr>
@@ -453,7 +527,7 @@
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2020 <a class="link" href="https://github.com/jaytrisw/DiveKit" target="_blank" rel="external">author</a>. All rights reserved. (Last updated: 2020-07-10)</p>
+      <p>&copy; 2020 <a class="link" href="https://github.com/jaytrisw/DiveKit" target="_blank" rel="external">author</a>. All rights reserved. (Last updated: 2020-07-28)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.4</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>

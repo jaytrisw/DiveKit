@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Error Enumeration Reference</title>
+    <title>CalculationType Enumeration Reference</title>
     <link rel="stylesheet" type="text/css" href="../../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../../css/highlight.css" />
     <meta charset="utf-8">
@@ -14,9 +14,9 @@
   </head>
   <body>
 
-    <a name="//apple_ref/swift/Enum/Error" class="dashAnchor"></a>
+    <a name="//apple_ref/swift/Enum/CalculationType" class="dashAnchor"></a>
 
-    <a title="Error Enumeration Reference"></a>
+    <a title="CalculationType Enumeration Reference"></a>
 
     <header class="header">
       <p class="header-col header-col--primary">
@@ -38,7 +38,7 @@
     <p class="breadcrumbs">
       <a class="breadcrumb" href="../../index.html">DiveKit Reference</a>
       <img class="carat" src="../../img/carat.png" />
-      Error Enumeration Reference
+      CalculationType Enumeration Reference
     </p>
 
     <div class="content-wrapper">
@@ -139,14 +139,14 @@
 
         <section class="section">
           <div class="section-content top-matter">
-            <h1>Error</h1>
+            <h1>CalculationType</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">Error</span> <span class="p">:</span> <span class="kt">LocalizedError</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">CalculationType</span> <span class="p">:</span> <span class="kt">Int</span><span class="p">,</span> <span class="kt">Codable</span></code></pre>
 
                 </div>
               </div>
-            <p><code>DiveKit.Error</code> is the error type returned by DikeKit. It encompasses a few different types of errors, each with their own associated reasons.</p>
+            <p>The type of calculation performed.</p>
 
           </div>
         </section>
@@ -158,9 +158,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7DiveKitAAC5ErrorO21positiveValueRequiredyA2D0C9ParameterO_SdtcADmF"></a>
-                    <a name="//apple_ref/swift/Element/positiveValueRequired(parameter:value:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7DiveKitAAC5ErrorO21positiveValueRequiredyA2D0C9ParameterO_SdtcADmF">positiveValueRequired(parameter:<wbr>value:<wbr>)</a>
+                    <a name="/s:7DiveKit11CalculationV0C4TypeO11unspecifiedyA2EmF"></a>
+                    <a name="//apple_ref/swift/Element/unspecified" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7DiveKit11CalculationV0C4TypeO11unspecifiedyA2EmF">unspecified</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -168,14 +168,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p><code>DiveKit.Error</code> representing the need for a positive parameter to be passed, associated values for <code><a href="../../Classes/DiveKit/Error/ErrorParameter.html">ErrorParameter</a></code> representing the parameter passed and <code>Double</code> representing the value passed.</p>
+                        <p>Unspecified, representing an unspecified calculation type.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">positiveValueRequired</span><span class="p">(</span><span class="nv">parameter</span><span class="p">:</span> <span class="kt"><a href="../../Classes/DiveKit/Error/ErrorParameter.html">ErrorParameter</a></span><span class="p">,</span> <span class="nv">value</span><span class="p">:</span> <span class="kt">Double</span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">unspecified</span></code></pre>
 
                         </div>
                       </div>
@@ -185,9 +185,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7DiveKitAAC5ErrorO10percentageyA2D0C9ParameterO_SdtcADmF"></a>
-                    <a name="//apple_ref/swift/Element/percentage(title:value:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7DiveKitAAC5ErrorO10percentageyA2D0C9ParameterO_SdtcADmF">percentage(title:<wbr>value:<wbr>)</a>
+                    <a name="/s:7DiveKit11CalculationV0C4TypeO19depthAirConsumptionyA2EmF"></a>
+                    <a name="//apple_ref/swift/Element/depthAirConsumption" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7DiveKit11CalculationV0C4TypeO19depthAirConsumptionyA2EmF">depthAirConsumption</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -195,14 +195,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p><code>DiveKit.Error</code> representing the need for a parameter for a percentage passed that does not fall in range of 0% - 100%, associated values for <code><a href="../../Classes/DiveKit/Error/ErrorParameter.html">ErrorParameter</a></code> representing the parameter passed and <code>Double</code> representing the value passed.</p>
+                        <p>Depth Air Consumption</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">percentage</span><span class="p">(</span><span class="nv">title</span><span class="p">:</span> <span class="kt"><a href="../../Classes/DiveKit/Error/ErrorParameter.html">ErrorParameter</a></span><span class="p">,</span> <span class="nv">value</span><span class="p">:</span> <span class="kt">Double</span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">depthAirConsumption</span></code></pre>
 
                         </div>
                       </div>
@@ -212,9 +212,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7DiveKitAAC5ErrorO12totalPercentyADSd_tcADmF"></a>
-                    <a name="//apple_ref/swift/Element/totalPercent(value:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7DiveKitAAC5ErrorO12totalPercentyADSd_tcADmF">totalPercent(value:<wbr>)</a>
+                    <a name="/s:7DiveKit11CalculationV0C4TypeO23respiratoryMinuteVolumeyA2EmF"></a>
+                    <a name="//apple_ref/swift/Element/respiratoryMinuteVolume" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7DiveKit11CalculationV0C4TypeO23respiratoryMinuteVolumeyA2EmF">respiratoryMinuteVolume</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -222,14 +222,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p><code>DiveKit.Error</code> representing the the sum of the passed parameters to equal 100%, associated value of <code>Double</code> representing the sum of the values passed.</p>
+                        <p>Respiratory Minute Volume</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">totalPercent</span><span class="p">(</span><span class="nv">value</span><span class="p">:</span> <span class="kt">Double</span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">respiratoryMinuteVolume</span></code></pre>
 
                         </div>
                       </div>
@@ -239,9 +239,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7DiveKitAAC5ErrorO7decimalyADSd_tcADmF"></a>
-                    <a name="//apple_ref/swift/Element/decimal(value:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7DiveKitAAC5ErrorO7decimalyADSd_tcADmF">decimal(value:<wbr>)</a>
+                    <a name="/s:7DiveKit11CalculationV0C4TypeO21surfaceAirConsumptionyA2EmF"></a>
+                    <a name="//apple_ref/swift/Element/surfaceAirConsumption" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7DiveKit11CalculationV0C4TypeO21surfaceAirConsumptionyA2EmF">surfaceAirConsumption</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -249,14 +249,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p><code>DiveKit.Error</code> representing the need for a parameter for a decimal passed that does not fall in range of 0.0 - 1.0, associated value of <code>Double</code> representing the decimal value passed.</p>
+                        <p>Surface Air Consumption</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">decimal</span><span class="p">(</span><span class="nv">value</span><span class="p">:</span> <span class="kt">Double</span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">surfaceAirConsumption</span></code></pre>
 
                         </div>
                       </div>
@@ -266,9 +266,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7DiveKitAAC5ErrorO5titleSSSgvp"></a>
-                    <a name="//apple_ref/swift/Property/title" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7DiveKitAAC5ErrorO5titleSSSgvp">title</a>
+                    <a name="/s:7DiveKit11CalculationV0C4TypeO19atmospheresAbsoluteyA2EmF"></a>
+                    <a name="//apple_ref/swift/Element/atmospheresAbsolute" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7DiveKit11CalculationV0C4TypeO19atmospheresAbsoluteyA2EmF">atmospheresAbsolute</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -276,14 +276,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Returns an optional string that describes the title of the error.</p>
+                        <p>Atmospheres Absolute</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">title</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">atmospheresAbsolute</span></code></pre>
 
                         </div>
                       </div>
@@ -293,9 +293,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7DiveKitAAC5ErrorO16errorDescriptionSSSgvp"></a>
-                    <a name="//apple_ref/swift/Property/errorDescription" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7DiveKitAAC5ErrorO16errorDescriptionSSSgvp">errorDescription</a>
+                    <a name="/s:7DiveKit11CalculationV0C4TypeO13gaugePressureyA2EmF"></a>
+                    <a name="//apple_ref/swift/Element/gaugePressure" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7DiveKit11CalculationV0C4TypeO13gaugePressureyA2EmF">gaugePressure</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -303,14 +303,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Returns an optional string that describes the error.</p>
+                        <p>Gauge Pressure</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">errorDescription</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">gaugePressure</span></code></pre>
 
                         </div>
                       </div>
@@ -320,9 +320,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7DiveKitAAC5ErrorO13failureReasonSSSgvp"></a>
-                    <a name="//apple_ref/swift/Property/failureReason" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7DiveKitAAC5ErrorO13failureReasonSSSgvp">failureReason</a>
+                    <a name="/s:7DiveKit11CalculationV0C4TypeO14pressureChangeyA2EmF"></a>
+                    <a name="//apple_ref/swift/Element/pressureChange" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7DiveKit11CalculationV0C4TypeO14pressureChangeyA2EmF">pressureChange</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -330,14 +330,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Returns an optional string that describes reason for the error.</p>
+                        <p>Pressure Change</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">failureReason</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">pressureChange</span></code></pre>
 
                         </div>
                       </div>
@@ -347,9 +347,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7DiveKitAAC5ErrorO18recoverySuggestionSSSgvp"></a>
-                    <a name="//apple_ref/swift/Property/recoverySuggestion" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7DiveKitAAC5ErrorO18recoverySuggestionSSSgvp">recoverySuggestion</a>
+                    <a name="/s:7DiveKit11CalculationV0C4TypeO18airVolumeToSurfaceyA2EmF"></a>
+                    <a name="//apple_ref/swift/Element/airVolumeToSurface" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7DiveKit11CalculationV0C4TypeO18airVolumeToSurfaceyA2EmF">airVolumeToSurface</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -357,14 +357,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Returns an optional string that possible ways to recover from the error.</p>
+                        <p>Air Volume To Surface</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">recoverySuggestion</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">airVolumeToSurface</span></code></pre>
 
                         </div>
                       </div>
@@ -374,9 +374,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7DiveKitAAC5ErrorO5valueSdvp"></a>
-                    <a name="//apple_ref/swift/Property/value" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7DiveKitAAC5ErrorO5valueSdvp">value</a>
+                    <a name="/s:7DiveKit11CalculationV0C4TypeO20airVolumeFromSurfaceyA2EmF"></a>
+                    <a name="//apple_ref/swift/Element/airVolumeFromSurface" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7DiveKit11CalculationV0C4TypeO20airVolumeFromSurfaceyA2EmF">airVolumeFromSurface</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -384,14 +384,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Returns a Double representing the value passed, which triggered the error.</p>
+                        <p>Air Volume From Surface</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">value</span><span class="p">:</span> <span class="kt">Double</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">airVolumeFromSurface</span></code></pre>
 
                         </div>
                       </div>
@@ -401,9 +401,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7DiveKitAAC5ErrorO0C9ParameterO"></a>
-                    <a name="//apple_ref/swift/Enum/ErrorParameter" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7DiveKitAAC5ErrorO0C9ParameterO">ErrorParameter</a>
+                    <a name="/s:7DiveKit11CalculationV0C4TypeO21maximumOperatingDepthyA2EmF"></a>
+                    <a name="//apple_ref/swift/Element/maximumOperatingDepth" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7DiveKit11CalculationV0C4TypeO21maximumOperatingDepthyA2EmF">maximumOperatingDepth</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -411,15 +411,41 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p><code>ErrorParameter</code> allows for a simple method for passing the error inducing parameter a <code><a href="../../Classes/DiveKit/Error.html">DiveKit.Error</a></code>.</p>
+                        <p>Maximum Operating Depth</p>
 
-                        <a href="../../Classes/DiveKit/Error/ErrorParameter.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">ErrorParameter</span> <span class="p">:</span> <span class="kt">String</span></code></pre>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">maximumOperatingDepth</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7DiveKit11CalculationV0C4TypeO18equivalentAirDepthyA2EmF"></a>
+                    <a name="//apple_ref/swift/Element/equivalentAirDepth" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7DiveKit11CalculationV0C4TypeO18equivalentAirDepthyA2EmF">equivalentAirDepth</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Equivalent Air Depth</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">equivalentAirDepth</span></code></pre>
 
                         </div>
                       </div>

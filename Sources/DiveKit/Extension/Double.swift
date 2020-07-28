@@ -9,10 +9,6 @@ extension Double {
     - returns: Double rounded to specified decimal places.
     - since: 1.0
     */
-    func roundTo(decimalPlaces: Int) -> Double {
-        let divisor = pow(10.0, Double(decimalPlaces))
-        return (self * divisor).rounded() / divisor
-    }
     func round(to decimalPlaces: Int) -> Double {
         let divisor = pow(10.0, Double(decimalPlaces))
         return (self * divisor).rounded(.toNearestOrEven) / divisor

@@ -85,10 +85,10 @@ public struct Gas {
      */
     public mutating func setDepth(_ depth: Double, diveKit: DiveKit) throws {
         guard depth >= 0 else { throw DiveKit.Error.positiveValueRequired(parameter: .depth, value: depth) }
-        let ata = try DKPhysics.init(with: diveKit).atmospheresAbsolute(depth: depth)
-        pressure = ata
-        fractionVolume = 1 / ata
-        density = ata
+        let atmospheresAbsolute = try DKPhysics.init(with: diveKit).atmospheresAbsolute(at: depth)
+        pressure = atmospheresAbsolute.value
+        fractionVolume = 1 / atmospheresAbsolute.value
+        density = atmospheresAbsolute.value
     }
     /**
      Calculates what the effective percentage of a component gas when breathed at a pressure greater than surface pressure.

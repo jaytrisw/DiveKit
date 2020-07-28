@@ -2,13 +2,22 @@ import DiveKit
 
 var str = "Hello, DiveKit"
 
-let diveKit = DiveKit.default
-let gasCalculator = DKGasCalculator(with: diveKit)
+let gasCalculator = DKGasCalculator.init()
 
 do {
-    let surfaceAirConsumption = try gasCalculator.surfaceAirConsumption(at: 30, for: 10, consuming: 200)
-} catch let error as DiveKit.Error {
-    print(error.recoverySuggestion)
+    // Calculate SAC rate
+    let surfaceAirConsumption = try gasCalculator.surfaceAirConsumption(at: 33, for: 10, consuming: 200)
+    print(surfaceAirConsumption.value) // 10.0
 } catch {
-    
+    // Handle Error
+    print(error.localizedDescription)
+}
+
+do {
+    // Calculate SAC rate
+    let surfaceAirConsumption = try gasCalculator.surfaceAirConsumption(at: 33, for: 10, startGas: 2400, endGas: 2200)
+    print(surfaceAirConsumption.value) // 10.0
+} catch {
+    // Handle Error
+    print(error.localizedDescription)
 }

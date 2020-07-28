@@ -15,7 +15,7 @@ public class DiveKit {
     
     // MARK: - Enumerations
     /// The type of water to use when performing calculations.
-    public enum WaterType: String {
+    public enum WaterType: String, Codable {
         /// Water which contains salt, typically found in the ocean.
         case saltWater = "Saltwater"
         /// Water which does not contain salt, typically found in lakes and rivers.
@@ -26,7 +26,7 @@ public class DiveKit {
         }
     }
     /// The unit of measurement to use when performing calculations, also which unit of measure calculations will be returned in.
-    public enum MeasurementUnit: String {
+    public enum MeasurementUnit: String, Codable {
         /// The unit of measure used primarily by the United States.
         case imperial = "Imperial"
         /// The unit of measure used by literally the rest of the world.
@@ -43,6 +43,10 @@ public class DiveKit {
             case .metric:
                 return Units(depthUnit: "metre", depthUnitShort: "m", depthUnitPlural: "metres", depthUnitPluralShort: "m", weightUnit: "kilogram", weightUnitShort: "kg", weightUnitPlural: "kilograms", weightUnitPluralShort: "kg", volumeUnit: "litre", volumeUnitShort: "l", volumeUnitPlural: "litres", volumeUnitPluralShort: "l", pressureUnit: "bar", pressureUnitShort: "bar")
             }
+        }
+        
+        enum Unit {
+            case depth, weight, volume, pressure
         }
     }
     

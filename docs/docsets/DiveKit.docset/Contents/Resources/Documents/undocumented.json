@@ -1,6 +1,47 @@
 {
   "warnings": [
-
+    {
+      "file": "/Users/jtw/Developer/DiveKit/Sources/DiveKit/Typealias/Typealias.swift",
+      "line": 1,
+      "symbol": "Depth",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jtw/Developer/DiveKit/Sources/DiveKit/Typealias/Typealias.swift",
+      "line": 2,
+      "symbol": "Minutes",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jtw/Developer/DiveKit/Sources/DiveKit/Typealias/Typealias.swift",
+      "line": 3,
+      "symbol": "Pressure",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jtw/Developer/DiveKit/Sources/DiveKit/Typealias/Typealias.swift",
+      "line": 4,
+      "symbol": "Volume",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jtw/Developer/DiveKit/Sources/DiveKit/Typealias/Typealias.swift",
+      "line": 5,
+      "symbol": "FractionOxygen",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jtw/Developer/DiveKit/Sources/DiveKit/Typealias/Typealias.swift",
+      "line": 6,
+      "symbol": "SurfaceAirConsumption",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    }
   ],
   "source_directory": "/Users/jtw/Developer/DiveKit"
 }
