@@ -27,10 +27,7 @@ public struct Calculation: Codable {
     }
     
     init(value: Double, for calculationType: CalculationType, diveKit: DiveKit) {
-        self.value = value
-        self.calculationType = calculationType
-        self.waterType = diveKit.waterType
-        self.measurementUnit = diveKit.measurementUnit
+        self.init(value: value, for: calculationType, waterType: diveKit.waterType, measurementUnit: diveKit.measurementUnit)
     }
 }
 
