@@ -10,12 +10,12 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
         let depth = 33.0
 
         // When
-        let gaugePressure = try sut.gaugePressure(at: depth)
-
-        // Then
-        XCTAssertEqual(gaugePressure.result.value, 1)
-        XCTAssertEqual(gaugePressure.result.unit, .atmospheres)
-        XCTAssertEqual(gaugePressure.configuration, sut.configuration)
+        XCTAssertCalculation(try sut.gaugePressure(at: depth)) { result, configuration in
+            // Then
+            XCTAssertEqual(result.value, 1)
+            XCTAssertEqual(result.unit, .atmospheres)
+            XCTAssertEqual(configuration, sut.configuration)
+        }
     }
 
     func testGaugePressureWithInvalidInput() throws {
@@ -38,12 +38,12 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
         let depth = 33.0
 
         // When
-        let atmospheresAbsolute = try sut.atmospheresAbsolute(at: depth)
-
-        // Then
-        XCTAssertEqual(atmospheresAbsolute.result.value, 2)
-        XCTAssertEqual(atmospheresAbsolute.result.unit, .atmospheres)
-        XCTAssertEqual(atmospheresAbsolute.configuration, sut.configuration)
+        XCTAssertCalculation(try sut.atmospheresAbsolute(at: depth)) { result, configuration in
+            // Then
+            XCTAssertEqual(result.value, 2)
+            XCTAssertEqual(result.unit, .atmospheres)
+            XCTAssertEqual(configuration, sut.configuration)
+        }
     }
 
     func testAtmospheresAbsoluteWithInvalidInput() throws {
@@ -205,11 +205,11 @@ final class GasCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<GasCalcu
         let depth = 33.0
 
         // When
-        let partialPressure = try sut.partialPressure(of: gas, in: blend, at: depth)
-
-        // Then
-        XCTAssertEqual(partialPressure.result.value, 0.42)
-        XCTAssertEqual(partialPressure.configuration, sut.configuration)
+        XCTAssertCalculation(try sut.partialPressure(of: gas, in: blend, at: depth)) { result, configuration in
+            // Then
+            XCTAssertEqual(result.value, 0.42)
+            XCTAssertEqual(configuration, sut.configuration)
+        }
     }
 
     func testM() throws {
@@ -247,4 +247,3 @@ final class GasCalculatorMetricSaltwaterTestCase: SystemUnderTestCase<GasCalcula
         sut = .init(.metric, water: .salt)
     }
 }
-
