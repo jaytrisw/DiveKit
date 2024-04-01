@@ -1,6 +1,6 @@
 import XCTest
 
-open class ThrowingMethodUnderTestCase<SUT, Input, Output>: SystemUnderTestCase<SUT> {
+open class ThrowingMethodUnderTestCase<SUT, Input: Equatable, Output: Equatable>: SystemUnderTestCase<SUT> {
 
     public var data: [Data]!
     public var mut: ((Input) throws -> Output)!
