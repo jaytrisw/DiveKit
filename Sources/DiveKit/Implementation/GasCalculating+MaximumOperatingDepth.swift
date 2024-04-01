@@ -5,7 +5,7 @@ public extension GasCalculator {
         for fractionOxygen: Double,
         in blend: Blend<Blended>) throws ->  Calculation<Double.Result<Units.Depth>> {
             try fractionOxygen.validate(
-                with: .nonNegative,
+                using: .nonNegative,
                 orThrow: {
                     error(describing: self, for: $0, with: .gasCalculator(.negative(.fractionOxygen)))
                 })

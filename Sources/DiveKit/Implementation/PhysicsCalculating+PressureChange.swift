@@ -14,6 +14,7 @@ public extension PhysicsCalculating {
                 orThrow: {
                     error(describing: self, for: $0, with: .physicsCalculator(.negative(.depth)))
                 }) }
-            .map { .double($0.second.result.value - $0.first.result.value, unit: \.pressure, from: configuration) }
+            .map { $0.second.result.value - $0.first.result.value }
+            .map { .double($0, unit: \.pressure, from: configuration) }
         }
 }

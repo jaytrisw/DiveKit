@@ -10,7 +10,7 @@ public extension Blend where State == Unblended {
     mutating func add<Gas: GasRepresentable>(_ gas: Gas, pressure: Double) throws {
         try pressure
             .validate(
-                with: .between(.zero, and: .one),
+                using: .between(.zero, and: .one),
                 perform: { storage.updateValue($0, forKey: gas) },
                 orThrow: { error(for: $0, message: .blend(.pressureRange), describe: self) })
     }
