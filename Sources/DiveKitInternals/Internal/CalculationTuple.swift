@@ -1,6 +1,6 @@
 import DiveKitCore
 
-package struct TupleCalculation<Value, Unit: UnitRepresentable> {
+package struct CalculationTuple<Value, Unit: UnitRepresentable> {
     package let first: Calculation<Value, Unit>
     package let second: Calculation<Value, Unit>
 

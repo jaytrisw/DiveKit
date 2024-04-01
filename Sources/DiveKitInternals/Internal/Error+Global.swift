@@ -5,5 +5,5 @@ package func error<C: ConfigurationProviding, Value>(
     for value: Value,
     with message: Error<Value>.Message,
     function: StaticString = #function) -> Error<Value> {
-        .init(calculator: .init(describing: calculator), value: value, message: message, function: function)
+        .init(value: value, message: message, object: .init(describing: calculator), function: function)
     }

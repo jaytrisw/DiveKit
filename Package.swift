@@ -27,22 +27,32 @@ let package = Package(
                 "DiveKitCore"
             ],
             swiftSettings: defaultSettings),
+        .target(
+            name: "TestUtility",
+            dependencies: [],
+            swiftSettings: defaultSettings, 
+            linkerSettings: [
+                .linkedFramework("XCTest")
+            ]),
         .testTarget(
             name: "DiveKitTests",
             dependencies: [
                 "DiveKit",
                 "DiveKitCore",
-                "DiveKitInternals"
+                "DiveKitInternals",
+                "TestUtility",
             ]),
         .testTarget(
             name: "DiveKitCoreTests",
             dependencies: [
-                "DiveKitCore"
+                "DiveKitCore",
+                "TestUtility"
             ]),
         .testTarget(
             name: "DiveKitInternalsTests",
             dependencies: [
-                "DiveKitInternals"
+                "DiveKitInternals",
+                "TestUtility"
             ])
     ],
     swiftLanguageVersions: [.v5]
@@ -51,8 +61,8 @@ let package = Package(
 let defaultSettings: [SwiftSetting] = [
     .unsafeFlags([
         "-Xfrontend",
-        "-warn-long-function-bodies=50",
+        "-warn-long-function-bodies=10",
         "-Xfrontend",
-        "-warn-long-expression-type-checking=50"
+        "-warn-long-expression-type-checking=5"
     ])
 ]

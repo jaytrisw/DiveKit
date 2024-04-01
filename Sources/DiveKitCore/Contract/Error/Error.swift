@@ -5,14 +5,21 @@ public struct Error<Value> {
     public let message: Message
     public var callSite: String
 
-    package init(calculator: String, value: Value, message: Message, function: StaticString) {
+    package init(value: Value, message: Message, callSite: String) {
         self.value = value
         self.message = message
-        callSite = [
-            calculator.components(separatedBy: ".").last ?? calculator,
-            function.description.components(separatedBy: ".").last ?? function.description
-        ]
-            .joined(separator: ".")
+        self.callSite = callSite
+    }
+
+    package init(value: Value, message: Message, object: String, function: StaticString) {
+        self.init(
+            value: value,
+            message: message,
+            callSite: [
+                object.components(separatedBy: ".").last ?? object,
+                function.description.components(separatedBy: ".").last ?? function.description
+            ]
+                .joined(separator: "."))
     }
 }
 

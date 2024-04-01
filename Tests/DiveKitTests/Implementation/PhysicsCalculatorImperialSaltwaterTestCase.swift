@@ -1,4 +1,4 @@
-import XCTest
+import TestUtility
 @testable import DiveKit
 
 final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<PhysicsCalculator> {
@@ -195,3 +195,57 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
         sut = .init(.imperial, water: .salt)
     }
 }
+
+final class GasCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<GasCalculator> {
+
+    func test() throws {
+        // Given
+        let gas = Oxygen()
+        let blend = Blend<Blended>.air
+        let depth = 33.0
+
+        // When
+        let result = try sut.partialPressure(of: gas, in: blend, at: depth)
+
+        // Then
+        XCTAssertEqual(result.value.value, 0.42)
+        XCTAssertEqual(result.unit, .psi)
+        XCTAssertEqual(result.configuration, sut.configuration)
+    }
+
+    func testM() throws {
+        let fractionOxygen = 1.4
+        let blend = Blend<Blended>.enrichedAir(0.32)
+
+        // When
+        let result = try sut.maximumOperatingDepth(for: fractionOxygen, in: blend)
+
+        XCTAssertEqual(result.value, 111.375)
+        XCTAssertEqual(result.unit, .feet)
+        XCTAssertEqual(result.configuration, sut.configuration)
+    }
+
+    override func createSUT() {
+        sut = .init(.imperial, water: .salt)
+    }
+}
+
+final class GasCalculatorMetricSaltwaterTestCase: SystemUnderTestCase<GasCalculator> {
+
+    func test() throws {
+        // Given
+
+        // When
+        let result = try sut.surfaceAirConsumption(at: 15, for: 10, consuming: 40, using: sut.physicsCalculator)
+
+        // Then
+        XCTAssertEqual(result.value, 1.6)
+        XCTAssertEqual(result.unit, .bar)
+        XCTAssertEqual(result.configuration, sut.configuration)
+    }
+
+    override func createSUT() {
+        sut = .init(.metric, water: .salt)
+    }
+}
+

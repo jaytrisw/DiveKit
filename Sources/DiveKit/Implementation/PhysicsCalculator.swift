@@ -1,7 +1,7 @@
 import DiveKitInternals
 
 public class PhysicsCalculator: ConfigurationProviding {
-    public var configuration: Configuration
+    public let configuration: Configuration
 
     required public init(configuration: Configuration) {
         self.configuration = configuration

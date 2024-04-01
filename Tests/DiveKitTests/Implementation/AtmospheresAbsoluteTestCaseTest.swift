@@ -1,4 +1,4 @@
-import XCTest
+import TestUtility
 @testable import DiveKit
 
 final class AtmospheresAbsoluteTestCaseTest: ThrowingMethodUnderTestCase<PhysicsCalculator, Double, Calculation<Double, Units.Pressure>> {
