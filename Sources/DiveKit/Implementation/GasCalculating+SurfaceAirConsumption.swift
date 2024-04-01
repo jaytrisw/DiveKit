@@ -26,8 +26,12 @@ public extension GasCalculating {
             try startGas.validate(
                 with: endGas,
                 using: .nonNegative,
-                orThrow: { error(describing: self, for: $0, with: .gasCalculator(.negative(.depth))) },
-                otherThrow: { error(describing: self, for: $0, with: .gasCalculator(.negative(.depth))) })
+                orThrow: { 
+                    error(describing: self, for: $0, with: .gasCalculator(.negative(.depth)))
+                },
+                otherThrow: {
+                    error(describing: self, for: $0, with: .gasCalculator(.negative(.depth)))
+                })
             .map { $0.first - $0.second }
             .map { try surfaceAirConsumption(at: depth, for: minutes, consuming: $0, using: physicsCalculator) }
         }

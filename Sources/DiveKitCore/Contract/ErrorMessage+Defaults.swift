@@ -9,14 +9,6 @@ package extension Error.Message {
         .init(key: "dive.kit.gas.calculator.\(other.key)")
     }
 
-    static var negativeDepth: Self {
-        .init(key: "negative.depth")
-    }
-
-    static var negativeVolume: Self {
-        .init(key: "negative.volume")
-    }
-
     static func negative(_ other: Self) -> Self {
         .init(key: "negative.\(other.key)")
     }
@@ -29,8 +21,16 @@ package extension Error.Message {
         .init(key: "consumed")
     }
 
+    static var fractionOxygen: Self {
+        .init(key: "fraction.oxygen")
+    }
+
     static var depth: Self {
         .init(key: "depth")
+    }
+
+    static var volume: Self {
+        .init(key: "volume")
     }
 
     static func blend(_ other: Self) -> Self {
