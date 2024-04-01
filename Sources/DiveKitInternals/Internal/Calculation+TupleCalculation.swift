@@ -1,7 +1,7 @@
 import DiveKitCore
 
-package extension Calculation {
-    func with(_ other: () throws -> Calculation) rethrows -> CalculationTuple<Value, Unit> {
+package extension CalculationDeprecated {
+    func with(_ other: () throws -> CalculationDeprecated) rethrows -> CalculationTuple<Value, Unit> {
         .init(first: self, second: try other())
     }
 }

@@ -3,14 +3,14 @@ import DiveKitCore
 package extension PhysicsCalculating {
     func gaugePressure(
         at depth: Double,
-        orThrow error: (Double) -> Error<Double>) throws -> Calculation<Double, Units.Pressure> {
+        orThrow error: (Double) -> Error<Double>) throws -> Calculation<DoubleResult<Units.Pressure>> {
             try depth.validate(with: .nonNegative, orThrow: { error($0) })
                 .map { $0 / configuration.water.pressure(configuration.units).increase.value }
-                .map { .init(value: $0, unit: .atmospheres, configuration: configuration) }
+                .map { .init(result: .init(value: $0, unit: .atmospheres), configuration: configuration) }
         }
 
-    func atmospheresAbsolute(at depth: Double, orThrow error: (Double) -> Error<Double>) throws -> Calculation<Double, Units.Pressure> {
+    func atmospheresAbsolute(at depth: Double, orThrow error: (Double) -> Error<Double>) throws -> CalculationDeprecated<Double, Units.Pressure> {
         try gaugePressure(at: depth, orThrow: error)
-            .map { .init(value: $0.value + 1, unit: $0.unit, configuration: $0.configuration) }
+            .map { .init(value: $0.result.value + 1, unit: $0.result.unit, configuration: $0.configuration) }
     }
 }

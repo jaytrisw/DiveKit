@@ -18,5 +18,5 @@ public protocol PhysicsCalculating: ConfigurationProviding {
     /// - Throws: Can throw an error if the calculation is not possible with the provided parameters or
     ///   if the configuration is invalid or insufficient for the calculation. Implementers should specify
     ///   the conditions under which errors are thrown.
-    func gaugePressure(at depth: Double) throws -> Calculation<Double, Units.Pressure>
+    func gaugePressure(at depth: Double) throws -> Calculation<DoubleResult<Units.Pressure>>
 }

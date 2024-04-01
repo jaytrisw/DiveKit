@@ -10,12 +10,12 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
         let depth = 33.0
 
         // When
-        let result = try sut.gaugePressure(at: depth)
+        let gaugePressure = try sut.gaugePressure(at: depth)
 
         // Then
-        XCTAssertEqual(result.value, 1)
-        XCTAssertEqual(result.unit, .atmospheres)
-        XCTAssertEqual(result.configuration, sut.configuration)
+        XCTAssertEqual(gaugePressure.result.value, 1)
+        XCTAssertEqual(gaugePressure.result.unit, .atmospheres)
+        XCTAssertEqual(gaugePressure.configuration, sut.configuration)
     }
 
     func testGaugePressureWithInvalidInput() throws {

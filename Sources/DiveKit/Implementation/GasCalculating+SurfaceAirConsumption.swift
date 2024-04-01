@@ -5,7 +5,7 @@ public extension GasCalculating {
         at depth: Double,
         for minutes: Double,
         consuming gasConsumed: Double,
-        using physicsCalculator: PhysicsCalculating) throws -> Calculation<Double, Units.Pressure> {
+        using physicsCalculator: PhysicsCalculating) throws -> CalculationDeprecated<Double, Units.Pressure> {
             try physicsCalculator
                 .atmospheresAbsolute(
                     at: depth,
@@ -22,7 +22,7 @@ public extension GasCalculating {
         for minutes: Double,
         start startGas: Double,
         end endGas: Double,
-        using physicsCalculator: PhysicsCalculating) throws -> Calculation<Double, Units.Pressure> {
+        using physicsCalculator: PhysicsCalculating) throws -> CalculationDeprecated<Double, Units.Pressure> {
             try startGas.validate(
                 with: endGas,
                 using: .nonNegative,

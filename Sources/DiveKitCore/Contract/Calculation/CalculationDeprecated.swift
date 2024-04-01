@@ -1,7 +1,7 @@
 import Foundation
 
 /// Represents a calculated `Value` with a specific `Unit` within a given `Configuration`.
-public struct Calculation<Value, Unit: UnitRepresentable> {
+public struct CalculationDeprecated<Value, Unit: UnitRepresentable> {
     public let value: Value
     public let unit: Unit
     public let configuration: Configuration
@@ -13,7 +13,7 @@ public struct Calculation<Value, Unit: UnitRepresentable> {
     }
 }
 
-package extension Calculation {
+package extension CalculationDeprecated {
     /// Initializes a new `Calculation` with the specified value and a unit derived from a key path into a given configuration.
     /// This initializer allows for initializing a calculation with units specified indirectly through a configuration's units.
     /// - Parameters:
@@ -27,4 +27,31 @@ package extension Calculation {
     }
 }
 
-extension Calculation: Equatable where Value: Equatable {}
+extension CalculationDeprecated: Equatable where Value: Equatable {}
+
+public struct Calculation<Result: CalculationResultRepresentable> {
+    public let result: Result
+    public let configuration: Configuration
+
+    package init(result: Result, configuration: Configuration) {
+        self.result = result
+        self.configuration = configuration
+    }
+}
+
+extension Calculation: Equatable where Result: Equatable {}
+
+public protocol CalculationResultRepresentable {}
+
+public struct DoubleResult<Unit: UnitRepresentable> {
+    public let value: Double
+    public let unit: Unit
+
+    package init(value: Double, unit: Unit) {
+        self.value = value
+        self.unit = unit
+    }
+}
+
+extension DoubleResult: Equatable {}
+extension DoubleResult: CalculationResultRepresentable {}

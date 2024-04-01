@@ -1,7 +1,7 @@
 import TestUtility
 @testable import DiveKit
 
-final class AtmospheresAbsoluteTestCaseTest: ThrowingMethodUnderTestCase<PhysicsCalculator, Double, Calculation<Double, Units.Pressure>> {
+final class AtmospheresAbsoluteTestCaseTest: ThrowingMethodUnderTestCase<PhysicsCalculator, Double, CalculationDeprecated<Double, Units.Pressure>> {
 
     func testMetricSaltwater() throws {
         // Given

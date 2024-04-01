@@ -3,7 +3,7 @@ import DiveKitInternals
 public extension PhysicsCalculating {
     func airVolumeFromSurface(
         to depth: Double,
-        with volume: Double) throws -> Calculation<Double, Units.Pressure> {
+        with volume: Double) throws -> CalculationDeprecated<Double, Units.Pressure> {
             try volume.validate(with: .nonNegative, orThrow: {
                 error(describing: self, for: $0, with: .physicsCalculator(.negativeVolume))
             })

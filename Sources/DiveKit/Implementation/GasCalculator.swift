@@ -19,7 +19,7 @@ final public class GasCalculator: ConfigurationProviding {
 extension GasCalculator: GasCalculating {
     public func partialPressure<Gas: GasRepresentable>(
         of partialPressure: PartialPressure<Gas>,
-        at depth: Double) throws -> Calculation<PartialPressure<Gas>, Units.Pressure> {
+        at depth: Double) throws -> CalculationDeprecated<PartialPressure<Gas>, Units.Pressure> {
             try physicsCalculator
                 .atmospheresAbsolute(
                     at: depth,
@@ -30,7 +30,7 @@ extension GasCalculator: GasCalculating {
 
     public func depthAirConsumption(
         for minutes: Double,
-        consuming gasConsumed: Double) throws -> Calculation<Double, Units.Pressure> {
+        consuming gasConsumed: Double) throws -> CalculationDeprecated<Double, Units.Pressure> {
             try minutes
                 .validate(
                     with: gasConsumed,
@@ -45,7 +45,7 @@ extension GasCalculator: GasCalculating {
 public extension GasCalculator {
     func maximumOperatingDepth(
         for fractionOxygen: Double,
-        in blend: Blend<Blended>) throws ->  Calculation<Double, Units.Depth> {
+        in blend: Blend<Blended>) throws ->  CalculationDeprecated<Double, Units.Depth> {
             try fractionOxygen.validate(with: .nonNegative, orThrow: { fatalError($0.description) })
                 .map { $0 / blend.partialPressure(of: .oxygen).value }
                 .map { $0 - 1 }
