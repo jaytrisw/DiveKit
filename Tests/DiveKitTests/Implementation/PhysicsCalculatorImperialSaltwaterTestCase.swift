@@ -111,12 +111,12 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
         let volume: Double = 6
 
         // When
-        let result = try sut.airVolumeFromSurface(to: depth, with: volume)
-
-        // Then
-        XCTAssertEqual(result.value, 2)
-        XCTAssertEqual(result.unit, .psi)
-        XCTAssertEqual(result.configuration, sut.configuration)
+        XCTAssertCalculation(try sut.airVolumeFromSurface(to: depth, with: volume)) { result, configuration in
+            // Then
+            XCTAssertEqual(result.value, 2)
+            XCTAssertEqual(result.unit, .psi)
+            XCTAssertEqual(configuration, sut.configuration)
+        }
     }
 
     func testAirVolumeFromSurfaceWithInValidDepthInput() throws {
