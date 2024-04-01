@@ -217,11 +217,12 @@ final class GasCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<GasCalcu
         let blend = Blend<Blended>.enrichedAir(0.32)
 
         // When
-        let result = try sut.maximumOperatingDepth(for: fractionOxygen, in: blend)
-
-        XCTAssertEqual(result.value, 111.375)
-        XCTAssertEqual(result.unit, .feet)
-        XCTAssertEqual(result.configuration, sut.configuration)
+        XCTAssertCalculation(try sut.maximumOperatingDepth(for: fractionOxygen, in: blend)) { result, configuration in
+            // Then
+            XCTAssertEqual(result.value, 111.375)
+            XCTAssertEqual(result.unit, .feet)
+            XCTAssertEqual(configuration, sut.configuration)
+        }
     }
 
     override func createSUT() {

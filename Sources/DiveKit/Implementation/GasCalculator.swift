@@ -45,7 +45,7 @@ extension GasCalculator: GasCalculating {
 public extension GasCalculator {
     func maximumOperatingDepth(
         for fractionOxygen: Double,
-        in blend: Blend<Blended>) throws ->  CalculationDeprecated<Double, Units.Depth> {
+        in blend: Blend<Blended>) throws ->  Calculation<DoubleResult<Units.Depth>> {
             try fractionOxygen.validate(with: .nonNegative, orThrow: { fatalError($0.description) })
                 .map { $0 / blend.partialPressure(of: .oxygen).value }
                 .map { $0 - 1 }
