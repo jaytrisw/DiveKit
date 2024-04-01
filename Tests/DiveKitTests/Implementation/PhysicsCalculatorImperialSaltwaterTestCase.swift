@@ -67,12 +67,12 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
         let toDepth = 66.00
 
         // When
-        let result = try sut.pressureChange(from: fromDepth, to: toDepth)
-
-        // Then
-        XCTAssertEqual(result.value, 1)
-        XCTAssertEqual(result.unit, .psi)
-        XCTAssertEqual(result.configuration, sut.configuration)
+        XCTAssertCalculation(try sut.pressureChange(from: fromDepth, to: toDepth)) { result, configuration in
+            // Then
+            XCTAssertEqual(result.value, 1)
+            XCTAssertEqual(result.unit, .psi)
+            XCTAssertEqual(configuration, sut.configuration)
+        }
     }
 
     func testPressureChangeWithInvalidFromDepthInput() throws {
