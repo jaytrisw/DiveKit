@@ -235,12 +235,17 @@ final class GasCalculatorMetricSaltwaterTestCase: SystemUnderTestCase<GasCalcula
         // Given
 
         // When
-        let result = try sut.surfaceAirConsumption(at: 15, for: 10, consuming: 40, using: sut.physicsCalculator)
-
-        // Then
-        XCTAssertEqual(result.value, 1.6)
-        XCTAssertEqual(result.unit, .bar)
-        XCTAssertEqual(result.configuration, sut.configuration)
+        XCTAssertCalculation(
+            try sut.surfaceAirConsumption(
+                at: 15,
+                for: 10,
+                consuming: 40,
+                using: sut.physicsCalculator)) { result, configuration in
+                    // Then
+                    XCTAssertEqual(result.value, 1.6)
+                    XCTAssertEqual(result.unit, .bar)
+                    XCTAssertEqual(configuration, sut.configuration)
+                }
     }
 
     override func createSUT() {
