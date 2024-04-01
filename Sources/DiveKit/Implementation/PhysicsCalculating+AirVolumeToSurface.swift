@@ -8,6 +8,6 @@ public extension PhysicsCalculating {
                 error(describing: self, for: $0, with: .physicsCalculator(.negativeVolume))
             })
             .map { _ in try atmospheresAbsolute(at: depth, orThrow: { error(describing: self, for: $0, with: .physicsCalculator(.negativeDepth)) }) }
-            .map { .init(volume * $0.value, unit: \.pressure, from: configuration) }
+            .map { .init(volume * $0.result.value, unit: \.pressure, from: configuration) }
         }
 }

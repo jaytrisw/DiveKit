@@ -9,8 +9,8 @@ package extension PhysicsCalculating {
                 .map { .init(result: .init(value: $0, unit: .atmospheres), configuration: configuration) }
         }
 
-    func atmospheresAbsolute(at depth: Double, orThrow error: (Double) -> Error<Double>) throws -> CalculationDeprecated<Double, Units.Pressure> {
+    func atmospheresAbsolute(at depth: Double, orThrow error: (Double) -> Error<Double>) throws -> Calculation<DoubleResult<Units.Pressure>> {
         try gaugePressure(at: depth, orThrow: error)
-            .map { .init(value: $0.result.value + 1, unit: $0.result.unit, configuration: $0.configuration) }
+            .map { .init(result: .init(value: $0.result.value + 1, unit: $0.result.unit), configuration: $0.configuration) }
     }
 }

@@ -38,12 +38,12 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
         let depth = 33.0
 
         // When
-        let result = try sut.atmospheresAbsolute(at: depth)
+        let atmospheresAbsolute = try sut.atmospheresAbsolute(at: depth)
 
         // Then
-        XCTAssertEqual(result.value, 2)
-        XCTAssertEqual(result.unit, .atmospheres)
-        XCTAssertEqual(result.configuration, sut.configuration)
+        XCTAssertEqual(atmospheresAbsolute.result.value, 2)
+        XCTAssertEqual(atmospheresAbsolute.result.unit, .atmospheres)
+        XCTAssertEqual(atmospheresAbsolute.configuration, sut.configuration)
     }
 
     func testAtmospheresAbsoluteWithInvalidInput() throws {

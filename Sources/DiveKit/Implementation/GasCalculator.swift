@@ -24,13 +24,13 @@ extension GasCalculator: GasCalculating {
                 .atmospheresAbsolute(
                     at: depth,
                     orThrow: { error(describing: self, for: $0, with: .gasCalculator(.negativeDepth)) })
-                .map { $0.value * partialPressure.value }
+                .map { $0.result.value * partialPressure.value }
                 .map { .init(.init(partialPressure.gas, value: $0), unit: \.pressure, from: configuration) }
         }
 
     public func depthAirConsumption(
         for minutes: Double,
-        consuming gasConsumed: Double) throws -> CalculationDeprecated<Double, Units.Pressure> {
+        consuming gasConsumed: Double) throws -> Calculation<DoubleResult<Units.Pressure>> {
             try minutes
                 .validate(
                     with: gasConsumed,

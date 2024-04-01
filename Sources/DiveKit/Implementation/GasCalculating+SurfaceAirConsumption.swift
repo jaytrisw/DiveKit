@@ -13,7 +13,7 @@ public extension GasCalculating {
                         error(describing: self, for: $0, with: .gasCalculator(.negative(.depth)))
                     })
                 .with { try depthAirConsumption(for: minutes, consuming: gasConsumed) }
-                .map { $0.second.value / $0.first.value }
+                .map { $0.second.result.value / $0.first.result.value }
                 .map { .init($0, unit: \.pressure, from: configuration) }
         }
 
