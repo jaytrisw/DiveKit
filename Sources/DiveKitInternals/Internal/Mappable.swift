@@ -16,4 +16,3 @@ extension Blend: Mappable {}
 extension PartialPressure: Mappable {}
 extension Double: Mappable {}
 extension ValidatedTuple: Mappable {}
-extension CalculationTuple: Mappable {}
