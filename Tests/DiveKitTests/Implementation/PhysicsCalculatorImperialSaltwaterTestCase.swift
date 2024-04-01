@@ -205,12 +205,11 @@ final class GasCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<GasCalcu
         let depth = 33.0
 
         // When
-        let result = try sut.partialPressure(of: gas, in: blend, at: depth)
+        let partialPressure = try sut.partialPressure(of: gas, in: blend, at: depth)
 
         // Then
-        XCTAssertEqual(result.value.value, 0.42)
-        XCTAssertEqual(result.unit, .psi)
-        XCTAssertEqual(result.configuration, sut.configuration)
+        XCTAssertEqual(partialPressure.result.value, 0.42)
+        XCTAssertEqual(partialPressure.configuration, sut.configuration)
     }
 
     func testM() throws {

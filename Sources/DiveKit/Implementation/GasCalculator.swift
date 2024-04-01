@@ -19,13 +19,13 @@ final public class GasCalculator: ConfigurationProviding {
 extension GasCalculator: GasCalculating {
     public func partialPressure<Gas: GasRepresentable>(
         of partialPressure: PartialPressure<Gas>,
-        at depth: Double) throws -> CalculationDeprecated<PartialPressure<Gas>, Units.Pressure> {
+        at depth: Double) throws -> Calculation<PartialPressure<Gas>> {
             try physicsCalculator
                 .atmospheresAbsolute(
                     at: depth,
                     orThrow: { error(describing: self, for: $0, with: .gasCalculator(.negativeDepth)) })
                 .map { $0.result.value * partialPressure.value }
-                .map { .init(.init(partialPressure.gas, value: $0), unit: \.pressure, from: configuration) }
+                .map { .init(result: .init(partialPressure.gas, value: $0), configuration: configuration) }
         }
 
     public func depthAirConsumption(
