@@ -1,4 +1,4 @@
-import DiveKitCore
+import Foundation
 
 package struct Tuple<Value> {
     package let first: Value

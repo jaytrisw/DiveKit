@@ -5,5 +5,3 @@ package extension Calculation {
         .init(first: self, second: try other())
     }
 }
-
-extension Tuple: Mappable {}

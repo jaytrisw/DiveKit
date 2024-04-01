@@ -23,17 +23,12 @@ package extension Validatable {
         with other: Self,
         using validator: Validator<Self>,
         orThrow error: (Self) -> E1,
-        otherThrow otherError: (Self) -> E2) throws -> ValidatedTuple<Self> {
+        otherThrow otherError: (Self) -> E2) throws -> Tuple<Self> {
             try validate(with: validator, orThrow: error)
             try other.validate(with: validator, orThrow: otherError)
 
             return .init(first: self, second: other)
         }
-}
-
-package struct ValidatedTuple<Value> {
-    package let first: Value
-    package let second: Value
 }
 
 extension Double: Validatable {}

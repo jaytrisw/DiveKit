@@ -13,6 +13,7 @@ package extension Mappable {
 }
 
 extension Blend: Mappable {}
-extension PartialPressure: Mappable {}
+extension Calculation: Mappable {}
 extension Double: Mappable {}
-extension ValidatedTuple: Mappable {}
+extension PartialPressure: Mappable {}
+extension Tuple: Mappable {}
