@@ -5,8 +5,4 @@ public protocol GasCalculating: ConfigurationProviding {
         of partialPressure: PartialPressure<Gas>,
         at depth: Double,
         using physicsCalculator: PhysicsCalculating) throws -> Calculation<PartialPressure<Gas>>
-
-    func depthAirConsumption(
-        for minutes: Double,
-        consuming gasConsumed: Double) throws -> Calculation<Double.Result<Units.Pressure>>
 }

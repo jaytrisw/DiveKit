@@ -21,20 +21,4 @@ extension GasCalculator: GasCalculating {
                     error(describing: self, for: $0, with: .gasCalculator(.negative(.depth)))
                 })
         }
-
-    public func depthAirConsumption(
-        for minutes: Double,
-        consuming gasConsumed: Double) throws -> Calculation<Double.Result<Units.Pressure>> {
-            try minutes.validate(
-                with: gasConsumed,
-                using: .nonNegative,
-                orThrow: { 
-                    error(describing: self, for: $0, with: .gasCalculator(.negative(.time)))
-                },
-                otherThrow: {
-                    error(describing: self, for: $0, with: .gasCalculator(.negative(.consumed)))
-                })
-            .map { $0.second / $0.first }
-            .map { .double($0, unit: \.pressure, from: configuration) }
-        }
 }

@@ -17,6 +17,14 @@ package extension Error.Message {
         .init(key: "time")
     }
 
+    static var startPressure: Self {
+        .init(key: "start.pressure")
+    }
+
+    static var endPressure: Self {
+        .init(key: "end.pressure")
+    }
+
     static var consumed: Self {
         .init(key: "consumed")
     }
