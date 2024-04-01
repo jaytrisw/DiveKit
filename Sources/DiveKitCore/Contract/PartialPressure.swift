@@ -3,12 +3,10 @@ import Foundation
 public struct PartialPressure<Gas: GasRepresentable> {
     public let gas: Gas
     public let value: Double
-    public let gaugePressure: Double
 
-    public init(_ gas: Gas, value: Double, gaugePressure: Double = .zero) {
+    public init(_ gas: Gas, value: Double) {
         self.gas = gas
         self.value = value
-        self.gaugePressure = gaugePressure
     }
 }
 
