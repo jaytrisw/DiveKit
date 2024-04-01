@@ -7,5 +7,5 @@ public protocol GasCalculating: ConfigurationProviding {
 
     func depthAirConsumption(
         for minutes: Double,
-        consuming gasConsumed: Double) throws -> Calculation<DoubleResult<Units.Pressure>>
+        consuming gasConsumed: Double) throws -> Calculation<Double.Result<Units.Pressure>>
 }

@@ -5,7 +5,7 @@ public extension GasCalculating {
         at depth: Double,
         for minutes: Double,
         consuming gasConsumed: Double,
-        using physicsCalculator: PhysicsCalculating) throws -> Calculation<DoubleResult<Units.Pressure>> {
+        using physicsCalculator: PhysicsCalculating) throws -> Calculation<Double.Result<Units.Pressure>> {
             try physicsCalculator
                 .atmospheresAbsolute(
                     at: depth,
@@ -14,7 +14,7 @@ public extension GasCalculating {
                     })
                 .with { try depthAirConsumption(for: minutes, consuming: gasConsumed) }
                 .map { $0.second.result.value / $0.first.result.value }
-                .map { .init($0, unit: \.pressure, from: configuration) }
+                .map { .double($0, unit: \.pressure, from: configuration) }
         }
 
     func surfaceAirConsumption(
@@ -22,7 +22,7 @@ public extension GasCalculating {
         for minutes: Double,
         start startGas: Double,
         end endGas: Double,
-        using physicsCalculator: PhysicsCalculating) throws -> Calculation<DoubleResult<Units.Pressure>> {
+        using physicsCalculator: PhysicsCalculating) throws -> Calculation<Double.Result<Units.Pressure>> {
             try startGas.validate(
                 with: endGas,
                 using: .nonNegative,

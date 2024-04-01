@@ -1,4 +1,3 @@
-import Foundation
 import DiveKitInternals
 
 final public class GasCalculator: ConfigurationProviding {
@@ -25,12 +24,12 @@ extension GasCalculator: GasCalculating {
                     at: depth,
                     orThrow: { error(describing: self, for: $0, with: .gasCalculator(.negativeDepth)) })
                 .map { $0.result.value * partialPressure.value }
-                .map { .init(result: .init(partialPressure.gas, value: $0), configuration: configuration) }
+                .map { .partialPressure(partialPressure.gas, value: $0, configuration: configuration) }
         }
 
     public func depthAirConsumption(
         for minutes: Double,
-        consuming gasConsumed: Double) throws -> Calculation<DoubleResult<Units.Pressure>> {
+        consuming gasConsumed: Double) throws -> Calculation<Double.Result<Units.Pressure>> {
             try minutes
                 .validate(
                     with: gasConsumed,
@@ -38,18 +37,18 @@ extension GasCalculator: GasCalculating {
                     orThrow: { error(describing: self, for: $0, with: .gasCalculator(.negative(.time))) }, 
                     otherThrow: { error(describing: self, for: $0, with: .gasCalculator(.negative(.consumed))) })
                 .map { $0.second / $0.first }
-                .map { .init($0, unit: \.pressure, from: configuration) }
+                .map { .double($0, unit: \.pressure, from: configuration) }
         }
 }
 
 public extension GasCalculator {
     func maximumOperatingDepth(
         for fractionOxygen: Double,
-        in blend: Blend<Blended>) throws ->  Calculation<DoubleResult<Units.Depth>> {
+        in blend: Blend<Blended>) throws ->  Calculation<Double.Result<Units.Depth>> {
             try fractionOxygen.validate(with: .nonNegative, orThrow: { fatalError($0.description) })
                 .map { $0 / blend.partialPressure(of: .oxygen).value }
                 .map { $0 - 1 }
                 .map { $0 * configuration.water.pressure(configuration.units).increase.value }
-                .map {.init($0, unit: \.depth, from: configuration) }
+                .map {.double($0, unit: \.depth, from: configuration) }
     }
 }

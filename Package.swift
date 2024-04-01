@@ -29,8 +29,10 @@ let package = Package(
             swiftSettings: defaultSettings),
         .target(
             name: "TestUtility",
-            dependencies: [],
-            swiftSettings: defaultSettings, 
+            dependencies: [
+                "DiveKitCore"
+            ],
+            swiftSettings: defaultSettings,
             linkerSettings: [
                 .linkedFramework("XCTest")
             ]),

@@ -1,7 +1,7 @@
 import DiveKitCore
 import XCTest
 
-package func XCTAssertCalculation<Result: CalculationResultRepresentable>(
+package func XCTAssertCalculation<Result: ResultRepresentable>(
     _ calculation: @autoclosure () throws -> Calculation<Result>,
     _ message: @autoclosure () -> String = "",
     file: StaticString = #filePath,

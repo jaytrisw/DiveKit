@@ -17,7 +17,7 @@ open class ThrowingMethodUnderTestCase<SUT, Input, Output>: SystemUnderTestCase<
         public let input: Input
         public let output: Output
 
-        public init(input: Input, output: Output) {
+        public init(_ input: Input, output: Output) {
             self.input = input
             self.output = output
         }
