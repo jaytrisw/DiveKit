@@ -355,6 +355,29 @@ final class GasCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<GasCalcu
             }
     }
 
+    func testSurfaceAirConsumptionStartEndInvalidCalculatedConsumingPressureInput() throws {
+        // Given
+        let depth = 90.0
+        let minutes = 10.0
+        let startPressure = 2400.0
+        let endPressure = 3000.0
+
+        // When
+        XCTAssertThrowsError(
+            try sut.surfaceAirConsumption(
+                at: depth,
+                for: minutes,
+                start: startPressure,
+                end: endPressure,
+                using: physicsCalculator),
+            as: Error<Double>.self) { error in
+                // Then
+                XCTAssertEqual(error.value, startPressure - endPressure)
+                XCTAssertEqual(error.message.key, "dive.kit.gas.calculator.negative.consumed")
+                XCTAssertEqual(error.callSite, "GasCalculator.surfaceAirConsumption(at:for:start:end:using:)")
+            }
+    }
+
     override func createSUT() {
         sut = .init(.imperial, water: .salt)
         physicsCalculator = .init(.imperial, water: .salt)

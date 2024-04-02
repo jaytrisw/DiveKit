@@ -24,4 +24,43 @@ package extension GasCalculating {
                     using: physicsCalculator,
                     orThrow: error) }
         }
+
+    func depthAirConsumption(
+        for minutes: Double,
+        consuming gasConsumed: Double,
+        minutesError: (Double) -> Error<Double>,
+        consumedError: (Double) -> Error<Double>) throws -> Calculation<Double.Result<Units.Pressure>> {
+            try minutes.validate(
+                with: gasConsumed,
+                using: .nonNegative,
+                orThrow: {
+                    minutesError($0)
+                },
+                otherThrow: {
+                    consumedError($0)
+                })
+            .map { $0.second / $0.first }
+            .map { .double($0, unit: \.pressure, from: configuration) }
+        }
+
+    func surfaceAirConsumption(
+        at depth: Double,
+        for minutes: Double,
+        consuming gasConsumed: Double,
+        using physicsCalculator: PhysicsCalculating,
+        atmospheresAbsoluteError: (Double) -> Error<Double>,
+        minutesError: (Double) -> Error<Double>,
+        consumedError: (Double) -> Error<Double>) throws -> Calculation<Double.Result<Units.Pressure>> {
+            try physicsCalculator.atmospheresAbsolute(
+                at: depth,
+                orThrow: atmospheresAbsoluteError)
+            .with { try depthAirConsumption(
+                for: minutes,
+                consuming: gasConsumed,
+                minutesError: minutesError,
+                consumedError: consumedError)
+            }
+            .map { $0.second.result.value / $0.first.result.value }
+            .map { .double($0, unit: \.pressure, from: configuration) }
+        }
 }
