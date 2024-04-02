@@ -9,6 +9,10 @@ package extension Error.Message {
         .init(key: "dive.kit.gas.calculator.\(other.key)")
     }
 
+    static var invalidTank: Self {
+        .init(key: "invalid.tank")
+    }
+
     static func negative(_ other: Self) -> Self {
         .init(key: "negative.\(other.key)")
     }

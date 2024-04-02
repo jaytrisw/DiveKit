@@ -1,0 +1,39 @@
+import DiveKitInternals
+
+public extension GasCalculating {
+    func respiratoryMinuteVolume(
+        at depth: Double,
+        for minutes: Double,
+        consuming gasConsumed: Double,
+        with tank: Tank,
+        using physicsCalculator: PhysicsCalculating) throws -> Calculation<Double.Result<Units.Volume>> {
+            try tank.validate(
+                using: .size,
+                orThrow: {
+                    error(describing: self, for: $0, with: .gasCalculator(.invalidTank))
+                })
+            .map { try surfaceAirConsumption(
+                at: depth,
+                for: minutes,
+                consuming: gasConsumed,
+                using: physicsCalculator,
+                atmospheresAbsoluteError: {
+                    error(describing: self, for: $0, with: .gasCalculator(.negative(.depth)))
+                },
+                minutesError: {
+                    error(describing: self, for: $0, with: .gasCalculator(.negative(.time)))
+                },
+                consumedError: {
+                    error(describing: self, for: $0, with: .gasCalculator(.negative(.consumed)))
+                })
+            }
+            .map { $0.result.value * tank.size.conversionFactor }
+            .map { .double($0, unit: \.volume, from: configuration) }
+        }
+}
+
+private extension Tank.Size {
+    var conversionFactor: Double {
+        volume / ratedPressure
+    }
+}

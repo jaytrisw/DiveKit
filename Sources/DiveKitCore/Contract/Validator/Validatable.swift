@@ -3,6 +3,10 @@ import Foundation
 package protocol Validatable {}
 
 package extension Validatable {
+    func validate(using validator: Validator<Self>) -> Bool {
+        validator.validate(self)
+    }
+
     @discardableResult
     func validate<E: Swift.Error>(
         using validator: Validator<Self>,
@@ -37,3 +41,4 @@ package extension Validatable {
 }
 
 extension Double: Validatable {}
+extension Tank: Validatable {}

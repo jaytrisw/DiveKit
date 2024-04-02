@@ -13,3 +13,5 @@ public struct Blend<State: BlendState> {
         storage.values.reduce(.zero, { $0 + $1 })
     }
 }
+
+extension Blend: Equatable {}
