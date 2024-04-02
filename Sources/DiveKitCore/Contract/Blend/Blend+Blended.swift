@@ -7,9 +7,3 @@ public extension Blend where State == Blended {
         .init(gas, value: storage[gas, default: .zero])
     }
 }
-
-extension PartialPressure {
-    static func zero(_ gas: Gas) -> Self {
-        .init(gas, value: .zero)
-    }
-}

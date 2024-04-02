@@ -16,9 +16,10 @@ public struct Error<Value> {
             value: value,
             message: message,
             callSite: [
-                object.components(separatedBy: ".").last ?? object,
-                function.description.components(separatedBy: ".").last ?? function.description
+                object.components(separatedBy: ".").last,
+                function.description.components(separatedBy: ".").last
             ]
+                .compactMap { $0 }
                 .joined(separator: "."))
     }
 }

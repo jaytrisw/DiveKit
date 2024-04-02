@@ -1,4 +1,3 @@
-import Foundation
 import TestUtility
 @testable import DiveKitCore
 
