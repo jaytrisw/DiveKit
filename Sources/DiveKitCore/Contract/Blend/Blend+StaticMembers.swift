@@ -2,23 +2,17 @@ import Foundation
 
 public extension Blend {
     static var air: Blend<Blended> {
-        try! Blend<Unblended>()
-            .adding(.init(.oxygen, value: 0.21))
-            .adding(.init(.nitrogen, value: 0.78))
-            .filling(with: .trace)
-            .forceBlend()
+        .init(storage: [
+            Oxygen(): 0.21,
+            Nitrogen(): 0.78,
+            Trace(): 0.01
+        ])
     }
 
     static func enrichedAir(_ fraction: Double) -> Blend<Blended> {
-        try! Blend<Unblended>()
-            .adding(.init(.oxygen, value: fraction))
-            .filling(with: .nitrogen)
-            .forceBlend()
-    }
-}
-
-extension Blend where State == Unblended {
-    package func forceBlend() -> Blend<Blended> {
-        return .init(storage: storage)
+        .init(storage: [
+            Oxygen(): fraction,
+            Nitrogen(): 1.0 - fraction,
+        ])
     }
 }

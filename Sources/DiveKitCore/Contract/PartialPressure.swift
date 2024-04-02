@@ -11,4 +11,5 @@ public struct PartialPressure<Gas: GasRepresentable> {
 }
 
 extension PartialPressure: Equatable {}
+extension PartialPressure: Hashable {}
 extension PartialPressure: ResultRepresentable {}

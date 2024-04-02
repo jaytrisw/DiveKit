@@ -17,8 +17,9 @@ final class BlendStaticMembersTestCase: SystemUnderTestCase<Blend<Blended>> {
         XCTAssertEqual(oxygen.gas, .oxygen)
         XCTAssertEqual(nitrogen.value, 0.78)
         XCTAssertEqual(nitrogen.gas, .nitrogen)
-        XCTAssertEqual(trace.value, 0.01, accuracy: 0.1)
+        XCTAssertEqual(trace.value, 0.01)
         XCTAssertEqual(trace.gas, .trace)
+        XCTAssertEqual(sut.totalPressure, 1.0)
         XCTAssertEqual(sut.storage.count, 3)
     }
 
@@ -36,6 +37,7 @@ final class BlendStaticMembersTestCase: SystemUnderTestCase<Blend<Blended>> {
         XCTAssertEqual(oxygen.gas, .oxygen)
         XCTAssertEqual(nitrogen.value, 0.68, accuracy: 0.1)
         XCTAssertEqual(nitrogen.gas, .nitrogen)
+        XCTAssertEqual(sut.totalPressure, 1.0)
         XCTAssertEqual(sut.storage.count, 2)
     }
 }
