@@ -15,3 +15,4 @@ public struct Blend<State: BlendState> {
 }
 
 extension Blend: Equatable {}
+extension Blend: ResultRepresentable where State == Blended {}
