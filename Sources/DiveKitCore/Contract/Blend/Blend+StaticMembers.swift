@@ -1,11 +1,11 @@
 import Foundation
 
-public extension Blend {
+public extension Blend where State == Blended {
     static var air: Blend<Blended> {
         .init(storage: [
-            Oxygen(): 0.21,
-            Nitrogen(): 0.78,
-            Trace(): 0.01
+            Oxygen(): 0.209,
+            Nitrogen(): 0.79,
+            Trace(): 0.001
         ])
     }
 

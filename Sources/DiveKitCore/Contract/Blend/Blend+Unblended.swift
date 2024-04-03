@@ -51,7 +51,6 @@ public extension Blend where State == Unblended {
                 message: .blend(.totalPressure),
                 describe: self)
         }
-
         return .init(storage: storage)
     }
 }

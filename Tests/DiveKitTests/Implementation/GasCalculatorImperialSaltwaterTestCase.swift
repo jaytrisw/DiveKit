@@ -55,7 +55,7 @@ final class GasCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<GasCalcu
             at: depth,
             using: physicsCalculator)) { result, configuration in
                 // Then
-                XCTAssertEqual(result.value, 0.42)
+                XCTAssertEqual(result.value, 0.418)
                 XCTAssertEqual(configuration, sut.configuration)
             }
     }
@@ -99,6 +99,28 @@ final class GasCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<GasCalcu
                 XCTAssertEqual(result.value, 0.42)
                 XCTAssertEqual(configuration, sut.configuration)
             }
+    }
+
+    func testPartialPressureUnblendedInvalidBlendInput() throws {
+        // Given
+        let gas = Oxygen()
+        let blend = try Blend()
+            .adding(.oxygen, pressure: 0.21)
+        let depth = 33.0
+
+        // When
+        XCTAssertThrowsError(
+            try sut.partialPressure(
+                of: gas,
+                blending: blend,
+                at: depth,
+                using: physicsCalculator), 
+            as: Error<Blend>.self) { error in
+                    // Then
+                    XCTAssertEqual(error.value, blend)
+                    XCTAssertEqual(error.message.key, "dive.kit.gas.calculator.dive.kit.blend.total.pressure")
+                    XCTAssertEqual(error.callSite, "GasCalculator.partialPressure(of:blending:at:using:)")
+                }
     }
 
     func testPartialPressureUnblendedInvalidInput() throws {
@@ -514,6 +536,77 @@ final class GasCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<GasCalcu
                 XCTAssertEqual(error.value, tank)
                 XCTAssertEqual(error.message.key, "dive.kit.gas.calculator.invalid.tank")
                 XCTAssertEqual(error.callSite, "GasCalculator.respiratoryMinuteVolume(at:for:consuming:with:using:)")
+            }
+    }
+
+    // MARK: equivalentAirDepth(for:with:)
+
+    func testEquivalentAirDepthValidInput() {
+        // Given
+        let depth = 80.0
+        let blend = Blend<Blended>.enrichedAir(0.4)
+
+        // When
+        XCTAssertCalculation(
+            try sut.equivalentAirDepth(for: depth, with: blend)) { result, configuration in
+                // Then
+                XCTAssertEqual(result.value, 52.82278481012658)
+                XCTAssertEqual(result.unit, .feet)
+                XCTAssertEqual(configuration, sut.configuration)
+            }
+    }
+
+    func testEquivalentAirDepthUnblendedValidInput() throws {
+        // Given
+        let depth = 80.0
+        let blend = try Blend<Unblended>()
+            .adding(.oxygen, pressure: 0.4)
+            .filling(with: .nitrogen)
+
+        // When
+        XCTAssertCalculation(
+            try sut.equivalentAirDepth(for: depth, with: blend)) { result, configuration in
+                // Then
+                XCTAssertEqual(result.value, 52.82278481012658)
+                XCTAssertEqual(result.unit, .feet)
+                XCTAssertEqual(configuration, sut.configuration)
+            }
+    }
+
+    func testEquivalentAirDepthInvalidDepthInput() {
+        // Given
+        let depth = -80.0
+        let blend = Blend<Blended>.enrichedAir(0.4)
+
+        // When
+        XCTAssertThrowsError(
+            try sut.equivalentAirDepth(
+                for: depth,
+                with: blend),
+            as: Error<Double>.self) { error in
+                // Then
+                XCTAssertEqual(error.value, depth)
+                XCTAssertEqual(error.message.key, "dive.kit.gas.calculator.negative.depth")
+                XCTAssertEqual(error.callSite, "GasCalculator.equivalentAirDepth(for:with:)")
+            }
+    }
+
+    func testEquivalentAirDepthUnblendedInvalidBlendInput() throws {
+        // Given
+        let depth = 80.0
+        let blend = try Blend<Unblended>()
+            .adding(.oxygen, pressure: 0.4)
+
+        // When
+        XCTAssertThrowsError(
+            try sut.equivalentAirDepth(
+                for: depth,
+                with: blend),
+            as: Error<Blend>.self) { error in
+                // Then
+                XCTAssertEqual(error.value, blend)
+                XCTAssertEqual(error.message.key, "dive.kit.gas.calculator.dive.kit.blend.total.pressure")
+                XCTAssertEqual(error.callSite, "GasCalculator.equivalentAirDepth(for:with:)")
             }
     }
 

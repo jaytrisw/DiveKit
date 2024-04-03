@@ -21,14 +21,17 @@ public extension GasCalculating {
         blending blend: Blend<Unblended>,
         at depth: Double,
         using physicsCalculator: PhysicsCalculating) throws -> Calculation<PartialPressure<Gas>> {
-            try blend.map { try $0.blend() }
-                .map { try partialPressure(
-                    of: gas,
-                    in: $0,
-                    at: depth,
-                    using: physicsCalculator,
-                    orThrow: {
-                        error(describing: self, for: $0, with: .gasCalculator(.negative(.depth)))
-                    }) }
+            try blend.blend(
+                orThrow: {
+                    error(describing: self, for: $0, with: .gasCalculator(.blend(.totalPressure)))
+                })
+            .map { try partialPressure(
+                of: gas,
+                in: $0,
+                at: depth,
+                using: physicsCalculator,
+                orThrow: {
+                    error(describing: self, for: $0, with: .gasCalculator(.negative(.depth)))
+                }) }
         }
 }
