@@ -63,8 +63,8 @@ let package = Package(
 let defaultSettings: [SwiftSetting] = [
     .unsafeFlags([
         "-Xfrontend",
-        "-warn-long-function-bodies=10",
+        "-warn-long-function-bodies=200",
         "-Xfrontend",
-        "-warn-long-expression-type-checking=5"
+        "-warn-long-expression-type-checking=100"
     ])
 ]
