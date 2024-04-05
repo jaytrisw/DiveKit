@@ -7,7 +7,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
 
     func testEquivalentAirDepthValidInput() {
         // Given
-        let depth = 80.0
+        let depth: Depth = 80.0
         let blend = Blend<Blended>.enrichedAir(0.4)
 
         // When
@@ -22,7 +22,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
 
     func testEquivalentAirDepthUnblendedValidInput() throws {
         // Given
-        let depth = 80.0
+        let depth: Depth = 80.0
         let blend = try Blend<Unblended>()
             .adding(.oxygen, pressure: 0.4)
             .filling(with: .nitrogen)
@@ -39,7 +39,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
 
     func testEquivalentAirDepthInvalidDepthInput() {
         // Given
-        let depth = -80.0
+        let depth: Depth = -80.0
         let blend = Blend<Blended>.enrichedAir(0.4)
 
         // When
@@ -47,7 +47,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
             try sut.equivalentAirDepth(
                 for: depth,
                 with: blend),
-            as: Error<Double>.self) { error in
+            as: Error<Depth>.self) { error in
                 // Then
                 XCTAssertEqual(error.value, depth)
                 XCTAssertEqual(error.message.key, "dive.kit.gas.calculator.negative.depth")
@@ -57,7 +57,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
 
     func testEquivalentAirDepthUnblendedInvalidBlendInput() throws {
         // Given
-        let depth = 80.0
+        let depth: Depth = 80.0
         let blend = try Blend<Unblended>()
             .adding(.oxygen, pressure: 0.4)
 

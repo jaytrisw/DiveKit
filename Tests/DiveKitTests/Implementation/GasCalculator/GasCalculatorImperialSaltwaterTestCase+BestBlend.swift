@@ -7,8 +7,8 @@ extension GasCalculatorImperialSaltwaterTestCase {
 
     func testBestBlendValidInput() throws {
         // Given
-        let depth = 111.0
-        let fractionOxygen = 1.4
+        let depth: Depth = 111.0
+        let fractionOxygen: FractionalPressure = 1.4
 
         // When
         XCTAssertCalculation(
@@ -24,8 +24,8 @@ extension GasCalculatorImperialSaltwaterTestCase {
 
     func testBestBlendInvalidDepthInput() throws {
         // Given
-        let depth = -111.0
-        let fractionOxygen = 1.4
+        let depth: Depth = -111.0
+        let fractionOxygen: FractionalPressure = 1.4
 
         // When
         XCTAssertThrowsError(
@@ -33,7 +33,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 for: depth,
                 fractionOxygen: fractionOxygen,
                 using: physicsCalculator),
-            as: Error<Double>.self) { error in
+            as: Error<Depth>.self) { error in
                 // Then
                 XCTAssertEqual(error.value, depth)
                 XCTAssertEqual(error.message.key, "dive.kit.gas.calculator.negative.depth")
@@ -43,8 +43,8 @@ extension GasCalculatorImperialSaltwaterTestCase {
 
     func testBestBlendInvalidFractionOxygenInput() throws {
         // Given
-        let depth = 111.0
-        let fractionOxygen = -1.4
+        let depth: Depth = 111.0
+        let fractionOxygen: FractionalPressure = -1.4
 
         // When
         XCTAssertThrowsError(
@@ -52,7 +52,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 for: depth,
                 fractionOxygen: fractionOxygen,
                 using: physicsCalculator),
-            as: Error<Double>.self) { error in
+            as: Error<FractionalPressure>.self) { error in
                 // Then
                 XCTAssertEqual(error.value, fractionOxygen)
                 XCTAssertEqual(error.message.key, "dive.kit.gas.calculator.negative.fraction.oxygen")

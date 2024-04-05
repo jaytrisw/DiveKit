@@ -11,7 +11,7 @@ final public class GasCalculator: ConfigurationProviding {
 extension GasCalculator: GasCalculating {
     public func partialPressure<Gas: GasRepresentable>(
         of inputPartialPressure: PartialPressure<Gas>,
-        at depth: Double,
+        at depth: Depth,
         using physicsCalculator: PhysicsCalculating) throws -> Calculation<PartialPressure<Gas>> {
             try partialPressure(
                 of: inputPartialPressure,

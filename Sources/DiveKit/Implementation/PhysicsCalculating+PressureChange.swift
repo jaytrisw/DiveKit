@@ -2,8 +2,8 @@ import DiveKitInternals
 
 public extension PhysicsCalculating {
     func pressureChange(
-        from firstDepth: Double,
-        to secondDepth: Double) throws -> Calculation<Double.Result<Units.Pressure>> {
+        from firstDepth: Depth,
+        to secondDepth: Depth) throws -> Calculation<Double.Result<Units.Pressure>> {
             try atmospheresAbsolute(
                 at: firstDepth,
                 orThrow: {

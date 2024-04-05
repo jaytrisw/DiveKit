@@ -2,8 +2,8 @@ import DiveKitInternals
 
 public extension GasCalculating {
     func bestBlend(
-        for depth: Double,
-        fractionOxygen: Double,
+        for depth: Depth,
+        fractionOxygen: FractionalPressure,
         using physicsCalculator: PhysicsCalculating) throws -> Calculation<Blend<Blended>> {
             try fractionOxygen.validate(
                 using: .nonNegative,
@@ -17,7 +17,7 @@ public extension GasCalculating {
                         error(describing: self, for: $0, with: .gasCalculator(.negative(.depth)))
                     })
             }
-            .map { fractionOxygen / $0.result.value }
+            .map { fractionOxygen.value / $0.result.value }
             .map { $0 * 100 }
             .map { $0.rounded(.towardZero) }
             .map { $0 / 100 }

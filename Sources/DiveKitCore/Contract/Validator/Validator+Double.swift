@@ -15,3 +15,13 @@ package extension Double {
         1
     }
 }
+
+package extension Validator where Value: DecimalInputRepresentable {
+    static var nonNegative: Self {
+        .init(validate: { $0.value >= .zero })
+    }
+
+    static func between(_ lower: Value, and upper: Value) -> Self {
+        .init(validate: { $0 >= lower && $0 <= upper })
+    }
+}

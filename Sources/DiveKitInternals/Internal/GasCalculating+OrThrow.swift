@@ -3,9 +3,9 @@ import DiveKitCore
 package extension GasCalculating {
     func partialPressure<Gas: GasRepresentable>(
         of partialPressure: PartialPressure<Gas>,
-        at depth: Double,
+        at depth: Depth,
         using physicsCalculator: PhysicsCalculating,
-        orThrow error: (Double) -> Error<Double>) throws -> Calculation<PartialPressure<Gas>> {
+        orThrow error: (Depth) -> Error<Depth>) throws -> Calculation<PartialPressure<Gas>> {
             try physicsCalculator.atmospheresAbsolute(at: depth, orThrow: error)
                 .map { $0.result.value * partialPressure.value }
                 .map { .partialPressure(partialPressure.gas, value: $0, configuration: configuration) }
@@ -14,9 +14,9 @@ package extension GasCalculating {
     func partialPressure<Gas: GasRepresentable>(
         of gas: Gas,
         in blend: Blend<Blended>,
-        at depth: Double,
+        at depth: Depth,
         using physicsCalculator: PhysicsCalculating,
-        orThrow error: (Double) -> Error<Double>) throws -> Calculation<PartialPressure<Gas>> {
+        orThrow error: (Depth) -> Error<Depth>) throws -> Calculation<PartialPressure<Gas>> {
             try blend.partialPressure(of: gas)
                 .map { try partialPressure(
                     of: $0,
@@ -26,31 +26,32 @@ package extension GasCalculating {
         }
 
     func depthAirConsumption(
-        for minutes: Double,
-        consuming gasConsumed: Double,
-        minutesError: (Double) -> Error<Double>,
-        consumedError: (Double) -> Error<Double>) throws -> Calculation<Double.Result<Units.Pressure>> {
-            try minutes.validate(
-                with: gasConsumed,
-                using: .nonNegative,
-                orThrow: {
-                    minutesError($0)
-                },
-                otherThrow: {
-                    consumedError($0)
-                })
-            .map { $0.second / $0.first }
+        for minutes: Minutes,
+        consuming gasConsumed: Pressure,
+        minutesError: (Minutes) -> Error<Minutes>,
+        consumedError: (Pressure) -> Error<Pressure>) throws -> Calculation<Double.Result<Units.Pressure>> {
+            try minutes.validate(using: .nonNegative, orThrow: {
+                minutesError($0)
+            })
+            .map {
+                try gasConsumed.validate(
+                    using: .nonNegative,
+                    orThrow: {
+                        consumedError($0)
+                    })
+            }
+            .map { gasConsumed.value / minutes.value }
             .map { .double($0, unit: \.pressure, from: configuration) }
         }
 
     func surfaceAirConsumption(
-        at depth: Double,
-        for minutes: Double,
-        consuming gasConsumed: Double,
+        at depth: Depth,
+        for minutes: Minutes,
+        consuming gasConsumed: Pressure,
         using physicsCalculator: PhysicsCalculating,
-        atmospheresAbsoluteError: (Double) -> Error<Double>,
-        minutesError: (Double) -> Error<Double>,
-        consumedError: (Double) -> Error<Double>) throws -> Calculation<Double.Result<Units.Pressure>> {
+        atmospheresAbsoluteError: (Depth) -> Error<Depth>,
+        minutesError: (Minutes) -> Error<Minutes>,
+        consumedError: (Pressure) -> Error<Pressure>) throws -> Calculation<Double.Result<Units.Pressure>> {
             try physicsCalculator.atmospheresAbsolute(
                 at: depth,
                 orThrow: atmospheresAbsoluteError)

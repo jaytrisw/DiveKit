@@ -2,9 +2,9 @@ import DiveKitInternals
 
 public extension GasCalculating {
     func respiratoryMinuteVolume(
-        at depth: Double,
-        for minutes: Double,
-        consuming gasConsumed: Double,
+        at depth: Depth,
+        for minutes: Minutes,
+        consuming gasConsumed: Pressure,
         with tank: Tank,
         using physicsCalculator: PhysicsCalculating) throws -> Calculation<Double.Result<Units.Volume>> {
             try tank.validate(

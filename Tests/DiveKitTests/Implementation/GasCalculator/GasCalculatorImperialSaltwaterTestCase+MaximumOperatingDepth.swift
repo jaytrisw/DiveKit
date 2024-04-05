@@ -6,27 +6,27 @@ extension GasCalculatorImperialSaltwaterTestCase {
     // MARK: maximumOperatingDepth(for:in:)
 
     func testMaximumOperatingDepthValidInput() throws {
-        let fractionOxygen = 1.4
+        let fractionOxygen: FractionalPressure = 1.4
         let blend = Blend<Blended>.enrichedAir(0.32)
 
         // When
         XCTAssertCalculation(
             try sut.maximumOperatingDepth(for: fractionOxygen, in: blend)) { result, configuration in
                 // Then
-                XCTAssertEqual(result.value, 111.375)
+                XCTAssertEqual(result.value, 111.3749975413084)
                 XCTAssertEqual(result.unit, .feet)
                 XCTAssertEqual(configuration, sut.configuration)
             }
     }
 
     func testMaximumOperatingDepthInvalidInput() throws {
-        let fractionOxygen = -1.4
+        let fractionOxygen: FractionalPressure = -1.4
         let blend = Blend<Blended>.enrichedAir(0.32)
 
         // When
         XCTAssertThrowsError(
             try sut.maximumOperatingDepth(for: fractionOxygen, in: blend),
-            as: Error<Double>.self) { error in
+            as: Error<FractionalPressure>.self) { error in
                 // Then
                 XCTAssertEqual(error.value, fractionOxygen)
                 XCTAssertEqual(error.message.key, "dive.kit.gas.calculator.negative.fraction.oxygen")

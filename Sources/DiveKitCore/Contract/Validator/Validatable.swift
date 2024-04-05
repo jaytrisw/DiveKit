@@ -41,4 +41,5 @@ package extension Validatable {
 }
 
 extension Double: Validatable {}
+extension Depth: Validatable {}
 extension Tank: Validatable {}

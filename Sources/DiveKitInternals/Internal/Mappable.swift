@@ -1,7 +1,5 @@
 import DiveKitCore
 
-package protocol Mappable {}
-
 package extension Mappable {
     func map<Transform>(_ transform: () throws -> Transform) rethrows -> Transform {
         try transform()

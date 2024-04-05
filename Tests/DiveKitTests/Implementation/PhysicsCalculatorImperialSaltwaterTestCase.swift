@@ -7,7 +7,7 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
 
     func testGaugePressureWithValidInput() throws {
         // Given
-        let depth = 33.0
+        let depth: Depth = 33.0
 
         // When
         XCTAssertCalculation(try sut.gaugePressure(at: depth)) { result, configuration in
@@ -20,10 +20,10 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
 
     func testGaugePressureWithInvalidInput() throws {
         // Given
-        let depth = -33.0
+        let depth: Depth = -33.0
 
         // When
-        XCTAssertThrowsError(try sut.gaugePressure(at: depth), as: Error<Double>.self) { error in
+        XCTAssertThrowsError(try sut.gaugePressure(at: depth), as: Error<Depth>.self) { error in
             // Then
             XCTAssertEqual(error.value, depth)
             XCTAssertEqual(error.message.key, "dive.kit.physics.calculator.negative.depth")
@@ -35,7 +35,7 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
 
     func testAtmospheresAbsoluteWithValidInput() throws {
         // Given
-        let depth = 33.0
+        let depth: Depth = 33.0
 
         // When
         XCTAssertCalculation(try sut.atmospheresAbsolute(at: depth)) { result, configuration in
@@ -48,10 +48,10 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
 
     func testAtmospheresAbsoluteWithInvalidInput() throws {
         // Given
-        let depth = -33.0
+        let depth: Depth = -33.0
 
         // When
-        XCTAssertThrowsError(try sut.atmospheresAbsolute(at: depth), as: Error<Double>.self) { error in
+        XCTAssertThrowsError(try sut.atmospheresAbsolute(at: depth), as: Error<Depth>.self) { error in
             // Then
             XCTAssertEqual(error.value, depth)
             XCTAssertEqual(error.message.key, "dive.kit.physics.calculator.negative.depth")
@@ -63,8 +63,8 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
 
     func testPressureChangeWithValidInput() throws {
         // Given
-        let fromDepth = 33.0
-        let toDepth = 66.00
+        let fromDepth: Depth = 33.0
+        let toDepth: Depth = 66.00
 
         // When
         XCTAssertCalculation(try sut.pressureChange(from: fromDepth, to: toDepth)) { result, configuration in
@@ -77,11 +77,11 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
 
     func testPressureChangeWithInvalidFromDepthInput() throws {
         // Given
-        let fromDepth = -33.0
-        let toDepth = 66.00
+        let fromDepth: Depth = -33.0
+        let toDepth: Depth = 66.00
 
         // When
-        XCTAssertThrowsError(try sut.pressureChange(from: fromDepth, to: toDepth), as: Error<Double>.self) { error in
+        XCTAssertThrowsError(try sut.pressureChange(from: fromDepth, to: toDepth), as: Error<Depth>.self) { error in
             // Then
             XCTAssertEqual(error.value, fromDepth)
             XCTAssertEqual(error.message.key, "dive.kit.physics.calculator.negative.depth")
@@ -91,11 +91,11 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
 
     func testPressureChangeWithInvalidToDepthInput() throws {
         // Given
-        let fromDepth = 33.0
-        let toDepth = -66.00
+        let fromDepth: Depth = 33.0
+        let toDepth: Depth = -66.00
 
         // When
-        XCTAssertThrowsError(try sut.pressureChange(from: fromDepth, to: toDepth), as: Error<Double>.self) { error in
+        XCTAssertThrowsError(try sut.pressureChange(from: fromDepth, to: toDepth), as: Error<Depth>.self) { error in
             // Then
             XCTAssertEqual(error.value, toDepth)
             XCTAssertEqual(error.message.key, "dive.kit.physics.calculator.negative.depth")
@@ -107,8 +107,8 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
 
     func testAirVolumeFromSurfaceWithValidInput() throws {
         // Given
-        let depth: Double = 66
-        let volume: Double = 6
+        let depth: Depth = 66
+        let volume: Volume = 6
 
         // When
         XCTAssertCalculation(try sut.airVolumeFromSurface(to: depth, with: volume)) { result, configuration in
@@ -121,11 +121,11 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
 
     func testAirVolumeFromSurfaceWithInValidDepthInput() throws {
         // Given
-        let depth: Double = -66
-        let volume: Double = 6
+        let depth: Depth = -66
+        let volume: Volume = 6
 
         // When
-        XCTAssertThrowsError(try sut.airVolumeFromSurface(to: depth, with: volume), as: Error<Double>.self) { error in
+        XCTAssertThrowsError(try sut.airVolumeFromSurface(to: depth, with: volume), as: Error<Depth>.self) { error in
             // Then
             XCTAssertEqual(error.value, depth)
             XCTAssertEqual(error.message.key, "dive.kit.physics.calculator.negative.depth")
@@ -135,11 +135,11 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
 
     func testAirVolumeFromSurfaceWithInValidVolumeInput() throws {
         // Given
-        let depth: Double = 66
-        let volume: Double = -6
+        let depth: Depth = 66
+        let volume: Volume = -6
 
         // Then
-        XCTAssertThrowsError(try sut.airVolumeFromSurface(to: depth, with: volume), as: Error<Double>.self) { error in
+        XCTAssertThrowsError(try sut.airVolumeFromSurface(to: depth, with: volume), as: Error<Volume>.self) { error in
             // Then
             XCTAssertEqual(error.value, volume)
             XCTAssertEqual(error.message.key, "dive.kit.physics.calculator.negative.volume")
@@ -151,8 +151,8 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
 
     func testAirVolumeToSurfaceWithValidInput() throws {
         // Given
-        let depth: Double = 66
-        let volume: Double = 6
+        let depth: Depth = 66
+        let volume: Volume = 6
 
         // When
         XCTAssertCalculation(try sut.airVolumeToSurface(from: depth, with: volume)) { result, configuration in
@@ -165,11 +165,11 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
 
     func testAirVolumeToSurfaceWithInValidDepthInput() throws {
         // Given
-        let depth: Double = -66
-        let volume: Double = 6
+        let depth: Depth = -66
+        let volume: Volume = 6
 
         // When
-        XCTAssertThrowsError(try sut.airVolumeToSurface(from: depth, with: volume), as: Error<Double>.self) { error in
+        XCTAssertThrowsError(try sut.airVolumeToSurface(from: depth, with: volume), as: Error<Depth>.self) { error in
             // Then
             XCTAssertEqual(error.value, depth)
             XCTAssertEqual(error.message.key, "dive.kit.physics.calculator.negative.depth")
@@ -179,11 +179,11 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
 
     func testAirVolumeToSurfaceWithInValidVolumeInput() throws {
         // Given
-        let depth: Double = 66
-        let volume: Double = -6
+        let depth: Depth = 66
+        let volume: Volume = -6
 
         // Then
-        XCTAssertThrowsError(try sut.airVolumeToSurface(from: depth, with: volume), as: Error<Double>.self) { error in
+        XCTAssertThrowsError(try sut.airVolumeToSurface(from: depth, with: volume), as: Error<Volume>.self) { error in
             // Then
             XCTAssertEqual(error.value, volume)
             XCTAssertEqual(error.message.key, "dive.kit.physics.calculator.negative.volume")

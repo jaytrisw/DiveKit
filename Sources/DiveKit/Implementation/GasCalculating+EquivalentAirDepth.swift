@@ -2,14 +2,14 @@ import DiveKitInternals
 
 public extension GasCalculating {
     func equivalentAirDepth(
-        for depth: Double,
+        for depth: Depth,
         with blend: Blend<Blended>) throws -> Calculation<Double.Result<Units.Depth>> {
             try depth.validate(
                 using: .nonNegative,
                 orThrow: {
                     error(describing: self, for: $0, with: .gasCalculator(.negative(.depth)))
                 })
-            .map { $0 + configuration.water.pressure(configuration.units).increase.value }
+            .map { $0.value + configuration.water.pressure(configuration.units).increase.value }
             .with {
                 blend.partialPressure(of: .nitrogen).value / Blend<Blended>.air.partialPressure(of: .nitrogen).value
             }
@@ -19,7 +19,7 @@ public extension GasCalculating {
         }
     
     func equivalentAirDepth(
-        for depth: Double,
+        for depth: Depth,
         with blend: Blend<Unblended>) throws -> Calculation<Double.Result<Units.Depth>> {
             try blend.blend(
                 orThrow: {

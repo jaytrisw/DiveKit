@@ -2,9 +2,9 @@ import DiveKitInternals
 
 public extension GasCalculating {
     func surfaceAirConsumption(
-        at depth: Double,
-        for minutes: Double,
-        consuming gasConsumed: Double,
+        at depth: Depth,
+        for minutes: Minutes,
+        consuming gasConsumed: Pressure,
         using physicsCalculator: PhysicsCalculating) throws -> Calculation<Double.Result<Units.Pressure>> {
             try surfaceAirConsumption(
                 at: depth,
@@ -23,26 +23,29 @@ public extension GasCalculating {
         }
 
     func surfaceAirConsumption(
-        at depth: Double,
-        for minutes: Double,
-        start startGas: Double,
-        end endGas: Double,
+        at depth: Depth,
+        for minutes: Minutes,
+        start startGas: Pressure,
+        end endGas: Pressure,
         using physicsCalculator: PhysicsCalculating) throws -> Calculation<Double.Result<Units.Pressure>> {
             try startGas.validate(
-                with: endGas,
                 using: .nonNegative,
                 orThrow: {
                     error(describing: self, for: $0, with: .gasCalculator(.negative(.startPressure)))
-                },
-                otherThrow: {
-                    error(describing: self, for: $0, with: .gasCalculator(.negative(.endPressure)))
                 })
-            .map { $0.first - $0.second }
+            .map {
+                try endGas.validate(
+                    using: .nonNegative,
+                    orThrow: {
+                        error(describing: self, for: $0, with: .gasCalculator(.negative(.endPressure)))
+                    })
+            }
+            .map { startGas.value - endGas.value }
             .map {
                 try surfaceAirConsumption(
                     at: depth,
                     for: minutes,
-                    consuming: $0,
+                    consuming: .init($0),
                     using: physicsCalculator,
                     atmospheresAbsoluteError: {
                         error(describing: self, for: $0, with: .gasCalculator(.negative(.depth)))

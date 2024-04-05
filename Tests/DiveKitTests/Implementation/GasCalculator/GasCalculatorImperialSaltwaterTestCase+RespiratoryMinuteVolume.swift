@@ -7,9 +7,9 @@ extension GasCalculatorImperialSaltwaterTestCase {
 
     func testRespiratoryMinuteVolumeValidInput() {
         // Given
-        let depth = 40.0
-        let minutes = 15.0
-        let consuming = 450.0
+        let depth: Depth = 40.0
+        let minutes: Minutes = 15.0
+        let consuming: Pressure = 450.0
         let tank = Tank.cubicFeet(142, ratedPressure: 2475, with: .air)
 
         // When
@@ -29,9 +29,9 @@ extension GasCalculatorImperialSaltwaterTestCase {
 
     func testRespiratoryMinuteVolumeInvalidDepthInput() {
         // Given
-        let depth = -40.0
-        let minutes = 15.0
-        let consuming = 450.0
+        let depth: Depth = -40.0
+        let minutes: Minutes = 15.0
+        let consuming: Pressure = 450.0
         let tank = Tank.cubicFeet(142, ratedPressure: 2475, with: .air)
 
         // When
@@ -42,7 +42,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 consuming: consuming,
                 with: tank,
                 using: physicsCalculator),
-            as: Error<Double>.self) { error in
+            as: Error<Depth>.self) { error in
                 // Then
                 XCTAssertEqual(error.value, depth)
                 XCTAssertEqual(error.message.key, "dive.kit.gas.calculator.negative.depth")
@@ -52,9 +52,9 @@ extension GasCalculatorImperialSaltwaterTestCase {
 
     func testRespiratoryMinuteVolumeInvalidMinutesInput() {
         // Given
-        let depth = 40.0
-        let minutes = -15.0
-        let consuming = 450.0
+        let depth: Depth = 40.0
+        let minutes: Minutes = -15.0
+        let consuming: Pressure = 450.0
         let tank = Tank.cubicFeet(142, ratedPressure: 2475, with: .air)
 
         // When
@@ -65,7 +65,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 consuming: consuming,
                 with: tank,
                 using: physicsCalculator),
-            as: Error<Double>.self) { error in
+            as: Error<Minutes>.self) { error in
                 // Then
                 XCTAssertEqual(error.value, minutes)
                 XCTAssertEqual(error.message.key, "dive.kit.gas.calculator.negative.time")
@@ -75,9 +75,9 @@ extension GasCalculatorImperialSaltwaterTestCase {
 
     func testRespiratoryMinuteVolumeInvalidConsumedInput() {
         // Given
-        let depth = 40.0
-        let minutes = 15.0
-        let consuming = -450.0
+        let depth: Depth = 40.0
+        let minutes: Minutes = 15.0
+        let consuming: Pressure = -450.0
         let tank = Tank.cubicFeet(142, ratedPressure: 2475, with: .air)
 
         // When
@@ -88,7 +88,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 consuming: consuming,
                 with: tank,
                 using: physicsCalculator),
-            as: Error<Double>.self) { error in
+            as: Error<Pressure>.self) { error in
                 // Then
                 XCTAssertEqual(error.value, consuming)
                 XCTAssertEqual(error.message.key, "dive.kit.gas.calculator.negative.consumed")
@@ -98,9 +98,9 @@ extension GasCalculatorImperialSaltwaterTestCase {
 
     func testRespiratoryMinuteVolumeInvalidTankVolumeInput() {
         // Given
-        let depth = 40.0
-        let minutes = 15.0
-        let consuming = 450.0
+        let depth: Depth = 40.0
+        let minutes: Minutes = 15.0
+        let consuming: Pressure = 450.0
         let tank = Tank.cubicFeet(-142, ratedPressure: 2475, with: .air)
 
         // When
@@ -121,9 +121,9 @@ extension GasCalculatorImperialSaltwaterTestCase {
 
     func testRespiratoryMinuteVolumeInvalidTankRatedPressureInput() {
         // Given
-        let depth = 40.0
-        let minutes = 15.0
-        let consuming = 450.0
+        let depth: Depth = 40.0
+        let minutes: Minutes = 15.0
+        let consuming: Pressure = 450.0
         let tank = Tank.cubicFeet(142, ratedPressure: -2475, with: .air)
 
         // When
