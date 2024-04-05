@@ -1,4 +1,4 @@
-import DiveKitCore
+import Foundation
 
 package extension GasCalculating {
     func partialPressure<Gas: GasRepresentable>(

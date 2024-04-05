@@ -1,6 +1,5 @@
-import Foundation
-import TestUtility
-@testable import DiveKitCore
+import XCTest
+@testable import DiveKit
 
 final class BlendStaticMembersTestCase: SystemUnderTestCase<Blend<Blended>> {
     func testAir() {

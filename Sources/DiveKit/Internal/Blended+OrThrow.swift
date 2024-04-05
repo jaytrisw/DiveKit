@@ -1,4 +1,4 @@
-import DiveKitCore
+import Foundation
 
 package extension Blend where State == Unblended {
     func blend<E: Swift.Error>(orThrow error: (Self) -> E) throws -> Blend<Blended> {

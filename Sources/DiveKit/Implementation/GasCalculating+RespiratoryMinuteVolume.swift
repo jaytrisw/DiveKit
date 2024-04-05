@@ -1,4 +1,4 @@
-import DiveKitInternals
+import Foundation
 
 public extension GasCalculating {
     func respiratoryMinuteVolume(

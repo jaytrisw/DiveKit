@@ -1,4 +1,4 @@
-import DiveKitCore
+import Foundation
 
 package extension Calculation {
     func with(_ other: () throws -> Calculation) rethrows -> Tuple<Self> {

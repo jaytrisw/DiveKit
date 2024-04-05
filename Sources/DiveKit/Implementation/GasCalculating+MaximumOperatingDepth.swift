@@ -1,4 +1,4 @@
-import DiveKitInternals
+import Foundation
 
 public extension GasCalculator {
     func maximumOperatingDepth(

@@ -1,4 +1,4 @@
-import TestUtility
+import XCTest
 @testable import DiveKit
 
 final class SaltWaterConstantsTestCase: SystemUnderTestCase<Water> {

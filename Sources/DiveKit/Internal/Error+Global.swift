@@ -1,4 +1,4 @@
-import DiveKitCore
+import Foundation
 
 package func error<C: ConfigurationProviding, Value>(
     describing calculator: C,

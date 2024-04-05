@@ -13,49 +13,13 @@ let package = Package(
     targets: [
         .target(
             name: "DiveKit",
-            dependencies: [
-                "DiveKitCore",
-                "DiveKitInternals"
-            ],
             swiftSettings: defaultSettings),
-        .target(
-            name: "DiveKitCore",
-            swiftSettings: defaultSettings),
-        .target(
-            name: "DiveKitInternals",
-            dependencies: [
-                "DiveKitCore"
-            ],
-            swiftSettings: defaultSettings),
-        .target(
-            name: "TestUtility",
-            dependencies: [
-                "DiveKitCore"
-            ],
-            swiftSettings: defaultSettings,
-            linkerSettings: [
-                .linkedFramework("XCTest")
-            ]),
         .testTarget(
             name: "DiveKitTests",
             dependencies: [
                 "DiveKit",
-                "DiveKitCore",
-                "DiveKitInternals",
-                "TestUtility",
-            ]),
-        .testTarget(
-            name: "DiveKitCoreTests",
-            dependencies: [
-                "DiveKitCore",
-                "TestUtility"
-            ]),
-        .testTarget(
-            name: "DiveKitInternalsTests",
-            dependencies: [
-                "DiveKitInternals",
-                "TestUtility"
-            ])
+            ],
+            swiftSettings: defaultSettings)
     ],
     swiftLanguageVersions: [.v5]
 )

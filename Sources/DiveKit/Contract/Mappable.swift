@@ -1,4 +1,6 @@
-import DiveKitCore
+import Foundation
+
+package protocol Mappable {}
 
 package extension Mappable {
     func map<Transform>(_ transform: () throws -> Transform) rethrows -> Transform {

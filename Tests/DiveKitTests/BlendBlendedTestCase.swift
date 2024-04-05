@@ -1,5 +1,5 @@
-import TestUtility
-@testable import DiveKitCore
+import XCTest
+@testable import DiveKit
 
 final class BlendBlendedTestCase: SystemUnderTestCase<Blend<Blended>> {
 

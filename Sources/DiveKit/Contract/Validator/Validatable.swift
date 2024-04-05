@@ -26,18 +26,6 @@ package extension Validatable {
             }
             perform(self)
         }
-
-    @discardableResult
-    func validate<E1: Swift.Error, E2: Swift.Error>(
-        with other: Self,
-        using validator: Validator<Self>,
-        orThrow error: (Self) -> E1,
-        otherThrow otherError: (Self) -> E2) throws -> Tuple<Self> {
-            try validate(using: validator, orThrow: error)
-            try other.validate(using: validator, orThrow: otherError)
-
-            return .init(first: self, second: other)
-        }
 }
 
 extension Double: Validatable {}

@@ -1,4 +1,4 @@
-import DiveKitInternals
+import Foundation
 
 final public class GasCalculator: ConfigurationProviding {
     public let configuration: Configuration

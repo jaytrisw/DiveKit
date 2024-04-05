@@ -1,4 +1,5 @@
-import DiveKitCore
+import DiveKit
+import Foundation
 import XCTest
 
 package func XCTAssertCalculation<Result: ResultRepresentable>(

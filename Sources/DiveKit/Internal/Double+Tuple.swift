@@ -1,4 +1,4 @@
-import DiveKitCore
+import Foundation
 
 package extension Double {
     func with(_ transform: () -> Self) -> Tuple<Self> {
