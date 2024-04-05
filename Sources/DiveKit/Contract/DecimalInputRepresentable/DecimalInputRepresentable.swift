@@ -22,7 +22,15 @@ extension DecimalInputRepresentable {
         self.init(.init(value))
     }
 
+    // MARK: Comparable
+
     public static func < (lhs: Self, rhs: Self) -> Bool {
         lhs.value < rhs.value
+    }
+
+    // MARK: Zero
+
+    public static var zero: Self {
+        .init(.zero)
     }
 }

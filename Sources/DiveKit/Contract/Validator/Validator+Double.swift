@@ -18,7 +18,7 @@ package extension Double {
 
 package extension Validator where Value: DecimalInputRepresentable {
     static var nonNegative: Self {
-        .init(validate: { $0.value >= .zero })
+        .init(validate: { $0 >= .zero })
     }
 
     static func between(_ lower: Value, and upper: Value) -> Self {
