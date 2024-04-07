@@ -4,7 +4,7 @@ public enum Unblended: BlendState {}
 
 public extension Blend where State == Unblended {
     init() {
-        storage = [:]
+        self.init(storage: [:])
     }
 
     mutating func add<Gas: GasRepresentable>(_ gas: Gas, pressure: Double) throws {

@@ -113,6 +113,22 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
         }
     }
 
+    func testInitializeWithPartialPressures() throws {
+        // Given
+        let oxygen = PartialPressure(.oxygen, value: 0.40)
+        let nitrogen = PartialPressure(.nitrogen, value: 0.60)
+        sut = .init(oxygen, nitrogen)
+
+        // When
+        let result = try sut.blend()
+
+        // Then
+        XCTAssertEqual(result.partialPressure(of: .oxygen), oxygen)
+        XCTAssertEqual(result.partialPressure(of: .nitrogen), nitrogen)
+        XCTAssertEqual(sut.totalPressure, 1.0)
+        XCTAssertEqual(sut.storage.count, 2)
+    }
+
     override func createSUT() {
         sut = .init()
     }

@@ -5,7 +5,7 @@ public protocol BlendState {}
 public struct Blend<State: BlendState> {
     var storage: [AnyHashable: Double] = [:]
 
-    init(storage: [AnyHashable : Double]) {
+    package init(storage: [AnyHashable : Double]) {
         self.storage = storage
     }
 
