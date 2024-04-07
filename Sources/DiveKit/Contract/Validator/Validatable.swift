@@ -1,6 +1,6 @@
 import Foundation
 
-public protocol Validatable {}
+package protocol Validatable {}
 
 package extension Validatable {
     func validate(using validator: Validator<Self>) -> Bool {
