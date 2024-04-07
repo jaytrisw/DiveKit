@@ -13,10 +13,10 @@ public protocol PhysicsCalculating: ConfigurationProviding {
     ///
     /// - Parameter depth: The depth at which to calculate the gauge pressure, typically measured in meters.
     /// - Returns: A `Calculation` object representing the gauge pressure at the given depth. The value
-    ///   is of type `Double` and the unit is specified by `Units.Pressure`, indicating the
+    ///   is of type `Double` and the unit is specified by `Pressure.Unit`, indicating the
     ///   pressure unit used
     /// - Throws: Can throw an error if the calculation is not possible with the provided parameters or
     ///   if the configuration is invalid or insufficient for the calculation. Implementers should specify
     ///   the conditions under which errors are thrown.
-    func gaugePressure(at depth: Depth) throws -> Calculation<Double.Result<Units.Pressure>>
+    func gaugePressure(at depth: Depth) throws -> Calculation<Double.Result<Pressure.Unit>>
 }

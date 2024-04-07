@@ -3,7 +3,7 @@ import Foundation
 public extension PhysicsCalculating {
     func airVolumeFromSurface(
         to depth: Depth,
-        with volume: Volume) throws -> Calculation<Double.Result<Units.Pressure>> {
+        with volume: Volume) throws -> Calculation<Double.Result<Pressure.Unit>> {
             try volume.validate(
                 using: .nonNegative,
                 orThrow: {

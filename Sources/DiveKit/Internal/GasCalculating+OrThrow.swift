@@ -29,7 +29,7 @@ package extension GasCalculating {
         for minutes: Minutes,
         consuming gasConsumed: Pressure,
         minutesError: (Minutes) -> Error<Minutes>,
-        consumedError: (Pressure) -> Error<Pressure>) throws -> Calculation<Double.Result<Units.Pressure>> {
+        consumedError: (Pressure) -> Error<Pressure>) throws -> Calculation<Double.Result<Pressure.Unit>> {
             try minutes.validate(using: .nonNegative, orThrow: {
                 minutesError($0)
             })
@@ -51,7 +51,7 @@ package extension GasCalculating {
         using physicsCalculator: PhysicsCalculating,
         atmospheresAbsoluteError: (Depth) -> Error<Depth>,
         minutesError: (Minutes) -> Error<Minutes>,
-        consumedError: (Pressure) -> Error<Pressure>) throws -> Calculation<Double.Result<Units.Pressure>> {
+        consumedError: (Pressure) -> Error<Pressure>) throws -> Calculation<Double.Result<Pressure.Unit>> {
             try physicsCalculator.atmospheresAbsolute(
                 at: depth,
                 orThrow: atmospheresAbsoluteError)

@@ -5,7 +5,7 @@ public extension GasCalculating {
         at depth: Depth,
         for minutes: Minutes,
         consuming gasConsumed: Pressure,
-        using physicsCalculator: PhysicsCalculating) throws -> Calculation<Double.Result<Units.Pressure>> {
+        using physicsCalculator: PhysicsCalculating) throws -> Calculation<Double.Result<Pressure.Unit>> {
             try surfaceAirConsumption(
                 at: depth,
                 for: minutes,
@@ -27,7 +27,7 @@ public extension GasCalculating {
         for minutes: Minutes,
         start startGas: Pressure,
         end endGas: Pressure,
-        using physicsCalculator: PhysicsCalculating) throws -> Calculation<Double.Result<Units.Pressure>> {
+        using physicsCalculator: PhysicsCalculating) throws -> Calculation<Double.Result<Pressure.Unit>> {
             try startGas.validate(
                 using: .nonNegative,
                 orThrow: {

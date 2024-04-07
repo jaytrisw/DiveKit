@@ -9,3 +9,13 @@ extension Pressure: DecimalRepresentable {
         self.value = value
     }
 }
+
+public extension Pressure {
+    enum Unit: UnitRepresentable {
+        case psi
+        case bar
+        case atmospheres
+    }
+}
+
+extension Pressure: DecimalOutputRepresentable {}

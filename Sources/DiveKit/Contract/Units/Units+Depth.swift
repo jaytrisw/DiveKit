@@ -1,16 +1,10 @@
 import Foundation
 
 public extension Units {
-    var depth: Depth {
+    var depth: Depth.Unit {
         switch self {
             case .imperial: .feet
             case .metric: .meters
         }
-    }
-
-
-    enum Depth: UnitRepresentable {
-        case feet
-        case meters
     }
 }

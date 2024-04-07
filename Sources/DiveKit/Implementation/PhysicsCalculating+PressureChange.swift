@@ -3,7 +3,7 @@ import Foundation
 public extension PhysicsCalculating {
     func pressureChange(
         from firstDepth: Depth,
-        to secondDepth: Depth) throws -> Calculation<Double.Result<Units.Pressure>> {
+        to secondDepth: Depth) throws -> Calculation<Double.Result<Pressure.Unit>> {
             try atmospheresAbsolute(
                 at: firstDepth,
                 orThrow: {

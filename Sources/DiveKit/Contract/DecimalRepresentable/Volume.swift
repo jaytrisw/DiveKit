@@ -9,3 +9,12 @@ extension Volume: DecimalRepresentable {
         self.value = value
     }
 }
+
+public extension Volume {
+    enum Unit: UnitRepresentable {
+        case liters
+        case cubicFeet
+    }
+}
+
+extension Volume: DecimalOutputRepresentable {}

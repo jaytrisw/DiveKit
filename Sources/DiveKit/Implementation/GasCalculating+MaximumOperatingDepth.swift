@@ -3,7 +3,7 @@ import Foundation
 public extension GasCalculator {
     func maximumOperatingDepth(
         for fractionOxygen: FractionalPressure,
-        in blend: Blend<Blended>) throws ->  Calculation<Double.Result<Units.Depth>> {
+        in blend: Blend<Blended>) throws ->  Calculation<Double.Result<Depth.Unit>> {
             try fractionOxygen.validate(
                 using: .nonNegative,
                 orThrow: {

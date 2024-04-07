@@ -3,7 +3,7 @@ import Foundation
 package extension PhysicsCalculating {
     func gaugePressure(
         at depth: Depth,
-        orThrow error: (Depth) -> Error<Depth>) throws -> Calculation<Double.Result<Units.Pressure>> {
+        orThrow error: (Depth) -> Error<Depth>) throws -> Calculation<Double.Result<Pressure.Unit>> {
             try depth.validate(
                 using: .nonNegative,
                 orThrow: { error($0) })
@@ -13,7 +13,7 @@ package extension PhysicsCalculating {
     
     func atmospheresAbsolute(
         at depth: Depth,
-        orThrow error: (Depth) -> Error<Depth>) throws -> Calculation<Double.Result<Units.Pressure>> {
+        orThrow error: (Depth) -> Error<Depth>) throws -> Calculation<Double.Result<Pressure.Unit>> {
             try gaugePressure(
                 at: depth,
                 orThrow: error)

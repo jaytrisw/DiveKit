@@ -3,7 +3,7 @@ import Foundation
 public extension GasCalculating {
     func equivalentAirDepth(
         for depth: Depth,
-        with blend: Blend<Blended>) throws -> Calculation<Double.Result<Units.Depth>> {
+        with blend: Blend<Blended>) throws -> Calculation<Double.Result<Depth.Unit>> {
             try depth.validate(
                 using: .nonNegative,
                 orThrow: {
@@ -20,7 +20,7 @@ public extension GasCalculating {
     
     func equivalentAirDepth(
         for depth: Depth,
-        with blend: Blend<Unblended>) throws -> Calculation<Double.Result<Units.Depth>> {
+        with blend: Blend<Unblended>) throws -> Calculation<Double.Result<Depth.Unit>> {
             try blend.blend(
                 orThrow: {
                     error(describing: self, for: $0, with: .gasCalculator(.blend(.totalPressure)))

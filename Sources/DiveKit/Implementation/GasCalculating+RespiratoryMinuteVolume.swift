@@ -6,7 +6,7 @@ public extension GasCalculating {
         for minutes: Minutes,
         consuming gasConsumed: Pressure,
         with tank: Tank,
-        using physicsCalculator: PhysicsCalculating) throws -> Calculation<Double.Result<Units.Volume>> {
+        using physicsCalculator: PhysicsCalculating) throws -> Calculation<Double.Result<Volume.Unit>> {
             try tank.validate(
                 using: .size,
                 orThrow: {

@@ -9,3 +9,12 @@ extension Depth: DecimalRepresentable {
         self.value = value
     }
 }
+
+public extension Depth {
+    enum Unit: UnitRepresentable {
+        case feet
+        case meters
+    }
+}
+
+extension Depth: DecimalOutputRepresentable {}

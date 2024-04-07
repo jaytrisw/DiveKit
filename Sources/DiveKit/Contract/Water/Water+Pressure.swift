@@ -13,9 +13,9 @@ public extension Water {
 public extension Water.Pressure {
     struct Increase {
         public let value: Double
-        public let unit: Units.Depth
+        public let unit: Depth.Unit
 
-        public init(value: Double, unit: Units.Depth) {
+        public init(value: Double, unit: Depth.Unit) {
             self.value = value
             self.unit = unit
         }

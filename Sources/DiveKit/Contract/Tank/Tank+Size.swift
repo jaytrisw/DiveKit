@@ -4,9 +4,9 @@ public extension Tank {
     struct Size {
         public let volume: Volume
         public let ratedPressure: Pressure
-        public let unit: Units.Volume
+        public let unit: Volume.Unit
 
-        public init(volume: Volume, ratedPressure: Pressure, unit: Units.Volume) {
+        public init(volume: Volume, ratedPressure: Pressure, unit: Volume.Unit) {
             self.volume = volume
             self.ratedPressure = ratedPressure
             self.unit = unit

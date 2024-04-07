@@ -3,13 +3,13 @@ import Foundation
 public extension Water {
     struct Weight {
         public let value: Double
-        public let unit: Units.Weight
-        public let volume: Units.Volume
+        public let unit: Mass.Unit
+        public let volume: Volume.Unit
 
         public init(
             _ value: Double,
-            unit: Units.Weight,
-            per volume: Units.Volume) {
+            unit: Mass.Unit,
+            per volume: Volume.Unit) {
                 self.value = value
                 self.unit = unit
                 self.volume = volume
@@ -17,7 +17,7 @@ public extension Water {
 
         public init(
             _ value: Double, units: Units) {
-                self.init(value, unit: units.weight, per: units.volume)
+                self.init(value, unit: units.mass, per: units.volume)
             }
     }
 }
