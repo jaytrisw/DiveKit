@@ -5,7 +5,7 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
     func testAddWithValidInput() throws {
         // Given
         let oxygenFraction = 0.8
-        let partialPressure: PartialPressure = .init(.oxygen, value: oxygenFraction)
+        let partialPressure: PartialPressure = .init(.oxygen, fractionalPressure: oxygenFraction)
 
         // When
         try sut.add(partialPressure)
@@ -19,7 +19,7 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
     func testAddWithInvalidLowerBound() throws {
         // Given
         let oxygenFraction = -0.8
-        let partialPressure: PartialPressure = .init(.oxygen, value: oxygenFraction)
+        let partialPressure: PartialPressure = .init(.oxygen, fractionalPressure: oxygenFraction)
 
         // When
         XCTAssertThrowsError(try sut.add(partialPressure), as: Error<Double>.self) { error in
@@ -33,7 +33,7 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
     func testAddWithInvalidUpperBound() throws {
         // Given
         let oxygenFraction = 1.01
-        let partialPressure: PartialPressure = .init(.oxygen, value: oxygenFraction)
+        let partialPressure: PartialPressure = .init(.oxygen, fractionalPressure: oxygenFraction)
 
         // When
         XCTAssertThrowsError(try sut.add(partialPressure), as: Error<Double>.self) { error in
@@ -47,7 +47,7 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
     func testAddingWithValidInput() throws {
         // Given
         let oxygenFraction = 0.8
-        let partialPressure: PartialPressure = .init(.oxygen, value: oxygenFraction)
+        let partialPressure: PartialPressure = .init(.oxygen, fractionalPressure: oxygenFraction)
 
         // When
         let result = try sut.adding(partialPressure)
@@ -115,8 +115,8 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
 
     func testInitializeWithPartialPressures() throws {
         // Given
-        let oxygen = PartialPressure(.oxygen, value: 0.40)
-        let nitrogen = PartialPressure(.nitrogen, value: 0.60)
+        let oxygen = PartialPressure(.oxygen, fractionalPressure: 0.40)
+        let nitrogen = PartialPressure(.nitrogen, fractionalPressure: 0.60)
         sut = .init(oxygen, nitrogen)
 
         // When

@@ -7,8 +7,8 @@ package extension GasCalculating {
         using physicsCalculator: PhysicsCalculating,
         orThrow error: (Depth) -> Error<Depth>) throws -> Calculation<PartialPressure<Gas>> {
             try physicsCalculator.atmospheresAbsolute(at: depth, orThrow: error)
-                .map { $0.result.value * partialPressure.value }
-                .map { .partialPressure(partialPressure.gas, value: $0, configuration: configuration) }
+                .map { $0.result.value * partialPressure.fractionalPressure }
+                .map { .partialPressure(partialPressure.gas, fractionalPressure: $0, configuration: configuration) }
         }
 
     func partialPressure<Gas: GasRepresentable>(

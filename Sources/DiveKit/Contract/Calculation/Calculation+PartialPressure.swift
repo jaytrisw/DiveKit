@@ -3,10 +3,10 @@ import Foundation
 package extension Calculation {
     static func partialPressure<Gas: GasRepresentable>(
         _ gas: Gas,
-        value: Double,
+        fractionalPressure: Double,
         configuration: Configuration) -> Self where Result == PartialPressure<Gas> {
             self.init(
-                result: .init(gas, value: value),
+                result: .init(gas, fractionalPressure: fractionalPressure),
                 configuration: configuration)
         }
 }

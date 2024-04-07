@@ -17,7 +17,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 fractionOxygen: fractionOxygen,
                 using: physicsCalculator)) { result, configuration in
                     // Then
-                    XCTAssertEqual(result.partialPressure(of: .oxygen).value, 0.32)
+                    XCTAssertEqual(result.partialPressure(of: .oxygen).fractionalPressure, 0.32)
                     XCTAssertEqual(configuration, sut.configuration)
                 }
     }

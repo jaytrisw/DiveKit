@@ -12,11 +12,11 @@ final class BlendStaticMembersTestCase: SystemUnderTestCase<Blend<Blended>> {
         let trace = sut.partialPressure(of: .trace)
 
         // Then
-        XCTAssertEqual(oxygen.value, 0.209)
+        XCTAssertEqual(oxygen.fractionalPressure, 0.209)
         XCTAssertEqual(oxygen.gas, .oxygen)
-        XCTAssertEqual(nitrogen.value, 0.79)
+        XCTAssertEqual(nitrogen.fractionalPressure, 0.79)
         XCTAssertEqual(nitrogen.gas, .nitrogen)
-        XCTAssertEqual(trace.value, 0.001)
+        XCTAssertEqual(trace.fractionalPressure, 0.001)
         XCTAssertEqual(trace.gas, .trace)
         XCTAssertEqual(sut.totalPressure, 1.0)
         XCTAssertEqual(sut.storage.count, 3)
@@ -32,9 +32,9 @@ final class BlendStaticMembersTestCase: SystemUnderTestCase<Blend<Blended>> {
         let nitrogen = sut.partialPressure(of: .nitrogen)
 
         // Then
-        XCTAssertEqual(oxygen.value, oxygenFraction)
+        XCTAssertEqual(oxygen.fractionalPressure, oxygenFraction)
         XCTAssertEqual(oxygen.gas, .oxygen)
-        XCTAssertEqual(nitrogen.value, 0.68, accuracy: 0.1)
+        XCTAssertEqual(nitrogen.fractionalPressure, 0.68, accuracy: 0.1)
         XCTAssertEqual(nitrogen.gas, .nitrogen)
         XCTAssertEqual(sut.totalPressure, 1.0)
         XCTAssertEqual(sut.storage.count, 2)

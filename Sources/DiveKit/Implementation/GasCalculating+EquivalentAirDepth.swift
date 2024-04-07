@@ -11,7 +11,7 @@ public extension GasCalculating {
                 })
             .map { $0.value + configuration.water.pressure(configuration.units).increase.value }
             .with {
-                blend.partialPressure(of: .nitrogen).value / Blend<Blended>.air.partialPressure(of: .nitrogen).value
+                blend.partialPressure(of: .nitrogen).fractionalPressure / Blend<Blended>.air.partialPressure(of: .nitrogen).fractionalPressure
             }
             .map { $0.first * $0.second }
             .map { $0 - configuration.water.pressure(configuration.units).increase.value }

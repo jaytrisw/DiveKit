@@ -6,7 +6,7 @@ final class TankTestCase: SystemUnderTestCase<Tank> {
     func testInitializeWithUnblended() throws {
         // Given
         let fractionalPressure = 1.0
-        let blend = Blend<Unblended>(.init(.oxygen, value: fractionalPressure))
+        let blend = Blend<Unblended>(.init(.oxygen, fractionalPressure: fractionalPressure))
         let volume: Volume = 40
         let pressure: Pressure = 3000
         let size = Tank.Size(volume: volume, ratedPressure: pressure, unit: .cubicFeet)
@@ -18,7 +18,7 @@ final class TankTestCase: SystemUnderTestCase<Tank> {
     func testInitializeWithUnblendedThrows() throws {
         // Given
         let fractionalPressure = 0.5
-        let blend = Blend<Unblended>(.init(.oxygen, value: fractionalPressure))
+        let blend = Blend<Unblended>(.init(.oxygen, fractionalPressure: fractionalPressure))
         let volume: Volume = 40
         let pressure: Pressure = 3000
         let size = Tank.Size(volume: volume, ratedPressure: pressure, unit: .cubicFeet)
