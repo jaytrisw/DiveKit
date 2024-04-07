@@ -1,10 +1,10 @@
 import Foundation
 
-public struct Volume {
+public struct Pressure {
     public let value: Double
 }
 
-extension Volume: DecimalInputRepresentable {
+extension Pressure: DecimalRepresentable {
     public init(_ value: Double) {
         self.value = value
     }

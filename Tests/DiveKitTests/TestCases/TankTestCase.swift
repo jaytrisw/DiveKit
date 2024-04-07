@@ -5,9 +5,11 @@ final class TankTestCase: SystemUnderTestCase<Tank> {
 
     func testInitializeWithUnblended() throws {
         // Given
-        let pressure = 1.0
-        let blend = Blend<Unblended>(.init(.oxygen, value: pressure))
-        let size = Tank.Size(volume: 40, ratedPressure: 3000, unit: .cubicFeet)
+        let fractionalPressure = 1.0
+        let blend = Blend<Unblended>(.init(.oxygen, value: fractionalPressure))
+        let volume: Volume = 40
+        let pressure: Pressure = 3000
+        let size = Tank.Size(volume: volume, ratedPressure: pressure, unit: .cubicFeet)
 
         // Then
         XCTAssertNoThrow(try Tank(blend: blend, size: size))
@@ -15,14 +17,16 @@ final class TankTestCase: SystemUnderTestCase<Tank> {
 
     func testInitializeWithUnblendedThrows() throws {
         // Given
-        let pressure = 0.5
-        let blend = Blend<Unblended>(.init(.oxygen, value: pressure))
-        let size = Tank.Size(volume: 40, ratedPressure: 3000, unit: .cubicFeet)
+        let fractionalPressure = 0.5
+        let blend = Blend<Unblended>(.init(.oxygen, value: fractionalPressure))
+        let volume: Volume = 40
+        let pressure: Pressure = 3000
+        let size = Tank.Size(volume: volume, ratedPressure: pressure, unit: .cubicFeet)
 
         // When
         XCTAssertThrowsError(try Tank(blend: blend, size: size), as: Error<Double>.self) { error in
             // Then
-            XCTAssertEqual(error.value, pressure)
+            XCTAssertEqual(error.value, fractionalPressure)
             XCTAssertEqual(error.message.key, "dive.kit.blend.total.pressure")
             XCTAssertEqual(error.callSite, "Blend<Unblended>.blend()")
         }

@@ -16,7 +16,7 @@ package extension Double {
     }
 }
 
-package extension Validator where Value: DecimalInputRepresentable {
+package extension Validator where Value: DecimalRepresentable {
     static var nonNegative: Self {
         .init(validate: { $0 >= .zero })
     }

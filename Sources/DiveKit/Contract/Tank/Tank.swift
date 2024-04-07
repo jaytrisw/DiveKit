@@ -15,33 +15,4 @@ public struct Tank {
     }
 }
 
-public extension Tank {
-    struct Size {
-        public let volume: Double
-        public let ratedPressure: Double
-        public let unit: Units.Volume
-
-        public init(volume: Double, ratedPressure: Double, unit: Units.Volume) {
-            self.volume = volume
-            self.ratedPressure = ratedPressure
-            self.unit = unit
-        }
-    }
-}
-
 extension Tank: Equatable {}
-extension Tank.Size: Equatable {}
-
-public extension Tank {
-    static func cubicFeet(
-        _ volume: Double,
-        ratedPressure: Double,
-        with blend: Blend<Blended>) -> Self {
-            .init(
-                blend: blend,
-                size: .init(
-                    volume: volume,
-                    ratedPressure: ratedPressure,
-                    unit: .cubicFeet))
-    }
-}

@@ -2,13 +2,13 @@ import Foundation
 
 package typealias ExpressibleBy = ExpressibleByFloatLiteral & ExpressibleByIntegerLiteral
 
-package protocol DecimalInputRepresentable: Equatable, Hashable, Comparable, ExpressibleBy, Validatable, Mappable {
+package protocol DecimalRepresentable: Equatable, Hashable, Comparable, ExpressibleBy, Validatable, Mappable {
     var value: Double { get }
 
     init(_ value: Double)
 }
 
-extension DecimalInputRepresentable {
+extension DecimalRepresentable {
 
     // MARK: ExpressibleByFloatLiteral
 

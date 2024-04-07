@@ -34,6 +34,6 @@ public extension GasCalculating {
 
 private extension Tank.Size {
     var conversionFactor: Double {
-        volume / ratedPressure
+        volume.value / ratedPressure.value
     }
 }
