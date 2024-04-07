@@ -13,14 +13,24 @@ public extension Blend where State == Unblended {
 }
 
 private extension Blend {
-    init<each Gas: GasRepresentable>(_ tuples:  repeat ((each Gas), Double)) {
-        func insert<G: GasRepresentable>(_ input: (G, Double), into dictionary: inout Dictionary<AnyHashable, Double>) {
-            dictionary.updateValue(input.1, forKey: input.0)
-        }
-        var dictionary: Dictionary<AnyHashable, Double> = .init()
+    init<each Gas: GasRepresentable>(_ values:  repeat ((each Gas), Double)) {
+        self.init(storage: .init(repeat ((each values).0, (each values).1)))
+    }
+}
 
-        repeat insert(((each tuples).0, (each tuples).1), into: &dictionary)
+extension Dictionary {
+    mutating func update(_ keyValue: (key: Key, value: Value)) {
+        updateValue(keyValue.value, forKey: keyValue.key)
+    }
 
-        self.init(storage: dictionary)
+    init<each H: Hashable>(_ values: repeat ((each H), Value)) where Key == AnyHashable {
+        var dictionary: Self = .init()
+
+        repeat dictionary.update(((each values).0, (each values).1))
+
+        self.init(uniqueKeysWithValues: dictionary.compactMap { key, value in
+            return (key, value)
+        })
+
     }
 }
