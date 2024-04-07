@@ -1,8 +1,8 @@
 import Foundation
 
-package typealias ExpressibleBy = ExpressibleByFloatLiteral & ExpressibleByIntegerLiteral
+public typealias ExpressibleBy = ExpressibleByFloatLiteral & ExpressibleByIntegerLiteral
 
-package protocol DecimalRepresentable: Equatable, Hashable, Comparable, ExpressibleBy, Validatable, Mappable {
+public protocol DecimalRepresentable: Equatable, Hashable, Comparable, ExpressibleBy, Validatable, Mappable {
     var value: Double { get }
 
     init(_ value: Double)

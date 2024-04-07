@@ -7,7 +7,7 @@ package extension GasCalculating {
         using physicsCalculator: PhysicsCalculating,
         orThrow error: (Depth) -> Error<Depth>) throws -> Calculation<PartialPressure<Gas>> {
             try physicsCalculator.atmospheresAbsolute(at: depth, orThrow: error)
-                .map { $0.result.value * partialPressure.fractionalPressure }
+                .map { $0.result.decimal.value * partialPressure.fractionalPressure }
                 .map { .partialPressure(partialPressure.gas, fractionalPressure: $0, configuration: configuration) }
         }
 
@@ -29,7 +29,7 @@ package extension GasCalculating {
         for minutes: Minutes,
         consuming gasConsumed: Pressure,
         minutesError: (Minutes) -> Error<Minutes>,
-        consumedError: (Pressure) -> Error<Pressure>) throws -> Calculation<Double.Result<Pressure.Unit>> {
+        consumedError: (Pressure) -> Error<Pressure>) throws -> Calculation<DecimalOutput<Pressure>> {
             try minutes.validate(using: .nonNegative, orThrow: {
                 minutesError($0)
             })
@@ -41,7 +41,7 @@ package extension GasCalculating {
                     })
             }
             .map { gasConsumed.value / minutes.value }
-            .map { .double($0, unit: \.pressure, from: configuration) }
+            .map { .decimal(.init($0), unit: \.pressure, from: configuration) }
         }
 
     func surfaceAirConsumption(
@@ -51,7 +51,7 @@ package extension GasCalculating {
         using physicsCalculator: PhysicsCalculating,
         atmospheresAbsoluteError: (Depth) -> Error<Depth>,
         minutesError: (Minutes) -> Error<Minutes>,
-        consumedError: (Pressure) -> Error<Pressure>) throws -> Calculation<Double.Result<Pressure.Unit>> {
+        consumedError: (Pressure) -> Error<Pressure>) throws -> Calculation<DecimalOutput<Pressure>> {
             try physicsCalculator.atmospheresAbsolute(
                 at: depth,
                 orThrow: atmospheresAbsoluteError)
@@ -61,7 +61,7 @@ package extension GasCalculating {
                 minutesError: minutesError,
                 consumedError: consumedError)
             }
-            .map { $0.second.result.value / $0.first.result.value }
-            .map { .double($0, unit: \.pressure, from: configuration) }
+            .map { $0.second.result.decimal.value / $0.first.result.decimal.value }
+            .map { .decimal(.init($0), unit: \.pressure, from: configuration) }
         }
 }

@@ -1,11 +1,11 @@
 import Foundation
 
-package struct DecimalOutput<Value: DecimalOutputRepresentable> {
-    public let value: Value
-    public let unit: Value.Unit
+public struct DecimalOutput<Decimal: DecimalOutputRepresentable> {
+    public let decimal: Decimal
+    public let unit: Decimal.Unit
 
-    package init(_ value: Value, unit: Value.Unit) {
-        self.value = value
+    package init(_ decimal: Decimal, unit: Decimal.Unit) {
+        self.decimal = decimal
         self.unit = unit
     }
 }

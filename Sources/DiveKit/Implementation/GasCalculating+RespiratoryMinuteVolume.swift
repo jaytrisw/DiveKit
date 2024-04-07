@@ -6,7 +6,7 @@ public extension GasCalculating {
         for minutes: Minutes,
         consuming gasConsumed: Pressure,
         with tank: Tank,
-        using physicsCalculator: PhysicsCalculating) throws -> Calculation<Double.Result<Volume.Unit>> {
+        using physicsCalculator: PhysicsCalculating) throws -> Calculation<DecimalOutput<Volume>> {
             try tank.validate(
                 using: .size,
                 orThrow: {
@@ -27,8 +27,8 @@ public extension GasCalculating {
                     error(describing: self, for: $0, with: .gasCalculator(.negative(.consumed)))
                 })
             }
-            .map { $0.result.value * tank.size.conversionFactor }
-            .map { .double($0, unit: \.volume, from: configuration) }
+            .map { $0.result.decimal.value * tank.size.conversionFactor }
+            .map { .decimal(.init($0), unit: \.volume, from: configuration) }
         }
 }
 

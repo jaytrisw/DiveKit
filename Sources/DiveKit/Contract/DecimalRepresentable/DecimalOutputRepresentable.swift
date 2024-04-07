@@ -1,5 +1,5 @@
 import Foundation
 
-package protocol DecimalOutputRepresentable: DecimalRepresentable {
+public protocol DecimalOutputRepresentable: DecimalRepresentable {
     associatedtype Unit: UnitRepresentable
 }

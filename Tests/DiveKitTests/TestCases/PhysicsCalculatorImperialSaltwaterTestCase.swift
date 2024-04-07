@@ -12,7 +12,7 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
         // When
         XCTAssertCalculation(try sut.gaugePressure(at: depth)) { result, configuration in
             // Then
-            XCTAssertEqual(result.value, 1)
+            XCTAssertEqual(result.decimal.value, 1)
             XCTAssertEqual(result.unit, .atmospheres)
             XCTAssertEqual(configuration, sut.configuration)
         }
@@ -40,7 +40,7 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
         // When
         XCTAssertCalculation(try sut.atmospheresAbsolute(at: depth)) { result, configuration in
             // Then
-            XCTAssertEqual(result.value, 2)
+            XCTAssertEqual(result.decimal.value, 2)
             XCTAssertEqual(result.unit, .atmospheres)
             XCTAssertEqual(configuration, sut.configuration)
         }
@@ -69,7 +69,7 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
         // When
         XCTAssertCalculation(try sut.pressureChange(from: fromDepth, to: toDepth)) { result, configuration in
             // Then
-            XCTAssertEqual(result.value, 1)
+            XCTAssertEqual(result.decimal.value, 1)
             XCTAssertEqual(result.unit, .psi)
             XCTAssertEqual(configuration, sut.configuration)
         }
@@ -113,7 +113,7 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
         // When
         XCTAssertCalculation(try sut.airVolumeFromSurface(to: depth, with: volume)) { result, configuration in
             // Then
-            XCTAssertEqual(result.value, 2)
+            XCTAssertEqual(result.decimal.value, 2)
             XCTAssertEqual(result.unit, .psi)
             XCTAssertEqual(configuration, sut.configuration)
         }
@@ -157,7 +157,7 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
         // When
         XCTAssertCalculation(try sut.airVolumeToSurface(from: depth, with: volume)) { result, configuration in
             // Then
-            XCTAssertEqual(result.value, 18)
+            XCTAssertEqual(result.decimal.value, 18)
             XCTAssertEqual(result.unit, .psi)
             XCTAssertEqual(configuration, sut.configuration)
         }

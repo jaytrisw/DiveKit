@@ -1,6 +1,6 @@
 import Foundation
 
-package protocol Mappable {}
+public protocol Mappable {}
 
 package extension Mappable {
     func map<Transform>(_ transform: () throws -> Transform) rethrows -> Transform {

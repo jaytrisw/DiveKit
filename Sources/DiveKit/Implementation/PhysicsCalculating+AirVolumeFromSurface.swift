@@ -3,7 +3,7 @@ import Foundation
 public extension PhysicsCalculating {
     func airVolumeFromSurface(
         to depth: Depth,
-        with volume: Volume) throws -> Calculation<Double.Result<Pressure.Unit>> {
+        with volume: Volume) throws -> Calculation<DecimalOutput<Pressure>> {
             try volume.validate(
                 using: .nonNegative,
                 orThrow: {
@@ -14,7 +14,7 @@ public extension PhysicsCalculating {
                 orThrow: {
                     error(describing: self, for: $0, with: .physicsCalculator(.negative(.depth)))
                 }) }
-            .map { volume.value / $0.result.value }
-            .map { .double($0, unit: \.pressure, from: configuration) }
+            .map { volume.value / $0.result.decimal.value }
+            .map { .decimal(.init($0), unit: \.pressure, from: configuration) }
         }
 }

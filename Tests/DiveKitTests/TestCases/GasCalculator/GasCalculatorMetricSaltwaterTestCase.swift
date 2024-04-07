@@ -16,7 +16,7 @@ final class GasCalculatorMetricSaltwaterTestCase: SystemUnderTestCase<GasCalcula
                 consuming: 40,
                 using: physicsCalculator)) { result, configuration in
                     // Then
-                    XCTAssertEqual(result.value, 1.6)
+                    XCTAssertEqual(result.decimal.value, 1.6)
                     XCTAssertEqual(result.unit, .bar)
                     XCTAssertEqual(configuration, sut.configuration)
                 }

@@ -3,7 +3,7 @@ import Foundation
 public extension GasCalculating {
     func equivalentAirDepth(
         for depth: Depth,
-        with blend: Blend<Blended>) throws -> Calculation<Double.Result<Depth.Unit>> {
+        with blend: Blend<Blended>) throws -> Calculation<DecimalOutput<Depth>> {
             try depth.validate(
                 using: .nonNegative,
                 orThrow: {
@@ -15,12 +15,12 @@ public extension GasCalculating {
             }
             .map { $0.first * $0.second }
             .map { $0 - configuration.water.pressure(configuration.units).increase.value }
-            .map { .double($0, unit: \.depth, from: configuration) }
+            .map { .decimal(.init($0), unit: \.depth, from: configuration) }
         }
     
     func equivalentAirDepth(
         for depth: Depth,
-        with blend: Blend<Unblended>) throws -> Calculation<Double.Result<Depth.Unit>> {
+        with blend: Blend<Unblended>) throws -> Calculation<DecimalOutput<Depth>> {
             try blend.blend(
                 orThrow: {
                     error(describing: self, for: $0, with: .gasCalculator(.blend(.totalPressure)))

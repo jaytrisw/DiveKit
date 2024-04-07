@@ -19,7 +19,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 consuming: consuming,
                 using: physicsCalculator)) { result, configuration in
                     // Then
-                    XCTAssertEqual(result.value, 16.097560975609756)
+                    XCTAssertEqual(result.decimal.value, 16.097560975609756)
                     XCTAssertEqual(result.unit, .psi)
                     XCTAssertEqual(configuration, sut.configuration)
                 }
@@ -106,7 +106,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 end: endPressure,
                 using: physicsCalculator)) { result, configuration in
                     // Then
-                    XCTAssertEqual(result.value, 16.097560975609756)
+                    XCTAssertEqual(result.decimal.value, 16.097560975609756)
                     XCTAssertEqual(result.unit, .psi)
                     XCTAssertEqual(configuration, sut.configuration)
                 }

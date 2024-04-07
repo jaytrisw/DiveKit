@@ -14,7 +14,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
         XCTAssertCalculation(
             try sut.equivalentAirDepth(for: depth, with: blend)) { result, configuration in
                 // Then
-                XCTAssertEqual(result.value, 52.82278481012658)
+                XCTAssertEqual(result.decimal.value, 52.82278481012658)
                 XCTAssertEqual(result.unit, .feet)
                 XCTAssertEqual(configuration, sut.configuration)
             }
@@ -31,7 +31,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
         XCTAssertCalculation(
             try sut.equivalentAirDepth(for: depth, with: blend)) { result, configuration in
                 // Then
-                XCTAssertEqual(result.value, 52.82278481012658)
+                XCTAssertEqual(result.decimal.value, 52.82278481012658)
                 XCTAssertEqual(result.unit, .feet)
                 XCTAssertEqual(configuration, sut.configuration)
             }
