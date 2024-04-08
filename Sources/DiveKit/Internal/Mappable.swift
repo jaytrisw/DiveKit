@@ -13,8 +13,10 @@ package extension Mappable {
 }
 
 extension Blend: Mappable {}
+extension Buoyancy: Mappable {}
 extension Calculation: Mappable {}
 extension Double: Mappable {}
+extension Object: Mappable {}
 extension PartialPressure: Mappable {}
 extension Tank: Mappable {}
 extension Tuple: Mappable {}

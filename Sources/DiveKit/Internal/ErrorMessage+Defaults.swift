@@ -9,6 +9,14 @@ package extension Error.Message {
         .init(key: "dive.kit.gas.calculator.\(other.key)")
     }
 
+    static func buoyancyCalculator(_ other: Self) -> Self {
+        .init(key: "dive.kit.buoyancy.calculator.\(other.key)")
+    }
+
+    static var invalidObject: Self {
+        .init(key: "invalid.object")
+    }
+
     static var invalidTank: Self {
         .init(key: "invalid.tank")
     }

@@ -30,4 +30,5 @@ package extension Validatable {
 
 extension Double: Validatable {}
 extension Depth: Validatable {}
+extension Object: Validatable {}
 extension Tank: Validatable {}
