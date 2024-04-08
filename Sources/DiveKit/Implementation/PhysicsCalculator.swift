@@ -9,7 +9,7 @@ public class PhysicsCalculator: ConfigurationProviding {
 }
 
 extension PhysicsCalculator: PhysicsCalculating {
-    public func gaugePressure(at depth: Depth) throws -> Calculation<DecimalOutput<Pressure>> {
+    public func gaugePressure(at depth: Depth) throws -> Calculation<DecimalResult<Pressure>> {
         try gaugePressure(
             at: depth,
             orThrow: {

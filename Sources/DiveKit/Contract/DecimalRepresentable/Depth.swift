@@ -17,4 +17,4 @@ public extension Depth {
     }
 }
 
-extension Depth: DecimalOutputRepresentable {}
+extension Depth: DecimalResultRepresentable {}

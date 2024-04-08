@@ -18,4 +18,4 @@ public extension Pressure {
     }
 }
 
-extension Pressure: DecimalOutputRepresentable {}
+extension Pressure: DecimalResultRepresentable {}

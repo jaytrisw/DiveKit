@@ -17,7 +17,7 @@ public extension GasCalculating {
                         error(describing: self, for: $0, with: .gasCalculator(.negative(.depth)))
                     })
             }
-            .map { fractionOxygen.value / $0.result.decimal.value }
+            .map { fractionOxygen.value / $0.result.value }
             .map { $0 * 100 }
             .map { $0.rounded(.towardZero) }
             .map { $0 / 100 }

@@ -21,7 +21,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 with: tank,
                 using: physicsCalculator)) { result, configuration in
                     // Then
-                    XCTAssertEqual(result.decimal.value, 0.778082191780822)
+                    XCTAssertEqual(result.value, 0.778082191780822)
                     XCTAssertEqual(result.unit, .cubicFeet)
                     XCTAssertEqual(configuration, sut.configuration)
                 }

@@ -1,7 +1,7 @@
 import Foundation
 
 public extension PhysicsCalculating {
-    func atmospheresAbsolute(at depth: Depth) throws -> Calculation<DecimalOutput<Pressure>> {
+    func atmospheresAbsolute(at depth: Depth) throws -> Calculation<DecimalResult<Pressure>> {
         try atmospheresAbsolute(
             at: depth,
             orThrow: {

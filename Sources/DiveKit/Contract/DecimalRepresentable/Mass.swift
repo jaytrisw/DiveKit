@@ -17,4 +17,4 @@ public extension Mass {
     }
 }
 
-extension Mass: DecimalOutputRepresentable {}
+extension Mass: DecimalResultRepresentable {}

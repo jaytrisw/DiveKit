@@ -17,4 +17,4 @@ public extension Volume {
     }
 }
 
-extension Volume: DecimalOutputRepresentable {}
+extension Volume: DecimalResultRepresentable {}
