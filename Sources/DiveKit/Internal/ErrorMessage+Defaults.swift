@@ -53,6 +53,10 @@ package extension Error.Message {
         .init(key: "volume")
     }
 
+    static var weight: Self {
+        .init(key: "weight")
+    }
+
     static func blend(_ other: Self) -> Self {
         .init(key: "dive.kit.blend.\(other.key)")
     }
