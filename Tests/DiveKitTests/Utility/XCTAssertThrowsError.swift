@@ -1,17 +1,19 @@
+import DiveKit
 import XCTest
 
-public func XCTAssertThrowsError<T, E: Error>(
-    _ expression: @autoclosure () throws -> T,
+public func XCTAssertThrowsError<T>(
+    when expression: @autoclosure () throws -> T,
     _ message: @autoclosure () -> String = "",
-    as error: E.Type = E.self,
+    then expectedError: @autoclosure () -> Error,
     file: StaticString = #filePath,
     line: UInt = #line,
-    _ errorHandler: (_ error: E) -> Void = { _ in }) {
-        XCTAssertThrowsError(try expression(), message(), file: file, line: line) { error in
-            guard let error = error as? E else {
+    _ errorHandler: (_ error: Error) -> Void = { _ in }) throws {
+        XCTAssertThrowsError(try expression(), message(), file: file, line: line) { thrownError in
+            guard let thrownError = thrownError as? Error else {
                 XCTFail(message(), file: file, line: line)
                 return
             }
-            errorHandler(error)
+            XCTAssertEqual(thrownError, expectedError(), message(), file: file, line: line)
+            errorHandler(thrownError)
         }
     }

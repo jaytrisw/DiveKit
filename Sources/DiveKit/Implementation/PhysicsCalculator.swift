@@ -10,10 +10,6 @@ public class PhysicsCalculator: ConfigurationProviding {
 
 extension PhysicsCalculator: PhysicsCalculating {
     public func gaugePressure(at depth: Depth) throws -> Calculation<DecimalResult<Pressure>> {
-        try gaugePressure(
-            at: depth,
-            orThrow: {
-                error(describing: self, for: $0, with: .physicsCalculator(.negative(.depth)))
-            })
+        try gaugePressure(at: depth, from: .from(self))
     }
 }

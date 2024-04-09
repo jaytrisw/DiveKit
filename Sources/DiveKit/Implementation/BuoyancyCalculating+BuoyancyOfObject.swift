@@ -5,18 +5,11 @@ public extension BuoyancyCalculating {
         try weight
             .validate(
                 using: .nonNegative,
-                orThrow: {
-                    error(describing: self, for: $0, with: .buoyancyCalculator(.negative(.weight)))
-                })
-            .map {
-                try volume.validate(
-                    using: .nonNegative,
-                    orThrow: {
-                        error(describing: self, for: $0, with: .buoyancyCalculator(.negative(.volume)))
-                    })
+                orThrow: { Error.input(.negative(.weight($0)), .from(self)) })
+            .map { try volume.validate(
+                using: .nonNegative,
+                orThrow: { Error.input(.negative(.volume($0)), .from(self)) })
             }
-            .map {
-                try buoyancy(of: .init(weight: weight, volume: $0))
-            }
+            .map { try buoyancy(of: .init(weight: weight, volume: $0)) }
     }
 }

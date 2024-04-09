@@ -24,11 +24,10 @@ final class TankTestCase: SystemUnderTestCase<Tank> {
         let size = Tank.Size(volume: volume, ratedPressure: pressure, unit: .cubicFeet)
 
         // When
-        XCTAssertThrowsError(try Tank(blend: blend, size: size), as: Error<Double>.self) { error in
-            // Then
-            XCTAssertEqual(error.value, fractionalPressure)
-            XCTAssertEqual(error.message.key, "dive.kit.blend.total.pressure")
-            XCTAssertEqual(error.callSite, "Blend<Unblended>.blend()")
-        }
+        try XCTAssertThrowsError(
+            when: Tank(blend: blend, size: size),
+            then: .input(.invalid(.blend(blend)), "Blend<Unblended>.blend()")) {
+                XCTAssertEqual($0.localizationKey, "invalid.blend")
+            }
     }
 }

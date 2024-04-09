@@ -2,16 +2,16 @@ import XCTest
 @testable import DiveKit
 
 extension GasCalculatorImperialSaltwaterTestCase {
-
+    
     // MARK: respiratoryMinuteVolume(at:for:consuming:with:using:)
-
+    
     func testRespiratoryMinuteVolumeValidInput() {
         // Given
         let depth: Depth = 40.0
         let minutes: Minutes = 15.0
         let consuming: Pressure = 450.0
         let tank = Tank.cubicFeet(142, ratedPressure: 2475, with: .air)
-
+        
         // When
         XCTAssertCalculation(
             try sut.respiratoryMinuteVolume(
@@ -26,120 +26,109 @@ extension GasCalculatorImperialSaltwaterTestCase {
                     XCTAssertEqual(configuration, sut.configuration)
                 }
     }
-
-    func testRespiratoryMinuteVolumeInvalidDepthInput() {
+    
+    func testRespiratoryMinuteVolumeInvalidDepthInput() throws {
         // Given
         let depth: Depth = -40.0
         let minutes: Minutes = 15.0
         let consuming: Pressure = 450.0
         let tank = Tank.cubicFeet(142, ratedPressure: 2475, with: .air)
-
+        expectedError = .input(.negative(.depth(depth)), "GasCalculator.respiratoryMinuteVolume(at:for:consuming:with:using:)")
+        
         // When
-        XCTAssertThrowsError(
-            try sut.respiratoryMinuteVolume(
+        try XCTAssertThrowsError(
+            when: sut.respiratoryMinuteVolume(
                 at: depth,
                 for: minutes,
                 consuming: consuming,
                 with: tank,
                 using: physicsCalculator),
-            as: Error<Depth>.self) { error in
-                // Then
-                XCTAssertEqual(error.value, depth)
-                XCTAssertEqual(error.message.key, "dive.kit.gas.calculator.negative.depth")
-                XCTAssertEqual(error.callSite, "GasCalculator.respiratoryMinuteVolume(at:for:consuming:with:using:)")
+            then: expectedError) {
+                XCTAssertEqual($0.localizationKey, "negative.depth")
             }
     }
-
-    func testRespiratoryMinuteVolumeInvalidMinutesInput() {
+    
+    func testRespiratoryMinuteVolumeInvalidMinutesInput() throws {
         // Given
         let depth: Depth = 40.0
         let minutes: Minutes = -15.0
         let consuming: Pressure = 450.0
         let tank = Tank.cubicFeet(142, ratedPressure: 2475, with: .air)
-
+        expectedError = .input(.negative(.minutes(minutes)), "GasCalculator.respiratoryMinuteVolume(at:for:consuming:with:using:)")
+        
         // When
-        XCTAssertThrowsError(
-            try sut.respiratoryMinuteVolume(
+        try XCTAssertThrowsError(
+            when: sut.respiratoryMinuteVolume(
                 at: depth,
                 for: minutes,
                 consuming: consuming,
                 with: tank,
                 using: physicsCalculator),
-            as: Error<Minutes>.self) { error in
-                // Then
-                XCTAssertEqual(error.value, minutes)
-                XCTAssertEqual(error.message.key, "dive.kit.gas.calculator.negative.time")
-                XCTAssertEqual(error.callSite, "GasCalculator.respiratoryMinuteVolume(at:for:consuming:with:using:)")
+            then: expectedError) {
+                XCTAssertEqual($0.localizationKey, "negative.minutes")
             }
     }
-
-    func testRespiratoryMinuteVolumeInvalidConsumedInput() {
+    
+    func testRespiratoryMinuteVolumeInvalidConsumedInput() throws {
         // Given
         let depth: Depth = 40.0
         let minutes: Minutes = 15.0
         let consuming: Pressure = -450.0
         let tank = Tank.cubicFeet(142, ratedPressure: 2475, with: .air)
-
+        expectedError = .input(.negative(.pressure(consuming)), "GasCalculator.respiratoryMinuteVolume(at:for:consuming:with:using:)")
+        
         // When
-        XCTAssertThrowsError(
-            try sut.respiratoryMinuteVolume(
+        try XCTAssertThrowsError(
+            when: sut.respiratoryMinuteVolume(
                 at: depth,
                 for: minutes,
                 consuming: consuming,
                 with: tank,
                 using: physicsCalculator),
-            as: Error<Pressure>.self) { error in
-                // Then
-                XCTAssertEqual(error.value, consuming)
-                XCTAssertEqual(error.message.key, "dive.kit.gas.calculator.negative.consumed")
-                XCTAssertEqual(error.callSite, "GasCalculator.respiratoryMinuteVolume(at:for:consuming:with:using:)")
+            then: expectedError) {
+                XCTAssertEqual($0.localizationKey, "negative.pressure")
             }
     }
-
-    func testRespiratoryMinuteVolumeInvalidTankVolumeInput() {
+    
+    func testRespiratoryMinuteVolumeInvalidTankVolumeInput() throws {
         // Given
         let depth: Depth = 40.0
         let minutes: Minutes = 15.0
         let consuming: Pressure = 450.0
         let tank = Tank.cubicFeet(-142, ratedPressure: 2475, with: .air)
-
+        expectedError = .input(.invalid(.tank(tank)), "GasCalculator.respiratoryMinuteVolume(at:for:consuming:with:using:)")
+        
         // When
-        XCTAssertThrowsError(
-            try sut.respiratoryMinuteVolume(
+        try XCTAssertThrowsError(
+            when: sut.respiratoryMinuteVolume(
                 at: depth,
                 for: minutes,
                 consuming: consuming,
                 with: tank,
                 using: physicsCalculator),
-            as: Error<Tank>.self) { error in
-                // Then
-                XCTAssertEqual(error.value, tank)
-                XCTAssertEqual(error.message.key, "dive.kit.gas.calculator.invalid.tank")
-                XCTAssertEqual(error.callSite, "GasCalculator.respiratoryMinuteVolume(at:for:consuming:with:using:)")
+            then: expectedError) {
+                XCTAssertEqual($0.localizationKey, "invalid.tank")
             }
     }
-
-    func testRespiratoryMinuteVolumeInvalidTankRatedPressureInput() {
+    
+    func testRespiratoryMinuteVolumeInvalidTankRatedPressureInput() throws {
         // Given
         let depth: Depth = 40.0
         let minutes: Minutes = 15.0
         let consuming: Pressure = 450.0
         let tank = Tank.cubicFeet(142, ratedPressure: -2475, with: .air)
-
+        expectedError = .input(.invalid(.tank(tank)), "GasCalculator.respiratoryMinuteVolume(at:for:consuming:with:using:)")
+        
         // When
-        XCTAssertThrowsError(
-            try sut.respiratoryMinuteVolume(
+        try XCTAssertThrowsError(
+            when: sut.respiratoryMinuteVolume(
                 at: depth,
                 for: minutes,
                 consuming: consuming,
                 with: tank,
                 using: physicsCalculator),
-            as: Error<Tank>.self) { error in
-                // Then
-                XCTAssertEqual(error.value, tank)
-                XCTAssertEqual(error.message.key, "dive.kit.gas.calculator.invalid.tank")
-                XCTAssertEqual(error.callSite, "GasCalculator.respiratoryMinuteVolume(at:for:consuming:with:using:)")
+            then: expectedError) {
+                XCTAssertEqual($0.localizationKey, "invalid.tank")
             }
     }
-
 }

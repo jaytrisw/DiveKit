@@ -22,16 +22,13 @@ extension GasCalculatorImperialSaltwaterTestCase {
     func testMaximumOperatingDepthInvalidInput() throws {
         let fractionOxygen: FractionalPressure = -1.4
         let blend = Blend<Blended>.enrichedAir(0.32)
+        expectedError = .input(.negative(.fractionalPressure(fractionOxygen)), "GasCalculator.maximumOperatingDepth(for:in:)")
 
         // When
-        XCTAssertThrowsError(
-            try sut.maximumOperatingDepth(for: fractionOxygen, in: blend),
-            as: Error<FractionalPressure>.self) { error in
-                // Then
-                XCTAssertEqual(error.value, fractionOxygen)
-                XCTAssertEqual(error.message.key, "dive.kit.gas.calculator.negative.fraction.oxygen")
-                XCTAssertEqual(error.callSite, "GasCalculator.maximumOperatingDepth(for:in:)")
+        try XCTAssertThrowsError(
+            when: sut.maximumOperatingDepth(for: fractionOxygen, in: blend),
+            then: expectedError) {
+                XCTAssertEqual($0.localizationKey, "negative.fractional.pressure")
             }
     }
-
 }

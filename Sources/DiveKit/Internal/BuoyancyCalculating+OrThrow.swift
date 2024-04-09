@@ -1,20 +1,14 @@
 import Foundation
 
 package extension BuoyancyCalculating {
-    func buoyancy(of object: Object, orThrow error: (Object) -> Error<Object>) throws -> Calculation<Buoyancy> {
+    func buoyancy(of object: Object, from callSite: CallSite) throws -> Calculation<Buoyancy> {
         try object.validate(
             using: .nonNegative,
             orThrow: {
-                error($0)
+                Error.input(.invalid(.object($0)), callSite)
             })
-        .map {
-            $0.volume.value * configuration.water.weight(configuration.units).value
-        }
-        .map {
-            $0 - object.weight.value
-        }
-        .map {
-            .buoyancy($0, configuration: configuration)
-        }
+        .map { $0.volume.value * configuration.water.weight(configuration.units).value }
+        .map { $0 - object.weight.value }
+        .map { .buoyancy($0, configuration: configuration) }
     }
 }

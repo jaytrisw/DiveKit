@@ -6,14 +6,8 @@ public extension PhysicsCalculating {
         with volume: Volume) throws -> Calculation<DecimalResult<Pressure>> {
             try volume.validate(
                 using: .nonNegative,
-                orThrow: {
-                    error(describing: self, for: $0, with: .physicsCalculator(.negative(.volume)))
-                })
-            .map { _ in try atmospheresAbsolute(
-                at: depth,
-                orThrow: {
-                    error(describing: self, for: $0, with: .physicsCalculator(.negative(.depth)))
-                }) }
+                orThrow: { .input(.negative(.volume($0)), .from(self)) })
+            .map { _ in try atmospheresAbsolute(at: depth, from: .from(self)) }
             .map { volume.value * $0.result.value }
             .map { .decimal($0, unit: \.pressure, from: configuration) }
         }

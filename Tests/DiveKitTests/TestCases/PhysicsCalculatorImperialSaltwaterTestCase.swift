@@ -3,6 +3,8 @@ import XCTest
 
 final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<PhysicsCalculator> {
 
+    var expectedError: Error!
+
     // MARK: gaugePressure(at:)
 
     func testGaugePressureWithValidInput() throws {
@@ -21,14 +23,14 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
     func testGaugePressureWithInvalidInput() throws {
         // Given
         let depth: Depth = -33.0
+        expectedError = .input(.negative(.depth(depth)), "PhysicsCalculator.gaugePressure(at:)")
 
         // When
-        XCTAssertThrowsError(try sut.gaugePressure(at: depth), as: Error<Depth>.self) { error in
-            // Then
-            XCTAssertEqual(error.value, depth)
-            XCTAssertEqual(error.message.key, "dive.kit.physics.calculator.negative.depth")
-            XCTAssertEqual(error.callSite, "PhysicsCalculator.gaugePressure(at:)")
-        }
+        try XCTAssertThrowsError(
+            when: sut.gaugePressure(at: depth),
+            then: expectedError) {
+                XCTAssertEqual($0.localizationKey, "negative.depth")
+            }
     }
 
     // MARK: atmospheresAbsolute(at:)
@@ -49,14 +51,14 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
     func testAtmospheresAbsoluteWithInvalidInput() throws {
         // Given
         let depth: Depth = -33.0
+        expectedError = .input(.negative(.depth(depth)), "PhysicsCalculator.atmospheresAbsolute(at:)")
 
         // When
-        XCTAssertThrowsError(try sut.atmospheresAbsolute(at: depth), as: Error<Depth>.self) { error in
-            // Then
-            XCTAssertEqual(error.value, depth)
-            XCTAssertEqual(error.message.key, "dive.kit.physics.calculator.negative.depth")
-            XCTAssertEqual(error.callSite, "PhysicsCalculator.atmospheresAbsolute(at:)")
-        }
+        try XCTAssertThrowsError(
+            when: sut.atmospheresAbsolute(at: depth),
+            then: expectedError) {
+                XCTAssertEqual($0.localizationKey, "negative.depth")
+            }
     }
 
     // MARK: pressureChange(from:to:)
@@ -79,28 +81,28 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
         // Given
         let fromDepth: Depth = -33.0
         let toDepth: Depth = 66.00
+        expectedError = .input(.negative(.depth(fromDepth)), "PhysicsCalculator.pressureChange(from:to:)")
 
         // When
-        XCTAssertThrowsError(try sut.pressureChange(from: fromDepth, to: toDepth), as: Error<Depth>.self) { error in
-            // Then
-            XCTAssertEqual(error.value, fromDepth)
-            XCTAssertEqual(error.message.key, "dive.kit.physics.calculator.negative.depth")
-            XCTAssertEqual(error.callSite, "PhysicsCalculator.pressureChange(from:to:)")
-        }
+        try XCTAssertThrowsError(
+            when: sut.pressureChange(from: fromDepth, to: toDepth),
+            then: expectedError) {
+                XCTAssertEqual($0.localizationKey, "negative.depth")
+            }
     }
 
     func testPressureChangeWithInvalidToDepthInput() throws {
         // Given
         let fromDepth: Depth = 33.0
         let toDepth: Depth = -66.00
+        expectedError = .input(.negative(.depth(toDepth)), "PhysicsCalculator.pressureChange(from:to:)")
 
         // When
-        XCTAssertThrowsError(try sut.pressureChange(from: fromDepth, to: toDepth), as: Error<Depth>.self) { error in
-            // Then
-            XCTAssertEqual(error.value, toDepth)
-            XCTAssertEqual(error.message.key, "dive.kit.physics.calculator.negative.depth")
-            XCTAssertEqual(error.callSite, "PhysicsCalculator.pressureChange(from:to:)")
-        }
+        try XCTAssertThrowsError(
+            when: sut.pressureChange(from: fromDepth, to: toDepth),
+            then: expectedError) {
+                XCTAssertEqual($0.localizationKey, "negative.depth")
+            }
     }
 
     // MARK: airVolumeFromSurface(to:with:)
@@ -123,28 +125,28 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
         // Given
         let depth: Depth = -66
         let volume: Volume = 6
+        expectedError = .input(.negative(.depth(depth)), "PhysicsCalculator.airVolumeFromSurface(to:with:)")
 
         // When
-        XCTAssertThrowsError(try sut.airVolumeFromSurface(to: depth, with: volume), as: Error<Depth>.self) { error in
-            // Then
-            XCTAssertEqual(error.value, depth)
-            XCTAssertEqual(error.message.key, "dive.kit.physics.calculator.negative.depth")
-            XCTAssertEqual(error.callSite, "PhysicsCalculator.airVolumeFromSurface(to:with:)")
-        }
+        try XCTAssertThrowsError(
+            when: sut.airVolumeFromSurface(to: depth, with: volume),
+            then: expectedError) {
+                XCTAssertEqual($0.localizationKey, "negative.depth")
+            }
     }
 
     func testAirVolumeFromSurfaceWithInValidVolumeInput() throws {
         // Given
         let depth: Depth = 66
         let volume: Volume = -6
+        expectedError = .input(.negative(.volume(volume)), "PhysicsCalculator.airVolumeFromSurface(to:with:)")
 
         // Then
-        XCTAssertThrowsError(try sut.airVolumeFromSurface(to: depth, with: volume), as: Error<Volume>.self) { error in
-            // Then
-            XCTAssertEqual(error.value, volume)
-            XCTAssertEqual(error.message.key, "dive.kit.physics.calculator.negative.volume")
-            XCTAssertEqual(error.callSite, "PhysicsCalculator.airVolumeFromSurface(to:with:)")
-        }
+        try XCTAssertThrowsError(
+            when: sut.airVolumeFromSurface(to: depth, with: volume),
+            then: expectedError) {
+                    XCTAssertEqual($0.localizationKey, "negative.volume")
+                }
     }
 
     // MARK: airVolumeToSurface(from:with:)
@@ -167,28 +169,28 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
         // Given
         let depth: Depth = -66
         let volume: Volume = 6
+        expectedError = .input(.negative(.depth(depth)), "PhysicsCalculator.airVolumeToSurface(from:with:)")
 
         // When
-        XCTAssertThrowsError(try sut.airVolumeToSurface(from: depth, with: volume), as: Error<Depth>.self) { error in
-            // Then
-            XCTAssertEqual(error.value, depth)
-            XCTAssertEqual(error.message.key, "dive.kit.physics.calculator.negative.depth")
-            XCTAssertEqual(error.callSite, "PhysicsCalculator.airVolumeToSurface(from:with:)")
-        }
+        try XCTAssertThrowsError(
+            when: sut.airVolumeToSurface(from: depth, with: volume),
+            then: expectedError) {
+                XCTAssertEqual($0.localizationKey, "negative.depth")
+            }
     }
 
     func testAirVolumeToSurfaceWithInValidVolumeInput() throws {
         // Given
         let depth: Depth = 66
         let volume: Volume = -6
+        expectedError = .input(.negative(.volume(volume)), "PhysicsCalculator.airVolumeToSurface(from:with:)")
 
         // Then
-        XCTAssertThrowsError(try sut.airVolumeToSurface(from: depth, with: volume), as: Error<Volume>.self) { error in
-            // Then
-            XCTAssertEqual(error.value, volume)
-            XCTAssertEqual(error.message.key, "dive.kit.physics.calculator.negative.volume")
-            XCTAssertEqual(error.callSite, "PhysicsCalculator.airVolumeToSurface(from:with:)")
-        }
+        try XCTAssertThrowsError(
+            when: sut.airVolumeToSurface(from: depth, with: volume),
+            then: expectedError) {
+                XCTAssertEqual($0.localizationKey, "negative.volume")
+            }
     }
 
     override func createSUT() {

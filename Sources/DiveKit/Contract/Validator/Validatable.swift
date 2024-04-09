@@ -8,19 +8,19 @@ package extension Validatable {
     }
 
     @discardableResult
-    func validate<E: Swift.Error>(
+    func validate(
         using validator: Validator<Self>,
-        orThrow error: (Self) -> E) throws -> Self {
+        orThrow error: (Self) -> Error) throws -> Self {
             guard validator.validate(self) else {
                 throw error(self)
             }
             return self
         }
 
-    func validate<E: Swift.Error>(
+    func validate(
         using validator: Validator<Self>,
         perform: (Self) -> Void,
-        orThrow error: (Self) -> E) throws {
+        orThrow error: (Self) -> Error) throws {
             guard validator.validate(self) else {
                 throw error(self)
             }

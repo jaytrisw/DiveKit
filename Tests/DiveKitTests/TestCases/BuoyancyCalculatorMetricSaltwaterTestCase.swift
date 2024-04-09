@@ -3,6 +3,8 @@ import XCTest
 
 final class BuoyancyCalculatorMetricSaltwaterTestCase: SystemUnderTestCase<BuoyancyCalculator> {
 
+    var expectedError: Error!
+
     // MARK: buoyancy(of:)
 
     func testBuoyancyValidInput() {
@@ -33,34 +35,34 @@ final class BuoyancyCalculatorMetricSaltwaterTestCase: SystemUnderTestCase<Buoya
         }
     }
 
-    func testBuoyancyInvalidWeightInput() {
+    func testBuoyancyInvalidWeightInput() throws {
         // Given
         let weight: Mass = -209
         let volume: Volume = 200
         let object: Object = .init(weight: weight, volume: volume)
+        expectedError = .input(.invalid(.object(object)), "BuoyancyCalculator.buoyancy(of:)")
 
         // When
-        XCTAssertThrowsError(try sut.buoyancy(of: object), as: Error<Object>.self) { error in
-            // Then
-            XCTAssertEqual(error.value, object)
-            XCTAssertEqual(error.message.key, "dive.kit.buoyancy.calculator.invalid.object")
-            XCTAssertEqual(error.callSite, "BuoyancyCalculator.buoyancy(of:)")
-        }
+        try XCTAssertThrowsError(
+            when: sut.buoyancy(of: object),
+            then: expectedError) {
+                XCTAssertEqual($0.localizationKey, "invalid.object")
+            }
     }
 
-    func testBuoyancyInvalidVolumeInput() {
+    func testBuoyancyInvalidVolumeInput() throws {
         // Given
         let weight: Mass = 209
         let volume: Volume = -200
         let object: Object = .init(weight: weight, volume: volume)
+        expectedError = .input(.invalid(.object(object)), "BuoyancyCalculator.buoyancy(of:)")
 
         // When
-        XCTAssertThrowsError(try sut.buoyancy(of: object), as: Error<Object>.self) { error in
-            // Then
-            XCTAssertEqual(error.value, object)
-            XCTAssertEqual(error.message.key, "dive.kit.buoyancy.calculator.invalid.object")
-            XCTAssertEqual(error.callSite, "BuoyancyCalculator.buoyancy(of:)")
-        }
+        try XCTAssertThrowsError(
+            when: sut.buoyancy(of: object),
+            then: expectedError) {
+                XCTAssertEqual($0.localizationKey, "invalid.object")
+            }
     }
 
     // MARK: buoyancyOfObject(weighing:andDisplacing:)
@@ -81,39 +83,31 @@ final class BuoyancyCalculatorMetricSaltwaterTestCase: SystemUnderTestCase<Buoya
                 }
     }
 
-    func testBuoyancyOfObjectInvalidWeightInput() {
+    func testBuoyancyOfObjectInvalidWeightInput() throws {
         // Given
         let weight: Mass = -51
         let volume: Volume = 50
+        expectedError = .input(.negative(.weight(weight)), "BuoyancyCalculator.buoyancyOfObject(weighing:andDisplacing:)")
 
         // When
-        XCTAssertThrowsError(
-            try sut.buoyancyOfObject(
-                weighing: weight,
-                andDisplacing: volume),
-            as: Error<Mass>.self) { error in
-                // Then
-                XCTAssertEqual(error.value, weight)
-                XCTAssertEqual(error.message.key, "dive.kit.buoyancy.calculator.negative.weight")
-                XCTAssertEqual(error.callSite, "BuoyancyCalculator.buoyancyOfObject(weighing:andDisplacing:)")
+        try XCTAssertThrowsError(
+            when: sut.buoyancyOfObject(weighing: weight, andDisplacing: volume),
+            then: expectedError) {
+                XCTAssertEqual($0.localizationKey, "negative.weight")
             }
     }
 
-    func testBuoyancyOfObjectInvalidVolumeInput() {
+    func testBuoyancyOfObjectInvalidVolumeInput() throws {
         // Given
         let weight: Mass = 51
         let volume: Volume = -50
+        expectedError = .input(.negative(.volume(volume)), "BuoyancyCalculator.buoyancyOfObject(weighing:andDisplacing:)")
 
         // When
-        XCTAssertThrowsError(
-            try sut.buoyancyOfObject(
-                weighing: weight,
-                andDisplacing: volume),
-            as: Error<Volume>.self) { error in
-                // Then
-                XCTAssertEqual(error.value, volume)
-                XCTAssertEqual(error.message.key, "dive.kit.buoyancy.calculator.negative.volume")
-                XCTAssertEqual(error.callSite, "BuoyancyCalculator.buoyancyOfObject(weighing:andDisplacing:)")
+        try XCTAssertThrowsError(
+            when: sut.buoyancyOfObject(weighing: weight, andDisplacing: volume),
+            then: expectedError) {
+                XCTAssertEqual($0.localizationKey, "negative.volume")
             }
     }
 
@@ -135,22 +129,17 @@ final class BuoyancyCalculatorMetricSaltwaterTestCase: SystemUnderTestCase<Buoya
                 }
     }
 
-    func testVolumeOfObjectWithInvalidInput() {
+    func testVolumeOfObjectWithInvalidInput() throws {
         // Given
         let weight: Mass = -75
         let buoyancy: Buoyancy = .negative(20)
+        expectedError = .input(.negative(.weight(weight)), "BuoyancyCalculator.volumeOfObject(weighing:with:)")
 
         // When
-        // When
-        XCTAssertThrowsError(
-            try sut.volumeOfObject(
-                weighing: weight,
-                with: buoyancy),
-            as: Error<Mass>.self) { error in
-                // Then
-                XCTAssertEqual(error.value, weight)
-                XCTAssertEqual(error.message.key, "dive.kit.buoyancy.calculator.negative.weight")
-                XCTAssertEqual(error.callSite, "BuoyancyCalculator.volumeOfObject(weighing:with:)")
+        try XCTAssertThrowsError(
+            when: sut.volumeOfObject(weighing: weight, with: buoyancy),
+            then: expectedError) {
+                XCTAssertEqual($0.localizationKey, "negative.weight")
             }
     }
 

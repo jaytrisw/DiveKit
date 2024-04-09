@@ -22,12 +22,11 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
         let partialPressure: PartialPressure = .init(.oxygen, fractionalPressure: oxygenFraction)
 
         // When
-        XCTAssertThrowsError(try sut.add(partialPressure), as: Error<Double>.self) { error in
-            // Then
-            XCTAssertEqual(error.value, oxygenFraction)
-            XCTAssertEqual(error.message.key, "dive.kit.blend.pressure.range")
-            XCTAssertEqual(error.callSite, "Blend<Unblended>.add(_:pressure:)")
-        }
+        try XCTAssertThrowsError(
+            when: sut.add(partialPressure),
+            then: .input(.invalid(.blend(sut)), "Blend<Unblended>.add(_:pressure:)")) {
+                XCTAssertEqual($0.localizationKey, "invalid.blend") // "dive.kit.blend.pressure.range"
+            }
     }
 
     func testAddWithInvalidUpperBound() throws {
@@ -36,12 +35,11 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
         let partialPressure: PartialPressure = .init(.oxygen, fractionalPressure: oxygenFraction)
 
         // When
-        XCTAssertThrowsError(try sut.add(partialPressure), as: Error<Double>.self) { error in
-            // Then
-            XCTAssertEqual(error.value, oxygenFraction)
-            XCTAssertEqual(error.message.key, "dive.kit.blend.pressure.range")
-            XCTAssertEqual(error.callSite, "Blend<Unblended>.add(_:pressure:)")
-        }
+        try XCTAssertThrowsError(
+            when: sut.add(partialPressure),
+            then: .input(.invalid(.blend(sut)), "Blend<Unblended>.add(_:pressure:)")) {
+                XCTAssertEqual($0.localizationKey, "invalid.blend") // "dive.kit.blend.pressure.range"
+            }
     }
 
     func testAddingWithValidInput() throws {
@@ -105,12 +103,11 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
         try sut.add(oxygen, pressure: oxygenFraction)
 
         // When
-        XCTAssertThrowsError(try sut.blend(), as: Error<Double>.self) { error in
-            // Then
-            XCTAssertEqual(error.value, oxygenFraction)
-            XCTAssertEqual(error.message.key, "dive.kit.blend.total.pressure")
-            XCTAssertEqual(error.callSite, "Blend<Unblended>.blend()")
-        }
+        try XCTAssertThrowsError(
+            when: sut.blend(),
+            then: .input(.invalid(.blend(sut)), "Blend<Unblended>.blend()")) {
+                XCTAssertEqual($0.localizationKey, "invalid.blend") // "dive.kit.blend.total.pressure"
+            }
     }
 
     func testInitializeWithPartialPressures() throws {

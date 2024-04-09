@@ -17,8 +17,6 @@ extension GasCalculator: GasCalculating {
                 of: inputPartialPressure,
                 at: depth,
                 using: physicsCalculator,
-                orThrow: {
-                    error(describing: self, for: $0, with: .gasCalculator(.negative(.depth)))
-                })
+                from: .from(self))
         }
 }

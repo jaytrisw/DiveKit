@@ -37,41 +37,31 @@ extension GasCalculatorImperialSaltwaterTestCase {
             }
     }
 
-    func testEquivalentAirDepthInvalidDepthInput() {
+    func testEquivalentAirDepthInvalidDepthInput() throws {
         // Given
         let depth: Depth = -80.0
         let blend = Blend<Blended>.enrichedAir(0.4)
+        expectedError = .input(.negative(.depth(depth)), "GasCalculator.equivalentAirDepth(for:with:)")
 
         // When
-        XCTAssertThrowsError(
-            try sut.equivalentAirDepth(
-                for: depth,
-                with: blend),
-            as: Error<Depth>.self) { error in
-                // Then
-                XCTAssertEqual(error.value, depth)
-                XCTAssertEqual(error.message.key, "dive.kit.gas.calculator.negative.depth")
-                XCTAssertEqual(error.callSite, "GasCalculator.equivalentAirDepth(for:with:)")
+        try XCTAssertThrowsError(
+            when: sut.equivalentAirDepth(for: depth, with: blend),
+            then: expectedError) {
+                XCTAssertEqual($0.localizationKey, "negative.depth")
             }
     }
 
     func testEquivalentAirDepthUnblendedInvalidBlendInput() throws {
         // Given
         let depth: Depth = 80.0
-        let blend = try Blend<Unblended>()
-            .adding(.oxygen, pressure: 0.4)
+        let blend = Blend<Unblended>(.init(.oxygen, fractionalPressure: 0.4))
+        expectedError = .input(.invalid(.blend(blend)), "GasCalculator.equivalentAirDepth(for:with:)")
 
         // When
-        XCTAssertThrowsError(
-            try sut.equivalentAirDepth(
-                for: depth,
-                with: blend),
-            as: Error<Blend>.self) { error in
-                // Then
-                XCTAssertEqual(error.value, blend)
-                XCTAssertEqual(error.message.key, "dive.kit.gas.calculator.dive.kit.blend.total.pressure")
-                XCTAssertEqual(error.callSite, "GasCalculator.equivalentAirDepth(for:with:)")
+        try XCTAssertThrowsError(
+            when: sut.equivalentAirDepth(for: depth, with: blend),
+            then: expectedError) {
+                XCTAssertEqual($0.localizationKey, "invalid.blend")
             }
     }
-
 }

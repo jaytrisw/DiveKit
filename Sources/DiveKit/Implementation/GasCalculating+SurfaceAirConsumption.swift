@@ -11,15 +11,7 @@ public extension GasCalculating {
                 for: minutes,
                 consuming: gasConsumed,
                 using: physicsCalculator,
-                atmospheresAbsoluteError: {
-                    error(describing: self, for: $0, with: .gasCalculator(.negative(.depth)))
-                },
-                minutesError: {
-                    error(describing: self, for: $0, with: .gasCalculator(.negative(.time)))
-                },
-                consumedError: {
-                    error(describing: self, for: $0, with: .gasCalculator(.negative(.consumed)))
-                })
+                from: .from(self))
         }
 
     func surfaceAirConsumption(
@@ -30,32 +22,18 @@ public extension GasCalculating {
         using physicsCalculator: PhysicsCalculating) throws -> Calculation<DecimalResult<Pressure>> {
             try startGas.validate(
                 using: .nonNegative,
-                orThrow: {
-                    error(describing: self, for: $0, with: .gasCalculator(.negative(.startPressure)))
-                })
-            .map {
-                try endGas.validate(
-                    using: .nonNegative,
-                    orThrow: {
-                        error(describing: self, for: $0, with: .gasCalculator(.negative(.endPressure)))
-                    })
+                orThrow: { .input(.negative(.pressure($0)), .from(self)) })
+            .map { try endGas.validate(
+                using: .nonNegative,
+                orThrow: { .input(.negative(.pressure($0)), .from(self)) })
             }
             .map { startGas.value - endGas.value }
-            .map {
-                try surfaceAirConsumption(
-                    at: depth,
-                    for: minutes,
-                    consuming: .init($0),
-                    using: physicsCalculator,
-                    atmospheresAbsoluteError: {
-                        error(describing: self, for: $0, with: .gasCalculator(.negative(.depth)))
-                    },
-                    minutesError: {
-                        error(describing: self, for: $0, with: .gasCalculator(.negative(.time)))
-                    },
-                    consumedError: {
-                        error(describing: self, for: $0, with: .gasCalculator(.negative(.consumed)))
-                    })
+            .map { try surfaceAirConsumption(
+                at: depth,
+                for: minutes,
+                consuming: .init($0),
+                using: physicsCalculator,
+                from: .from(self))
             }
         }
 }

@@ -12,7 +12,7 @@ public extension Blend where State == Unblended {
             .validate(
                 using: .between(.zero, and: .one),
                 perform: { storage.updateValue($0, forKey: gas) },
-                orThrow: { error(for: $0, message: .blend(.pressureRange), describe: self) })
+                orThrow: { _ in .input(.invalid(.blend(self)), .from(self)) })
     }
 
     mutating func add<Gas: GasRepresentable>(_ partialPressure: PartialPressure<Gas>) throws {
@@ -46,10 +46,7 @@ public extension Blend where State == Unblended {
 
     func blend() throws -> Blend<Blended> {
         guard totalPressure == 1.0 else {
-            throw error(
-                for: totalPressure,
-                message: .blend(.totalPressure),
-                describe: self)
+            throw Error.input(.invalid(.blend(self)), .from(self))
         }
         return .init(storage: storage)
     }

@@ -5,8 +5,8 @@ package extension GasCalculating {
         of partialPressure: PartialPressure<Gas>,
         at depth: Depth,
         using physicsCalculator: PhysicsCalculating,
-        orThrow error: (Depth) -> Error<Depth>) throws -> Calculation<PartialPressure<Gas>> {
-            try physicsCalculator.atmospheresAbsolute(at: depth, orThrow: error)
+        from callSite: CallSite) throws -> Calculation<PartialPressure<Gas>> {
+            try physicsCalculator.atmospheresAbsolute(at: depth, from: callSite)
                 .map { $0.result.value * partialPressure.fractionalPressure }
                 .map { .partialPressure(partialPressure.gas, fractionalPressure: $0, configuration: configuration) }
         }
@@ -16,29 +16,25 @@ package extension GasCalculating {
         in blend: Blend<Blended>,
         at depth: Depth,
         using physicsCalculator: PhysicsCalculating,
-        orThrow error: (Depth) -> Error<Depth>) throws -> Calculation<PartialPressure<Gas>> {
+        from callSite: CallSite) throws -> Calculation<PartialPressure<Gas>> {
             try blend.partialPressure(of: gas)
                 .map { try partialPressure(
                     of: $0,
                     at: depth,
                     using: physicsCalculator,
-                    orThrow: error) }
+                    from: callSite) }
         }
 
     func depthAirConsumption(
         for minutes: Minutes,
         consuming gasConsumed: Pressure,
-        minutesError: (Minutes) -> Error<Minutes>,
-        consumedError: (Pressure) -> Error<Pressure>) throws -> Calculation<DecimalResult<Pressure>> {
-            try minutes.validate(using: .nonNegative, orThrow: {
-                minutesError($0)
-            })
-            .map {
-                try gasConsumed.validate(
-                    using: .nonNegative,
-                    orThrow: {
-                        consumedError($0)
-                    })
+        from callSite: CallSite) throws -> Calculation<DecimalResult<Pressure>> {
+            try minutes.validate(
+                using: .nonNegative,
+                orThrow: { .input(.negative(.minutes($0)), callSite) })
+            .map { try gasConsumed.validate(
+                using: .nonNegative,
+                orThrow: { .input(.negative(.pressure($0)), callSite) })
             }
             .map { gasConsumed.value / minutes.value }
             .map { .decimal($0, unit: \.pressure, from: configuration) }
@@ -49,19 +45,14 @@ package extension GasCalculating {
         for minutes: Minutes,
         consuming gasConsumed: Pressure,
         using physicsCalculator: PhysicsCalculating,
-        atmospheresAbsoluteError: (Depth) -> Error<Depth>,
-        minutesError: (Minutes) -> Error<Minutes>,
-        consumedError: (Pressure) -> Error<Pressure>) throws -> Calculation<DecimalResult<Pressure>> {
-            try physicsCalculator.atmospheresAbsolute(
-                at: depth,
-                orThrow: atmospheresAbsoluteError)
-            .with { try depthAirConsumption(
-                for: minutes,
-                consuming: gasConsumed,
-                minutesError: minutesError,
-                consumedError: consumedError)
-            }
-            .map { $0.second.result.value / $0.first.result.value }
-            .map { .decimal($0, unit: \.pressure, from: configuration) }
+        from callSite: CallSite) throws -> Calculation<DecimalResult<Pressure>> {
+            try physicsCalculator.atmospheresAbsolute( at: depth, from: callSite)
+                .with { try depthAirConsumption(
+                    for: minutes,
+                    consuming: gasConsumed,
+                    from: callSite)
+                }
+                .map { $0.second.result.value / $0.first.result.value }
+                .map { .decimal($0, unit: \.pressure, from: configuration) }
         }
 }

@@ -7,3 +7,11 @@ public extension Blend where State == Blended {
         .init(gas, fractionalPressure: storage[gas, default: .zero])
     }
 }
+
+extension CallSite {
+    static func from<State: BlendState>(_ blend: Blend<State>, function: StaticString = #function) -> Self {
+        .init(
+            object: .init(describing: blend).components(separatedBy: "(").first ?? .init(describing: blend),
+            function: function)
+    }
+}
