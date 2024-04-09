@@ -11,7 +11,7 @@ final class TankTestCase: SystemUnderTestCase<Tank> {
         let pressure: Pressure = 3000
         let size = Tank.Size(volume: volume, ratedPressure: pressure, unit: .cubicFeet)
 
-        // Then
+        // When
         XCTAssertNoThrow(try Tank(blend: blend, size: size))
     }
 
