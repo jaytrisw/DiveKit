@@ -1,7 +1,7 @@
 import Foundation
 
-package extension BuoyancyCalculating {
-    func buoyancy(of object: Object, from callSite: CallSite) throws -> Calculation<Buoyancy> {
+internal extension BuoyancyCalculating {
+    func buoyancy(of object: Object, _ callSite: CallSite) throws -> Calculation<Buoyancy> {
         try object.validate(
             using: .nonNegative,
             orThrow: {

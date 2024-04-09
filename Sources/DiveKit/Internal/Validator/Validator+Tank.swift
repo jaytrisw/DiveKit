@@ -1,6 +1,6 @@
 import Foundation
 
-package extension Validator where Value == Tank {
+internal extension Validator where Value == Tank {
     static var size: Self {
         .init(validate: {
             $0.size.ratedPressure.validate(using: .nonNegative) &&

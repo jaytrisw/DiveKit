@@ -19,7 +19,7 @@ public extension GasCalculating {
     func equivalentAirDepth(
         for depth: Depth,
         with blend: Blend<Unblended>) throws -> Calculation<DecimalResult<Depth>> {
-            try blend.blend(from: .from(self))
+            try blend.blend(.from(self))
                 .map { try equivalentAirDepth(for: depth, with: $0) }
         }
 }

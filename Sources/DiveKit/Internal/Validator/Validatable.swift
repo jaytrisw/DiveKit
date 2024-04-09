@@ -1,8 +1,8 @@
 import Foundation
 
-package protocol Validatable {}
+internal protocol Validatable {}
 
-package extension Validatable {
+internal extension Validatable {
     func validate(using validator: Validator<Self>) -> Bool {
         validator.validate(self)
     }
@@ -19,10 +19,10 @@ package extension Validatable {
 
     func validate(
         using validator: Validator<Self>,
-        perform: (Self) -> Void,
-        orThrow error: (Self) -> Error) throws {
+        onValidated perform: (Self) -> Void,
+        orThrow error: () -> Error) throws {
             guard validator.validate(self) else {
-                throw error(self)
+                throw error()
             }
             perform(self)
         }

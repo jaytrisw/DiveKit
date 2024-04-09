@@ -1,10 +1,10 @@
 import Foundation
 
-package struct Tuple<Value> {
-    package let first: Value
-    package let second: Value
+internal struct Tuple<Value> {
+    internal let first: Value
+    internal let second: Value
 
-    package init(first: Value, second: Value) {
+    internal init(first: Value, second: Value) {
         self.first = first
         self.second = second
     }

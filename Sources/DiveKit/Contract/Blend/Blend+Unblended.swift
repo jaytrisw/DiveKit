@@ -11,8 +11,8 @@ public extension Blend where State == Unblended {
         try pressure
             .validate(
                 using: .between(.zero, and: .one),
-                perform: { storage.updateValue($0, forKey: gas) },
-                orThrow: { _ in .input(.invalid(.blend(self)), .from(self)) })
+                onValidated: { storage.updateValue($0, forKey: gas) },
+                orThrow: { .input(.invalid(.blend(self)), .from(self)) })
     }
 
     mutating func add<Gas: GasRepresentable>(_ partialPressure: PartialPressure<Gas>) throws {

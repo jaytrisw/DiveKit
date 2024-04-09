@@ -7,7 +7,7 @@ public extension PhysicsCalculating {
             try volume.validate(
                 using: .nonNegative,
                 orThrow: { .input(.negative(.volume($0)), .from(self)) })
-            .map { try atmospheresAbsolute(at: depth, from: .from(self)) }
+            .map { try atmospheresAbsolute(at: depth, .from(self)) }
             .map { volume.value / $0.result.value }
             .map { .decimal($0, unit: \.pressure, from: configuration) }
         }

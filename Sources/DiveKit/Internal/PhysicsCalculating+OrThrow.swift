@@ -1,9 +1,9 @@
 import Foundation
 
-package extension PhysicsCalculating {
+internal extension PhysicsCalculating {
     func gaugePressure(
         at depth: Depth,
-        from callSite: CallSite) throws -> Calculation<DecimalResult<Pressure>> {
+        _ callSite: CallSite) throws -> Calculation<DecimalResult<Pressure>> {
             try depth.validate(
                 using: .nonNegative,
                 orThrow: { Error.input(.negative(.depth($0)), callSite) })
@@ -13,8 +13,8 @@ package extension PhysicsCalculating {
     
     func atmospheresAbsolute(
         at depth: Depth,
-        from callSite: CallSite) throws -> Calculation<DecimalResult<Pressure>> {
-            try gaugePressure(at: depth, from: callSite)
+        _ callSite: CallSite) throws -> Calculation<DecimalResult<Pressure>> {
+            try gaugePressure(at: depth, callSite)
                 .map { .decimal($0.result.value + 1, unit: $0.result.unit, configuration: $0.configuration) }
         }
 }

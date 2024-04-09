@@ -13,10 +13,6 @@ extension GasCalculator: GasCalculating {
         of inputPartialPressure: PartialPressure<Gas>,
         at depth: Depth,
         using physicsCalculator: PhysicsCalculating) throws -> Calculation<PartialPressure<Gas>> {
-            try partialPressure(
-                of: inputPartialPressure,
-                at: depth,
-                using: physicsCalculator,
-                from: .from(self))
+            try partialPressure(of: inputPartialPressure, at: depth, using: physicsCalculator, .from(self))
         }
 }

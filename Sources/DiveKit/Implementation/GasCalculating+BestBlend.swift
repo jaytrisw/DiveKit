@@ -8,7 +8,7 @@ public extension GasCalculating {
             try fractionOxygen.validate(
                 using: .nonNegative,
                 orThrow: { .input(.negative(.fractionalPressure($0)), .from(self)) })
-            .map { try physicsCalculator.atmospheresAbsolute(at: depth, from: .from(self)) }
+            .map { try physicsCalculator.atmospheresAbsolute(at: depth, .from(self)) }
             .map { fractionOxygen.value / $0.result.value }
             .map { $0 * 100 }
             .map { $0.rounded(.towardZero) }

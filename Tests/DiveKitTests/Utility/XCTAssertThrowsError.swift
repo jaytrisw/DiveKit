@@ -7,13 +7,13 @@ public func XCTAssertThrowsError<T>(
     then expectedError: @autoclosure () -> Error,
     file: StaticString = #filePath,
     line: UInt = #line,
-    _ errorHandler: (_ error: Error) -> Void = { _ in }) throws {
+    _ errorHandler: ((_ error: Error) -> Void)? = .none) throws {
         XCTAssertThrowsError(try expression(), message(), file: file, line: line) { thrownError in
             guard let thrownError = thrownError as? Error else {
                 XCTFail(message(), file: file, line: line)
                 return
             }
             XCTAssertEqual(thrownError, expectedError(), message(), file: file, line: line)
-            errorHandler(thrownError)
+            errorHandler?(thrownError)
         }
     }

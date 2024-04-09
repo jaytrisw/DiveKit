@@ -1,8 +1,8 @@
 import Foundation
 
-package protocol Mappable {}
+internal protocol Mappable {}
 
-package extension Mappable {
+internal extension Mappable {
     func map<Transform>(_ transform: () throws -> Transform) rethrows -> Transform {
         try transform()
     }

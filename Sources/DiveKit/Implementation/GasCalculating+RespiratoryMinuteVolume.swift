@@ -7,18 +7,10 @@ public extension GasCalculating {
         consuming gasConsumed: Pressure,
         with tank: Tank,
         using physicsCalculator: PhysicsCalculating) throws -> Calculation<DecimalResult<Volume>> {
-            try tank.validate(
-                using: .size,
-                orThrow: { .input(.invalid(.tank($0)), .from(self))  })
-            .map { try surfaceAirConsumption(
-                at: depth,
-                for: minutes,
-                consuming: gasConsumed,
-                using: physicsCalculator,
-                from: .from(self))
-            }
-            .map { $0.result.value * tank.size.conversionFactor }
-            .map { .decimal($0, unit: \.volume, from: configuration) }
+            try tank.validate(using: .size, orThrow: { .input(.invalid(.tank($0)), .from(self))  })
+                .map { try surfaceAirConsumption(at: depth, for: minutes, consuming: gasConsumed, using: physicsCalculator, .from(self)) }
+                .map { $0.result.value * tank.size.conversionFactor }
+                .map { .decimal($0, unit: \.volume, from: configuration) }
         }
 }
 

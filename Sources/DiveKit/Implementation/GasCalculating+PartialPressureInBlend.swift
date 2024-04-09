@@ -6,12 +6,7 @@ public extension GasCalculating {
         in blend: Blend<Blended>,
         at depth: Depth,
         using physicsCalculator: PhysicsCalculating) throws -> Calculation<PartialPressure<Gas>> {
-            try partialPressure(
-                of: gas,
-                in: blend,
-                at: depth,
-                using: physicsCalculator,
-                from: .from(self))
+            try partialPressure(of: gas, in: blend, at: depth, using: physicsCalculator, .from(self))
         }
     
     func partialPressure<Gas: GasRepresentable>(
@@ -19,12 +14,7 @@ public extension GasCalculating {
         blending blend: Blend<Unblended>,
         at depth: Depth,
         using physicsCalculator: PhysicsCalculating) throws -> Calculation<PartialPressure<Gas>> {
-            try blend.blend(from: .from(self))
-                .map { try partialPressure(
-                    of: gas,
-                    in: $0,
-                    at: depth,
-                    using: physicsCalculator,
-                    from: .from(self)) }
+            try blend.blend(.from(self))
+                .map { try partialPressure(of: gas, in: $0, at: depth, using: physicsCalculator, .from(self)) }
         }
 }
