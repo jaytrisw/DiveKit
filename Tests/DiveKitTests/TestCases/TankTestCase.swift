@@ -30,4 +30,8 @@ final class TankTestCase: SystemUnderTestCase<Tank> {
                 XCTAssertEqual($0.localizationKey, "invalid.blend")
             }
     }
+
+    func testFail() {
+        XCTFail("Intentionally failing test")
+    }
 }
