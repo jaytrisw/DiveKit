@@ -7,32 +7,34 @@ final class BuoyancyCalculatorMetricSaltwaterTestCase: SystemUnderTestCase<Buoya
 
     // MARK: buoyancy(of:)
 
-    func testBuoyancyValidInput() {
+    func testBuoyancyValidInput() throws {
         // Given
         let weight: Mass = 209
         let volume: Volume = 200
         let object: Object = .init(weight: weight, volume: volume)
 
         // When
-        XCTAssertCalculation(try sut.buoyancy(of: object)) { result, configuration in
-            // Then
-            XCTAssertEqual(result, .negative(3))
-            XCTAssertEqual(configuration, sut.configuration)
+        try XCTAssertCalculation(
+            sut.buoyancy(of: object)) { result, configuration in
+                // Then
+                XCTAssertEqual(result, .negative(3))
+                XCTAssertEqual(configuration, sut.configuration)
         }
     }
 
-    func testBuoyancyValidInputNeutral() {
+    func testBuoyancyValidInputNeutral() throws {
         // Given
         let weight: Mass = 309
         let volume: Volume = 300
         let object: Object = .init(weight: weight, volume: volume)
 
         // When
-        XCTAssertCalculation(try sut.buoyancy(of: object)) { result, configuration in
-            // Then
-            XCTAssertEqual(result, .neutral)
-            XCTAssertEqual(configuration, sut.configuration)
-        }
+        try XCTAssertCalculation(
+            sut.buoyancy(of: object)) { result, configuration in
+                // Then
+                XCTAssertEqual(result, .neutral)
+                XCTAssertEqual(configuration, sut.configuration)
+            }
     }
 
     func testBuoyancyInvalidWeightInput() throws {
@@ -67,14 +69,14 @@ final class BuoyancyCalculatorMetricSaltwaterTestCase: SystemUnderTestCase<Buoya
 
     // MARK: buoyancyOfObject(weighing:andDisplacing:)
 
-    func testBuoyancyOfObjectValidInput() {
+    func testBuoyancyOfObjectValidInput() throws {
         // Given
         let weight: Mass = 51
         let volume: Volume = 50
 
         // When
-        XCTAssertCalculation(
-            try sut.buoyancyOfObject(
+        try XCTAssertCalculation(
+            sut.buoyancyOfObject(
                 weighing: weight,
                 andDisplacing: volume)) { result, configuration in
                     // Then
@@ -113,14 +115,14 @@ final class BuoyancyCalculatorMetricSaltwaterTestCase: SystemUnderTestCase<Buoya
 
     // MARK: volumeOfObject(weighing:with:)
 
-    func testVolumeOfObjectWithValidInput() {
+    func testVolumeOfObjectWithValidInput() throws {
         // Given
         let weight: Mass = 75
         let buoyancy: Buoyancy = .negative(20)
 
         // When
-        XCTAssertCalculation(
-            try sut.volumeOfObject(
+        try XCTAssertCalculation(
+            sut.volumeOfObject(
                 weighing: weight,
                 with: buoyancy)) { result, configuration in
                     // Then
@@ -143,14 +145,14 @@ final class BuoyancyCalculatorMetricSaltwaterTestCase: SystemUnderTestCase<Buoya
             }
     }
 
-    func testVolumeOfObjectAlternateWithValidInput() {
+    func testVolumeOfObjectAlternateWithValidInput() throws {
         // Given
         let weight: Mass = 75
         let buoyancy: Buoyancy = .positive(20)
 
         // When
-        XCTAssertCalculation(
-            try sut.volumeOfObject(
+        try XCTAssertCalculation(
+            sut.volumeOfObject(
                 weighing: weight,
                 with: buoyancy)) { result, configuration in
                     // Then

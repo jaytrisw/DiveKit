@@ -10,8 +10,8 @@ extension GasCalculatorImperialSaltwaterTestCase {
         let blend = Blend<Blended>.enrichedAir(0.32)
 
         // When
-        XCTAssertCalculation(
-            try sut.maximumOperatingDepth(for: fractionOxygen, in: blend)) { result, configuration in
+        try XCTAssertCalculation(
+            sut.maximumOperatingDepth(for: fractionOxygen, in: blend)) { result, configuration in
                 // Then
                 XCTAssertEqual(result.value, 111.3749975413084)
                 XCTAssertEqual(result.unit, .feet)

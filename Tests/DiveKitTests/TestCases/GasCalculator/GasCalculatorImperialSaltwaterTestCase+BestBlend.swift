@@ -11,8 +11,8 @@ extension GasCalculatorImperialSaltwaterTestCase {
         let fractionOxygen: FractionalPressure = 1.4
         
         // When
-        XCTAssertCalculation(
-            try sut.bestBlend( for: depth, fractionOxygen: fractionOxygen, using: physicsCalculator)) { result, configuration in
+        try XCTAssertCalculation(
+            sut.bestBlend(for: depth, fractionOxygen: fractionOxygen, using: physicsCalculator)) { result, configuration in
                 // Then
                 XCTAssertEqual(result.partialPressure(of: .oxygen).fractionalPressure, 0.32)
                 XCTAssertEqual(configuration, sut.configuration)

@@ -9,8 +9,8 @@ final class GasCalculatorMetricSaltwaterTestCase: SystemUnderTestCase<GasCalcula
         // Given
 
         // When
-        XCTAssertCalculation(
-            try sut.surfaceAirConsumption(
+        try XCTAssertCalculation(
+            sut.surfaceAirConsumption(
                 at: 15,
                 for: 10,
                 consuming: 40,

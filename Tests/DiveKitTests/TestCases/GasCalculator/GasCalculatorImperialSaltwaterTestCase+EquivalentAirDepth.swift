@@ -5,14 +5,14 @@ extension GasCalculatorImperialSaltwaterTestCase {
 
     // MARK: equivalentAirDepth(for:with:)
 
-    func testEquivalentAirDepthValidInput() {
+    func testEquivalentAirDepthValidInput() throws {
         // Given
         let depth: Depth = 80.0
         let blend = Blend<Blended>.enrichedAir(0.4)
 
         // When
-        XCTAssertCalculation(
-            try sut.equivalentAirDepth(for: depth, with: blend)) { result, configuration in
+        try XCTAssertCalculation(
+            sut.equivalentAirDepth(for: depth, with: blend)) { result, configuration in
                 // Then
                 XCTAssertEqual(result.value, 52.82278481012658)
                 XCTAssertEqual(result.unit, .feet)
@@ -28,8 +28,8 @@ extension GasCalculatorImperialSaltwaterTestCase {
             .filling(with: .nitrogen)
 
         // When
-        XCTAssertCalculation(
-            try sut.equivalentAirDepth(for: depth, with: blend)) { result, configuration in
+        try XCTAssertCalculation(
+            sut.equivalentAirDepth(for: depth, with: blend)) { result, configuration in
                 // Then
                 XCTAssertEqual(result.value, 52.82278481012658)
                 XCTAssertEqual(result.unit, .feet)

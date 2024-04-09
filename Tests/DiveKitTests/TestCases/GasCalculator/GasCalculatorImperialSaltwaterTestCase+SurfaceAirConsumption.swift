@@ -12,8 +12,8 @@ extension GasCalculatorImperialSaltwaterTestCase {
         let consuming: Pressure = 600.0
         
         // When
-        XCTAssertCalculation(
-            try sut.surfaceAirConsumption(
+        try XCTAssertCalculation(
+            sut.surfaceAirConsumption(
                 at: depth,
                 for: minutes,
                 consuming: consuming,
@@ -93,8 +93,8 @@ extension GasCalculatorImperialSaltwaterTestCase {
         let endPressure: Pressure = 2400.0
         
         // When
-        XCTAssertCalculation(
-            try sut.surfaceAirConsumption(
+        try XCTAssertCalculation(
+            sut.surfaceAirConsumption(
                 at: depth,
                 for: minutes,
                 start: startPressure,

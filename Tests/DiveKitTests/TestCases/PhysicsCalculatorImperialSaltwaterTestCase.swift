@@ -12,12 +12,13 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
         let depth: Depth = 33.0
 
         // When
-        XCTAssertCalculation(try sut.gaugePressure(at: depth)) { result, configuration in
-            // Then
-            XCTAssertEqual(result.value, 1)
-            XCTAssertEqual(result.unit, .atmospheres)
-            XCTAssertEqual(configuration, sut.configuration)
-        }
+        try XCTAssertCalculation(
+            sut.gaugePressure(at: depth)) { result, configuration in
+                // Then
+                XCTAssertEqual(result.value, 1)
+                XCTAssertEqual(result.unit, .atmospheres)
+                XCTAssertEqual(configuration, sut.configuration)
+            }
     }
 
     func testGaugePressureWithInvalidInput() throws {
@@ -40,12 +41,13 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
         let depth: Depth = 33.0
 
         // When
-        XCTAssertCalculation(try sut.atmospheresAbsolute(at: depth)) { result, configuration in
-            // Then
-            XCTAssertEqual(result.value, 2)
-            XCTAssertEqual(result.unit, .atmospheres)
-            XCTAssertEqual(configuration, sut.configuration)
-        }
+        try XCTAssertCalculation(
+            sut.atmospheresAbsolute(at: depth)) { result, configuration in
+                // Then
+                XCTAssertEqual(result.value, 2)
+                XCTAssertEqual(result.unit, .atmospheres)
+                XCTAssertEqual(configuration, sut.configuration)
+            }
     }
 
     func testAtmospheresAbsoluteWithInvalidInput() throws {
@@ -69,12 +71,13 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
         let toDepth: Depth = 66.00
 
         // When
-        XCTAssertCalculation(try sut.pressureChange(from: fromDepth, to: toDepth)) { result, configuration in
-            // Then
-            XCTAssertEqual(result.value, 1)
-            XCTAssertEqual(result.unit, .psi)
-            XCTAssertEqual(configuration, sut.configuration)
-        }
+        try XCTAssertCalculation(
+            sut.pressureChange(from: fromDepth, to: toDepth)) { result, configuration in
+                // Then
+                XCTAssertEqual(result.value, 1)
+                XCTAssertEqual(result.unit, .psi)
+                XCTAssertEqual(configuration, sut.configuration)
+            }
     }
 
     func testPressureChangeWithInvalidFromDepthInput() throws {
@@ -113,12 +116,13 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
         let volume: Volume = 6
 
         // When
-        XCTAssertCalculation(try sut.airVolumeFromSurface(to: depth, with: volume)) { result, configuration in
-            // Then
-            XCTAssertEqual(result.value, 2)
-            XCTAssertEqual(result.unit, .psi)
-            XCTAssertEqual(configuration, sut.configuration)
-        }
+        try XCTAssertCalculation(
+            sut.airVolumeFromSurface(to: depth, with: volume)) { result, configuration in
+                // Then
+                XCTAssertEqual(result.value, 2)
+                XCTAssertEqual(result.unit, .psi)
+                XCTAssertEqual(configuration, sut.configuration)
+            }
     }
 
     func testAirVolumeFromSurfaceWithInValidDepthInput() throws {
@@ -157,12 +161,13 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
         let volume: Volume = 6
 
         // When
-        XCTAssertCalculation(try sut.airVolumeToSurface(from: depth, with: volume)) { result, configuration in
-            // Then
-            XCTAssertEqual(result.value, 18)
-            XCTAssertEqual(result.unit, .psi)
-            XCTAssertEqual(configuration, sut.configuration)
-        }
+        try XCTAssertCalculation(
+            sut.airVolumeToSurface(from: depth, with: volume)) { result, configuration in
+                // Then
+                XCTAssertEqual(result.value, 18)
+                XCTAssertEqual(result.unit, .psi)
+                XCTAssertEqual(configuration, sut.configuration)
+            }
     }
 
     func testAirVolumeToSurfaceWithInValidDepthInput() throws {
