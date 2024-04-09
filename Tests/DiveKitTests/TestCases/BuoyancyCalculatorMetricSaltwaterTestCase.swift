@@ -117,6 +117,59 @@ final class BuoyancyCalculatorMetricSaltwaterTestCase: SystemUnderTestCase<Buoya
             }
     }
 
+    // MARK: volumeOfObject(weighing:with:)
+
+    func testVolumeOfObjectWithValidInput() {
+        // Given
+        let weight: Mass = 75
+        let buoyancy: Buoyancy = .negative(20)
+
+        // When
+        XCTAssertCalculation(
+            try sut.volumeOfObject(
+                weighing: weight,
+                with: buoyancy)) { result, configuration in
+                    // Then
+                    XCTAssertEqual(result.value, 53.398058252427184)
+                    XCTAssertEqual(configuration, sut.configuration)
+                }
+    }
+
+    func testVolumeOfObjectWithInvalidInput() {
+        // Given
+        let weight: Mass = -75
+        let buoyancy: Buoyancy = .negative(20)
+
+        // When
+        // When
+        XCTAssertThrowsError(
+            try sut.volumeOfObject(
+                weighing: weight,
+                with: buoyancy),
+            as: Error<Mass>.self) { error in
+                // Then
+                XCTAssertEqual(error.value, weight)
+                XCTAssertEqual(error.message.key, "dive.kit.buoyancy.calculator.negative.weight")
+                XCTAssertEqual(error.callSite, "BuoyancyCalculator.volumeOfObject(weighing:with:)")
+            }
+    }
+
+    func testVolumeOfObjectAlternateWithValidInput() {
+        // Given
+        let weight: Mass = 75
+        let buoyancy: Buoyancy = .positive(20)
+
+        // When
+        XCTAssertCalculation(
+            try sut.volumeOfObject(
+                weighing: weight,
+                with: buoyancy)) { result, configuration in
+                    // Then
+                    XCTAssertEqual(result.value, 92.23300970873787)
+                    XCTAssertEqual(configuration, sut.configuration)
+                }
+    }
+
     override func createSUT() {
         sut = .init(.metric, water: .salt)
     }
