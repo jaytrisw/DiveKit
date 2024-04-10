@@ -1,0 +1,46 @@
+{
+  "configurations" : [
+    {
+      "id" : "FC2694F2-5500-42C6-BD2E-94CCC04FD5AC",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : {
+      "targets" : [
+        {
+          "containerPath" : "container:",
+          "identifier" : "DiveKit",
+          "name" : "DiveKit"
+        }
+      ]
+    }
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "DiveKitTests",
+        "name" : "DiveKitTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "DiveKitCoreTests",
+        "name" : "DiveKitCoreTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "DiveKitInternalsTests",
+        "name" : "DiveKitInternalsTests"
+      }
+    }
+  ],
+  "version" : 1
+}
