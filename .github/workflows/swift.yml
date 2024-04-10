@@ -10,9 +10,7 @@ on:
     branches: [ "main" ]
 
 env:
-  LCOV_PATH: .build/artifacts/info.lcov
-  BUILD_FOLDER: .build/debug/DiveKitPackageTests.xctest/Contents/MacOS/DiveKitPackageTests
-  PROFDATA_FOLDER: .build/debug/codecov/default.profdata
+  CODECOV_JSON: .build/debug/codecov/DiveKit.json
 
 jobs:
   build:
@@ -29,13 +27,10 @@ jobs:
     - name: Build
       run: swift build -v
     - name: Run Tests and Generate lcov File
-      run: |
-        swift test --enable-code-coverage
-        xcrun llvm-cov report $BUILD_FOLDER -instr-profile $PROFDATA_FOLDER
-        xcrun llvm-cov export -format="lcov" $BUILD_FOLDER -instr-profile $PROFDATA_FOLDER > $LCOV_PATH
+      run: swift test --enable-code-coverage
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v4.0.1
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
-        files: ${{ env.LCOV_PATH }}
+        files: ${{ env.CODECOV_JSON }}
         slug: jaytrisw/DiveKit2
