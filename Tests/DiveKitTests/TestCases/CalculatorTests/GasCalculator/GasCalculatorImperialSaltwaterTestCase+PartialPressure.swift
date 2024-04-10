@@ -26,7 +26,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
         // Given
         let partialPressure = PartialPressure(.oxygen, fractionalPressure: 0.21)
         let depth: Depth = -33.0
-        expectedError = .input(.negative(.depth(depth)), "GasCalculator.partialPressure(of:at:using:)")
+        expectedError = .negative(depth, "GasCalculator.partialPressure(of:at:using:)")
 
         // When
         try XCTAssertThrowsError(
@@ -62,7 +62,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
         let gas = Oxygen()
         let blend = Blend<Blended>.air
         let depth: Depth = -33.0
-        expectedError = .input(.negative(.depth(depth)), "GasCalculator.partialPressure(of:in:at:using:)")
+        expectedError = .negative(depth, "GasCalculator.partialPressure(of:in:at:using:)")
 
         // When
         try XCTAssertThrowsError(
@@ -117,7 +117,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
             .adding(.oxygen, pressure: 0.21)
             .filling(with: .nitrogen)
         let depth: Depth = -33.0
-        expectedError = .input(.negative(.depth(depth)), "GasCalculator.partialPressure(of:blending:at:using:)")
+        expectedError = .negative(depth, "GasCalculator.partialPressure(of:blending:at:using:)")
 
         // When
         try XCTAssertThrowsError(

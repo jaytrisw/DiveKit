@@ -24,7 +24,7 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
     func testGaugePressureWithInvalidInput() throws {
         // Given
         let depth: Depth = -33.0
-        expectedError = .input(.negative(.depth(depth)), "PhysicsCalculator.gaugePressure(at:)")
+        expectedError = .negative(depth, "PhysicsCalculator.gaugePressure(at:)")
 
         // When
         try XCTAssertThrowsError(
@@ -53,7 +53,7 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
     func testAtmospheresAbsoluteWithInvalidInput() throws {
         // Given
         let depth: Depth = -33.0
-        expectedError = .input(.negative(.depth(depth)), "PhysicsCalculator.atmospheresAbsolute(at:)")
+        expectedError = .negative(depth, "PhysicsCalculator.atmospheresAbsolute(at:)")
 
         // When
         try XCTAssertThrowsError(
@@ -84,7 +84,7 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
         // Given
         let fromDepth: Depth = -33.0
         let toDepth: Depth = 66.00
-        expectedError = .input(.negative(.depth(fromDepth)), "PhysicsCalculator.pressureChange(from:to:)")
+        expectedError = .negative(fromDepth, "PhysicsCalculator.pressureChange(from:to:)")
 
         // When
         try XCTAssertThrowsError(
@@ -98,7 +98,7 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
         // Given
         let fromDepth: Depth = 33.0
         let toDepth: Depth = -66.00
-        expectedError = .input(.negative(.depth(toDepth)), "PhysicsCalculator.pressureChange(from:to:)")
+        expectedError = .negative(toDepth, "PhysicsCalculator.pressureChange(from:to:)")
 
         // When
         try XCTAssertThrowsError(
@@ -129,7 +129,7 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
         // Given
         let depth: Depth = -66
         let volume: Volume = 6
-        expectedError = .input(.negative(.depth(depth)), "PhysicsCalculator.airVolumeFromSurface(to:with:)")
+        expectedError = .negative(depth, "PhysicsCalculator.airVolumeFromSurface(to:with:)")
 
         // When
         try XCTAssertThrowsError(
@@ -143,7 +143,7 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
         // Given
         let depth: Depth = 66
         let volume: Volume = -6
-        expectedError = .input(.negative(.volume(volume)), "PhysicsCalculator.airVolumeFromSurface(to:with:)")
+        expectedError = .negative(volume, "PhysicsCalculator.airVolumeFromSurface(to:with:)")
 
         // Then
         try XCTAssertThrowsError(
@@ -174,7 +174,7 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
         // Given
         let depth: Depth = -66
         let volume: Volume = 6
-        expectedError = .input(.negative(.depth(depth)), "PhysicsCalculator.airVolumeToSurface(from:with:)")
+        expectedError = .negative(depth, "PhysicsCalculator.airVolumeToSurface(from:with:)")
 
         // When
         try XCTAssertThrowsError(
@@ -188,7 +188,7 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
         // Given
         let depth: Depth = 66
         let volume: Volume = -6
-        expectedError = .input(.negative(.volume(volume)), "PhysicsCalculator.airVolumeToSurface(from:with:)")
+        expectedError = .negative(volume, "PhysicsCalculator.airVolumeToSurface(from:with:)")
 
         // Then
         try XCTAssertThrowsError(

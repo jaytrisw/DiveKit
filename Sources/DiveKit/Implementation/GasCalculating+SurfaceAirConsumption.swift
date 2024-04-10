@@ -15,8 +15,8 @@ public extension GasCalculating {
         start startGas: Pressure,
         end endGas: Pressure,
         using physicsCalculator: PhysicsCalculating) throws -> Calculation<DecimalResult<Pressure>> {
-            try startGas.validate(using: .nonNegative, orThrow: { .input(.negative(.pressure($0)), .from(self)) })
-                .map { try endGas.validate(using: .nonNegative, orThrow: { .input(.negative(.pressure($0)), .from(self)) }) }
+            try startGas.validate(using: .nonNegative, orThrow: { .negative($0, .from(self)) })
+                .map { try endGas.validate(using: .nonNegative, orThrow: { .negative($0, .from(self)) }) }
                 .map { startGas.value - endGas.value }
                 .map { try surfaceAirConsumption( at: depth, for: minutes, consuming: .init($0), using: physicsCalculator, .from(self)) }
         }

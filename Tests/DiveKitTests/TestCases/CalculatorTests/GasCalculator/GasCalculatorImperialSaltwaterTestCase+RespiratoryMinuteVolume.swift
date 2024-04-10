@@ -33,7 +33,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
         let minutes: Minutes = 15.0
         let consuming: Pressure = 450.0
         let tank = Tank.cubicFeet(142, ratedPressure: 2475, with: .air)
-        expectedError = .input(.negative(.depth(depth)), "GasCalculator.respiratoryMinuteVolume(at:for:consuming:with:using:)")
+        expectedError = .negative(depth, "GasCalculator.respiratoryMinuteVolume(at:for:consuming:with:using:)")
 
         // When
         try XCTAssertThrowsError(
@@ -54,7 +54,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
         let minutes: Minutes = -15.0
         let consuming: Pressure = 450.0
         let tank = Tank.cubicFeet(142, ratedPressure: 2475, with: .air)
-        expectedError = .input(.negative(.minutes(minutes)), "GasCalculator.respiratoryMinuteVolume(at:for:consuming:with:using:)")
+        expectedError = .negative(minutes, "GasCalculator.respiratoryMinuteVolume(at:for:consuming:with:using:)")
 
         // When
         try XCTAssertThrowsError(
@@ -75,7 +75,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
         let minutes: Minutes = 15.0
         let consuming: Pressure = -450.0
         let tank = Tank.cubicFeet(142, ratedPressure: 2475, with: .air)
-        expectedError = .input(.negative(.pressure(consuming)), "GasCalculator.respiratoryMinuteVolume(at:for:consuming:with:using:)")
+        expectedError = .negative(consuming, "GasCalculator.respiratoryMinuteVolume(at:for:consuming:with:using:)")
 
         // When
         try XCTAssertThrowsError(

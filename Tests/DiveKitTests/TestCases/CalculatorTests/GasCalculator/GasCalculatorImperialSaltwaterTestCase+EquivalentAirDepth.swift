@@ -41,7 +41,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
         // Given
         let depth: Depth = -80.0
         let blend = Blend<Blended>.enrichedAir(0.4)
-        expectedError = .input(.negative(.depth(depth)), "GasCalculator.equivalentAirDepth(for:with:)")
+        expectedError = .negative(depth, "GasCalculator.equivalentAirDepth(for:with:)")
 
         // When
         try XCTAssertThrowsError(

@@ -22,7 +22,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
     func testMaximumOperatingDepthInvalidInput() throws {
         let fractionOxygen: FractionalPressure = -1.4
         let blend = Blend<Blended>.enrichedAir(0.32)
-        expectedError = .input(.negative(.fractionalPressure(fractionOxygen)), "GasCalculator.maximumOperatingDepth(for:in:)")
+        expectedError = .negative(fractionOxygen, "GasCalculator.maximumOperatingDepth(for:in:)")
 
         // When
         try XCTAssertThrowsError(

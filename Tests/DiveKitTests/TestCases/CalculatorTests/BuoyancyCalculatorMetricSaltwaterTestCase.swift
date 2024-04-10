@@ -89,7 +89,7 @@ final class BuoyancyCalculatorMetricSaltwaterTestCase: SystemUnderTestCase<Buoya
         // Given
         let weight: Mass = -51
         let volume: Volume = 50
-        expectedError = .input(.negative(.weight(weight)), "BuoyancyCalculator.buoyancyOfObject(weighing:andDisplacing:)")
+        expectedError = .negative(weight, "BuoyancyCalculator.buoyancyOfObject(weighing:andDisplacing:)")
 
         // When
         try XCTAssertThrowsError(
@@ -103,7 +103,7 @@ final class BuoyancyCalculatorMetricSaltwaterTestCase: SystemUnderTestCase<Buoya
         // Given
         let weight: Mass = 51
         let volume: Volume = -50
-        expectedError = .input(.negative(.volume(volume)), "BuoyancyCalculator.buoyancyOfObject(weighing:andDisplacing:)")
+        expectedError = .negative(volume, "BuoyancyCalculator.buoyancyOfObject(weighing:andDisplacing:)")
 
         // When
         try XCTAssertThrowsError(
@@ -135,7 +135,7 @@ final class BuoyancyCalculatorMetricSaltwaterTestCase: SystemUnderTestCase<Buoya
         // Given
         let weight: Mass = -75
         let buoyancy: Buoyancy = .negative(20)
-        expectedError = .input(.negative(.weight(weight)), "BuoyancyCalculator.volumeOfObject(weighing:with:)")
+        expectedError = .negative(weight, "BuoyancyCalculator.volumeOfObject(weighing:with:)")
 
         // When
         try XCTAssertThrowsError(

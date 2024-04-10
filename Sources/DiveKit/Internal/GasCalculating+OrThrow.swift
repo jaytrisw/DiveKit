@@ -25,8 +25,8 @@ internal extension GasCalculating {
         for minutes: Minutes,
         consuming gasConsumed: Pressure,
         _ callSite: CallSite) throws -> Calculation<DecimalResult<Pressure>> {
-            try minutes.validate( using: .nonNegative, orThrow: { .input(.negative(.minutes($0)), callSite) })
-                .map { try gasConsumed.validate( using: .nonNegative, orThrow: { .input(.negative(.pressure($0)), callSite) }) }
+            try minutes.validate( using: .nonNegative, orThrow: { .negative($0, callSite) })
+                .map { try gasConsumed.validate( using: .nonNegative, orThrow: { .negative($0, callSite) }) }
                 .map { gasConsumed.value / minutes.value }
                 .map { .decimal($0, unit: \.pressure, from: configuration) }
         }

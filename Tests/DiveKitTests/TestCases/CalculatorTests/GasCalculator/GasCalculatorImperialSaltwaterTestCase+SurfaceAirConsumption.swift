@@ -30,8 +30,8 @@ extension GasCalculatorImperialSaltwaterTestCase {
         let depth: Depth = -90.0
         let minutes: Minutes = 10.0
         let consuming: Pressure = 600.0
-        expectedError = .input(.negative(.depth(depth)), "GasCalculator.surfaceAirConsumption(at:for:consuming:using:)")
-        
+        expectedError = .negative(depth, "GasCalculator.surfaceAirConsumption(at:for:consuming:using:)")
+
         // When
         try XCTAssertThrowsError(
             when: sut.surfaceAirConsumption(
@@ -49,8 +49,8 @@ extension GasCalculatorImperialSaltwaterTestCase {
         let depth: Depth = 90.0
         let minutes: Minutes = -10.0
         let consuming: Pressure = 600.0
-        expectedError = .input(.negative(.minutes(minutes)), "GasCalculator.surfaceAirConsumption(at:for:consuming:using:)")
-        
+        expectedError = .negative(minutes, "GasCalculator.surfaceAirConsumption(at:for:consuming:using:)")
+
         // When
         try XCTAssertThrowsError(
             when: sut.surfaceAirConsumption(
@@ -68,8 +68,8 @@ extension GasCalculatorImperialSaltwaterTestCase {
         let depth: Depth = 90.0
         let minutes: Minutes = 10.0
         let consuming: Pressure = -600.0
-        expectedError = .input(.negative(.pressure(consuming)), "GasCalculator.surfaceAirConsumption(at:for:consuming:using:)")
-        
+        expectedError = .negative(consuming, "GasCalculator.surfaceAirConsumption(at:for:consuming:using:)")
+
         // When
         try XCTAssertThrowsError(
             when:
@@ -113,8 +113,8 @@ extension GasCalculatorImperialSaltwaterTestCase {
         let minutes: Minutes = 10.0
         let startPressure: Pressure = 3000.0
         let endPressure: Pressure = 2400.0
-        expectedError = .input(.negative(.depth(depth)), "GasCalculator.surfaceAirConsumption(at:for:start:end:using:)")
-        
+        expectedError = .negative(depth, "GasCalculator.surfaceAirConsumption(at:for:start:end:using:)")
+
         // When
         try XCTAssertThrowsError(
             when: sut.surfaceAirConsumption(
@@ -134,8 +134,8 @@ extension GasCalculatorImperialSaltwaterTestCase {
         let minutes: Minutes = -10.0
         let startPressure: Pressure = 3000.0
         let endPressure: Pressure = 2400.0
-        expectedError = .input(.negative(.minutes(minutes)), "GasCalculator.surfaceAirConsumption(at:for:start:end:using:)")
-        
+        expectedError = .negative(minutes, "GasCalculator.surfaceAirConsumption(at:for:start:end:using:)")
+
         // When
         try XCTAssertThrowsError(
             when: sut.surfaceAirConsumption(
@@ -155,8 +155,8 @@ extension GasCalculatorImperialSaltwaterTestCase {
         let minutes: Minutes = 10.0
         let startPressure: Pressure = -3000.0
         let endPressure: Pressure = 2400.0
-        expectedError = .input(.negative(.pressure(startPressure)), "GasCalculator.surfaceAirConsumption(at:for:start:end:using:)")
-        
+        expectedError = .negative(startPressure, "GasCalculator.surfaceAirConsumption(at:for:start:end:using:)")
+
         // When
         try XCTAssertThrowsError(
             when: sut.surfaceAirConsumption(
@@ -176,8 +176,8 @@ extension GasCalculatorImperialSaltwaterTestCase {
         let minutes: Minutes = 10.0
         let startPressure: Pressure = 3000.0
         let endPressure: Pressure = -2400.0
-        expectedError = .input(.negative(.pressure(endPressure)), "GasCalculator.surfaceAirConsumption(at:for:start:end:using:)")
-        
+        expectedError = .negative(endPressure, "GasCalculator.surfaceAirConsumption(at:for:start:end:using:)")
+
         // When
         try XCTAssertThrowsError(
             when: sut.surfaceAirConsumption(
@@ -198,8 +198,8 @@ extension GasCalculatorImperialSaltwaterTestCase {
         let startPressure: Pressure = 2400.0
         let endPressure: Pressure = 3000.0
         let consumed: Pressure = -600
-        expectedError = .input(.negative(.pressure(consumed)), "GasCalculator.surfaceAirConsumption(at:for:start:end:using:)")
-        
+        expectedError = .negative(consumed, "GasCalculator.surfaceAirConsumption(at:for:start:end:using:)")
+
         // When
         try XCTAssertThrowsError(
             when: sut.surfaceAirConsumption(

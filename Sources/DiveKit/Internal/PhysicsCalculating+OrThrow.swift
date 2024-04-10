@@ -4,11 +4,9 @@ internal extension PhysicsCalculating {
     func gaugePressure(
         at depth: Depth,
         _ callSite: CallSite) throws -> Calculation<DecimalResult<Pressure>> {
-            try depth.validate(
-                using: .nonNegative,
-                orThrow: { Error.input(.negative(.depth($0)), callSite) })
-            .map { $0.value / configuration.water.pressure(configuration.units).increase.value }
-            .map { .decimal($0, unit: .atmospheres, configuration: configuration) }
+            try depth.validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
+                .map { $0.value / configuration.water.pressure(configuration.units).increase.value }
+                .map { .decimal($0, unit: .atmospheres, configuration: configuration) }
         }
     
     func atmospheresAbsolute(
