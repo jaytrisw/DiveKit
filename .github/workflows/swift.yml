@@ -9,6 +9,11 @@ on:
   pull_request:
     branches: [ "main" ]
 
+env:
+  LCOV_PATH: .build/artifacts/info.lcov
+  BUILD_FOLDER: .build/debug/CombineExtensionsPackageTests.xctest/Contents/MacOS/CombineExtensionsPackageTests
+  PROFDATA_FOLDER: .build/debug/codecov/default.profdata
+
 jobs:
   build:
 
@@ -23,10 +28,14 @@ jobs:
     - uses: actions/checkout@v3
     - name: Build
       run: swift build -v
-    - name: Run tests
-      run: swift test -v
+    - name: Run Tests and Generate lcov File
+      run: |
+        swift test --enable-code-coverage
+        xcrun llvm-cov report $BUILD_FOLDER -instr-profile $PROFDATA_FOLDER
+        xcrun llvm-cov export -format="lcov" $BUILD_FOLDER -instr-profile $PROFDATA_FOLDER > $LCOV_PATH
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v4.0.1
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
+        files: ${{ env.LCOV_PATH }}
         slug: jaytrisw/DiveKit2
