@@ -12,23 +12,10 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "DiveKit",
-            swiftSettings: defaultSettings),
+            name: "DiveKit"),
         .testTarget(
             name: "DiveKitTests",
             dependencies: [
                 "DiveKit",
-            ],
-            swiftSettings: defaultSettings)
-    ],
-    swiftLanguageVersions: [.v5]
-)
-
-let defaultSettings: [SwiftSetting] = [
-    .unsafeFlags([
-        "-Xfrontend",
-        "-warn-long-function-bodies=200",
-        "-Xfrontend",
-        "-warn-long-expression-type-checking=100"
+            ])
     ])
-]
