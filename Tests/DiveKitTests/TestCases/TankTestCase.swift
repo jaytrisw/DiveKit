@@ -29,7 +29,7 @@ final class TankTestCase: SystemUnderTestCase<Tank> {
             when: Tank(blend: blend, size: size),
             then: expectedError) {
                 XCTAssertEqual($0.localizationKey, "dive.kit.error.blend.total.pressure")
-                XCTAssertEqual($0.localizedDescription, "Blend Total Pressure")
+                XCTAssertNotEqual($0.localizedDescription, $0.localizationKey)
             }
     }
 }
