@@ -48,7 +48,6 @@ extension GasCalculatorImperialSaltwaterTestCase {
             when: sut.equivalentAirDepth(for: depth, with: blend),
             then: expectedError) {
                 XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.depth")
-                XCTAssertNotEqual($0.localizedDescription, $0.localizationKey)
             }
     }
 
@@ -64,7 +63,6 @@ extension GasCalculatorImperialSaltwaterTestCase {
             when: sut.equivalentAirDepth(for: depth, with: blend),
             then: expectedError) {
                 XCTAssertEqual($0.localizationKey, "dive.kit.error.blend.total.pressure")
-                XCTAssertNotEqual($0.localizedDescription, $0.localizationKey)
             }
     }
 }

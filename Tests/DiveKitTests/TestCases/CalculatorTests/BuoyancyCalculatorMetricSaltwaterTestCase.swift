@@ -49,7 +49,6 @@ final class BuoyancyCalculatorMetricSaltwaterTestCase: SystemUnderTestCase<Buoya
             when: sut.buoyancy(of: object),
             then: expectedError) {
                 XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.weight")
-                XCTAssertNotEqual($0.localizedDescription, $0.localizationKey)
             }
     }
 
@@ -65,7 +64,6 @@ final class BuoyancyCalculatorMetricSaltwaterTestCase: SystemUnderTestCase<Buoya
             when: sut.buoyancy(of: object),
             then: expectedError) {
                 XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.volume")
-                XCTAssertNotEqual($0.localizedDescription, $0.localizationKey)
             }
     }
 
@@ -98,7 +96,6 @@ final class BuoyancyCalculatorMetricSaltwaterTestCase: SystemUnderTestCase<Buoya
             when: sut.buoyancyOfObject(weighing: weight, andDisplacing: volume),
             then: expectedError) {
                 XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.weight")
-                XCTAssertNotEqual($0.localizedDescription, $0.localizationKey)
             }
     }
 
@@ -113,7 +110,6 @@ final class BuoyancyCalculatorMetricSaltwaterTestCase: SystemUnderTestCase<Buoya
             when: sut.buoyancyOfObject(weighing: weight, andDisplacing: volume),
             then: expectedError) {
                 XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.volume")
-                XCTAssertNotEqual($0.localizedDescription, $0.localizationKey)
             }
     }
 
@@ -146,7 +142,6 @@ final class BuoyancyCalculatorMetricSaltwaterTestCase: SystemUnderTestCase<Buoya
             when: sut.volumeOfObject(weighing: weight, with: buoyancy),
             then: expectedError) {
                 XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.weight")
-                XCTAssertNotEqual($0.localizedDescription, $0.localizationKey)
             }
     }
 

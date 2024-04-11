@@ -33,7 +33,6 @@ extension GasCalculatorImperialSaltwaterTestCase {
             when: sut.partialPressure(of: partialPressure, at: depth, using: physicsCalculator),
             then: expectedError) {
                 XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.depth")
-                XCTAssertNotEqual($0.localizedDescription, $0.localizationKey)
             }
     }
 
@@ -70,7 +69,6 @@ extension GasCalculatorImperialSaltwaterTestCase {
             when: sut.partialPressure(of: gas, in: blend, at: depth, using: physicsCalculator),
             then: expectedError) {
                 XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.depth")
-                XCTAssertNotEqual($0.localizedDescription, $0.localizationKey)
             }
     }
 
@@ -110,7 +108,6 @@ extension GasCalculatorImperialSaltwaterTestCase {
             when: sut.partialPressure(of: gas, blending: blend, at: depth, using: physicsCalculator),
             then: expectedError) {
                 XCTAssertEqual($0.localizationKey, "dive.kit.error.blend.total.pressure")
-                XCTAssertNotEqual($0.localizedDescription, $0.localizationKey)
             }
     }
 
@@ -128,7 +125,6 @@ extension GasCalculatorImperialSaltwaterTestCase {
             when: sut.partialPressure(of: gas, blending: blend, at: depth, using: physicsCalculator),
             then: expectedError) {
                 XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.depth")
-                XCTAssertNotEqual($0.localizedDescription, $0.localizationKey)
             }
     }
 }

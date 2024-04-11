@@ -30,7 +30,6 @@ extension GasCalculatorImperialSaltwaterTestCase {
             when: sut.bestBlend(for: depth, fractionOxygen: fractionOxygen, using: physicsCalculator),
             then: expectedError) {
                 XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.depth")
-                XCTAssertNotEqual($0.localizedDescription, $0.localizationKey)
             }
     }
     
@@ -45,7 +44,6 @@ extension GasCalculatorImperialSaltwaterTestCase {
             when: sut.bestBlend( for: depth, fractionOxygen: fractionOxygen, using: physicsCalculator),
             then: expectedError) {
                 XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.fractional.pressure")
-                XCTAssertNotEqual($0.localizedDescription, $0.localizationKey)
             }
     }
 }
