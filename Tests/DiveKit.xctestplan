@@ -26,20 +26,6 @@
         "identifier" : "DiveKitTests",
         "name" : "DiveKitTests"
       }
-    },
-    {
-      "target" : {
-        "containerPath" : "container:",
-        "identifier" : "DiveKitCoreTests",
-        "name" : "DiveKitCoreTests"
-      }
-    },
-    {
-      "target" : {
-        "containerPath" : "container:",
-        "identifier" : "DiveKitInternalsTests",
-        "name" : "DiveKitInternalsTests"
-      }
     }
   ],
   "version" : 1
