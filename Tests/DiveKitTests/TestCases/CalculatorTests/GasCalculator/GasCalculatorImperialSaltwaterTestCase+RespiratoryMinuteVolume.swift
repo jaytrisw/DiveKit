@@ -48,7 +48,8 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 with: tank,
                 using: physicsCalculator),
             then: expectedError) {
-                XCTAssertEqual($0.localizationKey, "negative.depth")
+                XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.depth")
+                XCTAssertNotEqual($0.localizedDescription, $0.localizationKey)
             }
     }
 
@@ -71,7 +72,8 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 with: tank,
                 using: physicsCalculator),
             then: expectedError) {
-                XCTAssertEqual($0.localizationKey, "negative.minutes")
+                XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.minutes")
+                XCTAssertNotEqual($0.localizedDescription, $0.localizationKey)
             }
     }
 
@@ -94,7 +96,8 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 with: tank,
                 using: physicsCalculator),
             then: expectedError) {
-                XCTAssertEqual($0.localizationKey, "negative.pressure")
+                XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.pressure")
+                XCTAssertNotEqual($0.localizedDescription, $0.localizationKey)
             }
     }
 
@@ -117,7 +120,8 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 with: tank,
                 using: physicsCalculator),
             then: expectedError) {
-                XCTAssertEqual($0.localizationKey, "tank.size.volume")
+                XCTAssertEqual($0.localizationKey, "dive.kit.error.tank.size.volume")
+                XCTAssertNotEqual($0.localizedDescription, $0.localizationKey)
             }
     }
 
@@ -140,7 +144,8 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 with: tank,
                 using: physicsCalculator),
             then: expectedError) {
-                XCTAssertEqual($0.localizationKey, "tank.size.rated.pressure")
+                XCTAssertEqual($0.localizationKey, "dive.kit.error.tank.size.rated.pressure")
+                XCTAssertNotEqual($0.localizedDescription, $0.localizationKey)
             }
     }
 }

@@ -12,7 +12,11 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "DiveKit"),
+            name: "DiveKit",
+            resources: [
+                .process("Resources")
+            ]
+        ),
         .testTarget(
             name: "DiveKitTests",
             dependencies: [

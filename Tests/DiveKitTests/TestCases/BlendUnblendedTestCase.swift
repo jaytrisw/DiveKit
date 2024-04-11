@@ -29,7 +29,8 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
         try XCTAssertThrowsError(
             when: sut.add(partialPressure),
             then: expectedError) {
-                XCTAssertEqual($0.localizationKey, "blend.pressure.range")
+                XCTAssertEqual($0.localizationKey, "dive.kit.error.blend.pressure.range")
+                XCTAssertNotEqual($0.localizedDescription, $0.localizationKey)
             }
     }
 
@@ -43,7 +44,8 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
         try XCTAssertThrowsError(
             when: sut.add(partialPressure),
             then: expectedError) {
-                XCTAssertEqual($0.localizationKey, "blend.pressure.range")
+                XCTAssertEqual($0.localizationKey, "dive.kit.error.blend.pressure.range")
+                XCTAssertNotEqual($0.localizedDescription, $0.localizationKey)
             }
     }
 
@@ -112,7 +114,8 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
         try XCTAssertThrowsError(
             when: sut.blend(),
             then: expectedError) {
-                XCTAssertEqual($0.localizationKey, "blend.total.pressure")
+                XCTAssertEqual($0.localizationKey, "dive.kit.error.blend.total.pressure")
+                XCTAssertNotEqual($0.localizedDescription, $0.localizationKey)
             }
     }
 

@@ -8,13 +8,20 @@ public extension Error {
             case let .blend(blend, _): blend.localizationKey
         }
     }
+
+    var localizedDescription: String {
+        guard NSLocalizedString(localizationKey, bundle: .main, comment: .init(describing: self)) != localizationKey else {
+            return NSLocalizedString(localizationKey, bundle: .module, comment: .init(describing: self))
+        }
+        return NSLocalizedString(localizationKey, bundle: .main, comment: .init(describing: self))
+    }
 }
 
 public extension Error.Tank {
     var localizationKey: String {
         switch self {
-            case .ratedPressure: "tank.size.rated.pressure"
-            case .volume: "tank.size.volume"
+            case .ratedPressure: "dive.kit.error.tank.size.rated.pressure"
+            case .volume: "dive.kit.error.tank.size.volume"
         }
     }
 }
@@ -22,8 +29,8 @@ public extension Error.Tank {
 public extension Error.Blend {
     var localizationKey: String {
         switch self {
-            case .totalPressure: "blend.total.pressure"
-            case .pressureRange: "blend.pressure.range"
+            case .totalPressure: "dive.kit.error.blend.total.pressure"
+            case .pressureRange: "dive.kit.error.blend.pressure.range"
         }
     }
 }
@@ -31,12 +38,12 @@ public extension Error.Blend {
 public extension Error.Negative {
     var localizationKey: String {
         switch self {
-            case .depth: "negative.depth"
-            case .fractionalPressure: "negative.fractional.pressure"
-            case .minutes: "negative.minutes"
-            case .pressure: "negative.pressure"
-            case .volume: "negative.volume"
-            case .weight: "negative.weight"
+            case .depth: "dive.kit.error.negative.depth"
+            case .fractionalPressure: "dive.kit.error.negative.fractional.pressure"
+            case .minutes: "dive.kit.error.negative.minutes"
+            case .pressure: "dive.kit.error.negative.pressure"
+            case .volume: "dive.kit.error.negative.volume"
+            case .weight: "dive.kit.error.negative.weight"
         }
     }
 }
