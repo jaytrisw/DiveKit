@@ -42,13 +42,13 @@ final class BuoyancyCalculatorMetricSaltwaterTestCase: SystemUnderTestCase<Buoya
         let weight: Mass = -209
         let volume: Volume = 200
         let object: Object = .init(weight: weight, volume: volume)
-        expectedError = .input(.invalid(.object(object)), "BuoyancyCalculator.buoyancy(of:)")
+        expectedError = .negative(weight, "BuoyancyCalculator.buoyancy(of:)")
 
         // When
         try XCTAssertThrowsError(
             when: sut.buoyancy(of: object),
             then: expectedError) {
-                XCTAssertEqual($0.localizationKey, "invalid.object")
+                XCTAssertEqual($0.localizationKey, "negative.weight")
             }
     }
 
@@ -57,13 +57,13 @@ final class BuoyancyCalculatorMetricSaltwaterTestCase: SystemUnderTestCase<Buoya
         let weight: Mass = 209
         let volume: Volume = -200
         let object: Object = .init(weight: weight, volume: volume)
-        expectedError = .input(.invalid(.object(object)), "BuoyancyCalculator.buoyancy(of:)")
+        expectedError = .negative(volume, "BuoyancyCalculator.buoyancy(of:)")
 
         // When
         try XCTAssertThrowsError(
             when: sut.buoyancy(of: object),
             then: expectedError) {
-                XCTAssertEqual($0.localizationKey, "invalid.object")
+                XCTAssertEqual($0.localizationKey, "negative.volume")
             }
     }
 

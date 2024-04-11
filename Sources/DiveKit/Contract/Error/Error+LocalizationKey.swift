@@ -21,7 +21,6 @@ public extension Error.Input {
 public extension Error.Input.Invalid {
     var localizationKey: String {
         switch self {
-            case .object: "invalid.object"
             case .tank: "invalid.tank"
         }
     }
