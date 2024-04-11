@@ -12,7 +12,7 @@ public extension Blend where State == Unblended {
     }
 }
 
-private extension Blend {
+internal extension Blend {
     init<each Gas: GasRepresentable>(_ values:  repeat ((each Gas), Double)) {
         self.init(storage: .init(repeat ((each values).0, (each values).1)))
     }
