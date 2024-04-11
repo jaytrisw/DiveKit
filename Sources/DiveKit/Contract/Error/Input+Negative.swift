@@ -1,7 +1,7 @@
 import Foundation
 
-extension Error.Input {
-    public enum Negative {
+public extension Error {
+    enum Negative {
         case depth(_ depth: DiveKit.Depth)
         case fractionalPressure(_ fractionalPressure: DiveKit.FractionalPressure)
         case minutes(_ minutes: DiveKit.Minutes)
@@ -11,4 +11,4 @@ extension Error.Input {
     }
 }
 
-extension Error.Input.Negative: Equatable {}
+extension Error.Negative: Equatable {}

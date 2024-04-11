@@ -22,7 +22,7 @@ final class TankTestCase: SystemUnderTestCase<Tank> {
         let volume: Volume = 40
         let pressure: Pressure = 3000
         let size = Tank.Size(volume: volume, ratedPressure: pressure, unit: .cubicFeet)
-        let expectedError = Error.input(.blend(.totalPressure(fractionalPressure, blend)), "Tank.init(blend:size:)")
+        let expectedError = Error.blend(.totalPressure(fractionalPressure, blend), "Tank.init(blend:size:)")
 
         // When
         try XCTAssertThrowsError(

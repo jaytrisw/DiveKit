@@ -3,22 +3,14 @@ import Foundation
 public extension Error {
     var localizationKey: String {
         switch self {
-            case let .input(input, _): input.localizationKey
+            case let .negative(negative, _): negative.localizationKey
+            case let .tank(tank, _): tank.localizationKey
+            case let .blend(blend, _): blend.localizationKey
         }
     }
 }
 
-public extension Error.Input {
-    var localizationKey: String {
-        switch self {
-            case let .negative(negative): negative.localizationKey
-            case let .tank(tank): tank.localizationKey
-            case let .blend(blend): blend.localizationKey
-        }
-    }
-}
-
-public extension Error.Input.Tank {
+public extension Error.Tank {
     var localizationKey: String {
         switch self {
             case .ratedPressure: "tank.size.rated.pressure"
@@ -27,7 +19,7 @@ public extension Error.Input.Tank {
     }
 }
 
-public extension Error.Input.Blend {
+public extension Error.Blend {
     var localizationKey: String {
         switch self {
             case .totalPressure: "blend.total.pressure"
@@ -36,7 +28,7 @@ public extension Error.Input.Blend {
     }
 }
 
-public extension Error.Input.Negative {
+public extension Error.Negative {
     var localizationKey: String {
         switch self {
             case .depth: "negative.depth"

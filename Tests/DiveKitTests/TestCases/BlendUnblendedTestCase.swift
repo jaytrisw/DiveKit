@@ -23,7 +23,7 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
         // Given
         let oxygenFraction = -0.8
         let partialPressure: PartialPressure = .init(.oxygen, fractionalPressure: oxygenFraction)
-        expectedError = .input(.blend(.pressureRange(oxygenFraction, sut)), "Blend<Unblended>.add(_:pressure:)")
+        expectedError = .blend(.pressureRange(oxygenFraction, sut), "Blend<Unblended>.add(_:pressure:)")
 
         // When
         try XCTAssertThrowsError(
@@ -37,7 +37,7 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
         // Given
         let oxygenFraction = 1.01
         let partialPressure: PartialPressure = .init(.oxygen, fractionalPressure: oxygenFraction)
-        expectedError = .input(.blend(.pressureRange(oxygenFraction, sut)), "Blend<Unblended>.add(_:pressure:)")
+        expectedError = .blend(.pressureRange(oxygenFraction, sut), "Blend<Unblended>.add(_:pressure:)")
 
         // When
         try XCTAssertThrowsError(
@@ -106,7 +106,7 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
         let oxygen = Oxygen()
         let oxygenFraction = 0.1
         try sut.add(oxygen, pressure: oxygenFraction)
-        expectedError = .input(.blend(.totalPressure(oxygenFraction, sut)), "Blend<Unblended>.blend()")
+        expectedError = .blend(.totalPressure(oxygenFraction, sut), "Blend<Unblended>.blend()")
 
         // When
         try XCTAssertThrowsError(

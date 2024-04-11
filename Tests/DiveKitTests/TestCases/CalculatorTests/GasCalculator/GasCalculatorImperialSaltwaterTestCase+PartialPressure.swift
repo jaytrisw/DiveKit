@@ -101,7 +101,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
         let fractionalPressure = 0.21
         let blend = Blend<Unblended>(.init(.oxygen, fractionalPressure: 0.21))
         let depth: Depth = 33.0
-        expectedError = .input(.blend(.totalPressure(fractionalPressure, blend)), "GasCalculator.partialPressure(of:blending:at:using:)")
+        expectedError = .blend(.totalPressure(fractionalPressure, blend), "GasCalculator.partialPressure(of:blending:at:using:)")
 
         // When
         try XCTAssertThrowsError(

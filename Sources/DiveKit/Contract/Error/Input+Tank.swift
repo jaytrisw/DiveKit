@@ -1,6 +1,6 @@
 import Foundation
 
-public extension Error.Input {
+public extension Error {
     enum Tank {
         case ratedPressure(_ pressure: DiveKit.Pressure, _ tank: DiveKit.Tank)
         case volume(_ volume: DiveKit.Volume, _ tank: DiveKit.Tank)
@@ -8,4 +8,4 @@ public extension Error.Input {
     }
 }
 
-extension Error.Input.Tank: Equatable {}
+extension Error.Tank: Equatable {}
