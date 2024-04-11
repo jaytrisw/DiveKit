@@ -2,6 +2,9 @@ import XCTest
 @testable import DiveKit
 
 final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
+
+    var expectedError: Error!
+
     func testAddWithValidInput() throws {
         // Given
         let oxygenFraction = 0.8
@@ -20,12 +23,13 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
         // Given
         let oxygenFraction = -0.8
         let partialPressure: PartialPressure = .init(.oxygen, fractionalPressure: oxygenFraction)
+        expectedError = .input(.blend(.pressureRange(oxygenFraction, sut)), "Blend<Unblended>.add(_:pressure:)")
 
         // When
         try XCTAssertThrowsError(
             when: sut.add(partialPressure),
-            then: .input(.invalid(.blend(sut)), "Blend<Unblended>.add(_:pressure:)")) {
-                XCTAssertEqual($0.localizationKey, "invalid.blend") // "dive.kit.blend.pressure.range"
+            then: expectedError) {
+                XCTAssertEqual($0.localizationKey, "blend.pressure.range")
             }
     }
 
@@ -33,12 +37,13 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
         // Given
         let oxygenFraction = 1.01
         let partialPressure: PartialPressure = .init(.oxygen, fractionalPressure: oxygenFraction)
+        expectedError = .input(.blend(.pressureRange(oxygenFraction, sut)), "Blend<Unblended>.add(_:pressure:)")
 
         // When
         try XCTAssertThrowsError(
             when: sut.add(partialPressure),
-            then: .input(.invalid(.blend(sut)), "Blend<Unblended>.add(_:pressure:)")) {
-                XCTAssertEqual($0.localizationKey, "invalid.blend") // "dive.kit.blend.pressure.range"
+            then: expectedError) {
+                XCTAssertEqual($0.localizationKey, "blend.pressure.range")
             }
     }
 
@@ -101,12 +106,13 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
         let oxygen = Oxygen()
         let oxygenFraction = 0.1
         try sut.add(oxygen, pressure: oxygenFraction)
+        expectedError = .input(.blend(.totalPressure(oxygenFraction, sut)), "Blend<Unblended>.blend()")
 
         // When
         try XCTAssertThrowsError(
             when: sut.blend(),
-            then: .input(.invalid(.blend(sut)), "Blend<Unblended>.blend()")) {
-                XCTAssertEqual($0.localizationKey, "invalid.blend") // "dive.kit.blend.total.pressure"
+            then: expectedError) {
+                XCTAssertEqual($0.localizationKey, "blend.total.pressure")
             }
     }
 

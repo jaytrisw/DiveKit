@@ -98,15 +98,16 @@ extension GasCalculatorImperialSaltwaterTestCase {
     func testPartialPressureUnblendedInvalidBlendInput() throws {
         // Given
         let gas = Oxygen()
+        let fractionalPressure = 0.21
         let blend = Blend<Unblended>(.init(.oxygen, fractionalPressure: 0.21))
         let depth: Depth = 33.0
-        expectedError = .input(.invalid(.blend(blend)), "GasCalculator.partialPressure(of:blending:at:using:)")
+        expectedError = .input(.blend(.totalPressure(fractionalPressure, blend)), "GasCalculator.partialPressure(of:blending:at:using:)")
 
         // When
         try XCTAssertThrowsError(
             when: sut.partialPressure(of: gas, blending: blend, at: depth, using: physicsCalculator),
             then: expectedError) {
-                XCTAssertEqual($0.localizationKey, "invalid.blend")
+                XCTAssertEqual($0.localizationKey, "blend.total.pressure")
             }
     }
 

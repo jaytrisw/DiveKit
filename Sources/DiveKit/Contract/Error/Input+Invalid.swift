@@ -2,9 +2,8 @@ import Foundation
 
 public extension Error.Input {
     enum Invalid {
-        case object(_ object: Object)
-        case blend(_ blend: Blend<Unblended>)
-        case tank(_ tank: Tank)
+        case object(_ object: DiveKit.Object)
+        case tank(_ tank: DiveKit.Tank)
     }
 }
 

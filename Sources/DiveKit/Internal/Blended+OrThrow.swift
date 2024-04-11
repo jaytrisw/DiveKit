@@ -2,9 +2,9 @@ import Foundation
 
 internal extension Blend where State == Unblended {
     func blend(_ callSite: CallSite) throws -> Blend<Blended> {
-        guard let blend = try? blend() else {
-            throw Error.input(.invalid(.blend(self)), callSite)
+        guard totalPressure == 1.0 else {
+            throw Error.input(.blend(.totalPressure(totalPressure, self)), callSite)
         }
-        return blend
+        return .init(storage: storage)
     }
 }
