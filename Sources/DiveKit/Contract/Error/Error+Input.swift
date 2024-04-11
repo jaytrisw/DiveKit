@@ -3,7 +3,7 @@ import Foundation
 public extension Error {
     enum Input {
         case negative(_ negative: Negative)
-        case invalid(_ invalid: Invalid)
+        case tank(_ tank: Tank)
         case blend(_ blend: Blend)
     }
 }

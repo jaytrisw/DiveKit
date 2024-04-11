@@ -10,7 +10,7 @@ public struct Tank {
     }
 
     public init(blend: Blend<Unblended>, size: Size) throws {
-        self.blend = try blend.blend()
+        self.blend = try blend.blend(.init(object: .init(describing: Self.self), function: #function))
         self.size = size
     }
 }

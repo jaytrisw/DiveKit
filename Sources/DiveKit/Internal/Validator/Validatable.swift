@@ -3,10 +3,6 @@ import Foundation
 internal protocol Validatable {}
 
 internal extension Validatable {
-    func validate(using validator: Validator<Self>) -> Bool {
-        validator.validate(self)
-    }
-
     @discardableResult
     func validate(
         using validator: Validator<Self>,
@@ -30,4 +26,3 @@ internal extension Validatable {
 
 extension Double: Validatable {}
 extension Depth: Validatable {}
-extension Tank: Validatable {}

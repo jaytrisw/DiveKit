@@ -12,16 +12,17 @@ public extension Error.Input {
     var localizationKey: String {
         switch self {
             case let .negative(negative): negative.localizationKey
-            case let .invalid(invalid): invalid.localizationKey
+            case let .tank(tank): tank.localizationKey
             case let .blend(blend): blend.localizationKey
         }
     }
 }
 
-public extension Error.Input.Invalid {
+public extension Error.Input.Tank {
     var localizationKey: String {
         switch self {
-            case .tank: "invalid.tank"
+            case .ratedPressure: "tank.size.rated.pressure"
+            case .volume: "tank.size.volume"
         }
     }
 }

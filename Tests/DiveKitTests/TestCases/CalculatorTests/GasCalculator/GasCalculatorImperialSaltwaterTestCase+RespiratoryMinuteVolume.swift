@@ -10,7 +10,9 @@ extension GasCalculatorImperialSaltwaterTestCase {
         let depth: Depth = 40.0
         let minutes: Minutes = 15.0
         let consuming: Pressure = 450.0
-        let tank = Tank.cubicFeet(142, ratedPressure: 2475, with: .air)
+        let volume: Volume = 142
+        let ratedPressure: Pressure = 2475
+        let tank = Tank.cubicFeet(volume, ratedPressure: ratedPressure, with: .air)
 
         // When
         try XCTAssertCalculation(
@@ -32,7 +34,9 @@ extension GasCalculatorImperialSaltwaterTestCase {
         let depth: Depth = -40.0
         let minutes: Minutes = 15.0
         let consuming: Pressure = 450.0
-        let tank = Tank.cubicFeet(142, ratedPressure: 2475, with: .air)
+        let volume: Volume = 142
+        let ratedPressure: Pressure = 2475
+        let tank = Tank.cubicFeet(volume, ratedPressure: ratedPressure, with: .air)
         expectedError = .negative(depth, "GasCalculator.respiratoryMinuteVolume(at:for:consuming:with:using:)")
 
         // When
@@ -53,7 +57,9 @@ extension GasCalculatorImperialSaltwaterTestCase {
         let depth: Depth = 40.0
         let minutes: Minutes = -15.0
         let consuming: Pressure = 450.0
-        let tank = Tank.cubicFeet(142, ratedPressure: 2475, with: .air)
+        let volume: Volume = 142
+        let ratedPressure: Pressure = 2475
+        let tank = Tank.cubicFeet(volume, ratedPressure: ratedPressure, with: .air)
         expectedError = .negative(minutes, "GasCalculator.respiratoryMinuteVolume(at:for:consuming:with:using:)")
 
         // When
@@ -74,7 +80,9 @@ extension GasCalculatorImperialSaltwaterTestCase {
         let depth: Depth = 40.0
         let minutes: Minutes = 15.0
         let consuming: Pressure = -450.0
-        let tank = Tank.cubicFeet(142, ratedPressure: 2475, with: .air)
+        let volume: Volume = 142
+        let ratedPressure: Pressure = 2475
+        let tank = Tank.cubicFeet(volume, ratedPressure: ratedPressure, with: .air)
         expectedError = .negative(consuming, "GasCalculator.respiratoryMinuteVolume(at:for:consuming:with:using:)")
 
         // When
@@ -95,8 +103,10 @@ extension GasCalculatorImperialSaltwaterTestCase {
         let depth: Depth = 40.0
         let minutes: Minutes = 15.0
         let consuming: Pressure = 450.0
-        let tank = Tank.cubicFeet(-142, ratedPressure: 2475, with: .air)
-        expectedError = .input(.invalid(.tank(tank)), "GasCalculator.respiratoryMinuteVolume(at:for:consuming:with:using:)")
+        let volume: Volume = -142
+        let ratedPressure: Pressure = 2475
+        let tank = Tank.cubicFeet(volume, ratedPressure: ratedPressure, with: .air)
+        expectedError = .input(.tank(.volume(volume, tank)), "GasCalculator.respiratoryMinuteVolume(at:for:consuming:with:using:)")
 
         // When
         try XCTAssertThrowsError(
@@ -107,7 +117,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 with: tank,
                 using: physicsCalculator),
             then: expectedError) {
-                XCTAssertEqual($0.localizationKey, "invalid.tank")
+                XCTAssertEqual($0.localizationKey, "tank.size.volume")
             }
     }
 
@@ -116,8 +126,10 @@ extension GasCalculatorImperialSaltwaterTestCase {
         let depth: Depth = 40.0
         let minutes: Minutes = 15.0
         let consuming: Pressure = 450.0
-        let tank = Tank.cubicFeet(142, ratedPressure: -2475, with: .air)
-        expectedError = .input(.invalid(.tank(tank)), "GasCalculator.respiratoryMinuteVolume(at:for:consuming:with:using:)")
+        let volume: Volume = 142
+        let ratedPressure: Pressure = -2475
+        let tank = Tank.cubicFeet(volume, ratedPressure: ratedPressure, with: .air)
+        expectedError = .input(.tank(.ratedPressure(ratedPressure, tank)), "GasCalculator.respiratoryMinuteVolume(at:for:consuming:with:using:)")
 
         // When
         try XCTAssertThrowsError(
@@ -128,7 +140,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 with: tank,
                 using: physicsCalculator),
             then: expectedError) {
-                XCTAssertEqual($0.localizationKey, "invalid.tank")
+                XCTAssertEqual($0.localizationKey, "tank.size.rated.pressure")
             }
     }
 }
