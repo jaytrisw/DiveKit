@@ -7,7 +7,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Blend Pressure Range"
+            "value" : "Blend pressure should be a decimal between 0.0 and 1.0"
           }
         }
       }
@@ -18,7 +18,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Blend Total Pressure"
+            "value" : "Blend pressure should be equal on 1.0"
           }
         }
       }
@@ -40,7 +40,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Fractional Pressure input must not be a negative value"
+            "value" : "Fractional pressure input must not be a negative value"
           }
         }
       }
@@ -95,7 +95,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Invalid Tank Rated Pressure"
+            "value" : "Tank rated pressure must not be a negative value"
           }
         }
       }
@@ -106,7 +106,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Invalid Tank Volume"
+            "value" : "Tank volume must not be a negative value"
           }
         }
       }
