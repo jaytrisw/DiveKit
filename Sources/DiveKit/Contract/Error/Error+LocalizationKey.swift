@@ -1,6 +1,9 @@
 import Foundation
 
 public extension Error {
+
+    @TaskLocal static var mainBundle: Bundle = .main
+
     var localizationKey: String {
         switch self {
             case let .negative(negative, _): negative.localizationKey
@@ -10,10 +13,10 @@ public extension Error {
     }
 
     var localizedDescription: String {
-        guard NSLocalizedString(localizationKey, bundle: .main, comment: .init(describing: self)) != localizationKey else {
+        guard NSLocalizedString(localizationKey, bundle: Error.mainBundle, comment: .init(describing: self)) != localizationKey else {
             return NSLocalizedString(localizationKey, bundle: .module, comment: .init(describing: self))
         }
-        return NSLocalizedString(localizationKey, bundle: .main, comment: .init(describing: self))
+        return NSLocalizedString(localizationKey, bundle: Error.mainBundle, comment: .init(describing: self))
     }
 }
 

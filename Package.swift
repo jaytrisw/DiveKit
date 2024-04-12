@@ -3,6 +3,10 @@ import PackageDescription
 
 let package = Package(
     name: "DiveKit",
+    platforms: [
+        .macOS(.v10_15),
+        .iOS(.v15)
+    ],
     products: [
         .library(
             name: "DiveKit",
@@ -21,5 +25,8 @@ let package = Package(
             name: "DiveKitTests",
             dependencies: [
                 "DiveKit",
+            ],
+            resources: [
+                .process("Resources")
             ])
     ])
