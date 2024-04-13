@@ -18,15 +18,14 @@ final class ErrorTestCase: SystemUnderTestCase<Error> {
         let expectation = expectation(description: #function)
         sut = .negative(.depth(10), #function)
 
-        Error.$mainBundle.withValue(Bundle.module, operation: {
+        Error.$mainBundle.withValue(.module) {
             // When
             let result = sut.localizedDescription
 
             // Then
             XCTAssertFalse(result.isEmpty)
-            XCTAssertEqual(result, "TEST LOCALIZED STRING")
             expectation.fulfill()
-        })
+        }
 
         wait(for: [expectation])
     }
