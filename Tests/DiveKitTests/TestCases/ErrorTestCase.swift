@@ -24,6 +24,7 @@ final class ErrorTestCase: SystemUnderTestCase<Error> {
 
             // Then
             XCTAssertFalse(result.isEmpty)
+            XCTAssertEqual(result, "TEST LOCALIZED STRING")
             expectation.fulfill()
         })
 
