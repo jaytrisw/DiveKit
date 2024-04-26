@@ -2,7 +2,7 @@ import Foundation
 
 public extension Error {
 
-    @TaskLocal static var mainBundle: Bundle = .main
+    @TaskLocal internal static var mainBundle: Bundle = .main
 
     var localizationKey: String {
         switch self {

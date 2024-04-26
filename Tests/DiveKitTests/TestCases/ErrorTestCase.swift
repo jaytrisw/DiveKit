@@ -18,7 +18,7 @@ final class ErrorTestCase: SystemUnderTestCase<Error> {
         let expectation = expectation(description: #function)
         sut = .negative(.depth(10), #function)
 
-        Error.$mainBundle.withValue(.module) {
+        Error.$mainBundle.withValue(.init(for: Self.self)) {
             // When
             let result = sut.localizedDescription
 
