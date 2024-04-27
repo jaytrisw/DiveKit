@@ -5,9 +5,9 @@ name: Swift
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "develop" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "main", "develop" ]
 
 env:
   LCOV_PATH: .build/artifacts/info.lcov
@@ -16,9 +16,7 @@ env:
 
 jobs:
   build:
-
     runs-on: macos-14
-
     steps:
     - name: Set Xcode 15
       run: |
