@@ -1,15 +1,42 @@
+# This workflow will build a Swift project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-swift
+
 name: Swift
 
-on: [push]
+on:
+  push:
+    branches: [ "main", "develop" ]
+  pull_request:
+    branches: [ "main", "develop" ]
+
+env:
+  LCOV_PATH: .build/artifacts/info.lcov
+  BUILD_FOLDER: .build/debug/DiveKitPackageTests.xctest/Contents/MacOS/DiveKitPackageTests
+  PROFDATA_FOLDER: .build/debug/codecov/default.profdata
 
 jobs:
   build:
-
-    runs-on: macOS-latest
-
+    runs-on: macos-14
     steps:
-    - uses: actions/checkout@v2
+    - name: Set Xcode 15
+      run: |
+          sudo xcode-select -switch /Applications/Xcode_15.3.app
+    - uses: swift-actions/setup-swift@v2
+      with:
+        swift-version: "5.10.0"
+    - name: Get swift version
+      run: swift --version # Swift 5.10.0
+    - uses: actions/checkout@v3
     - name: Build
       run: swift build -v
-    - name: Run tests
-      run: swift test -v
+    - name: Run Tests and Generate lcov File
+      run: |
+        swift test --enable-code-coverage
+        xcrun llvm-cov report $BUILD_FOLDER -instr-profile $PROFDATA_FOLDER
+        xcrun llvm-cov export -format="lcov" $BUILD_FOLDER -instr-profile $PROFDATA_FOLDER > $LCOV_PATH
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v4.0.1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        files: ${{ env.CODECOV_JSON }}
+        slug: jaytrisw/DiveKit2

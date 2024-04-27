@@ -1,0 +1,35 @@
+{
+  "configurations" : [
+    {
+      "id" : "FC2694F2-5500-42C6-BD2E-94CCC04FD5AC",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : {
+      "targets" : [
+        {
+          "containerPath" : "container:",
+          "identifier" : "DiveKit",
+          "name" : "DiveKit"
+        }
+      ]
+    },
+    "language" : "en",
+    "region" : "US",
+    "testExecutionOrdering" : "random"
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "DiveKitTests",
+        "name" : "DiveKitTests"
+      }
+    }
+  ],
+  "version" : 1
+}
