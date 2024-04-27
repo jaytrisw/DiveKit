@@ -39,4 +39,4 @@ jobs:
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
         files: ${{ env.CODECOV_JSON }}
-        slug: jaytrisw/DiveKit2
+        slug: jaytrisw/DiveKit

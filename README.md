@@ -1,4 +1,4 @@
-# DiveKit2
+# DiveKit
 
 <p align="center">
 <img src="https://raw.githubusercontent.com/jaytrisw/DiveKit/develop/DiveKit-Logo.png" alt="drawing" width="450"/>
