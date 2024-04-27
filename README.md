@@ -1,7 +1,7 @@
 # DiveKit2
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/jaytrisw/DiveKit/main/DiveKit-Logo.png" alt="drawing" width="450"/>
+<img src="https://raw.githubusercontent.com/jaytrisw/DiveKit/develop/DiveKit-Logo.png" alt="drawing" width="450"/>
 </p>
 
 [![Swift](https://img.shields.io/badge/Swift-5.10-clear?labelColor=343434&color=de5d43)](https://img.shields.io/badge/Swift-5.10-clear?labelColor=343434&color=de5d43)
