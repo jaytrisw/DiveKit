@@ -1,0 +1,66 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release_and_merge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_KEY }}
+          name: ${{ secrets.SSH_FILENAME }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS }}
+          if_key_exists: replace
+
+      - name: Set up Git
+        run: |
+          git config --global user.name  ${{ secrets.CI_NAME }}
+          git config --global user.email ${{ secrets.CI_EMAIL }}
+  
+          git config --global user.signingkey /home/runner/.ssh/${{ secrets.SSH_FILENAME }}
+          git config --global commit.gpgsign true
+          git config gpg.format ssh
+
+      - name: Extract version from branch name and tag
+        run: |
+          BRANCH_NAME="${GITHUB_REF#refs/heads/}"
+          if [[ "$BRANCH_NAME" == "main" ]]; then
+            MERGED_BRANCH=$(git log -1 --pretty=format:%s | grep -oP 'Merge pull request #\d+ from \K[^ ]+')
+            if [[ $MERGED_BRANCH =~ (.*/)?release/([0-9]+\.[0-9]+\.[0-9]+)$ ]]; then
+              VERSION=${BASH_REMATCH[2]}
+              # Signing the tag
+              git tag -s $VERSION -m "Release $VERSION"
+              git push origin $VERSION
+              echo "::set-output name=version::$VERSION"
+            fi
+          fi
+        id: tag_version
+
+      - name: Create GitHub Release
+        if: steps.tag_version.outputs.version
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.tag_version.outputs.version }}
+          release_name: Release ${{ steps.tag_version.outputs.version }}
+          body: 'Release ${{ steps.tag_version.outputs.version }}'
+
+      - name: Merge main into develop
+        if: steps.tag_version.outputs.version
+        run: |
+          git checkout develop
+          git merge --no-ff main --gpg-sign -m "Merge branch 'main/release/${{ steps.tag_version.outputs.version }}' into 'develop'"
+          git push origin develop
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
