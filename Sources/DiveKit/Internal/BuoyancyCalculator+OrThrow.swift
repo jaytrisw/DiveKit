@@ -1,6 +1,6 @@
 import Foundation
 
-internal extension BuoyancyCalculating {
+internal extension BuoyancyCalculator {
     func buoyancy(of object: Object, _ callSite: CallSite) throws -> Calculation<Buoyancy> {
         try object.weight.validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
             .map { try object.volume.validate(using: .nonNegative, orThrow: { .negative($0, callSite) }) }
