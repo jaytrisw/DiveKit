@@ -1,6 +1,6 @@
 import Foundation
 
-internal extension PhysicsCalculating {
+internal extension PhysicsCalculator {
     func gaugePressure(
         at depth: Depth,
         _ callSite: CallSite) throws -> Calculation<DecimalResult<Pressure>> {
