@@ -11,7 +11,7 @@ public final class BuoyancyCalculator: ConfigurationProviding {
 extension BuoyancyCalculator: BuoyancyCalculating {
     public func buoyancy(
         of object: Object) throws -> Calculation<Buoyancy> {
-            try buoyancy(of: object, .from(self))
+            try buoyancy(of: object, with: configuration, .from(self))
         }
 
     public func buoyancyOfObject(

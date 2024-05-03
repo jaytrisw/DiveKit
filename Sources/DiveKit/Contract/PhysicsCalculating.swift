@@ -1,9 +1,6 @@
 import Foundation
 
-/// The `PhysicsCalculating` protocol defines the requirements for performing physics-based calculations,
-/// such as calculating pressure at a specific depth. Types conforming to this protocol must also conform to the
-/// `ConfigurationProviding` protocol, ensuring they can provide necessary configuration details for the calculations.
-public protocol PhysicsCalculating: ConfigurationProviding {
+public protocol PhysicsCalculating {
 
     /// Calculates the gauge pressure at a specified depth.
     ///
