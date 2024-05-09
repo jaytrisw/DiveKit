@@ -1,5 +1,4 @@
 import Foundation
-import SwiftUI
 
 public extension Error {
     var localizedDescription: String {
