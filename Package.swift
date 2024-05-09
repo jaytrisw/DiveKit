@@ -3,6 +3,7 @@ import PackageDescription
 
 let package = Package(
     name: "DiveKit",
+    defaultLocalization: "en",
     platforms: [
         .macOS(.v10_15),
         .iOS(.v15)

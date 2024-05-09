@@ -23,7 +23,7 @@ final class ErrorTestCase: SystemUnderTestCase<Error> {
             let result = sut.localizedDescription
 
             // Then
-            XCTAssertFalse(result.isEmpty)
+            XCTAssertNotEqual(result, "TEST LOCALIZED STRING")
             expectation.fulfill()
         }
 
