@@ -1,9 +1,6 @@
 import Foundation
 
-/// The `PhysicsCalculating` protocol defines the requirements for performing physics-based calculations,
-/// such as calculating pressure at a specific depth. Types conforming to this protocol must also conform to the
-/// `ConfigurationProviding` protocol, ensuring they can provide necessary configuration details for the calculations.
-public protocol PhysicsCalculating: ConfigurationProviding {
+public protocol PhysicsCalculating {
 
     /// Calculates the gauge pressure at a specified depth.
     ///
@@ -18,5 +15,21 @@ public protocol PhysicsCalculating: ConfigurationProviding {
     /// - Throws: Can throw an error if the calculation is not possible with the provided parameters or
     ///   if the configuration is invalid or insufficient for the calculation. Implementers should specify
     ///   the conditions under which errors are thrown.
-    func gaugePressure(at depth: Depth) throws -> Calculation<DecimalResult<Pressure>>
+    func gaugePressure(
+        at depth: Depth) throws -> Calculation<DecimalResult<Pressure>>
+
+    func airVolumeFromSurface(
+        to depth: Depth,
+        with volume: Volume) throws -> Calculation<DecimalResult<Pressure>>
+
+    func airVolumeToSurface(
+        from depth: Depth,
+        with volume: Volume) throws -> Calculation<DecimalResult<Pressure>>
+
+    func atmospheresAbsolute(
+        at depth: Depth) throws -> Calculation<DecimalResult<Pressure>>
+
+    func pressureChange(
+        from firstDepth: Depth,
+        to secondDepth: Depth) throws -> Calculation<DecimalResult<Pressure>>
 }
