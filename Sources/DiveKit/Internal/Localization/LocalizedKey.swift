@@ -50,3 +50,18 @@ internal extension LocalizedKey.Unit {
         static let fullQuantityMetric: LocalizedStringKey = "dive.kit.unit.depth.metric.description.full.quantity"
     }
 }
+
+internal extension LocalizedKey.Unit {
+    enum Mass {
+        static let title: LocalizedStringKey = "dive.kit.unit.mass.title"
+        static let shortDescriptionImperial: LocalizedStringKey = "dive.kit.unit.mass.imperial.description.short"
+        static let shortDescriptionMetric: LocalizedStringKey = "dive.kit.unit.mass.metric.description.short"
+        static let fullDescriptionImperial: LocalizedStringKey = "dive.kit.unit.mass.imperial.description.full"
+        static let fullDescriptionMetric: LocalizedStringKey = "dive.kit.unit.mass.metric.description.full"
+        static let shortQuantityImperial: LocalizedStringKey = "dive.kit.unit.mass.imperial.description.short.quantity"
+        static let shortQuantityMetric: LocalizedStringKey = "dive.kit.unit.mass.metric.description.short.quantity"
+        static let fullQuantityImperial: LocalizedStringKey = "dive.kit.unit.mass.imperial.description.full.quantity"
+        static let fullQuantityMetric: LocalizedStringKey = "dive.kit.unit.mass.metric.description.full.quantity"
+    }
+}
+
