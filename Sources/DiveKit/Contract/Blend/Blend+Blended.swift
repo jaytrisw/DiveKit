@@ -11,7 +11,10 @@ public extension Blend where State == Blended {
 extension CallSite {
     static func from<State: BlendState>(_ blend: Blend<State>, function: StaticString = #function) -> Self {
         .init(
-            object: .init(describing: blend).components(separatedBy: "(").first ?? .init(describing: blend),
+            object: .init(describing: blend)
+                .components(separatedBy: "(")
+                .first
+                .forceUnwrap("Couldn't extract description from \(blend)"),
             function: function)
     }
 }

@@ -1,7 +1,7 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "dive.kit.error.blend.pressure.range" : {
+    "test.localization.key" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
@@ -12,124 +12,13 @@
         }
       }
     },
-    "dive.kit.error.blend.total.pressure" : {
+    "test.localization.key.quantity" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "TEST LOCALIZED STRING"
-          }
-        }
-      }
-    },
-    "dive.kit.error.negative.depth" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "TEST LOCALIZED STRING"
-          }
-        }
-      }
-    },
-    "dive.kit.error.negative.fractional.pressure" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "TEST LOCALIZED STRING"
-          }
-        }
-      }
-    },
-    "dive.kit.error.negative.minutes" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "TEST LOCALIZED STRING"
-          }
-        }
-      }
-    },
-    "dive.kit.error.negative.pressure" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "TEST LOCALIZED STRING"
-          }
-        }
-      }
-    },
-    "dive.kit.error.negative.volume" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "TEST LOCALIZED STRING"
-          }
-        }
-      }
-    },
-    "dive.kit.error.negative.weight" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "TEST LOCALIZED STRING"
-          }
-        }
-      }
-    },
-    "dive.kit.error.tank.size.rated.pressure" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "TEST LOCALIZED STRING"
-          }
-        }
-      }
-    },
-    "dive.kit.error.tank.size.volume" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "TEST LOCALIZED STRING"
-          }
-        }
-      }
-    },
-    "test.pluralized" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld value"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld values"
-                }
-              }
-            }
+            "value" : "%lld TEST LOCALIZED STRING WITH QUANTITY"
           }
         }
       }
