@@ -341,6 +341,160 @@
         }
       }
     },
+    "dive.kit.unit.pressure.atmospheres.description.full" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "atmospheres"
+          }
+        }
+      }
+    },
+    "dive.kit.unit.pressure.atmospheres.description.full.quantity" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld atmosphere"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld atmospheres"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "dive.kit.unit.pressure.atmospheres.description.short" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "atm"
+          }
+        }
+      }
+    },
+    "dive.kit.unit.pressure.atmospheres.description.short.quantity" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld atm"
+          }
+        }
+      }
+    },
+    "dive.kit.unit.pressure.imperial.description.full" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "pounds per square inch"
+          }
+        }
+      }
+    },
+    "dive.kit.unit.pressure.imperial.description.full.quantity" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld pound per square inch"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld pounds per square inch"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "dive.kit.unit.pressure.imperial.description.short" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "psi"
+          }
+        }
+      }
+    },
+    "dive.kit.unit.pressure.imperial.description.short.quantity" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld psi"
+          }
+        }
+      }
+    },
+    "dive.kit.unit.pressure.metric.description.full" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "bar"
+          }
+        }
+      }
+    },
+    "dive.kit.unit.pressure.metric.description.full.quantity" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld bar"
+          }
+        }
+      }
+    },
+    "dive.kit.unit.pressure.metric.description.short" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "bar"
+          }
+        }
+      }
+    },
+    "dive.kit.unit.pressure.metric.description.short.quantity" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld bar"
+          }
+        }
+      }
+    },
+    "dive.kit.unit.pressure.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pressure"
+          }
+        }
+      }
+    },
     "dive.kit.unit.volume.imperial.description.full" : {
       "localizations" : {
         "en" : {

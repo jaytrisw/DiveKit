@@ -78,3 +78,21 @@ internal extension LocalizedKey.Unit {
         static let fullQuantityMetric: LocalizedStringKey = "dive.kit.unit.volume.metric.description.full.quantity"
     }
 }
+
+internal extension LocalizedKey.Unit {
+    enum Pressure {
+        static let title: LocalizedStringKey = "dive.kit.unit.pressure.title"
+        static let shortDescriptionImperial: LocalizedStringKey = "dive.kit.unit.pressure.imperial.description.short"
+        static let shortDescriptionMetric: LocalizedStringKey = "dive.kit.unit.pressure.metric.description.short"
+        static let shortDescriptionAtmospheres: LocalizedStringKey = "dive.kit.unit.pressure.atmospheres.description.short"
+        static let fullDescriptionImperial: LocalizedStringKey = "dive.kit.unit.pressure.imperial.description.full"
+        static let fullDescriptionMetric: LocalizedStringKey = "dive.kit.unit.pressure.metric.description.full"
+        static let fullDescriptionAtmospheres: LocalizedStringKey = "dive.kit.unit.pressure.atmospheres.description.full"
+        static let shortQuantityImperial: LocalizedStringKey = "dive.kit.unit.pressure.imperial.description.short.quantity"
+        static let shortQuantityMetric: LocalizedStringKey = "dive.kit.unit.pressure.metric.description.short.quantity"
+        static let shortQuantityAtmospheres: LocalizedStringKey = "dive.kit.unit.pressure.atmospheres.description.short.quantity"
+        static let fullQuantityImperial: LocalizedStringKey = "dive.kit.unit.pressure.imperial.description.full.quantity"
+        static let fullQuantityMetric: LocalizedStringKey = "dive.kit.unit.pressure.metric.description.full.quantity"
+        static let fullQuantityAtmospheres: LocalizedStringKey = "dive.kit.unit.pressure.atmospheres.description.full.quantity"
+    }
+}
