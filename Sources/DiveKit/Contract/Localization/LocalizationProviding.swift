@@ -1,5 +1,4 @@
 import Foundation
-import SwiftUI
 
 public protocol LocalizationProviding: LocalizedTitleProviding, LocalizedDescriptionProviding {
     associatedtype Component
