@@ -119,13 +119,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld foot"
+                  "value" : "%.3f foot"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld feet"
+                  "value" : "%.3f feet"
                 }
               }
             }
@@ -148,7 +148,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld ft"
+            "value" : "%.3f ft"
           }
         }
       }
@@ -171,13 +171,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld meter"
+                  "value" : "%.3f meter"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld meters"
+                  "value" : "%.3f meters"
                 }
               }
             }
@@ -200,7 +200,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld m"
+            "value" : "%.3f m"
           }
         }
       }
@@ -233,13 +233,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld pound"
+                  "value" : "%.3f pound"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld pounds"
+                  "value" : "%.3f pounds"
                 }
               }
             }
@@ -265,13 +265,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld lb"
+                  "value" : "%.3f lb"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld lbs"
+                  "value" : "%.3f lbs"
                 }
               }
             }
@@ -297,13 +297,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld kilogram"
+                  "value" : "%.3f kilogram"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld kilograms"
+                  "value" : "%.3f kilograms"
                 }
               }
             }
@@ -326,7 +326,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld km"
+            "value" : "%.3f km"
           }
         }
       }
@@ -359,13 +359,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld atmosphere"
+                  "value" : "%.3f atmosphere"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld atmospheres"
+                  "value" : "%.3f atmospheres"
                 }
               }
             }
@@ -388,7 +388,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld atm"
+            "value" : "%.3f atm"
           }
         }
       }
@@ -411,13 +411,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld pound per square inch"
+                  "value" : "%.3f pound per square inch"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld pounds per square inch"
+                  "value" : "%.3f pounds per square inch"
                 }
               }
             }
@@ -440,7 +440,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld psi"
+            "value" : "%.3f psi"
           }
         }
       }
@@ -460,7 +460,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld bar"
+            "value" : "%.3f bar"
           }
         }
       }
@@ -480,7 +480,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld bar"
+            "value" : "%.3f bar"
           }
         }
       }
@@ -513,13 +513,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld cubic foot"
+                  "value" : "%.3f cubic foot"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld cubic feet"
+                  "value" : "%.3f cubic feet"
                 }
               }
             }
@@ -542,7 +542,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld cu ft"
+            "value" : "%.3f cu ft"
           }
         }
       }
@@ -565,13 +565,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld liter"
+                  "value" : "%.3f liter"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld liters"
+                  "value" : "%.3f liters"
                 }
               }
             }
@@ -594,7 +594,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld l"
+            "value" : "%.3f l"
           }
         }
       }

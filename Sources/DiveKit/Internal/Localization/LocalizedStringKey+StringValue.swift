@@ -21,9 +21,9 @@ internal func localizedString(
         }
     }
 
-internal func localizedString<C: CVarArg>(
+internal func localizedString(
     for key: String,
-    quantity: C,
+    quantity: Double,
     with comment: @autoclosure () -> String) -> String {
         localizedString(for: key, with: comment())
             .withQuantity(quantity)
@@ -45,7 +45,7 @@ internal func NSLocalizedString(
 }
 
 internal extension String {
-    func withQuantity<C: CVarArg>(_ arguments: C) -> String {
-        .localizedStringWithFormat(self, arguments)
+    func withQuantity(_ argument: Double) -> String {
+        .localizedStringWithFormat(self, argument)
     }
 }

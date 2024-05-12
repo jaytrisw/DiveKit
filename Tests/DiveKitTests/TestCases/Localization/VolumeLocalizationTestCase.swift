@@ -1,14 +1,14 @@
 import XCTest
 @testable import DiveKit
 
-final class VolumeLocalizationTestCase: XCTestCase {
+final class VolumeLocalizationTestCase: SystemUnderTestCase<Volume.Unit> {
 
     func testLocalizedTitleDImperial() {
         // Given
-        let unit: Volume.Unit = .cubicFeet
+        sut = .cubicFeet
 
         // When
-        let result = unit.localizedTitle
+        let result = sut.localizedTitle
 
         // Then
         XCTAssertEqual(result, "Volume")
@@ -16,10 +16,10 @@ final class VolumeLocalizationTestCase: XCTestCase {
 
     func testLocalizedTitleMetric() {
         // Given
-        let unit: Volume.Unit = .liters
+        sut = .liters
 
         // When
-        let result = unit.localizedTitle
+        let result = sut.localizedTitle
 
         // Then
         XCTAssertEqual(result, "Volume")
@@ -27,10 +27,10 @@ final class VolumeLocalizationTestCase: XCTestCase {
 
     func testDescriptionShortImperial() {
         // Given
-        let unit: Volume.Unit = .cubicFeet
+        sut = .cubicFeet
 
         // When
-        let result = unit.localizedDescription(for: .short)
+        let result = sut.localizedDescription(for: .short)
 
         // Then
         XCTAssertEqual(result, "cu ft")
@@ -38,10 +38,10 @@ final class VolumeLocalizationTestCase: XCTestCase {
 
     func testDescriptionShortMetric() {
         // Given
-        let unit: Volume.Unit = .liters
+        sut = .liters
 
         // When
-        let result = unit.localizedDescription(for: .short)
+        let result = sut.localizedDescription(for: .short)
 
         // Then
         XCTAssertEqual(result, "l")
@@ -49,10 +49,10 @@ final class VolumeLocalizationTestCase: XCTestCase {
 
     func testDescriptionFullImperial() {
         // Given
-        let unit: Volume.Unit = .cubicFeet
+        sut = .cubicFeet
 
         // When
-        let result = unit.localizedDescription(for: .full)
+        let result = sut.localizedDescription(for: .full)
 
         // Then
         XCTAssertEqual(result, "cubic feet")
@@ -60,10 +60,10 @@ final class VolumeLocalizationTestCase: XCTestCase {
 
     func testDescriptionFullMetric() {
         // Given
-        let unit: Volume.Unit = .liters
+        sut = .liters
 
         // When
-        let result = unit.localizedDescription(for: .full)
+        let result = sut.localizedDescription(for: .full)
 
         // Then
         XCTAssertEqual(result, "liters")
@@ -71,45 +71,67 @@ final class VolumeLocalizationTestCase: XCTestCase {
 
     func testQuantityShortImperial() {
         // Given
-        let unit: Volume.Unit = .cubicFeet
+        sut = .cubicFeet
 
         // When
-        let result = unit.localization(for: .quantity(.zero, .short))
+        let result = sut.localization(for: .quantity(.zero, .short))
 
         // Then
-        XCTAssertEqual(result, "0 cu ft")
+        XCTAssertEqual(result, "0.000 cu ft")
     }
 
     func testQuantityShortMetric() {
         // Given
-        let unit: Volume.Unit = .liters
+        sut = .liters
 
         // When
-        let result = unit.localization(for: .quantity(.zero, .short))
+        let result = sut.localization(for: .quantity(.zero, .short))
 
         // Then
-        XCTAssertEqual(result, "0 l")
+        XCTAssertEqual(result, "0.000 l")
     }
 
     func testQuantityFullImperial() {
         // Given
-        let unit: Volume.Unit = .cubicFeet
+        sut = .cubicFeet
 
         // When
-        let result = unit.localization(for: .quantity(.zero, .full))
+        let result = sut.localization(for: .quantity(.zero, .full))
 
         // Then
-        XCTAssertEqual(result, "0 cubic feet")
+        XCTAssertEqual(result, "0.000 cubic feet")
     }
 
     func testQuantityFullMetric() {
         // Given
-        let unit: Volume.Unit = .liters
+        sut = .liters
 
         // When
-        let result = unit.localization(for: .quantity(.zero, .full))
+        let result = sut.localization(for: .quantity(.zero, .full))
 
         // Then
-        XCTAssertEqual(result, "0 liters")
+        XCTAssertEqual(result, "0.000 liters")
+    }
+
+    func testOneQuantityFullImperial() {
+        // Given
+        sut = .cubicFeet
+
+        // When
+        let result = sut.localization(for: .quantity(1, .full))
+
+        // Then
+        XCTAssertEqual(result, "1.000 cubic foot")
+    }
+
+    func testOneQuantityFullMetric() {
+        // Given
+        sut = .liters
+
+        // When
+        let result = sut.localization(for: .quantity(1, .full))
+
+        // Then
+        XCTAssertEqual(result, "1.000 liter")
     }
 }

@@ -16,9 +16,21 @@
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld TEST LOCALIZED STRING WITH QUANTITY"
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "%.3f TEST LOCALIZED STRING WITH QUANTITY"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%.3f TEST LOCALIZED STRING WITH QUANTITIES"
+                }
+              }
+            }
           }
         }
       }
