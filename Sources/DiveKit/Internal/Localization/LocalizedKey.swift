@@ -65,3 +65,16 @@ internal extension LocalizedKey.Unit {
     }
 }
 
+internal extension LocalizedKey.Unit {
+    enum Volume {
+        static let title: LocalizedStringKey = "dive.kit.unit.volume.title"
+        static let shortDescriptionImperial: LocalizedStringKey = "dive.kit.unit.volume.imperial.description.short"
+        static let shortDescriptionMetric: LocalizedStringKey = "dive.kit.unit.volume.metric.description.short"
+        static let fullDescriptionImperial: LocalizedStringKey = "dive.kit.unit.volume.imperial.description.full"
+        static let fullDescriptionMetric: LocalizedStringKey = "dive.kit.unit.volume.metric.description.full"
+        static let shortQuantityImperial: LocalizedStringKey = "dive.kit.unit.volume.imperial.description.short.quantity"
+        static let shortQuantityMetric: LocalizedStringKey = "dive.kit.unit.volume.metric.description.short.quantity"
+        static let fullQuantityImperial: LocalizedStringKey = "dive.kit.unit.volume.imperial.description.full.quantity"
+        static let fullQuantityMetric: LocalizedStringKey = "dive.kit.unit.volume.metric.description.full.quantity"
+    }
+}

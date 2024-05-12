@@ -340,6 +340,120 @@
           }
         }
       }
+    },
+    "dive.kit.unit.volume.imperial.description.full" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "cubic feet"
+          }
+        }
+      }
+    },
+    "dive.kit.unit.volume.imperial.description.full.quantity" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld cubic foot"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld cubic feet"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "dive.kit.unit.volume.imperial.description.short" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "cu ft"
+          }
+        }
+      }
+    },
+    "dive.kit.unit.volume.imperial.description.short.quantity" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld cu ft"
+          }
+        }
+      }
+    },
+    "dive.kit.unit.volume.metric.description.full" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "liters"
+          }
+        }
+      }
+    },
+    "dive.kit.unit.volume.metric.description.full.quantity" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld liter"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld liters"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "dive.kit.unit.volume.metric.description.short" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "l"
+          }
+        }
+      }
+    },
+    "dive.kit.unit.volume.metric.description.short.quantity" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld l"
+          }
+        }
+      }
+    },
+    "dive.kit.unit.volume.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Volume"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"
