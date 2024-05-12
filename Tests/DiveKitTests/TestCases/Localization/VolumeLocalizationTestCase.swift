@@ -2,7 +2,6 @@ import XCTest
 @testable import DiveKit
 
 final class VolumeLocalizationTestCase: SystemUnderTestCase<Volume.Unit> {
-
     func testLocalizedTitleDImperial() {
         // Given
         sut = .cubicFeet
@@ -27,10 +26,11 @@ final class VolumeLocalizationTestCase: SystemUnderTestCase<Volume.Unit> {
 
     func testDescriptionShortImperial() {
         // Given
+        let style: LocalizationStyle = .short
         sut = .cubicFeet
 
         // When
-        let result = sut.localizedDescription(for: .short)
+        let result = sut.localizedDescription(for: style)
 
         // Then
         XCTAssertEqual(result, "cu ft")
@@ -38,10 +38,11 @@ final class VolumeLocalizationTestCase: SystemUnderTestCase<Volume.Unit> {
 
     func testDescriptionShortMetric() {
         // Given
+        let style: LocalizationStyle = .short
         sut = .liters
 
         // When
-        let result = sut.localizedDescription(for: .short)
+        let result = sut.localizedDescription(for: style)
 
         // Then
         XCTAssertEqual(result, "l")
@@ -49,10 +50,11 @@ final class VolumeLocalizationTestCase: SystemUnderTestCase<Volume.Unit> {
 
     func testDescriptionFullImperial() {
         // Given
+        let style: LocalizationStyle = .full
         sut = .cubicFeet
 
         // When
-        let result = sut.localizedDescription(for: .full)
+        let result = sut.localizedDescription(for: style)
 
         // Then
         XCTAssertEqual(result, "cubic feet")
@@ -60,10 +62,11 @@ final class VolumeLocalizationTestCase: SystemUnderTestCase<Volume.Unit> {
 
     func testDescriptionFullMetric() {
         // Given
+        let style: LocalizationStyle = .full
         sut = .liters
 
         // When
-        let result = sut.localizedDescription(for: .full)
+        let result = sut.localizedDescription(for: style)
 
         // Then
         XCTAssertEqual(result, "liters")
@@ -71,10 +74,12 @@ final class VolumeLocalizationTestCase: SystemUnderTestCase<Volume.Unit> {
 
     func testQuantityShortImperial() {
         // Given
+        let quantity: Double = .zero
+        let style: LocalizationStyle = .short
         sut = .cubicFeet
 
         // When
-        let result = sut.localization(for: .quantity(.zero, .short))
+        let result = sut.localization(for: .quantity(quantity, style))
 
         // Then
         XCTAssertEqual(result, "0 cu ft")
@@ -82,10 +87,12 @@ final class VolumeLocalizationTestCase: SystemUnderTestCase<Volume.Unit> {
 
     func testQuantityShortMetric() {
         // Given
+        let quantity: Double = .zero
+        let style: LocalizationStyle = .short
         sut = .liters
 
         // When
-        let result = sut.localization(for: .quantity(.zero, .short))
+        let result = sut.localization(for: .quantity(quantity, style))
 
         // Then
         XCTAssertEqual(result, "0 l")
@@ -93,10 +100,12 @@ final class VolumeLocalizationTestCase: SystemUnderTestCase<Volume.Unit> {
 
     func testQuantityFullImperial() {
         // Given
+        let quantity: Double = .zero
+        let style: LocalizationStyle = .full
         sut = .cubicFeet
 
         // When
-        let result = sut.localization(for: .quantity(.zero, .full))
+        let result = sut.localization(for: .quantity(quantity, style))
 
         // Then
         XCTAssertEqual(result, "0 cubic feet")
@@ -104,10 +113,12 @@ final class VolumeLocalizationTestCase: SystemUnderTestCase<Volume.Unit> {
 
     func testQuantityFullMetric() {
         // Given
+        let quantity: Double = .zero
+        let style: LocalizationStyle = .full
         sut = .liters
 
         // When
-        let result = sut.localization(for: .quantity(.zero, .full))
+        let result = sut.localization(for: .quantity(quantity, style))
 
         // Then
         XCTAssertEqual(result, "0 liters")
@@ -115,10 +126,12 @@ final class VolumeLocalizationTestCase: SystemUnderTestCase<Volume.Unit> {
 
     func testOneQuantityFullImperial() {
         // Given
+        let quantity: Double = 1
+        let style: LocalizationStyle = .full
         sut = .cubicFeet
 
         // When
-        let result = sut.localization(for: .quantity(1, .full))
+        let result = sut.localization(for: .quantity(quantity, style))
 
         // Then
         XCTAssertEqual(result, "1 cubic foot")
@@ -126,10 +139,12 @@ final class VolumeLocalizationTestCase: SystemUnderTestCase<Volume.Unit> {
 
     func testOneQuantityFullMetric() {
         // Given
+        let quantity: Double = 1
+        let style: LocalizationStyle = .full
         sut = .liters
 
         // When
-        let result = sut.localization(for: .quantity(1, .full))
+        let result = sut.localization(for: .quantity(quantity, style))
 
         // Then
         XCTAssertEqual(result, "1 liter")
