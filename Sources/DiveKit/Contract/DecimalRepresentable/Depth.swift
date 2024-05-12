@@ -18,3 +18,7 @@ public extension Depth {
 }
 
 extension Depth: DecimalResultRepresentable {}
+extension Depth: DecimalUnitLocalizable {}
+extension Depth.Unit: Codable {}
+extension Depth.Unit: Hashable {}
+extension Depth.Unit: Equatable {}

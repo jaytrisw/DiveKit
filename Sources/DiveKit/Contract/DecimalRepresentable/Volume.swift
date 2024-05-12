@@ -18,3 +18,7 @@ public extension Volume {
 }
 
 extension Volume: DecimalResultRepresentable {}
+extension Volume: DecimalUnitLocalizable {}
+extension Volume.Unit: Codable {}
+extension Volume.Unit: Hashable {}
+extension Volume.Unit: Equatable {}

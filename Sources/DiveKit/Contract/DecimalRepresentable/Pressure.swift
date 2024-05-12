@@ -19,3 +19,7 @@ public extension Pressure {
 }
 
 extension Pressure: DecimalResultRepresentable {}
+extension Pressure: DecimalUnitLocalizable {}
+extension Pressure.Unit: Codable {}
+extension Pressure.Unit: Hashable {}
+extension Pressure.Unit: Equatable {}
