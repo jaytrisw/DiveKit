@@ -110,6 +110,29 @@
           }
         }
       }
+    },
+    "test.pluralized" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld value"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld values"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

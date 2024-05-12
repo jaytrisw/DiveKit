@@ -1,6 +1,8 @@
 import SwiftUI
 
-internal enum LocalizedKey {}
+internal enum LocalizedKey {
+    @TaskLocal static var mainBundle: Bundle = .main
+}
 
 internal extension LocalizedKey {
     enum Error {}
@@ -28,5 +30,23 @@ internal extension LocalizedKey.Error {
         static let pressure: LocalizedStringKey = "dive.kit.error.negative.pressure"
         static let volume: LocalizedStringKey = "dive.kit.error.negative.volume"
         static let weight: LocalizedStringKey = "dive.kit.error.negative.weight"
+    }
+}
+
+internal extension LocalizedKey {
+    enum Unit {}
+}
+
+internal extension LocalizedKey.Unit {
+    enum Depth {
+        static let title: LocalizedStringKey = "dive.kit.unit.depth.title"
+        static let shortDescriptionImperial: LocalizedStringKey = "dive.kit.unit.depth.imperial.description.short"
+        static let shortDescriptionMetric: LocalizedStringKey = "dive.kit.unit.depth.metric.description.short"
+        static let fullDescriptionImperial: LocalizedStringKey = "dive.kit.unit.depth.imperial.description.full"
+        static let fullDescriptionMetric: LocalizedStringKey = "dive.kit.unit.depth.metric.description.full"
+        static let shortQuantityImperial: LocalizedStringKey = "dive.kit.unit.depth.imperial.description.short.quantity"
+        static let shortQuantityMetric: LocalizedStringKey = "dive.kit.unit.depth.metric.description.short.quantity"
+        static let fullQuantityImperial: LocalizedStringKey = "dive.kit.unit.depth.imperial.description.full.quantity"
+        static let fullQuantityMetric: LocalizedStringKey = "dive.kit.unit.depth.metric.description.full.quantity"
     }
 }

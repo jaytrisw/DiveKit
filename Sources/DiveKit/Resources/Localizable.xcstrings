@@ -2,7 +2,6 @@
   "sourceLanguage" : "en",
   "strings" : {
     "dive.kit.error.blend.pressure.range" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -13,7 +12,6 @@
       }
     },
     "dive.kit.error.blend.total.pressure" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -24,7 +22,6 @@
       }
     },
     "dive.kit.error.negative.depth" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -35,7 +32,6 @@
       }
     },
     "dive.kit.error.negative.fractional.pressure" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -46,7 +42,6 @@
       }
     },
     "dive.kit.error.negative.minutes" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -57,7 +52,6 @@
       }
     },
     "dive.kit.error.negative.pressure" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -68,7 +62,6 @@
       }
     },
     "dive.kit.error.negative.volume" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -79,7 +72,6 @@
       }
     },
     "dive.kit.error.negative.weight" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -90,7 +82,6 @@
       }
     },
     "dive.kit.error.tank.size.rated.pressure" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -101,12 +92,125 @@
       }
     },
     "dive.kit.error.tank.size.volume" : {
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tank volume must not be a negative value"
+          }
+        }
+      }
+    },
+    "dive.kit.unit.depth.imperial.description.full" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "feet"
+          }
+        }
+      }
+    },
+    "dive.kit.unit.depth.imperial.description.full.quantity" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld foot"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld feet"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "dive.kit.unit.depth.imperial.description.short" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ft"
+          }
+        }
+      }
+    },
+    "dive.kit.unit.depth.imperial.description.short.quantity" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld ft"
+          }
+        }
+      }
+    },
+    "dive.kit.unit.depth.metric.description.full" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "meters"
+          }
+        }
+      }
+    },
+    "dive.kit.unit.depth.metric.description.full.quantity" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld meter"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld meters"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "dive.kit.unit.depth.metric.description.short" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "m"
+          }
+        }
+      }
+    },
+    "dive.kit.unit.depth.metric.description.short.quantity" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld m"
+          }
+        }
+      }
+    },
+    "dive.kit.unit.depth.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Depth"
           }
         }
       }
