@@ -1,8 +1,6 @@
 import Foundation
 
 internal extension Error {
-    @TaskLocal static var mainBundle: Bundle = .main
-
     var localizationKey: String {
         switch self {
             case let .negative(negative, _): negative.localizationKey

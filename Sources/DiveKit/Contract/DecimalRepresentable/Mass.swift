@@ -18,3 +18,7 @@ public extension Mass {
 }
 
 extension Mass: DecimalResultRepresentable {}
+extension Mass: DecimalUnitLocalizable {}
+extension Mass.Unit: Codable {}
+extension Mass.Unit: Hashable {}
+extension Mass.Unit: Equatable {}

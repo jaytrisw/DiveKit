@@ -12,16 +12,49 @@ internal extension LocalizedStringKey {
 
 internal func localizedString(
     for key: String,
-    from bundle: Bundle,
     with comment: @autoclosure () -> String) -> String {
         returning(with: key) {
-            guard NSLocalizedString($0, bundle: Error.mainBundle, comment: comment()) != $0 else {
+            guard let localizedString = NSLocalizedString($0, bundle: LocalizedKey.mainBundle, comment: comment()) else {
                 return NSLocalizedString($0, bundle: .module, comment: comment())
             }
-            return NSLocalizedString($0, bundle: Error.mainBundle, comment: comment())
+            return localizedString
         }
+    }
+
+internal func localizedString(
+    for key: String,
+    quantity: Double,
+    with comment: @autoclosure () -> String) -> String {
+        localizedString(for: key, with: comment()).withQuantity(quantity)
+            .map { $0.components(separatedBy: " ") }
+            .map {
+                guard let number = Double($0) else {
+                    return $0
+                }
+                return number.formatted(.number)
+            }
+            .joined(separator: " ")
     }
 
 internal func returning<T, R>(with input: T, closure: (T) -> R) -> R {
     closure(input)
 }
+
+internal func NSLocalizedString(
+    _ key: String,
+    tableName: String? = nil,
+    bundle: Bundle,
+    comment: String) -> String? {
+        guard NSLocalizedString(key, bundle: bundle, value: "", comment: comment) != key else {
+            return nil
+        }
+        return NSLocalizedString(key, bundle: bundle, value: "", comment: comment)
+}
+
+internal extension String {
+    func withQuantity(_ argument: Double) -> String {
+        .localizedStringWithFormat(self, argument)
+    }
+}
+
+extension String: Mappable {}
