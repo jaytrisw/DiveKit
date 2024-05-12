@@ -77,7 +77,7 @@ final class DepthLocalizationTestCase: SystemUnderTestCase<Depth.Unit> {
         let result = sut.localization(for: .quantity(.zero, .short))
 
         // Then
-        XCTAssertEqual(result, "0.000 ft")
+        XCTAssertEqual(result, "0 ft")
     }
 
     func testQuantityShortMetric() {
@@ -88,7 +88,7 @@ final class DepthLocalizationTestCase: SystemUnderTestCase<Depth.Unit> {
         let result = sut.localization(for: .quantity(.zero, .short))
 
         // Then
-        XCTAssertEqual(result, "0.000 m")
+        XCTAssertEqual(result, "0 m")
     }
 
     func testQuantityFullImperial() {
@@ -99,7 +99,7 @@ final class DepthLocalizationTestCase: SystemUnderTestCase<Depth.Unit> {
         let result = sut.localization(for: .quantity(.zero, .full))
 
         // Then
-        XCTAssertEqual(result, "0.000 feet")
+        XCTAssertEqual(result, "0 feet")
     }
 
     func testQuantityFullMetric() {
@@ -110,7 +110,7 @@ final class DepthLocalizationTestCase: SystemUnderTestCase<Depth.Unit> {
         let result = sut.localization(for: .quantity(.zero, .full))
 
         // Then
-        XCTAssertEqual(result, "0.000 meters")
+        XCTAssertEqual(result, "0 meters")
     }
 
     func testOneQuantityFullImperial() {
@@ -121,7 +121,7 @@ final class DepthLocalizationTestCase: SystemUnderTestCase<Depth.Unit> {
         let result = sut.localization(for: .quantity(1, .full))
 
         // Then
-        XCTAssertEqual(result, "1.000 foot")
+        XCTAssertEqual(result, "1 foot")
     }
 
     func testOneQuantityFullMetric() {
@@ -132,6 +132,6 @@ final class DepthLocalizationTestCase: SystemUnderTestCase<Depth.Unit> {
         let result = sut.localization(for: .quantity(1, .full))
 
         // Then
-        XCTAssertEqual(result, "1.000 meter")
+        XCTAssertEqual(result, "1 meter")
     }
 }

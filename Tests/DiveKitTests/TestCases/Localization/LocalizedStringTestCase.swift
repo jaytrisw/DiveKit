@@ -29,7 +29,7 @@ final class LocalizedStringTestCase: XCTestCase {
             let result = localizedString(for: key, quantity: 1, with: .init())
 
             // Then
-            XCTAssertEqual(result, "1.000 TEST LOCALIZED STRING WITH QUANTITY")
+            XCTAssertEqual(result, "1 TEST LOCALIZED STRING WITH QUANTITY")
             expectation.fulfill()
         }
 

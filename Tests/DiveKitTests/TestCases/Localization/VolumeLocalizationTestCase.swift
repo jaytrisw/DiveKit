@@ -77,7 +77,7 @@ final class VolumeLocalizationTestCase: SystemUnderTestCase<Volume.Unit> {
         let result = sut.localization(for: .quantity(.zero, .short))
 
         // Then
-        XCTAssertEqual(result, "0.000 cu ft")
+        XCTAssertEqual(result, "0 cu ft")
     }
 
     func testQuantityShortMetric() {
@@ -88,7 +88,7 @@ final class VolumeLocalizationTestCase: SystemUnderTestCase<Volume.Unit> {
         let result = sut.localization(for: .quantity(.zero, .short))
 
         // Then
-        XCTAssertEqual(result, "0.000 l")
+        XCTAssertEqual(result, "0 l")
     }
 
     func testQuantityFullImperial() {
@@ -99,7 +99,7 @@ final class VolumeLocalizationTestCase: SystemUnderTestCase<Volume.Unit> {
         let result = sut.localization(for: .quantity(.zero, .full))
 
         // Then
-        XCTAssertEqual(result, "0.000 cubic feet")
+        XCTAssertEqual(result, "0 cubic feet")
     }
 
     func testQuantityFullMetric() {
@@ -110,7 +110,7 @@ final class VolumeLocalizationTestCase: SystemUnderTestCase<Volume.Unit> {
         let result = sut.localization(for: .quantity(.zero, .full))
 
         // Then
-        XCTAssertEqual(result, "0.000 liters")
+        XCTAssertEqual(result, "0 liters")
     }
 
     func testOneQuantityFullImperial() {
@@ -121,7 +121,7 @@ final class VolumeLocalizationTestCase: SystemUnderTestCase<Volume.Unit> {
         let result = sut.localization(for: .quantity(1, .full))
 
         // Then
-        XCTAssertEqual(result, "1.000 cubic foot")
+        XCTAssertEqual(result, "1 cubic foot")
     }
 
     func testOneQuantityFullMetric() {
@@ -132,6 +132,6 @@ final class VolumeLocalizationTestCase: SystemUnderTestCase<Volume.Unit> {
         let result = sut.localization(for: .quantity(1, .full))
 
         // Then
-        XCTAssertEqual(result, "1.000 liter")
+        XCTAssertEqual(result, "1 liter")
     }
 }

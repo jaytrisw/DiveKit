@@ -77,7 +77,7 @@ final class MassLocalizationTestCase: SystemUnderTestCase<Mass.Unit> {
         let result = sut.localization(for: .quantity(.zero, .short))
 
         // Then
-        XCTAssertEqual(result, "0.000 lbs")
+        XCTAssertEqual(result, "0 lbs")
     }
 
     func testQuantityShortMetric() {
@@ -88,7 +88,7 @@ final class MassLocalizationTestCase: SystemUnderTestCase<Mass.Unit> {
         let result = sut.localization(for: .quantity(.zero, .short))
 
         // Then
-        XCTAssertEqual(result, "0.000 km")
+        XCTAssertEqual(result, "0 km")
     }
 
     func testQuantityFullImperial() {
@@ -99,7 +99,7 @@ final class MassLocalizationTestCase: SystemUnderTestCase<Mass.Unit> {
         let result = sut.localization(for: .quantity(.zero, .full))
 
         // Then
-        XCTAssertEqual(result, "0.000 pounds")
+        XCTAssertEqual(result, "0 pounds")
     }
 
     func testQuantityFullMetric() {
@@ -110,7 +110,7 @@ final class MassLocalizationTestCase: SystemUnderTestCase<Mass.Unit> {
         let result = sut.localization(for: .quantity(.zero, .full))
 
         // Then
-        XCTAssertEqual(result, "0.000 kilograms")
+        XCTAssertEqual(result, "0 kilograms")
     }
 
     func testOneQuantityFullImperial() {
@@ -121,7 +121,7 @@ final class MassLocalizationTestCase: SystemUnderTestCase<Mass.Unit> {
         let result = sut.localization(for: .quantity(1, .full))
 
         // Then
-        XCTAssertEqual(result, "1.000 pound")
+        XCTAssertEqual(result, "1 pound")
     }
 
     func testOneQuantityFullMetric() {
@@ -132,6 +132,17 @@ final class MassLocalizationTestCase: SystemUnderTestCase<Mass.Unit> {
         let result = sut.localization(for: .quantity(1, .full))
 
         // Then
-        XCTAssertEqual(result, "1.000 kilogram")
+        XCTAssertEqual(result, "1 kilogram")
+    }
+
+    func testOneWithDecimalQuantityFullMetric() {
+        // Given
+        sut = .kilograms
+
+        // When
+        let result = sut.localization(for: .quantity(1.1, .full))
+
+        // Then
+        XCTAssertEqual(result, "1.1 kilograms")
     }
 }

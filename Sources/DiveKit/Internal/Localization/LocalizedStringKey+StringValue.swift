@@ -25,8 +25,15 @@ internal func localizedString(
     for key: String,
     quantity: Double,
     with comment: @autoclosure () -> String) -> String {
-        localizedString(for: key, with: comment())
-            .withQuantity(quantity)
+        localizedString(for: key, with: comment()).withQuantity(quantity)
+            .map { $0.components(separatedBy: " ") }
+            .map {
+                guard let number = Double($0) else {
+                    return $0
+                }
+                return number.formatted(.number)
+            }
+            .joined(separator: " ")
     }
 
 internal func returning<T, R>(with input: T, closure: (T) -> R) -> R {
@@ -49,3 +56,5 @@ internal extension String {
         .localizedStringWithFormat(self, argument)
     }
 }
+
+extension String: Mappable {}

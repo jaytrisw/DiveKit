@@ -110,7 +110,7 @@ final class PressureLocalizationTestCase: SystemUnderTestCase<Pressure.Unit> {
         let result = sut.localization(for: .quantity(.zero, .short))
 
         // Then
-        XCTAssertEqual(result, "0.000 psi")
+        XCTAssertEqual(result, "0 psi")
     }
 
     func testQuantityShortMetric() {
@@ -121,7 +121,7 @@ final class PressureLocalizationTestCase: SystemUnderTestCase<Pressure.Unit> {
         let result = sut.localization(for: .quantity(.zero, .short))
 
         // Then
-        XCTAssertEqual(result, "0.000 bar")
+        XCTAssertEqual(result, "0 bar")
     }
 
     func testQuantityShortAtmospheres() {
@@ -132,7 +132,7 @@ final class PressureLocalizationTestCase: SystemUnderTestCase<Pressure.Unit> {
         let result = sut.localization(for: .quantity(.zero, .short))
 
         // Then
-        XCTAssertEqual(result, "0.000 atm")
+        XCTAssertEqual(result, "0 atm")
     }
 
     func testQuantityFullImperial() {
@@ -143,7 +143,7 @@ final class PressureLocalizationTestCase: SystemUnderTestCase<Pressure.Unit> {
         let result = sut.localization(for: .quantity(.zero, .full))
 
         // Then
-        XCTAssertEqual(result, "0.000 pounds per square inch")
+        XCTAssertEqual(result, "0 pounds per square inch")
     }
 
     func testQuantityFullMetric() {
@@ -154,7 +154,7 @@ final class PressureLocalizationTestCase: SystemUnderTestCase<Pressure.Unit> {
         let result = sut.localization(for: .quantity(.zero, .full))
 
         // Then
-        XCTAssertEqual(result, "0.000 bar")
+        XCTAssertEqual(result, "0 bar")
     }
 
     func testQuantityFullAtmospheres() {
@@ -165,7 +165,7 @@ final class PressureLocalizationTestCase: SystemUnderTestCase<Pressure.Unit> {
         let result = sut.localization(for: .quantity(.zero, .full))
 
         // Then
-        XCTAssertEqual(result, "0.000 atmospheres")
+        XCTAssertEqual(result, "0 atmospheres")
     }
 
     func testOneQuantityFullImperial() {
@@ -176,7 +176,7 @@ final class PressureLocalizationTestCase: SystemUnderTestCase<Pressure.Unit> {
         let result = sut.localization(for: .quantity(1, .full))
 
         // Then
-        XCTAssertEqual(result, "1.000 pound per square inch")
+        XCTAssertEqual(result, "1 pound per square inch")
     }
 
     func testOneQuantityFullMetric() {
@@ -187,7 +187,7 @@ final class PressureLocalizationTestCase: SystemUnderTestCase<Pressure.Unit> {
         let result = sut.localization(for: .quantity(1, .full))
 
         // Then
-        XCTAssertEqual(result, "1.000 bar")
+        XCTAssertEqual(result, "1 bar")
     }
 
     func testOneQuantityFullAtmospheres() {
@@ -198,6 +198,6 @@ final class PressureLocalizationTestCase: SystemUnderTestCase<Pressure.Unit> {
         let result = sut.localization(for: .quantity(1, .full))
 
         // Then
-        XCTAssertEqual(result, "1.000 atmosphere")
+        XCTAssertEqual(result, "1 atmosphere")
     }
 }
