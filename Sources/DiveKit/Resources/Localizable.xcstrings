@@ -101,6 +101,23 @@
         }
       }
     },
+    "dive.kit.range.lower.bound" : {
+
+    },
+    "dive.kit.range.out.of.range" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Range "
+          }
+        }
+      }
+    },
+    "dive.kit.range.upper.bound" : {
+
+    },
     "dive.kit.unit.depth.imperial.description.full" : {
       "localizations" : {
         "en" : {

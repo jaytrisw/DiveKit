@@ -7,7 +7,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
 
     func testPartialPressureValidInput() throws {
         // Given
-        let partialPressure = PartialPressure(.oxygen, fractionalPressure: 0.21)
+        let partialPressure = try PartialPressure(of: .oxygen, fractionalPressure: 0.21)
         let depth: Depth = 33.0
 
         // When
@@ -24,7 +24,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
 
     func testPartialPressureInvalidInput() throws {
         // Given
-        let partialPressure = PartialPressure(.oxygen, fractionalPressure: 0.21)
+        let partialPressure = try PartialPressure(of: .oxygen, fractionalPressure: 0.21)
         let depth: Depth = -33.0
         expectedError = .negative(depth, "GasCalculator.partialPressure(of:at:using:)")
 
@@ -99,7 +99,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
         // Given
         let gas = Oxygen()
         let fractionalPressure = 0.21
-        let blend = Blend<Unblended>(.init(.oxygen, fractionalPressure: 0.21))
+        let blend = try Blend<Unblended>(.init(of: .oxygen, fractionalPressure: 0.21))
         let depth: Depth = 33.0
         expectedError = .blend(.totalPressure(fractionalPressure, blend), "GasCalculator.partialPressure(of:blending:at:using:)")
 

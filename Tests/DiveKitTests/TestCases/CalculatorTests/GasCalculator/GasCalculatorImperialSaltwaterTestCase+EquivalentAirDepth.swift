@@ -8,7 +8,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
     func testEquivalentAirDepthValidInput() throws {
         // Given
         let depth: Depth = 80.0
-        let blend = Blend<Blended>.enrichedAir(0.4)
+        let blend = try Blend<Blended>.enrichedAir(0.4)
 
         // When
         try XCTAssertCalculation(
@@ -40,7 +40,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
     func testEquivalentAirDepthInvalidDepthInput() throws {
         // Given
         let depth: Depth = -80.0
-        let blend = Blend<Blended>.enrichedAir(0.4)
+        let blend = try Blend<Blended>.enrichedAir(0.4)
         expectedError = .negative(depth, "GasCalculator.equivalentAirDepth(for:with:)")
 
         // When
@@ -55,7 +55,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
         // Given
         let depth: Depth = 80.0
         let fractionalPressure = 0.4
-        let blend = Blend<Unblended>(.init(.oxygen, fractionalPressure: 0.4))
+        let blend = try Blend<Unblended>(.init(of: .oxygen, fractionalPressure: 0.4))
         expectedError = .blend(.totalPressure(fractionalPressure, blend), "GasCalculator.equivalentAirDepth(for:with:)")
 
         // When

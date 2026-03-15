@@ -11,7 +11,7 @@ final class BlendBlendedTestCase: SystemUnderTestCase<Blend<Blended>> {
             .blend()
 
         // When
-        let result = sut.partialPressure(of: gas)
+        let result = try sut.partialPressure(of: gas)
 
         // Then
         XCTAssertEqual(result.fractionalPressure, 1.0)
@@ -26,30 +26,30 @@ final class BlendBlendedTestCase: SystemUnderTestCase<Blend<Blended>> {
             .blend()
 
         // When
-        let result = sut.partialPressure(of: gas)
+        let result = try sut.partialPressure(of: gas)
 
         // Then
         XCTAssertEqual(result.fractionalPressure, 0)
         XCTAssertEqual(result.gas, gas)
     }
 
-    func testInitializationWithParameterPacks() {
+    func testInitializationWithParameterPacks() throws {
         // Given
         let oxygen = Oxygen()
         let oxygenFraction = 1.0
 
         // When
-        sut = .init(.init(oxygen, fractionalPressure: oxygenFraction))
+        sut = try .init(.init(of: oxygen, fractionalPressure: oxygenFraction))
 
         // Then
-        XCTAssertEqual(sut.partialPressure(of: oxygen).fractionalPressure, oxygenFraction)
+        XCTAssertEqual(try sut.partialPressure(of: oxygen).fractionalPressure, oxygenFraction)
         XCTAssertEqual(sut.storage.count, 1)
     }
 
     func testInitializeWithResultBuilder() throws {
         // Given
-        let oxygen = PartialPressure(.oxygen, fractionalPressure: 0.40)
-        let nitrogen = PartialPressure(.nitrogen, fractionalPressure: 0.60)
+        let oxygen = try PartialPressure(of: .oxygen, fractionalPressure: 0.40)
+        let nitrogen = try PartialPressure(of: .nitrogen, fractionalPressure: 0.60)
 
         // When
         sut = .init {

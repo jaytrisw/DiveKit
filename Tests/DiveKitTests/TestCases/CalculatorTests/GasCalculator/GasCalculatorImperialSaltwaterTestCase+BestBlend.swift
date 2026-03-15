@@ -14,7 +14,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
         try XCTAssertCalculation(
             sut.bestBlend(for: depth, fractionOxygen: fractionOxygen, using: physicsCalculator)) { result, configuration in
                 // Then
-                XCTAssertEqual(result.pressure(of: .oxygen), 0.32)
+                XCTAssertEqual(try! result.pressure(of: .oxygen), 0.32)
                 XCTAssertEqual(configuration, sut.configuration)
             }
     }
