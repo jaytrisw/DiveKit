@@ -148,7 +148,7 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
     func testInitializeWithResultBuilder_consumingUnsafeAPI() throws {
         // Given
         let oxygen = PartialPressure(.oxygen, fractionalPressure: 0.40)
-        let nitrogen =  PartialPressure(.nitrogen, fractionalPressure: 0.60)
+        let nitrogen = PartialPressure(.nitrogen, fractionalPressure: 0.60)
 
         // When
         sut = .init {
