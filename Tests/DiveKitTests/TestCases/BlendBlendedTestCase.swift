@@ -1,5 +1,5 @@
 import XCTest
-@testable import DiveKit
+@testable @_spi(unsafe) import DiveKit
 
 final class BlendBlendedTestCase: SystemUnderTestCase<Blend<Blended>> {
 
@@ -50,6 +50,23 @@ final class BlendBlendedTestCase: SystemUnderTestCase<Blend<Blended>> {
         // Given
         let oxygen = try PartialPressure(of: .oxygen, fractionalPressure: 0.40)
         let nitrogen = try PartialPressure(of: .nitrogen, fractionalPressure: 0.60)
+
+        // When
+        sut = .init {
+            oxygen
+
+            nitrogen
+        }
+
+        // Then
+        XCTAssertEqual(sut.totalPressure, 1.0)
+        XCTAssertEqual(sut.storage.count, 2)
+    }
+
+    func testInitializeWithResultBuilder_consumingUnsafeAPI() throws {
+        // Given
+        let oxygen = PartialPressure(.oxygen, fractionalPressure: 0.40)
+        let nitrogen = PartialPressure(.nitrogen, fractionalPressure: 0.60)
 
         // When
         sut = .init {
