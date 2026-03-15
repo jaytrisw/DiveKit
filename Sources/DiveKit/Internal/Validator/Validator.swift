@@ -15,11 +15,3 @@ extension Validator {
         }
     }
 }
-
-extension Validator {
-    func and(_ other: Validator) -> Self {
-        .init {
-            validate($0) && other.validate($0)
-        }
-    }
-}
