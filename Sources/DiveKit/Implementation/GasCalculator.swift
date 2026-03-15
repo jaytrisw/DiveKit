@@ -31,7 +31,7 @@ extension GasCalculator: GasCalculating {
                 .map { $0 * 100 }
                 .map { $0.rounded(.towardZero) }
                 .map { $0 / 100 }
-                .map { .blend(.enrichedAir($0), configuration: configuration) }
+                .map { try .blend(.enrichedAir($0), configuration: configuration) }
         }
 
     public func equivalentAirDepth(
@@ -39,7 +39,7 @@ extension GasCalculator: GasCalculating {
         with blend: Blend<Blended>) throws -> Calculation<DecimalResult<Depth>> {
             try depth.validate(using: .nonNegative, orThrow: { .negative($0, .from(self)) })
                 .map { $0.value + configuration.water.pressure(configuration.units).increase.value }
-                .with { blend.pressure(of: .nitrogen) / Blend.air.pressure(of: .nitrogen) }
+                .with { try blend.pressure(of: .nitrogen) / Blend.air.pressure(of: .nitrogen) }
                 .map { $0.first * $0.second }
                 .map { $0 - configuration.water.pressure(configuration.units).increase.value }
                 .map { .decimal($0, unit: \.depth, from: configuration) }
@@ -49,7 +49,7 @@ extension GasCalculator: GasCalculating {
         for fractionOxygen: FractionalPressure,
         in blend: Blend<Blended>) throws ->  Calculation<DecimalResult<Depth>> {
             try fractionOxygen.validate(using: .nonNegative, orThrow: { .negative($0, .from(self)) })
-                .map { $0.value / blend.pressure(of: .oxygen) }
+                .map { try $0.value / blend.pressure(of: .oxygen) }
                 .map { $0 - 1 }
                 .map { $0 * configuration.water.pressure(configuration.units).increase.value }
                 .map {.decimal($0, unit: \.depth, from: configuration) }

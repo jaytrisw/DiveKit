@@ -9,7 +9,7 @@ internal extension GasCalculating {
         _ callSite: CallSite) throws -> Calculation<PartialPressure<Gas>> {
             try physicsCalculator.atmospheresAbsolute(at: depth, with: configuration, callSite)
                 .map { $0.result.value * partialPressure.fractionalPressure }
-                .map { .partialPressure(partialPressure.gas, fractionalPressure: $0, configuration: configuration) }
+                .map { try .partialPressure(partialPressure.gas, fractionalPressure: $0, configuration: configuration) }
         }
 
     func partialPressure<Gas: GasRepresentable>(

@@ -6,6 +6,18 @@ internal extension Error {
             case let .negative(negative, _): negative.localizationKey
             case let .tank(tank, _): tank.localizationKey
             case let .blend(blend, _): blend.localizationKey
+            case let .range(range, _): range.localizationKey
+        }
+    }
+}
+
+internal extension Error.Range {
+    var localizationKey: String {
+        String {
+            switch self {
+                case .lowerBound: LocalizedKey.Error.Range.lowerBound
+                case .upperBound: LocalizedKey.Error.Range.upperBound
+            }
         }
     }
 }

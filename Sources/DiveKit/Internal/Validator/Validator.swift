@@ -7,3 +7,11 @@ internal struct Validator<Value> {
         self.validate = validate
     }
 }
+
+extension Validator {
+    func or(_ other: Validator) -> Self {
+        .init {
+            validate($0) || other.validate($0)
+        }
+    }
+}

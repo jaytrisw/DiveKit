@@ -13,8 +13,20 @@ package extension Blend where State == Blended {
     }
 }
 
-public extension Blend where State == Unblended {
+package extension Blend where State == Unblended {
     init(@BlendBuilder builder: () -> Self) {
         self = builder()
+    }
+}
+
+public extension Blend where State == Blended {
+    init(@BlendBuilder builder: () throws(DiveKit.Error) -> Self) throws(DiveKit.Error) {
+        self = try builder()
+    }
+}
+
+public extension Blend where State == Unblended {
+    init(@BlendBuilder builder: () throws(DiveKit.Error) -> Self) throws(DiveKit.Error) {
+        self = try builder()
     }
 }

@@ -9,6 +9,13 @@ internal extension LocalizedKey {
 }
 
 internal extension LocalizedKey.Error {
+    enum Range {
+        static let lowerBound: LocalizedStringKey = "dive.kit.range.lower.bound"
+        static let upperBound: LocalizedStringKey = "dive.kit.range.upper.bound"
+    }
+}
+
+internal extension LocalizedKey.Error {
     enum Tank {
         static let ratedPressure: LocalizedStringKey = "dive.kit.error.tank.size.rated.pressure"
         static let volume: LocalizedStringKey = "dive.kit.error.tank.size.volume"
