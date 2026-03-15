@@ -26,8 +26,9 @@ final class PartialPressureTestCase: XCTestCase {
         // When / Then
         try XCTAssertThrowsError(
             when: try PartialPressure(of: gas, fractionalPressure: fractionalPressure),
-            then: expectedError
-        )
+            then: expectedError) { error in
+                XCTAssertEqual(error.localizationKey, "dive.kit.range.lower.bound")
+            }
     }
 
     func testInitializationRejectsFractionalPressureGreaterThanOne() throws {
@@ -41,7 +42,8 @@ final class PartialPressureTestCase: XCTestCase {
         // When / Then
         try XCTAssertThrowsError(
             when: try PartialPressure(of: gas, fractionalPressure: fractionalPressure),
-            then: expectedError
-        )
+            then: expectedError) { error in
+                XCTAssertEqual(error.localizationKey, "dive.kit.range.upper.bound")
+            }
     }
 }
