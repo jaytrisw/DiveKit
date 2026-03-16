@@ -81,6 +81,12 @@
         }
       }
     },
+    "dive.kit.error.range.lower.bound" : {
+
+    },
+    "dive.kit.error.range.upper.bound" : {
+
+    },
     "dive.kit.error.tank.size.rated.pressure" : {
       "localizations" : {
         "en" : {
@@ -101,9 +107,6 @@
         }
       }
     },
-    "dive.kit.range.lower.bound" : {
-
-    },
     "dive.kit.range.out.of.range" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -114,9 +117,6 @@
           }
         }
       }
-    },
-    "dive.kit.range.upper.bound" : {
-
     },
     "dive.kit.unit.depth.imperial.description.full" : {
       "localizations" : {

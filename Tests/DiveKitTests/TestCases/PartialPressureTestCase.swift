@@ -27,7 +27,7 @@ final class PartialPressureTestCase: XCTestCase {
         try XCTAssertThrowsError(
             when: try PartialPressure(of: gas, fractionalPressure: fractionalPressure),
             then: expectedError) { error in
-                XCTAssertEqual(error.localizationKey, "dive.kit.range.lower.bound")
+                XCTAssertEqual(error.localizationKey, "dive.kit.error.range.lower.bound")
             }
     }
 
@@ -43,7 +43,7 @@ final class PartialPressureTestCase: XCTestCase {
         try XCTAssertThrowsError(
             when: try PartialPressure(of: gas, fractionalPressure: fractionalPressure),
             then: expectedError) { error in
-                XCTAssertEqual(error.localizationKey, "dive.kit.range.upper.bound")
+                XCTAssertEqual(error.localizationKey, "dive.kit.error.range.upper.bound")
             }
     }
 }
