@@ -10,8 +10,8 @@ internal extension LocalizedKey {
 
 internal extension LocalizedKey.Error {
     enum Range {
-        static let lowerBound: LocalizedStringKey = "dive.kit.range.lower.bound"
-        static let upperBound: LocalizedStringKey = "dive.kit.range.upper.bound"
+        static let lowerBound: LocalizedStringKey = "dive.kit.error.range.lower.bound"
+        static let upperBound: LocalizedStringKey = "dive.kit.error.range.upper.bound"
     }
 }
 
