@@ -1,17 +1,17 @@
 import Foundation
 
-public enum Unblended: BlendState {}
+public enum Unblended: BlendState, Sendable {}
 
 public extension Blend where State == Unblended {
     init() {
-        self.init(storage: [:])
+        self.init([:])
     }
 
     mutating func add<Gas: GasRepresentable>(_ gas: Gas, pressure: Double) throws {
         try pressure
             .validate(
                 using: .between(.zero, and: .one),
-                onValidated: { storage.updateValue($0, forKey: gas) },
+                onValidated: { storage.updateValue($0, forKey: .init(gas)) },
                 orThrow: { .blend(.pressureRange(pressure, self), .from(self)) })
     }
 

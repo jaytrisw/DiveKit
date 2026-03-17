@@ -14,9 +14,8 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
         try sut.add(partialPressure)
 
         // Then
-        XCTAssertEqual(sut.storage.count, 1)
-        XCTAssertEqual(sut.storage.first?.key, Oxygen())
-        XCTAssertEqual(sut.storage.first?.value, oxygenFraction)
+        XCTAssertEqual(sut.components().count, 1)
+        XCTAssertEqual(sut.fractionalPressure(of: .oxygen), oxygenFraction)
     }
 
     func testAddWithInvalidLowerBound_consumingUnsafeAPI() throws {
@@ -56,9 +55,8 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
         let result = try sut.adding(partialPressure)
 
         // Then
-        XCTAssertEqual(result.storage.count, 1)
-        XCTAssertEqual(result.storage.first?.key, Oxygen())
-        XCTAssertEqual(result.storage.first?.value, oxygenFraction)
+        XCTAssertEqual(result.components().count, 1)
+        XCTAssertEqual(result.fractionalPressure(of: .oxygen), oxygenFraction)
     }
 
     func testFillWithValidInput() throws {
@@ -69,9 +67,8 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
         try sut.fill(with: oxygen)
 
         // Then
-        XCTAssertEqual(sut.storage.count, 1)
-        XCTAssertEqual(sut.storage.first?.key, Oxygen())
-        XCTAssertEqual(sut.storage.first?.value, 1)
+        XCTAssertEqual(sut.components().count, 1)
+        XCTAssertEqual(sut.fractionalPressure(of: .oxygen), 1)
     }
 
     func testFillingWithValidInput() throws {
@@ -82,9 +79,9 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
         let result = try sut.filling(with: oxygen)
 
         // Then
-        XCTAssertEqual(result.storage.count, 1)
-        XCTAssertEqual(result.storage.first?.key, Oxygen())
-        XCTAssertEqual(result.storage.first?.value, 1)
+        XCTAssertEqual(result.components().count, 1)
+        XCTAssertEqual(result.fractionalPressure(of: .oxygen), 1)
+        XCTAssertTrue(result.components().first.forceUnwrap().isEqual(to: .oxygen))
     }
 
     func testBlendWithValidInput() throws {
@@ -96,9 +93,8 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
         let result = try sut.blend()
 
         // Then
-        XCTAssertEqual(result.storage.count, 1)
-        XCTAssertEqual(result.storage.first?.key, Oxygen())
-        XCTAssertEqual(result.storage.first?.value, 1)
+        XCTAssertEqual(result.components().count, 1)
+        XCTAssertEqual(result.fractionalPressure(of: .oxygen), 1)
     }
 
     func testBlendWithInvalidInput() throws {
@@ -128,8 +124,8 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
         // Then
         XCTAssertEqual(try result.partialPressure(of: .oxygen), oxygen)
         XCTAssertEqual(try result.partialPressure(of: .nitrogen), nitrogen)
-        XCTAssertEqual(sut.totalPressure, 1.0)
-        XCTAssertEqual(sut.storage.count, 2)
+        XCTAssertEqual(result.totalPressure, 1.0)
+        XCTAssertEqual(result.components().count, 2)
     }
 
     func testInitializeWithResultBuilder() throws {
@@ -142,7 +138,7 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
 
         // Then
         XCTAssertEqual(sut.totalPressure, 1.0)
-        XCTAssertEqual(sut.storage.count, 2)
+        XCTAssertEqual(sut.components().count, 2)
     }
 
     func testInitializeWithResultBuilder_consumingUnsafeAPI() throws {
@@ -159,7 +155,7 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
 
         // Then
         XCTAssertEqual(sut.totalPressure, 1.0)
-        XCTAssertEqual(sut.storage.count, 2)
+        XCTAssertEqual(sut.components().count, 2)
     }
 
     override func createSUT() {

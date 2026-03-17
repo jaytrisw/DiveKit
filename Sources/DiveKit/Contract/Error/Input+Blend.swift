@@ -1,7 +1,7 @@
 import Foundation
 
 public extension Error {
-    enum Blend {
+    enum Blend: Sendable {
         case totalPressure(_ totalPressure: Double, _ blend: DiveKit.Blend<Unblended>)
         case pressureRange(_ pressureRange: Double, _ blend: DiveKit.Blend<Unblended>)
     }

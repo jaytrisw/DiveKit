@@ -1,6 +1,6 @@
 import Foundation
 
-public struct Volume {
+public struct Volume: Sendable {
     public let value: Double
 }
 

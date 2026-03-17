@@ -1,6 +1,6 @@
 import Foundation
 
-public struct Minutes {
+public struct Minutes: Sendable {
     public let value: Double
 }
 

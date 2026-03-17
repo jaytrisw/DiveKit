@@ -1,6 +1,6 @@
 import Foundation
 
-public struct FractionalPressure {
+public struct FractionalPressure: Sendable {
     public let value: Double
 }
 

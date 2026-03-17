@@ -1,6 +1,6 @@
 import SwiftUI
 
-internal extension LocalizedStringKey {
+internal extension LocalizedStringResource {
     var stringValue: String {
         Mirror(reflecting: self)
             .children

@@ -1,6 +1,6 @@
 import Foundation
 
-public struct CallSite: CustomStringConvertible {
+public struct CallSite: CustomStringConvertible, Sendable {
     public let description: String
 
     package init(description: String) {

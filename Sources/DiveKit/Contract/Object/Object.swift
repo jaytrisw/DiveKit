@@ -1,6 +1,6 @@
 import Foundation
 
-public struct Object {
+public struct Object: Sendable {
     public let weight: Mass
     public let volume: Volume
 

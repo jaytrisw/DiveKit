@@ -43,7 +43,7 @@ final class BlendBlendedTestCase: SystemUnderTestCase<Blend<Blended>> {
 
         // Then
         XCTAssertEqual(try sut.partialPressure(of: oxygen).fractionalPressure, oxygenFraction)
-        XCTAssertEqual(sut.storage.count, 1)
+        XCTAssertEqual(sut.components().count, 1)
     }
 
     func testInitializeWithResultBuilder() throws {
@@ -56,7 +56,7 @@ final class BlendBlendedTestCase: SystemUnderTestCase<Blend<Blended>> {
 
         // Then
         XCTAssertEqual(sut.totalPressure, 1.0)
-        XCTAssertEqual(sut.storage.count, 2)
+        XCTAssertEqual(sut.components().count, 2)
     }
 
     func testInitializeWithResultBuilder_consumingUnsafeAPI() throws {
@@ -73,6 +73,6 @@ final class BlendBlendedTestCase: SystemUnderTestCase<Blend<Blended>> {
 
         // Then
         XCTAssertEqual(sut.totalPressure, 1.0)
-        XCTAssertEqual(sut.storage.count, 2)
+        XCTAssertEqual(sut.components().count, 2)
     }
 }

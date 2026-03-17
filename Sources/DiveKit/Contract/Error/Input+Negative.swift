@@ -1,7 +1,7 @@
 import Foundation
 
 public extension Error {
-    enum Negative {
+    enum Negative: Sendable {
         case depth(_ depth: DiveKit.Depth)
         case fractionalPressure(_ fractionalPressure: DiveKit.FractionalPressure)
         case minutes(_ minutes: DiveKit.Minutes)

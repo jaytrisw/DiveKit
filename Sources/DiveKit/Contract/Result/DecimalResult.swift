@@ -1,6 +1,6 @@
 import Foundation
 
-public struct DecimalResult<Decimal: DecimalResultRepresentable> {
+public struct DecimalResult<Decimal: DecimalResultRepresentable>: Sendable {
     public var value: Double
     public let unit: Decimal.Unit
 

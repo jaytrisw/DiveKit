@@ -1,6 +1,6 @@
 import Foundation
 
-public struct Tank {
+public struct Tank: Sendable {
     public let blend: Blend<Blended>
     public let size: Size
 

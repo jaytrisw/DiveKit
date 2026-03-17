@@ -1,12 +1,12 @@
 import Foundation
 
-public struct Water {
-    public let weight: (Units) -> Weight
-    public let pressure: (Units) -> Pressure
+public struct Water: Sendable {
+    public let weight: @Sendable (Units) -> Weight
+    public let pressure: @Sendable (Units) -> Pressure
 
     public init(
-        weight: @escaping (Units) -> Weight,
-        pressure: @escaping (Units) -> Pressure) {
+        weight: @escaping @Sendable (Units) -> Weight,
+        pressure: @escaping @Sendable (Units) -> Pressure) {
             self.weight = weight
             self.pressure = pressure
         }

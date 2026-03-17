@@ -1,7 +1,7 @@
 import Foundation
 
 public extension Water {
-    struct Pressure {
+    struct Pressure: Sendable {
         public let increase: Increase
 
         public init(increase: Increase) {
@@ -11,7 +11,7 @@ public extension Water {
 }
 
 public extension Water.Pressure {
-    struct Increase {
+    struct Increase: Sendable {
         public let value: Double
         public let unit: Depth.Unit
 

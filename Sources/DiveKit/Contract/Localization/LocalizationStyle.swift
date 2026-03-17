@@ -1,6 +1,6 @@
 import Foundation
 
-public enum LocalizationStyle {
+public enum LocalizationStyle: Sendable {
     case full
     case short
 }

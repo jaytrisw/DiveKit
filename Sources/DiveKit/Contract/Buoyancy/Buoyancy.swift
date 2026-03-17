@@ -1,6 +1,6 @@
 import Foundation
 
-public enum Buoyancy {
+public enum Buoyancy: Sendable {
     case positive(_ buoyantForce: Double)
     case negative(_ buoyantForce: Double)
     case neutral
