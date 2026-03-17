@@ -19,7 +19,7 @@ final class BlendStaticMembersTestCase: SystemUnderTestCase<Blend<Blended>> {
         XCTAssertEqual(trace.fractionalPressure, 0.001)
         XCTAssertEqual(trace.gas, .trace)
         XCTAssertEqual(sut.totalPressure, 1.0)
-        XCTAssertEqual(sut.storage.count, 3)
+        XCTAssertEqual(sut.components().count, 3)
     }
 
     func testEnrichedAir() throws {
@@ -37,7 +37,7 @@ final class BlendStaticMembersTestCase: SystemUnderTestCase<Blend<Blended>> {
         XCTAssertEqual(nitrogen.fractionalPressure, 0.68, accuracy: 0.1)
         XCTAssertEqual(nitrogen.gas, .nitrogen)
         XCTAssertEqual(sut.totalPressure, 1.0)
-        XCTAssertEqual(sut.storage.count, 2)
+        XCTAssertEqual(sut.components().count, 2)
     }
 
     func testEnrichedAirRejectsNegativeFraction() throws {

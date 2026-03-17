@@ -5,8 +5,14 @@ public protocol BlendState: Sendable {}
 public struct Blend<State: BlendState>: Sendable {
     var storage: [AnyGas: Double] = [:]
 
-    package init(storage: [AnyGas: Double]) {
-        self.storage = storage
+    package init(_ initialStorage: [AnyGas: Double]) {
+        self.storage = initialStorage
+    }
+
+    package init<each Gas: GasRepresentable>(_ values:  repeat ((each Gas), Double)) {
+        var storage: [AnyGas: Double] = [:]
+        repeat _ = storage.updateValue((each values).1, forKey: .init((each values).0))
+        self.init(storage)
     }
 
     public var totalPressure: Double {

@@ -14,7 +14,7 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
         try sut.add(partialPressure)
 
         // Then
-        XCTAssertEqual(sut.storage.count, 1)
+        XCTAssertEqual(sut.components().count, 1)
         XCTAssertEqual(sut.fractionalPressure(of: .oxygen), oxygenFraction)
     }
 
@@ -55,7 +55,7 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
         let result = try sut.adding(partialPressure)
 
         // Then
-        XCTAssertEqual(result.storage.count, 1)
+        XCTAssertEqual(result.components().count, 1)
         XCTAssertEqual(result.fractionalPressure(of: .oxygen), oxygenFraction)
     }
 
@@ -67,7 +67,7 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
         try sut.fill(with: oxygen)
 
         // Then
-        XCTAssertEqual(sut.storage.count, 1)
+        XCTAssertEqual(sut.components().count, 1)
         XCTAssertEqual(sut.fractionalPressure(of: .oxygen), 1)
     }
 
@@ -79,7 +79,7 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
         let result = try sut.filling(with: oxygen)
 
         // Then
-        XCTAssertEqual(result.storage.count, 1)
+        XCTAssertEqual(result.components().count, 1)
         XCTAssertEqual(result.fractionalPressure(of: .oxygen), 1)
         XCTAssertTrue(result.components().first.forceUnwrap().isEqual(to: .oxygen))
     }
@@ -93,7 +93,7 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
         let result = try sut.blend()
 
         // Then
-        XCTAssertEqual(result.storage.count, 1)
+        XCTAssertEqual(result.components().count, 1)
         XCTAssertEqual(sut.fractionalPressure(of: .oxygen), 1)
     }
 
@@ -125,7 +125,7 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
         XCTAssertEqual(try result.partialPressure(of: .oxygen), oxygen)
         XCTAssertEqual(try result.partialPressure(of: .nitrogen), nitrogen)
         XCTAssertEqual(sut.totalPressure, 1.0)
-        XCTAssertEqual(sut.storage.count, 2)
+        XCTAssertEqual(sut.components().count, 2)
     }
 
     func testInitializeWithResultBuilder() throws {
@@ -138,7 +138,7 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
 
         // Then
         XCTAssertEqual(sut.totalPressure, 1.0)
-        XCTAssertEqual(sut.storage.count, 2)
+        XCTAssertEqual(sut.components().count, 2)
     }
 
     func testInitializeWithResultBuilder_consumingUnsafeAPI() throws {
@@ -155,7 +155,7 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
 
         // Then
         XCTAssertEqual(sut.totalPressure, 1.0)
-        XCTAssertEqual(sut.storage.count, 2)
+        XCTAssertEqual(sut.components().count, 2)
     }
 
     override func createSUT() {
