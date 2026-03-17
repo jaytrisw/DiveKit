@@ -1,6 +1,6 @@
 import Foundation
 
-public struct Trace: GasRepresentable {
+public struct Trace: GasRepresentable, Sendable {
     public init() {}
 }
 

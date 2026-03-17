@@ -1,3 +1,3 @@
 import Foundation
 
-public protocol UnitRepresentable: Equatable {}
+public protocol UnitRepresentable: Equatable, Sendable {}

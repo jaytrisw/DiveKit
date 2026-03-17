@@ -1,6 +1,6 @@
 import Foundation
 
-public enum Units {
+public enum Units: Sendable {
     case imperial
     case metric
 }

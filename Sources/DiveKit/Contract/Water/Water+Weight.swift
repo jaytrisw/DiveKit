@@ -1,7 +1,7 @@
 import Foundation
 
 public extension Water {
-    struct Weight {
+    struct Weight: Sendable {
         public let value: Double
         public let unit: Mass.Unit
         public let volume: Volume.Unit

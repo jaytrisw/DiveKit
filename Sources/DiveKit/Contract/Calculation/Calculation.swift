@@ -1,6 +1,6 @@
 import Foundation
 
-public struct Calculation<Result: ResultRepresentable> {
+public struct Calculation<Result: ResultRepresentable>: Sendable {
     public let result: Result
     public let configuration: Configuration
 

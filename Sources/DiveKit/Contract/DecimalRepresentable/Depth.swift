@@ -1,6 +1,6 @@
 import Foundation
 
-public struct Depth {
+public struct Depth: Sendable {
     public let value: Double
 }
 

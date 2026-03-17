@@ -1,6 +1,6 @@
 import Foundation
 
-public protocol DecimalUnitLocalizable {
+public protocol DecimalUnitLocalizable: Sendable {
     associatedtype Unit: UnitRepresentable, LocalizationProviding, Codable, Hashable, Equatable
     var value: Double { get }
 

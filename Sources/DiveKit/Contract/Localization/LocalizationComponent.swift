@@ -1,6 +1,6 @@
 import Foundation
 
-public enum LocalizationComponent {
+public enum LocalizationComponent: Sendable {
     case title
     case description(_ style: LocalizationStyle)
     case quantity(_ quantity: Double, _ style: LocalizationStyle)

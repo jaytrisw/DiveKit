@@ -15,8 +15,7 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
 
         // Then
         XCTAssertEqual(sut.storage.count, 1)
-        XCTAssertEqual(sut.storage.first?.key, Oxygen())
-        XCTAssertEqual(sut.storage.first?.value, oxygenFraction)
+        XCTAssertEqual(sut.fractionalPressure(of: .oxygen), oxygenFraction)
     }
 
     func testAddWithInvalidLowerBound_consumingUnsafeAPI() throws {
@@ -57,8 +56,7 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
 
         // Then
         XCTAssertEqual(result.storage.count, 1)
-        XCTAssertEqual(result.storage.first?.key, Oxygen())
-        XCTAssertEqual(result.storage.first?.value, oxygenFraction)
+        XCTAssertEqual(result.fractionalPressure(of: .oxygen), oxygenFraction)
     }
 
     func testFillWithValidInput() throws {
@@ -70,8 +68,7 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
 
         // Then
         XCTAssertEqual(sut.storage.count, 1)
-        XCTAssertEqual(sut.storage.first?.key, Oxygen())
-        XCTAssertEqual(sut.storage.first?.value, 1)
+        XCTAssertEqual(sut.fractionalPressure(of: .oxygen), 1)
     }
 
     func testFillingWithValidInput() throws {
@@ -83,8 +80,8 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
 
         // Then
         XCTAssertEqual(result.storage.count, 1)
-        XCTAssertEqual(result.storage.first?.key, Oxygen())
-        XCTAssertEqual(result.storage.first?.value, 1)
+        XCTAssertEqual(result.fractionalPressure(of: .oxygen), 1)
+        XCTAssertTrue(result.components().first.forceUnwrap().isEqual(to: .oxygen))
     }
 
     func testBlendWithValidInput() throws {
@@ -97,8 +94,7 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
 
         // Then
         XCTAssertEqual(result.storage.count, 1)
-        XCTAssertEqual(result.storage.first?.key, Oxygen())
-        XCTAssertEqual(result.storage.first?.value, 1)
+        XCTAssertEqual(sut.fractionalPressure(of: .oxygen), 1)
     }
 
     func testBlendWithInvalidInput() throws {

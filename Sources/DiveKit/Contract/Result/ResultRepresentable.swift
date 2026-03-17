@@ -1,3 +1,3 @@
 import Foundation
 
-public protocol ResultRepresentable {}
+public protocol ResultRepresentable: Sendable {}

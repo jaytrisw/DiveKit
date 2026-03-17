@@ -1,6 +1,6 @@
 import Foundation
 
-public struct DecimalUnitFormatStyle<Decimal: DecimalUnitLocalizable> {
+public struct DecimalUnitFormatStyle<Decimal: DecimalUnitLocalizable>: Sendable {
     let unit: Decimal.Unit
     let style: LocalizationStyle
 

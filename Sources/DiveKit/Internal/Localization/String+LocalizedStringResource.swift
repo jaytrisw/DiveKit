@@ -1,7 +1,7 @@
 import SwiftUI
 
 internal extension String {
-    init(_ key: () -> LocalizedStringKey) {
+    init(_ key: () -> LocalizedStringResource) {
         self.init(key().stringValue)
     }
 }

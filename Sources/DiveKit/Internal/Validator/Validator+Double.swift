@@ -29,5 +29,5 @@ internal extension Validator where Value == Double {
 }
 
 internal extension Double {
-    static var one: Self = 1
+    static let one: Self = 1
 }

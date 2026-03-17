@@ -1,10 +1,10 @@
 import Foundation
 
-public enum Blended: BlendState {}
+public enum Blended: BlendState, Sendable {}
 
 public extension Blend where State == Blended {
     func partialPressure<Gas: GasRepresentable>(of gas: Gas) throws(DiveKit.Error) -> PartialPressure<Gas> {
-        try .init(of: gas, fractionalPressure: storage[gas, default: .zero])
+        try .init(of: gas, fractionalPressure: fractionalPressure(of: gas))
     }
 }
 

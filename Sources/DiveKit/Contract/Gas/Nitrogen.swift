@@ -1,6 +1,6 @@
 import Foundation
 
-public struct Nitrogen: GasRepresentable {
+public struct Nitrogen: GasRepresentable, Sendable {
     public init() {}
 }
 

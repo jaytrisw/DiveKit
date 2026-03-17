@@ -1,6 +1,6 @@
 import Foundation
 
-public struct Pressure {
+public struct Pressure: Sendable {
     public let value: Double
 }
 

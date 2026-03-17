@@ -1,6 +1,6 @@
 import Foundation
 
-public struct Configuration {
+public struct Configuration: Sendable {
     public let units: Units
     public let water: Water
 
