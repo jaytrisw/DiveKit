@@ -4,7 +4,7 @@
 <img src="https://raw.githubusercontent.com/jaytrisw/DiveKit/develop/DiveKit-Logo.png" alt="drawing" width="450"/>
 </p>
 
-[![Swift](https://img.shields.io/badge/Swift-5.10-clear?labelColor=343434&color=de5d43)](https://img.shields.io/badge/Swift-5.10-clear?labelColor=343434&color=de5d43)
+[![Swift](https://img.shields.io/badge/Swift-6.2-clear?labelColor=343434&color=de5d43)](https://img.shields.io/badge/Swift-6.2-clear?labelColor=343434&color=de5d43)
 [![Swift Package Manager](https://img.shields.io/badge/Swift_Package_Manager-Compatible-clear?labelColor=343434&color=de5d43
 )](https://img.shields.io/badge/Swift_Package_Manager-Compatible-clear?labelColor=343434&color=de5d43)
 
