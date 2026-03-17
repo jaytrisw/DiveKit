@@ -3,64 +3,256 @@ name: Release
 on:
   push:
     branches:
+      - develop
+      # Release branches must be named exactly release-X.Y.Z.
+      - release-*
+  pull_request:
+    branches:
       - main
+    types:
+      - closed
+
+concurrency:
+  group: release-${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.event.pull_request.head.ref || github.ref_name }}
+  cancel-in-progress: false
 
 jobs:
-  release_and_merge:
-    runs-on: ubuntu-latest
+  verify:
+    if: github.event_name == 'push' || (github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'main' && startsWith(github.event.pull_request.head.ref, 'release-') && github.event.pull_request.head.repo.full_name == github.repository)
+    runs-on: macos-15
+    permissions:
+      contents: read
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.merge_commit_sha || github.sha }}
+
+      - name: Select Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: "latest-stable"
+
+      - name: Get toolchain versions
+        run: |
+          xcodebuild -version
+          swift --version
+
+      - name: Build
+        run: swift build -v
+
+      - name: Run tests
+        run: |
+          xcodebuild test \
+            -scheme DiveKit \
+            -destination 'platform=macOS' \
+            -testPlan DiveKit
+
+      - name: Run iOS tests
+        run: |
+          xcodebuild test \
+            -scheme DiveKit \
+            -destination 'platform=iOS Simulator,name=iPhone 16,OS=latest' \
+            -testPlan DiveKit
+
+  release:
+    needs: verify
+    if: github.event_name == 'push' || (github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'main' && startsWith(github.event.pull_request.head.ref, 'release-') && github.event.pull_request.head.repo.full_name == github.repository)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.merge_commit_sha || github.sha }}
 
-      - name: Install SSH key
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.SSH_KEY }}
-          name: ${{ secrets.SSH_FILENAME }}
-          known_hosts: ${{ secrets.KNOWN_HOSTS }}
-          if_key_exists: replace
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
 
-      - name: Set up Git
+      - name: Read and validate version
+        id: version
         run: |
-          git config --global user.name  ${{ secrets.CI_NAME }}
-          git config --global user.email ${{ secrets.CI_EMAIL }}
-  
-          git config --global user.signingkey /home/runner/.ssh/${{ secrets.SSH_FILENAME }}
-          git config --global commit.gpgsign true
-          git config gpg.format ssh
+          VERSION_FILE="version.json"
+          RELEASE_BRANCH_REGEX='^release-[0-9]+\.[0-9]+\.[0-9]+$'
 
-      - name: Extract version from branch name and tag
-        run: |
-          BRANCH_NAME="${GITHUB_REF#refs/heads/}"
-          if [[ "$BRANCH_NAME" == "main" ]]; then
-            MERGED_BRANCH=$(git log -1 --pretty=format:%s | grep -oP 'Merge pull request #\d+ from \K[^ ]+')
-            if [[ $MERGED_BRANCH =~ (.*/)?release/([0-9]+\.[0-9]+\.[0-9]+)$ ]]; then
-              VERSION=${BASH_REMATCH[2]}
-              # Signing the tag
-              git tag -s $VERSION -m "Release $VERSION"
-              git push origin $VERSION
-              echo "::set-output name=version::$VERSION"
+          if [[ ! -f "$VERSION_FILE" ]]; then
+            echo "Missing required file: $VERSION_FILE"
+            exit 1
+          fi
+
+          if ! FILE_VERSION=$(jq -re '.version | select(type == "string" and length > 0)' "$VERSION_FILE"); then
+            echo "$VERSION_FILE must contain a non-empty string .version field"
+            exit 1
+          fi
+
+          if ! [[ "$FILE_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Invalid semantic version in $VERSION_FILE: $FILE_VERSION"
+            exit 1
+          fi
+
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            RELEASE_BRANCH="${{ github.event.pull_request.head.ref }}"
+          elif [[ "${GITHUB_REF_NAME}" == release-* ]]; then
+            RELEASE_BRANCH="${GITHUB_REF_NAME}"
+          else
+            RELEASE_BRANCH=""
+          fi
+
+          if [[ -n "$RELEASE_BRANCH" ]]; then
+            if ! [[ "$RELEASE_BRANCH" =~ $RELEASE_BRANCH_REGEX ]]; then
+              echo "Invalid release branch name: $RELEASE_BRANCH"
+              echo "Expected format: release-X.Y.Z"
+              exit 1
+            fi
+
+            BRANCH_VERSION="${RELEASE_BRANCH#release-}"
+
+            if [[ "$BRANCH_VERSION" != "$FILE_VERSION" ]]; then
+              echo "Release branch version ($BRANCH_VERSION) does not match $VERSION_FILE ($FILE_VERSION)"
+              exit 1
             fi
           fi
-        id: tag_version
 
-      - name: Create GitHub Release
-        if: steps.tag_version.outputs.version
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ steps.tag_version.outputs.version }}
-          release_name: Release ${{ steps.tag_version.outputs.version }}
-          body: 'Release ${{ steps.tag_version.outputs.version }}'
+          echo "version=$FILE_VERSION" >> "$GITHUB_OUTPUT"
 
-      - name: Merge main into develop
-        if: steps.tag_version.outputs.version
+      - name: Determine release type
+        id: type
         run: |
-          git checkout develop
-          git merge --no-ff main --gpg-sign -m "Merge branch 'main/release/${{ steps.tag_version.outputs.version }}' into 'develop'"
-          git push origin develop
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            echo "type=release" >> "$GITHUB_OUTPUT"
+          else
+            BRANCH="${GITHUB_REF_NAME}"
+
+            if [[ "$BRANCH" == "develop" ]]; then
+              echo "type=beta" >> "$GITHUB_OUTPUT"
+            elif [[ "$BRANCH" == release-* ]]; then
+              echo "type=rc" >> "$GITHUB_OUTPUT"
+            else
+              echo "Unsupported branch: $BRANCH"
+              exit 1
+            fi
+          fi
+
+      - name: Resolve tag idempotently
+        id: tag
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          TYPE="${{ steps.type.outputs.type }}"
+
+          git fetch --tags
+
+          if [[ "$TYPE" == "beta" ]]; then
+            EXISTING=$(git tag --points-at HEAD -l "${VERSION}-beta.*" | sort -V | tail -1)
+            if [[ -n "$EXISTING" ]]; then
+              TAG="$EXISTING"
+            else
+              LAST=$(git tag -l "${VERSION}-beta.*" | awk -F'.beta.' 'NF>1 {print $2}' | sort -n | tail -1)
+              LAST=${LAST:-0}
+              TAG="${VERSION}-beta.$((LAST + 1))"
+            fi
+          elif [[ "$TYPE" == "rc" ]]; then
+            EXISTING=$(git tag --points-at HEAD -l "${VERSION}-rc.*" | sort -V | tail -1)
+            if [[ -n "$EXISTING" ]]; then
+              TAG="$EXISTING"
+            else
+              LAST=$(git tag -l "${VERSION}-rc.*" | awk -F'.rc.' 'NF>1 {print $2}' | sort -n | tail -1)
+              LAST=${LAST:-0}
+              TAG="${VERSION}-rc.$((LAST + 1))"
+            fi
+          else
+            TAG="${VERSION}"
+          fi
+
+          HEAD_SHA=$(git rev-parse HEAD)
+
+          if git rev-parse "$TAG" >/dev/null 2>&1; then
+            TAG_SHA=$(git rev-list -n 1 "$TAG")
+
+            if [[ "$TAG_SHA" != "$HEAD_SHA" ]]; then
+              echo "Tag $TAG already exists on $TAG_SHA, not on current commit $HEAD_SHA"
+              exit 1
+            fi
+
+            echo "tag_exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "tag_exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "Resolved tag: $TAG"
+
+      - name: Configure SSH signing key
+        if: steps.tag.outputs.tag_exists != 'true'
+        env:
+          CI_NAME: ${{ secrets.CI_NAME }}
+          CI_EMAIL: ${{ secrets.CI_EMAIL }}
+          CI_SSH_PRIVATE_KEY: ${{ secrets.CI_SSH_PRIVATE_KEY }}
+        run: |
+          if [[ -z "$CI_NAME" ]]; then
+            echo "Missing required secret: CI_NAME"
+            exit 1
+          fi
+
+          if [[ -z "$CI_EMAIL" ]]; then
+            echo "Missing required secret: CI_EMAIL"
+            exit 1
+          fi
+
+          if [[ -z "$CI_SSH_PRIVATE_KEY" ]]; then
+            echo "Missing required secret: CI_SSH_PRIVATE_KEY"
+            exit 1
+          fi
+
+          KEY_PATH="$RUNNER_TEMP/ci_signing_key"
+          printf '%s\n' "$CI_SSH_PRIVATE_KEY" > "$KEY_PATH"
+          chmod 600 "$KEY_PATH"
+
+          PUBKEY_PATH="$KEY_PATH.pub"
+          if ! ssh-keygen -y -f "$KEY_PATH" > "$PUBKEY_PATH"; then
+            echo "CI_SSH_PRIVATE_KEY is not a valid SSH private key or requires a passphrase"
+            exit 1
+          fi
+          chmod 644 "$PUBKEY_PATH"
+
+          eval "$(ssh-agent -s)"
+          ssh-add "$KEY_PATH"
+
+          echo "SSH_AUTH_SOCK=$SSH_AUTH_SOCK" >> "$GITHUB_ENV"
+          echo "SSH_AGENT_PID=$SSH_AGENT_PID" >> "$GITHUB_ENV"
+
+          git config user.name "$CI_NAME"
+          git config user.email "$CI_EMAIL"
+          git config gpg.format ssh
+          git config user.signingkey "$PUBKEY_PATH"
+          git config tag.gpgSign true
+
+      - name: Create signed tag
+        if: steps.tag.outputs.tag_exists != 'true'
+        run: |
+          TAG="${{ steps.tag.outputs.tag }}"
+          git tag -s "$TAG" -m "Release $TAG"
+          git push origin "$TAG"
+
+      - name: Create or update GitHub release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG="${{ steps.tag.outputs.tag }}"
+          PRERELEASE="${{ steps.type.outputs.type != 'release' }}"
+
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            if [[ "$PRERELEASE" == "true" ]]; then
+              gh release edit "$TAG" --prerelease
+            else
+              gh release edit "$TAG" --latest
+            fi
+          else
+            if [[ "$PRERELEASE" == "true" ]]; then
+              gh release create "$TAG" --generate-notes --prerelease
+            else
+              gh release create "$TAG" --generate-notes
+            fi
+          fi
