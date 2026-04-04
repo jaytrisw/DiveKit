@@ -35,14 +35,18 @@ jobs:
 
       - name: Get toolchain versions
         run: |
+          set -euo pipefail
           xcodebuild -version
           swift --version
 
       - name: Build
-        run: swift build -v
+        run: |
+          set -euo pipefail
+          swift build -v
 
       - name: Run tests
         run: |
+          set -euo pipefail
           xcodebuild test \
             -scheme DiveKit \
             -destination 'platform=macOS' \
@@ -50,6 +54,7 @@ jobs:
 
       - name: Run iOS tests
         run: |
+          set -euo pipefail
           xcodebuild test \
             -scheme DiveKit \
             -destination 'platform=iOS Simulator,name=iPhone 16,OS=latest' \
@@ -61,6 +66,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      issues: read
+      pull-requests: read
 
     steps:
       - name: Checkout
@@ -70,11 +77,16 @@ jobs:
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.merge_commit_sha || github.sha }}
 
       - name: Install jq
-        run: sudo apt-get update && sudo apt-get install -y jq
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y jq
 
       - name: Read and validate version
         id: version
         run: |
+          set -euo pipefail
+
           VERSION_FILE="version.json"
           RELEASE_BRANCH_REGEX='^release-[0-9]+\.[0-9]+\.[0-9]+$'
 
@@ -121,6 +133,8 @@ jobs:
       - name: Determine release type
         id: type
         run: |
+          set -euo pipefail
+
           if [[ "${{ github.event_name }}" == "pull_request" ]]; then
             echo "type=release" >> "$GITHUB_OUTPUT"
           else
@@ -136,9 +150,97 @@ jobs:
             fi
           fi
 
+      - name: Determine skip policy
+        id: skip
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          EVENT_NAME: ${{ github.event_name }}
+          RELEASE_TYPE: ${{ steps.type.outputs.type }}
+          PR_LABELS_JSON: ${{ github.event_name == 'pull_request' && toJson(github.event.pull_request.labels.*.name) || '[]' }}
+        run: |
+          set -euo pipefail
+
+          case "$RELEASE_TYPE" in
+            beta)
+              SKIP_LABEL="skip-beta"
+              ;;
+            rc)
+              SKIP_LABEL="skip-rc"
+              ;;
+            release)
+              SKIP_LABEL="skip-release"
+              ;;
+            *)
+              echo "Unsupported release type: $RELEASE_TYPE"
+              exit 1
+              ;;
+          esac
+
+          SHOULD_SKIP=false
+          SKIP_REASON="No matching skip label found."
+
+          has_label() {
+            local labels_json="$1"
+            jq -e --arg label "$SKIP_LABEL" 'index($label) != null' <<<"$labels_json" >/dev/null
+          }
+
+          if [[ "$EVENT_NAME" == "pull_request" ]]; then
+            if has_label "$PR_LABELS_JSON"; then
+              SHOULD_SKIP=true
+              SKIP_REASON="PR label $SKIP_LABEL is present on #${{ github.event.pull_request.number }}."
+            fi
+          else
+            ASSOCIATED_PRS="$(
+              gh api \
+                -H "Accept: application/vnd.github+json" \
+                -H "X-GitHub-Api-Version: 2022-11-28" \
+                "repos/${GITHUB_REPOSITORY}/commits/${GITHUB_SHA}/pulls"
+            )"
+
+            mapfile -t PR_NUMBERS < <(jq -r '.[].number' <<<"$ASSOCIATED_PRS")
+
+            if [[ ${#PR_NUMBERS[@]} -eq 0 ]]; then
+              SKIP_REASON="No associated PR found for commit ${GITHUB_SHA}; continuing release flow."
+            else
+              for PR_NUMBER in "${PR_NUMBERS[@]}"; do
+                ISSUE_LABELS_JSON="$(
+                  gh api \
+                    -H "Accept: application/vnd.github+json" \
+                    -H "X-GitHub-Api-Version: 2022-11-28" \
+                    "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}" \
+                    --jq '.labels | map(.name)'
+                )"
+
+                if has_label "$ISSUE_LABELS_JSON"; then
+                  SHOULD_SKIP=true
+                  SKIP_REASON="PR #${PR_NUMBER} associated with commit ${GITHUB_SHA} has label ${SKIP_LABEL}."
+                  break
+                fi
+              done
+
+              if [[ "$SHOULD_SKIP" != "true" ]]; then
+                SKIP_REASON="Associated PRs for commit ${GITHUB_SHA} do not include label ${SKIP_LABEL}."
+              fi
+            fi
+          fi
+
+          echo "should_skip=$SHOULD_SKIP" >> "$GITHUB_OUTPUT"
+          echo "skip_label=$SKIP_LABEL" >> "$GITHUB_OUTPUT"
+          echo "skip_reason=$SKIP_REASON" >> "$GITHUB_OUTPUT"
+          echo "$SKIP_REASON"
+
+      - name: Skip release flow
+        if: steps.skip.outputs.should_skip == 'true'
+        run: |
+          set -euo pipefail
+          echo "${{ steps.skip.outputs.skip_reason }}"
+
       - name: Resolve tag idempotently
         id: tag
+        if: steps.skip.outputs.should_skip != 'true'
         run: |
+          set -euo pipefail
+
           VERSION="${{ steps.version.outputs.version }}"
           TYPE="${{ steps.type.outputs.type }}"
 
@@ -185,12 +287,14 @@ jobs:
           echo "Resolved tag: $TAG"
 
       - name: Configure SSH signing key
-        if: steps.tag.outputs.tag_exists != 'true'
+        if: steps.skip.outputs.should_skip != 'true' && steps.tag.outputs.tag_exists != 'true'
         env:
           CI_NAME: ${{ secrets.CI_NAME }}
           CI_EMAIL: ${{ secrets.CI_EMAIL }}
           CI_SSH_PRIVATE_KEY: ${{ secrets.CI_SSH_PRIVATE_KEY }}
         run: |
+          set -euo pipefail
+
           if [[ -z "$CI_NAME" ]]; then
             echo "Missing required secret: CI_NAME"
             exit 1
@@ -229,30 +333,128 @@ jobs:
           git config user.signingkey "$PUBKEY_PATH"
           git config tag.gpgSign true
 
-      - name: Create signed tag
-        if: steps.tag.outputs.tag_exists != 'true'
+      - name: Determine notes start tag
+        id: notes_base
+        if: steps.skip.outputs.should_skip != 'true'
         run: |
+          set -euo pipefail
+
+          TAG="${{ steps.tag.outputs.tag }}"
+          TYPE="${{ steps.type.outputs.type }}"
+          VERSION="${{ steps.version.outputs.version }}"
+
+          git fetch --tags
+
+          previous_matching_tag() {
+            local pattern="$1"
+            git tag -l "$pattern" | sort -V | awk -v current="$TAG" '$0 != current { last = $0 } END { if (last != "") print last }'
+          }
+
+          previous_stable_tag() {
+            git tag -l | awk '/^[0-9]+\.[0-9]+\.[0-9]+$/ { print }' | sort -V | awk -v current="$TAG" '$0 != current { last = $0 } END { if (last != "") print last }'
+          }
+
+          NOTES_START_TAG=""
+
+          if [[ "$TYPE" == "beta" ]]; then
+            NOTES_START_TAG="$(previous_matching_tag "${VERSION}-beta.*")"
+            if [[ -z "$NOTES_START_TAG" ]]; then
+              NOTES_START_TAG="$(previous_stable_tag)"
+            fi
+          elif [[ "$TYPE" == "rc" ]]; then
+            NOTES_START_TAG="$(previous_matching_tag "${VERSION}-rc.*")"
+            if [[ -z "$NOTES_START_TAG" ]]; then
+              NOTES_START_TAG="$(previous_matching_tag "${VERSION}-beta.*")"
+            fi
+            if [[ -z "$NOTES_START_TAG" ]]; then
+              NOTES_START_TAG="$(previous_stable_tag)"
+            fi
+          else
+            NOTES_START_TAG="$(previous_stable_tag)"
+          fi
+
+          echo "notes_start_tag=$NOTES_START_TAG" >> "$GITHUB_OUTPUT"
+          echo "Resolved notes start tag: ${NOTES_START_TAG:-<none>}"
+
+      - name: Create signed tag
+        if: steps.skip.outputs.should_skip != 'true' && steps.tag.outputs.tag_exists != 'true'
+        run: |
+          set -euo pipefail
+
           TAG="${{ steps.tag.outputs.tag }}"
           git tag -s "$TAG" -m "Release $TAG"
           git push origin "$TAG"
 
       - name: Create or update GitHub release
+        if: steps.skip.outputs.should_skip != 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          TAG="${{ steps.tag.outputs.tag }}"
-          PRERELEASE="${{ steps.type.outputs.type != 'release' }}"
+          set -euo pipefail
 
-          if gh release view "$TAG" >/dev/null 2>&1; then
-            if [[ "$PRERELEASE" == "true" ]]; then
-              gh release edit "$TAG" --prerelease
-            else
-              gh release edit "$TAG" --latest
-            fi
+          TAG="${{ steps.tag.outputs.tag }}"
+          TYPE="${{ steps.type.outputs.type }}"
+          NOTES_START_TAG="${{ steps.notes_base.outputs.notes_start_tag }}"
+          NOTES_REQUEST="$(mktemp)"
+          NOTES_RESPONSE="$(mktemp)"
+          BODY_FILE="$(mktemp)"
+          RELEASE_PAYLOAD="$(mktemp)"
+          trap 'rm -f "$NOTES_REQUEST" "$NOTES_RESPONSE" "$BODY_FILE" "$RELEASE_PAYLOAD"' EXIT
+
+          if [[ "$TYPE" == "release" ]]; then
+            PRERELEASE=false
+            MAKE_LATEST=true
           else
-            if [[ "$PRERELEASE" == "true" ]]; then
-              gh release create "$TAG" --generate-notes --prerelease
-            else
-              gh release create "$TAG" --generate-notes
-            fi
+            PRERELEASE=true
+            MAKE_LATEST=false
+          fi
+
+          if [[ -n "$NOTES_START_TAG" ]]; then
+            jq -n \
+              --arg tag "$TAG" \
+              --arg previous_tag "$NOTES_START_TAG" \
+              '{tag_name: $tag, previous_tag_name: $previous_tag}' > "$NOTES_REQUEST"
+          else
+            jq -n --arg tag "$TAG" '{tag_name: $tag}' > "$NOTES_REQUEST"
+          fi
+
+          gh api \
+            --method POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "repos/${GITHUB_REPOSITORY}/releases/generate-notes" \
+            --input "$NOTES_REQUEST" > "$NOTES_RESPONSE"
+
+          TITLE="$(jq -re '.name' "$NOTES_RESPONSE")"
+          jq -re '.body' "$NOTES_RESPONSE" > "$BODY_FILE"
+
+          jq -n \
+            --arg tag "$TAG" \
+            --arg name "$TITLE" \
+            --rawfile body "$BODY_FILE" \
+            --argjson prerelease "$PRERELEASE" \
+            --arg make_latest "$MAKE_LATEST" \
+            '{
+              tag_name: $tag,
+              name: $name,
+              body: $body,
+              prerelease: $prerelease,
+              make_latest: $make_latest
+            }' > "$RELEASE_PAYLOAD"
+
+          if gh release view "$TAG" --json id >/dev/null 2>&1; then
+            RELEASE_ID="$(gh release view "$TAG" --json id -q '.id')"
+            gh api \
+              --method PATCH \
+              -H "Accept: application/vnd.github+json" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              "repos/${GITHUB_REPOSITORY}/releases/${RELEASE_ID}" \
+              --input "$RELEASE_PAYLOAD" >/dev/null
+          else
+            gh api \
+              --method POST \
+              -H "Accept: application/vnd.github+json" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              "repos/${GITHUB_REPOSITORY}/releases" \
+              --input "$RELEASE_PAYLOAD" >/dev/null
           fi
