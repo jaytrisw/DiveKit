@@ -16,20 +16,20 @@ extension PhysicsCalculator: PhysicsCalculating {
 
     public func airVolumeFromSurface(
         to depth: Depth,
-        with volume: Volume) throws -> Calculation<DecimalResult<Pressure>> {
+        with volume: Volume) throws -> Calculation<DecimalResult<Volume>> {
             try volume.validate(using: .nonNegative, orThrow: { .negative($0, .from(self)) })
                 .map { try atmospheresAbsolute(at: depth, with: configuration, .from(self)) }
                 .map { volume.value / $0.result.value }
-                .map { .decimal($0, unit: \.pressure, from: configuration) }
+                .map { .decimal($0, unit: \.volume, from: configuration) }
         }
 
     public func airVolumeToSurface(
         from depth: Depth,
-        with volume: Volume) throws -> Calculation<DecimalResult<Pressure>> {
+        with volume: Volume) throws -> Calculation<DecimalResult<Volume>> {
             try volume.validate(using: .nonNegative, orThrow: { .negative($0, .from(self)) })
                 .map { try atmospheresAbsolute(at: depth, with: configuration, .from(self)) }
                 .map { volume.value * $0.result.value }
-                .map { .decimal($0, unit: \.pressure, from: configuration) }
+                .map { .decimal($0, unit: \.volume, from: configuration) }
         }
 
     public func atmospheresAbsolute(
@@ -43,6 +43,6 @@ extension PhysicsCalculator: PhysicsCalculating {
             try atmospheresAbsolute(at: firstDepth, with: configuration, .from(self))
                 .with { try atmospheresAbsolute(at: secondDepth, with: configuration, .from(self)) }
                 .map { $0.second.result.value - $0.first.result.value }
-                .map { .decimal($0, unit: \.pressure, from: configuration) }
+                .map { .decimal($0, unit: .atmospheres, configuration: configuration) }
         }
 }

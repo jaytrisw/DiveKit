@@ -75,7 +75,7 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
             sut.pressureChange(from: fromDepth, to: toDepth)) { result, configuration in
                 // Then
                 XCTAssertEqual(result.value, 1)
-                XCTAssertEqual(result.unit, .psi)
+                XCTAssertEqual(result.unit, .atmospheres)
                 XCTAssertEqual(configuration, sut.configuration)
             }
     }
@@ -120,7 +120,7 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
             sut.airVolumeFromSurface(to: depth, with: volume)) { result, configuration in
                 // Then
                 XCTAssertEqual(result.value, 2)
-                XCTAssertEqual(result.unit, .psi)
+                XCTAssertEqual(result.unit, .cubicFeet)
                 XCTAssertEqual(configuration, sut.configuration)
             }
     }
@@ -165,7 +165,7 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
             sut.airVolumeToSurface(from: depth, with: volume)) { result, configuration in
                 // Then
                 XCTAssertEqual(result.value, 18)
-                XCTAssertEqual(result.unit, .psi)
+                XCTAssertEqual(result.unit, .cubicFeet)
                 XCTAssertEqual(configuration, sut.configuration)
             }
     }

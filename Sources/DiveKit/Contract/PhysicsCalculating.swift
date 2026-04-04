@@ -20,11 +20,11 @@ public protocol PhysicsCalculating {
 
     func airVolumeFromSurface(
         to depth: Depth,
-        with volume: Volume) throws -> Calculation<DecimalResult<Pressure>>
+        with volume: Volume) throws -> Calculation<DecimalResult<Volume>>
 
     func airVolumeToSurface(
         from depth: Depth,
-        with volume: Volume) throws -> Calculation<DecimalResult<Pressure>>
+        with volume: Volume) throws -> Calculation<DecimalResult<Volume>>
 
     func atmospheresAbsolute(
         at depth: Depth) throws -> Calculation<DecimalResult<Pressure>>
