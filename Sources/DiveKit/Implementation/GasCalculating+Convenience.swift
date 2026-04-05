@@ -5,7 +5,7 @@ public extension GasCalculating where Self: ConfigurationProviding {
         of gas: Gas,
         blending blend: Blend<Unblended>,
         at depth: Depth,
-        using physicsCalculator: PhysicsCalculating) throws -> Calculation<PartialPressure> {
+        using physicsCalculator: PhysicsCalculating) throws -> Calculation<PartialPressure<Gas>> {
             try blend.blend(.from(self))
                 .map { try partialPressure(
                     of: gas,

@@ -1,6 +1,6 @@
 import Foundation
 
-public struct PartialPressure: Sendable {
+public struct PartialPressure<Gas: GasRepresentable>: Sendable {
     public let value: Double
 }
 

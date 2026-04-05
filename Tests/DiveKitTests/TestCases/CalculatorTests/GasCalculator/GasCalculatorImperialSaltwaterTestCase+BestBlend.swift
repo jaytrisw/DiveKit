@@ -2,46 +2,46 @@ import XCTest
 @testable import DiveKit
 
 extension GasCalculatorImperialSaltwaterTestCase {
-    
-    // MARK: bestBlend(for:fractionOxygen:using:)
-    
+
+    // MARK: bestBlend(for:partialPressure:using:)
+
     func testBestBlendValidInput() throws {
         // Given
         let depth: Depth = 111.0
-        let fractionOxygen: PartialPressure = 1.4
-        
+        let partialPressure: PartialPressure<Oxygen> = 1.4
+
         // When
         try XCTAssertCalculation(
-            sut.bestBlend(for: depth, fractionOxygen: fractionOxygen, using: physicsCalculator)) { result, configuration in
+            sut.bestBlend(for: depth, partialPressure: partialPressure, using: physicsCalculator)) { result, configuration in
                 // Then
                 XCTAssertEqual(result.fractionalPressure(of: .oxygen), 0.32)
                 XCTAssertEqual(configuration, sut.configuration)
             }
     }
-    
+
     func testBestBlendInvalidDepthInput() throws {
         // Given
         let depth: Depth = -111.0
-        let fractionOxygen: PartialPressure = 1.4
-        expectedError = .negative(depth, "GasCalculator.bestBlend(for:fractionOxygen:using:)")
+        let partialPressure: PartialPressure<Oxygen> = 1.4
+        expectedError = .negative(depth, "GasCalculator.bestBlend(for:partialPressure:using:)")
 
         // When
         try XCTAssertThrowsError(
-            when: sut.bestBlend(for: depth, fractionOxygen: fractionOxygen, using: physicsCalculator),
+            when: sut.bestBlend(for: depth, partialPressure: partialPressure, using: physicsCalculator),
             then: expectedError) {
                 XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.depth")
             }
     }
-    
-    func testBestBlendInvalidFractionOxygenInput() throws {
+
+    func testBestBlendInvalidOxygenPartialPressureInput() throws {
         // Given
         let depth: Depth = 111.0
-        let fractionOxygen: PartialPressure = -1.4
-        expectedError = .negative(fractionOxygen, "GasCalculator.bestBlend(for:fractionOxygen:using:)")
+        let partialPressure: PartialPressure<Oxygen> = -1.4
+        expectedError = .negative(partialPressure, "GasCalculator.bestBlend(for:partialPressure:using:)")
 
         // When
         try XCTAssertThrowsError(
-            when: sut.bestBlend( for: depth, fractionOxygen: fractionOxygen, using: physicsCalculator),
+            when: sut.bestBlend(for: depth, partialPressure: partialPressure, using: physicsCalculator),
             then: expectedError) {
                 XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.fractional.pressure")
             }

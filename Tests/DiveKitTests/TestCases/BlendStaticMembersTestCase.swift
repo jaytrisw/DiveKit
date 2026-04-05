@@ -7,9 +7,9 @@ final class BlendStaticMembersTestCase: SystemUnderTestCase<Blend<Blended>> {
         sut = .air
 
         // When
-        let oxygen = try sut.partialPressure(of: .oxygen)
-        let nitrogen = try sut.partialPressure(of: .nitrogen)
-        let trace = try sut.partialPressure(of: .trace)
+        let oxygen = try sut.fraction(of: .oxygen)
+        let nitrogen = try sut.fraction(of: .nitrogen)
+        let trace = try sut.fraction(of: .trace)
 
         // Then
         XCTAssertEqual(oxygen.fractionalPressure, 0.209)
@@ -28,8 +28,8 @@ final class BlendStaticMembersTestCase: SystemUnderTestCase<Blend<Blended>> {
         sut = try .enrichedAir(oxygenFraction)
 
         // When
-        let oxygen = try sut.partialPressure(of: .oxygen)
-        let nitrogen = try sut.partialPressure(of: .nitrogen)
+        let oxygen = try sut.fraction(of: .oxygen)
+        let nitrogen = try sut.fraction(of: .nitrogen)
 
         // Then
         XCTAssertEqual(oxygen.fractionalPressure, oxygenFraction)

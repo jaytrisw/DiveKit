@@ -6,7 +6,7 @@ internal extension GasCalculating {
         at depth: Depth,
         using physicsCalculator: PhysicsCalculating,
         with configuration: Configuration,
-        _ callSite: CallSite) throws -> Calculation<PartialPressure> {
+        _ callSite: CallSite) throws -> Calculation<PartialPressure<Gas>> {
             try physicsCalculator.atmospheresAbsolute(at: depth, with: configuration, callSite)
                 .map { $0.result.value * partialPressure.fractionalPressure }
                 .map { .partialPressure($0, configuration: configuration) }
@@ -18,8 +18,8 @@ internal extension GasCalculating {
         at depth: Depth,
         using physicsCalculator: PhysicsCalculating,
         with configuration: Configuration,
-        _ callSite: CallSite) throws -> Calculation<PartialPressure> {
-            try blend.partialPressure(of: gas)
+        _ callSite: CallSite) throws -> Calculation<PartialPressure<Gas>> {
+            try blend.fraction(of: gas)
                 .map { try partialPressure(
                     of: $0,
                     at: depth,

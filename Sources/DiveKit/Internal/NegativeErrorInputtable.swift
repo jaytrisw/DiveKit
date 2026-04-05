@@ -30,7 +30,7 @@ extension Pressure: NegativeErrorInputtable {
         .pressure(self)
     }
 }
-extension PartialPressure: NegativeErrorInputtable {
+extension PartialPressure<Oxygen>: NegativeErrorInputtable {
     func negativeInput() -> Error.Negative {
         .partialPressure(self)
     }

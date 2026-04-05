@@ -3,7 +3,7 @@ import XCTest
 
 final class BlendBlendedTestCase: SystemUnderTestCase<Blend<Blended>> {
 
-    func testPartialPressure() throws {
+    func testFraction() throws {
         // Given
         let gas = Oxygen()
         sut = try Blend()
@@ -11,14 +11,14 @@ final class BlendBlendedTestCase: SystemUnderTestCase<Blend<Blended>> {
             .blend()
 
         // When
-        let result = try sut.partialPressure(of: gas)
+        let result = try sut.fraction(of: gas)
 
         // Then
         XCTAssertEqual(result.fractionalPressure, 1.0)
         XCTAssertEqual(result.gas, gas)
     }
 
-    func testPartialPressureGasNotInBlend() throws {
+    func testFractionGasNotInBlend() throws {
         // Given
         let gas = Oxygen()
         sut = try Blend()
@@ -26,7 +26,7 @@ final class BlendBlendedTestCase: SystemUnderTestCase<Blend<Blended>> {
             .blend()
 
         // When
-        let result = try sut.partialPressure(of: gas)
+        let result = try sut.fraction(of: gas)
 
         // Then
         XCTAssertEqual(result.fractionalPressure, 0)
@@ -42,7 +42,7 @@ final class BlendBlendedTestCase: SystemUnderTestCase<Blend<Blended>> {
         sut = try .init(.init(of: oxygen, fractionalPressure: oxygenFraction))
 
         // Then
-        XCTAssertEqual(try sut.partialPressure(of: oxygen).fractionalPressure, oxygenFraction)
+        XCTAssertEqual(try sut.fraction(of: oxygen).fractionalPressure, oxygenFraction)
         XCTAssertEqual(sut.components().count, 1)
     }
 

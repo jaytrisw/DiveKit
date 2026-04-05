@@ -12,7 +12,7 @@ extension GasCalculator: GasCalculating {
     public func partialPressure<Gas: GasRepresentable>(
         of inputPartialPressure: FractionalPressure<Gas>,
         at depth: Depth,
-        using physicsCalculator: PhysicsCalculating) throws -> Calculation<PartialPressure> {
+        using physicsCalculator: PhysicsCalculating) throws -> Calculation<PartialPressure<Gas>> {
             try partialPressure(
                 of: inputPartialPressure,
                 at: depth,
@@ -23,12 +23,12 @@ extension GasCalculator: GasCalculating {
 
     public func bestBlend(
         for depth: Depth,
-        fractionOxygen: PartialPressure,
+        partialPressure: PartialPressure<Oxygen>,
         using physicsCalculator: PhysicsCalculating) throws -> Calculation<Blend<Blended>> {
             try depth.validate(using: .nonNegative, orThrow: { .negative($0, .from(self)) })
-                .map { _ in try fractionOxygen.validate(using: .nonNegative, orThrow: { .negative($0, .from(self)) }) }
+                .map { _ in try partialPressure.validate(using: .nonNegative, orThrow: { .negative($0, .from(self)) }) }
                 .map { try physicsCalculator.atmospheresAbsolute(at: depth, with: configuration, .from(self)) }
-                .map { fractionOxygen.value / $0.result.value }
+                .map { partialPressure.value / $0.result.value }
                 .map { $0 * 100 }
                 .map { $0.rounded(.towardZero) }
                 .map { $0 / 100 }
@@ -40,21 +40,21 @@ extension GasCalculator: GasCalculating {
         with blend: Blend<Blended>) throws -> Calculation<DecimalResult<Depth>> {
             try depth.validate(using: .nonNegative, orThrow: { .negative($0, .from(self)) })
                 .map { $0.value + configuration.water.pressure(configuration.units).increase.value }
-                .with { try blend.fraction(of: .nitrogen) / Blend.air.fraction(of: .nitrogen) }
+                .with { try blend.fractionValue(of: .nitrogen) / Blend.air.fractionValue(of: .nitrogen) }
                 .map { $0.first * $0.second }
                 .map { $0 - configuration.water.pressure(configuration.units).increase.value }
                 .map { .decimal($0, unit: \.depth, from: configuration) }
         }
 
     public func maximumOperatingDepth(
-        for fractionOxygen: PartialPressure,
+        for partialPressure: PartialPressure<Oxygen>,
         in blend: Blend<Blended>) throws -> Calculation<DecimalResult<Depth>> {
-            try blend.fraction(of: .oxygen)
+            try blend.fractionValue(of: .oxygen)
                 .validate(using: .greater(than: 0)) {
                     .range(.lowerBound($0, 0), .from(self))
                 }
                 .with { _ in
-                   try fractionOxygen.validate(using: .greater(than: 0), orThrow: {
+                   try partialPressure.validate(using: .greater(than: 0), orThrow: {
                        .range(.lowerBound($0.value, 0), .from(self))
                    })
                 }
@@ -68,7 +68,7 @@ extension GasCalculator: GasCalculating {
         of gas: Gas,
         in blend: Blend<Blended>,
         at depth: Depth,
-        using physicsCalculator: PhysicsCalculating) throws -> Calculation<PartialPressure> {
+        using physicsCalculator: PhysicsCalculating) throws -> Calculation<PartialPressure<Gas>> {
             try partialPressure(
                 of: gas,
                 in: blend,
