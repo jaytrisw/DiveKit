@@ -116,7 +116,7 @@ extension GasCalculator: GasCalculating {
                     .from(self))
                 }
                 .map { $0.result.value * tank.size.conversionFactor }
-                .map { .decimal($0, unit: Rate<Volume>.Unit.perMinute(configuration.units.volume), configuration: configuration) }
+                .map { .decimal($0, unit: .perMinute(configuration.units.volume), configuration: configuration) }
         }
 }
 
