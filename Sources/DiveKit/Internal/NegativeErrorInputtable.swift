@@ -32,7 +32,7 @@ extension Pressure: NegativeErrorInputtable {
 }
 extension FractionalPressure: NegativeErrorInputtable {
     func negativeInput() -> Error.Negative {
-        .fractionalPressure(fractionalPressure)
+        .fractionalPressure(value)
     }
 }
 extension PartialPressure: NegativeErrorInputtable {

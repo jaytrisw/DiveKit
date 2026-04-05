@@ -2,12 +2,12 @@ import Foundation
 
 public struct FractionalPressure<Gas: GasRepresentable>: Sendable {
     public let gas: Gas
-    public let fractionalPressure: Double
+    public let value: Double
 
     @_spi(unsafe)
     public init(_ gas: Gas, fractionalPressure: Double) {
         self.gas = gas
-        self.fractionalPressure = fractionalPressure
+        self.value = fractionalPressure
     }
 
     public init(of gas: Gas, fractionalPressure: Double) throws(DiveKit.Error) {
@@ -20,7 +20,7 @@ public struct FractionalPressure<Gas: GasRepresentable>: Sendable {
         }
 
         self.gas = gas
-        self.fractionalPressure = fractionalPressure
+        self.value = fractionalPressure
     }
 }
 

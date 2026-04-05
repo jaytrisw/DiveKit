@@ -8,7 +8,7 @@ internal extension GasCalculating {
         with configuration: Configuration,
         _ callSite: CallSite) throws -> Calculation<PartialPressure<Gas>> {
             try physicsCalculator.atmospheresAbsolute(at: depth, with: configuration, callSite)
-                .map { $0.result.value * partialPressure.fractionalPressure }
+                .map { $0.result.value * partialPressure.value }
                 .map { .partialPressure($0, configuration: configuration) }
         }
 

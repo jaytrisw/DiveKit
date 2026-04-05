@@ -12,7 +12,7 @@ final class FractionalPressureTestCase: XCTestCase {
 
         // Then
         XCTAssertEqual(sut.gas, gas)
-        XCTAssertEqual(sut.fractionalPressure, 0.21)
+        XCTAssertEqual(sut.value, 0.21)
     }
 
     func testInitializationRejectsNegativeFractionalPressure() throws {

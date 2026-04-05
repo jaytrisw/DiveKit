@@ -14,7 +14,7 @@ final class BlendBlendedTestCase: SystemUnderTestCase<Blend<Blended>> {
         let result = try sut.fraction(of: gas)
 
         // Then
-        XCTAssertEqual(result.fractionalPressure, 1.0)
+        XCTAssertEqual(result.value, 1.0)
         XCTAssertEqual(result.gas, gas)
     }
 
@@ -29,7 +29,7 @@ final class BlendBlendedTestCase: SystemUnderTestCase<Blend<Blended>> {
         let result = try sut.fraction(of: gas)
 
         // Then
-        XCTAssertEqual(result.fractionalPressure, 0)
+        XCTAssertEqual(result.value, 0)
         XCTAssertEqual(result.gas, gas)
     }
 
@@ -42,7 +42,7 @@ final class BlendBlendedTestCase: SystemUnderTestCase<Blend<Blended>> {
         sut = try .init(.init(of: oxygen, fractionalPressure: oxygenFraction))
 
         // Then
-        XCTAssertEqual(try sut.fraction(of: oxygen).fractionalPressure, oxygenFraction)
+        XCTAssertEqual(try sut.fraction(of: oxygen).value, oxygenFraction)
         XCTAssertEqual(sut.components().count, 1)
     }
 
