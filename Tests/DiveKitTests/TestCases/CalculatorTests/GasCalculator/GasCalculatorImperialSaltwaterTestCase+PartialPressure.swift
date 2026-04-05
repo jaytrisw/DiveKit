@@ -7,7 +7,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
 
     func testPartialPressureValidInput() throws {
         // Given
-        let partialPressure = try PartialPressure(of: .oxygen, fractionalPressure: 0.21)
+        let partialPressure = try FractionalPressure(of: .oxygen, fractionalPressure: 0.21)
         let depth: Depth = 33.0
 
         // When
@@ -17,14 +17,14 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 at: depth,
                 using: physicsCalculator)) { result, configuration in
                     // Then
-                    XCTAssertEqual(result.fractionalPressure, 0.42)
+                    XCTAssertEqual(result.value, 0.42)
                     XCTAssertEqual(configuration, sut.configuration)
             }
     }
 
     func testPartialPressureInvalidInput() throws {
         // Given
-        let partialPressure = try PartialPressure(of: .oxygen, fractionalPressure: 0.21)
+        let partialPressure = try FractionalPressure(of: .oxygen, fractionalPressure: 0.21)
         let depth: Depth = -33.0
         expectedError = .negative(depth, "GasCalculator.partialPressure(of:at:using:)")
 
@@ -52,7 +52,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 at: depth,
                 using: physicsCalculator)) { result, configuration in
                     // Then
-                    XCTAssertEqual(result.fractionalPressure, 0.418)
+                    XCTAssertEqual(result.value, 0.418)
                     XCTAssertEqual(configuration, sut.configuration)
                 }
     }
@@ -90,7 +90,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 at: depth,
                 using: physicsCalculator)) { result, configuration in
                     // Then
-                    XCTAssertEqual(result.fractionalPressure, 0.42)
+                    XCTAssertEqual(result.value, 0.42)
                     XCTAssertEqual(configuration, sut.configuration)
                 }
     }

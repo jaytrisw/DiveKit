@@ -17,6 +17,7 @@ extension Buoyancy: Mappable {}
 extension Calculation: Mappable {}
 extension Double: Mappable {}
 extension Object: Mappable {}
+extension FractionalPressure: Mappable {}
 extension PartialPressure: Mappable {}
 extension Tank: Mappable {}
 extension Tuple: Mappable {}

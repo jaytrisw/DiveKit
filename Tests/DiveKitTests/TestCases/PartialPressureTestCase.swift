@@ -8,7 +8,7 @@ final class PartialPressureTestCase: XCTestCase {
         let gas = Oxygen()
 
         // When
-        let sut = try PartialPressure(of: gas, fractionalPressure: 0.21)
+        let sut = try FractionalPressure(of: gas, fractionalPressure: 0.21)
 
         // Then
         XCTAssertEqual(sut.gas, gas)
@@ -21,11 +21,11 @@ final class PartialPressureTestCase: XCTestCase {
         let fractionalPressure = -0.01
         let expectedError: Error = .range(
             .lowerBound(fractionalPressure, 0),
-            "PartialPressure<Oxygen>.init(of:fractionalPressure:)")
+            "FractionalPressure<Oxygen>.init(of:fractionalPressure:)")
 
         // When / Then
         try XCTAssertThrowsError(
-            when: try PartialPressure(of: gas, fractionalPressure: fractionalPressure),
+            when: try FractionalPressure(of: gas, fractionalPressure: fractionalPressure),
             then: expectedError) { error in
                 XCTAssertEqual(error.localizationKey, "dive.kit.error.range.lower.bound")
             }
@@ -37,11 +37,11 @@ final class PartialPressureTestCase: XCTestCase {
         let fractionalPressure = 1.01
         let expectedError: Error = .range(
             .upperBound(fractionalPressure, 1),
-            "PartialPressure<Oxygen>.init(of:fractionalPressure:)")
+            "FractionalPressure<Oxygen>.init(of:fractionalPressure:)")
 
         // When / Then
         try XCTAssertThrowsError(
-            when: try PartialPressure(of: gas, fractionalPressure: fractionalPressure),
+            when: try FractionalPressure(of: gas, fractionalPressure: fractionalPressure),
             then: expectedError) { error in
                 XCTAssertEqual(error.localizationKey, "dive.kit.error.range.upper.bound")
             }

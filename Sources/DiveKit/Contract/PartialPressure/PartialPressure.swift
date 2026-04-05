@@ -1,6 +1,6 @@
 import Foundation
 
-public struct PartialPressure<Gas: GasRepresentable>: Sendable {
+public struct FractionalPressure<Gas: GasRepresentable>: Sendable {
     public let gas: Gas
     public let fractionalPressure: Double
 
@@ -23,6 +23,6 @@ public struct PartialPressure<Gas: GasRepresentable>: Sendable {
     }
 }
 
-extension PartialPressure: Equatable {}
-extension PartialPressure: Hashable {}
-extension PartialPressure: ResultRepresentable {}
+extension FractionalPressure: Equatable {}
+extension FractionalPressure: Hashable {}
+extension FractionalPressure: ResultRepresentable {}

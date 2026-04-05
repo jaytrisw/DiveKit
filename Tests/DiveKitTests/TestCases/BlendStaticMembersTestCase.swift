@@ -45,7 +45,7 @@ final class BlendStaticMembersTestCase: SystemUnderTestCase<Blend<Blended>> {
         let fractionalPressure = -0.01
         let expectedError: Error = .range(
             .lowerBound(fractionalPressure, .zero),
-            "PartialPressure<Oxygen>.init(of:fractionalPressure:)")
+            "FractionalPressure<Oxygen>.init(of:fractionalPressure:)")
 
         // When / Then
         try XCTAssertThrowsError(
@@ -59,7 +59,7 @@ final class BlendStaticMembersTestCase: SystemUnderTestCase<Blend<Blended>> {
         let fractionalPressure = 1.01
         let expectedError: Error = .range(
             .upperBound(fractionalPressure, .one),
-            "PartialPressure<Oxygen>.init(of:fractionalPressure:)")
+            "FractionalPressure<Oxygen>.init(of:fractionalPressure:)")
 
         // When / Then
         try XCTAssertThrowsError(

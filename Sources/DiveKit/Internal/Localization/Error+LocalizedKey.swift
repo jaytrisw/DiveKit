@@ -49,7 +49,7 @@ internal extension Error.Negative {
         String {
             switch self {
                 case .depth: LocalizedKey.Error.Negative.depth
-                case .fractionalPressure: LocalizedKey.Error.Negative.fractionalPressure
+                case .partialPressure: LocalizedKey.Error.Negative.partialPressure
                 case .minutes: LocalizedKey.Error.Negative.minutes
                 case .pressure: LocalizedKey.Error.Negative.pressure
                 case .volume: LocalizedKey.Error.Negative.volume

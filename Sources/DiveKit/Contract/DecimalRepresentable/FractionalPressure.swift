@@ -1,11 +1,13 @@
 import Foundation
 
-public struct FractionalPressure: Sendable {
+public struct PartialPressure: Sendable {
     public let value: Double
 }
 
-extension FractionalPressure: DecimalRepresentable {
+extension PartialPressure: DecimalRepresentable {
     public init(_ value: Double) {
         self.value = value
     }
 }
+
+extension PartialPressure: ResultRepresentable {}

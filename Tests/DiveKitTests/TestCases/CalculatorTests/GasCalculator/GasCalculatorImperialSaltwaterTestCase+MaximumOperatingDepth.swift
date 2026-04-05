@@ -7,7 +7,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
 
     func testMaximumOperatingDepthForEAN28AtOnePointFour() throws {
         // Given
-        let fractionOxygen: FractionalPressure = 1.4
+        let fractionOxygen: PartialPressure = 1.4
         let blend = try Blend<Blended>.enrichedAir(0.28)
 
         // When
@@ -22,7 +22,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
 
     func testMaximumOperatingDepthForEAN30AtOnePointFour() throws {
         // Given
-        let fractionOxygen: FractionalPressure = 1.4
+        let fractionOxygen: PartialPressure = 1.4
         let blend = try Blend<Blended>.enrichedAir(0.30)
 
         // When
@@ -37,7 +37,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
 
     func testMaximumOperatingDepthForEAN32AtOnePointFour() throws {
         // Given
-        let fractionOxygen: FractionalPressure = 1.4
+        let fractionOxygen: PartialPressure = 1.4
         let blend = try Blend<Blended>.enrichedAir(0.32)
 
         // When
@@ -52,7 +52,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
 
     func testMaximumOperatingDepthForEAN34AtOnePointFour() throws {
         // Given
-        let fractionOxygen: FractionalPressure = 1.4
+        let fractionOxygen: PartialPressure = 1.4
         let blend = try Blend<Blended>.enrichedAir(0.34)
 
         // When
@@ -67,7 +67,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
 
     func testMaximumOperatingDepthForEAN36AtOnePointFour() throws {
         // Given
-        let fractionOxygen: FractionalPressure = 1.4
+        let fractionOxygen: PartialPressure = 1.4
         let blend = try Blend<Blended>.enrichedAir(0.36)
 
         // When
@@ -82,7 +82,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
 
     func testMaximumOperatingDepthForEAN40AtOnePointFour() throws {
         // Given
-        let fractionOxygen: FractionalPressure = 1.4
+        let fractionOxygen: PartialPressure = 1.4
         let blend = try Blend<Blended>.enrichedAir(0.40)
 
         // When
@@ -97,7 +97,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
 
     func testMaximumOperatingDepthForEAN28AtOnePointSix() throws {
         // Given
-        let fractionOxygen: FractionalPressure = 1.6
+        let fractionOxygen: PartialPressure = 1.6
         let blend = try Blend<Blended>.enrichedAir(0.28)
 
         // When
@@ -112,7 +112,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
 
     func testMaximumOperatingDepthForEAN30AtOnePointSix() throws {
         // Given
-        let fractionOxygen: FractionalPressure = 1.6
+        let fractionOxygen: PartialPressure = 1.6
         let blend = try Blend<Blended>.enrichedAir(0.30)
 
         // When
@@ -127,7 +127,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
 
     func testMaximumOperatingDepthForEAN32AtOnePointSix() throws {
         // Given
-        let fractionOxygen: FractionalPressure = 1.6
+        let fractionOxygen: PartialPressure = 1.6
         let blend = try Blend<Blended>.enrichedAir(0.32)
 
         // When
@@ -142,7 +142,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
 
     func testMaximumOperatingDepthForEAN34AtOnePointSix() throws {
         // Given
-        let fractionOxygen: FractionalPressure = 1.6
+        let fractionOxygen: PartialPressure = 1.6
         let blend = try Blend<Blended>.enrichedAir(0.34)
 
         // When
@@ -157,7 +157,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
 
     func testMaximumOperatingDepthForEAN36AtOnePointSix() throws {
         // Given
-        let fractionOxygen: FractionalPressure = 1.6
+        let fractionOxygen: PartialPressure = 1.6
         let blend = try Blend<Blended>.enrichedAir(0.36)
 
         // When
@@ -172,7 +172,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
 
     func testMaximumOperatingDepthForEAN40AtOnePointSix() throws {
         // Given
-        let fractionOxygen: FractionalPressure = 1.6
+        let fractionOxygen: PartialPressure = 1.6
         let blend = try Blend<Blended>.enrichedAir(0.40)
 
         // When
@@ -187,7 +187,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
 
     func testMaximumOperatingDepthForAirAtOnePointFour() throws {
         // Given
-        let fractionOxygen: FractionalPressure = 1.4
+        let fractionOxygen: PartialPressure = 1.4
         let blend = Blend<Blended>.air
 
         // When
@@ -202,7 +202,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
 
     func testMaximumOperatingDepthForAirAtOnePointSix() throws {
         // Given
-        let fractionOxygen: FractionalPressure = 1.6
+        let fractionOxygen: PartialPressure = 1.6
         let blend = Blend<Blended>.air
 
         // When
@@ -216,7 +216,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
     }
 
     func testMaximumOperatingDepthRejectsNegativeFractionOxygen() throws {
-        let fractionOxygen: FractionalPressure = -1.4
+        let fractionOxygen: PartialPressure = -1.4
         let blend = try Blend<Blended>.enrichedAir(0.32)
         expectedError = .range(
             .lowerBound(fractionOxygen.value, 0),
@@ -232,11 +232,11 @@ extension GasCalculatorImperialSaltwaterTestCase {
 
     func testMaximumOperatingDepthRejectsBlendWithZeroOxygen() throws {
         // Given
-        let fractionalPressure = FractionalPressure(1.4)
+        let fractionalPressure = PartialPressure(1.4)
 
         let blend = try Blend<Blended> { () throws(DiveKit.Error) in
-            try PartialPressure(of: .oxygen, fractionalPressure: 0.0)
-            try PartialPressure(of: .nitrogen, fractionalPressure: 1.0)
+            try FractionalPressure(of: .oxygen, fractionalPressure: 0.0)
+            try FractionalPressure(of: .nitrogen, fractionalPressure: 1.0)
         }
 
         expectedError = .range(
@@ -253,7 +253,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
 
     func testMaximumOperatingDepthRejectsZeroFractionOxygen() throws {
         // Given
-        let fractionOxygen: FractionalPressure = 0
+        let fractionOxygen: PartialPressure = 0
         let blend = try Blend<Blended>.enrichedAir(0.32)
 
         expectedError = .range(

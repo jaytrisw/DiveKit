@@ -10,9 +10,9 @@ final public class GasCalculator: ConfigurationProviding {
 
 extension GasCalculator: GasCalculating {
     public func partialPressure<Gas: GasRepresentable>(
-        of inputPartialPressure: PartialPressure<Gas>,
+        of inputPartialPressure: FractionalPressure<Gas>,
         at depth: Depth,
-        using physicsCalculator: PhysicsCalculating) throws -> Calculation<PartialPressure<Gas>> {
+        using physicsCalculator: PhysicsCalculating) throws -> Calculation<PartialPressure> {
             try partialPressure(
                 of: inputPartialPressure,
                 at: depth,
@@ -23,7 +23,7 @@ extension GasCalculator: GasCalculating {
 
     public func bestBlend(
         for depth: Depth,
-        fractionOxygen: FractionalPressure,
+        fractionOxygen: PartialPressure,
         using physicsCalculator: PhysicsCalculating) throws -> Calculation<Blend<Blended>> {
             try depth.validate(using: .nonNegative, orThrow: { .negative($0, .from(self)) })
                 .map { _ in try fractionOxygen.validate(using: .nonNegative, orThrow: { .negative($0, .from(self)) }) }
@@ -40,16 +40,16 @@ extension GasCalculator: GasCalculating {
         with blend: Blend<Blended>) throws -> Calculation<DecimalResult<Depth>> {
             try depth.validate(using: .nonNegative, orThrow: { .negative($0, .from(self)) })
                 .map { $0.value + configuration.water.pressure(configuration.units).increase.value }
-                .with { try blend.pressure(of: .nitrogen) / Blend.air.pressure(of: .nitrogen) }
+                .with { try blend.fraction(of: .nitrogen) / Blend.air.fraction(of: .nitrogen) }
                 .map { $0.first * $0.second }
                 .map { $0 - configuration.water.pressure(configuration.units).increase.value }
                 .map { .decimal($0, unit: \.depth, from: configuration) }
         }
 
     public func maximumOperatingDepth(
-        for fractionOxygen: FractionalPressure,
+        for fractionOxygen: PartialPressure,
         in blend: Blend<Blended>) throws -> Calculation<DecimalResult<Depth>> {
-            try blend.pressure(of: .oxygen)
+            try blend.fraction(of: .oxygen)
                 .validate(using: .greater(than: 0)) {
                     .range(.lowerBound($0, 0), .from(self))
                 }
@@ -68,7 +68,7 @@ extension GasCalculator: GasCalculating {
         of gas: Gas,
         in blend: Blend<Blended>,
         at depth: Depth,
-        using physicsCalculator: PhysicsCalculating) throws -> Calculation<PartialPressure<Gas>> {
+        using physicsCalculator: PhysicsCalculating) throws -> Calculation<PartialPressure> {
             try partialPressure(
                 of: gas,
                 in: blend,

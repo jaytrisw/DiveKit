@@ -8,13 +8,13 @@ extension GasCalculatorImperialSaltwaterTestCase {
     func testBestBlendValidInput() throws {
         // Given
         let depth: Depth = 111.0
-        let fractionOxygen: FractionalPressure = 1.4
+        let fractionOxygen: PartialPressure = 1.4
         
         // When
         try XCTAssertCalculation(
             sut.bestBlend(for: depth, fractionOxygen: fractionOxygen, using: physicsCalculator)) { result, configuration in
                 // Then
-                XCTAssertEqual(try! result.pressure(of: .oxygen), 0.32)
+                XCTAssertEqual(result.fractionalPressure(of: .oxygen), 0.32)
                 XCTAssertEqual(configuration, sut.configuration)
             }
     }
@@ -22,7 +22,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
     func testBestBlendInvalidDepthInput() throws {
         // Given
         let depth: Depth = -111.0
-        let fractionOxygen: FractionalPressure = 1.4
+        let fractionOxygen: PartialPressure = 1.4
         expectedError = .negative(depth, "GasCalculator.bestBlend(for:fractionOxygen:using:)")
 
         // When
@@ -36,7 +36,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
     func testBestBlendInvalidFractionOxygenInput() throws {
         // Given
         let depth: Depth = 111.0
-        let fractionOxygen: FractionalPressure = -1.4
+        let fractionOxygen: PartialPressure = -1.4
         expectedError = .negative(fractionOxygen, "GasCalculator.bestBlend(for:fractionOxygen:using:)")
 
         // When

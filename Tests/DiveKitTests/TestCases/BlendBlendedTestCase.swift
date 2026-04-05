@@ -49,9 +49,9 @@ final class BlendBlendedTestCase: SystemUnderTestCase<Blend<Blended>> {
     func testInitializeWithResultBuilder() throws {
         // When
         sut = try .init { () throws(DiveKit.Error) in
-            try PartialPressure(of: .oxygen, fractionalPressure: 0.40)
+            try FractionalPressure(of: .oxygen, fractionalPressure: 0.40)
 
-            try PartialPressure(of: .nitrogen, fractionalPressure: 0.60)
+            try FractionalPressure(of: .nitrogen, fractionalPressure: 0.60)
         }
 
         // Then
@@ -61,8 +61,8 @@ final class BlendBlendedTestCase: SystemUnderTestCase<Blend<Blended>> {
 
     func testInitializeWithResultBuilder_consumingUnsafeAPI() throws {
         // Given
-        let oxygen = PartialPressure(.oxygen, fractionalPressure: 0.40)
-        let nitrogen = PartialPressure(.nitrogen, fractionalPressure: 0.60)
+        let oxygen = FractionalPressure(.oxygen, fractionalPressure: 0.40)
+        let nitrogen = FractionalPressure(.nitrogen, fractionalPressure: 0.60)
 
         // When
         sut = .init {
