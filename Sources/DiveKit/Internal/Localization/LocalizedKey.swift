@@ -46,6 +46,16 @@ internal extension LocalizedKey {
 }
 
 internal extension LocalizedKey.Unit {
+    enum Rate {
+        static let title: LocalizedStringResource = "dive.kit.unit.rate.title"
+        static let shortDescription: LocalizedStringResource = "dive.kit.unit.rate.description.short"
+        static let fullDescription: LocalizedStringResource = "dive.kit.unit.rate.description.full"
+        static let shortQuantity: LocalizedStringResource = "dive.kit.unit.rate.description.short.quantity"
+        static let fullQuantity: LocalizedStringResource = "dive.kit.unit.rate.description.full.quantity"
+    }
+}
+
+internal extension LocalizedKey.Unit {
     enum Depth {
         static let title: LocalizedStringResource = "dive.kit.unit.depth.title"
         static let shortDescriptionImperial: LocalizedStringResource = "dive.kit.unit.depth.imperial.description.short"

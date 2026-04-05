@@ -55,6 +55,10 @@ internal extension String {
     func withQuantity(_ argument: Double) -> String {
         .localizedStringWithFormat(self, argument)
     }
+
+    func withArguments(_ arguments: CVarArg...) -> String {
+        .init(format: self, locale: .current, arguments: arguments)
+    }
 }
 
 extension String: Mappable {}

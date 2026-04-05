@@ -41,22 +41,22 @@
         }
       }
     },
-    "dive.kit.error.negative.partial.pressure" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Partial pressure input must not be a negative value"
-          }
-        }
-      }
-    },
     "dive.kit.error.negative.minutes" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Minutes input must not be a negative value"
+          }
+        }
+      }
+    },
+    "dive.kit.error.negative.partial.pressure" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partial pressure input must not be a negative value"
           }
         }
       }
@@ -92,10 +92,24 @@
       }
     },
     "dive.kit.error.range.lower.bound" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Input must be greater than the allowed lower bound"
+          }
+        }
+      }
     },
     "dive.kit.error.range.upper.bound" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Input must not exceed the allowed upper bound"
+          }
+        }
+      }
     },
     "dive.kit.error.tank.size.rated.pressure" : {
       "localizations" : {
@@ -117,13 +131,52 @@
         }
       }
     },
-    "dive.kit.range.out.of.range" : {
-      "extractionState" : "stale",
+    "dive.kit.unit.rate.description.full" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Range "
+            "value" : "%@ per minute"
+          }
+        }
+      }
+    },
+    "dive.kit.unit.rate.description.full.quantity" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ per minute"
+          }
+        }
+      }
+    },
+    "dive.kit.unit.rate.description.short" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@/min"
+          }
+        }
+      }
+    },
+    "dive.kit.unit.rate.description.short.quantity" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@/min"
+          }
+        }
+      }
+    },
+    "dive.kit.unit.rate.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ Rate"
           }
         }
       }

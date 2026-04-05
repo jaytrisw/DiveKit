@@ -17,7 +17,7 @@ final class GasCalculatorMetricSaltwaterTestCase: SystemUnderTestCase<GasCalcula
                 using: physicsCalculator)) { result, configuration in
                     // Then
                     XCTAssertEqual(result.value, 1.6)
-                    XCTAssertEqual(result.unit, .bar)
+                    XCTAssertEqual(result.unit, .perMinute(.bar))
                     XCTAssertEqual(configuration, sut.configuration)
                 }
     }
@@ -27,4 +27,3 @@ final class GasCalculatorMetricSaltwaterTestCase: SystemUnderTestCase<GasCalcula
         physicsCalculator = .init(.metric, water: .salt)
     }
 }
-
