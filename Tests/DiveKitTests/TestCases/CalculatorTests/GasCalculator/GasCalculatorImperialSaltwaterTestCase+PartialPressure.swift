@@ -18,6 +18,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 using: physicsCalculator)) { result, configuration in
                     // Then
                     XCTAssertEqual(result.value, 0.42)
+                    XCTAssertEqual(result.unit, .atmospheres)
                     XCTAssertEqual(configuration, sut.configuration)
             }
     }
@@ -53,6 +54,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 using: physicsCalculator)) { result, configuration in
                     // Then
                     XCTAssertEqual(result.value, 0.418)
+                    XCTAssertEqual(result.unit, .atmospheres)
                     XCTAssertEqual(configuration, sut.configuration)
                 }
     }
@@ -91,6 +93,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 using: physicsCalculator)) { result, configuration in
                     // Then
                     XCTAssertEqual(result.value, 0.42)
+                    XCTAssertEqual(result.unit, .atmospheres)
                     XCTAssertEqual(configuration, sut.configuration)
                 }
     }

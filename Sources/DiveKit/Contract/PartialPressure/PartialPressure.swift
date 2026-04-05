@@ -2,6 +2,10 @@ import Foundation
 
 public struct PartialPressure<Gas: GasRepresentable>: Sendable {
     public let value: Double
+
+    public var unit: Pressure.Unit {
+        .atmospheres
+    }
 }
 
 extension PartialPressure: DecimalRepresentable {
