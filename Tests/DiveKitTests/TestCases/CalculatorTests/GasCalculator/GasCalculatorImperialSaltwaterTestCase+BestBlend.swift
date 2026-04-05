@@ -46,4 +46,20 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.partial.pressure")
             }
     }
+
+    func testBestBlendRejectsZeroOxygenPartialPressure() throws {
+        // Given
+        let depth: Depth = 111.0
+        let partialPressure: PartialPressure<Oxygen> = 0
+        expectedError = .range(
+            .lowerBound(0, 0),
+            "GasCalculator.bestBlend(for:partialPressure:using:)")
+
+        // When / Then
+        try XCTAssertThrowsError(
+            when: sut.bestBlend(for: depth, partialPressure: partialPressure, using: physicsCalculator),
+            then: expectedError) {
+                XCTAssertEqual($0.localizationKey, "dive.kit.error.range.lower.bound")
+            }
+    }
 }

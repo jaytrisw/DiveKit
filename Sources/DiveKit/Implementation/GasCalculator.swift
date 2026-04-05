@@ -26,7 +26,10 @@ extension GasCalculator: GasCalculating {
         partialPressure: PartialPressure<Oxygen>,
         using physicsCalculator: PhysicsCalculating) throws -> Calculation<Blend<Blended>> {
             try depth.validate(using: .nonNegative, orThrow: { .negative($0, .from(self)) })
-                .map { _ in try partialPressure.validate(using: .nonNegative, orThrow: { .negative($0, .from(self)) }) }
+                .map { _ in
+                    try partialPressure.validate(using: .nonNegative) { .negative($0, .from(self)) }
+                        .map { try $0.validate(using: .greater(than: 0)) { .range(.lowerBound($0.value, 0), .from(self)) }}
+                }
                 .map { try physicsCalculator.atmospheresAbsolute(at: depth, with: configuration, .from(self)) }
                 .map { partialPressure.value / $0.result.value }
                 .map { $0 * 100 }
