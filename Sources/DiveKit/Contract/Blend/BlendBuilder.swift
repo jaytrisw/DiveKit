@@ -2,8 +2,8 @@ import Foundation
 
 @resultBuilder
 enum BlendBuilder {
-    static func buildBlock<each Gas: GasRepresentable, State: BlendState>(_ components: repeat PartialPressure<each Gas>) -> Blend<State> {
-        .init(repeat ((each components).gas, (each components).fractionalPressure))
+    static func buildBlock<each Gas: GasRepresentable, State: BlendState>(_ components: repeat FractionalPressure<each Gas>) -> Blend<State> {
+        .init(repeat ((each components).gas, (each components).value))
     }
 }
 

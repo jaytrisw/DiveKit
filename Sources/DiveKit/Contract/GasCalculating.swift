@@ -2,13 +2,13 @@ import Foundation
 
 public protocol GasCalculating {
     func partialPressure<Gas: GasRepresentable>(
-        of partialPressure: PartialPressure<Gas>,
+        of fractionalPressure: FractionalPressure<Gas>,
         at depth: Depth,
         using physicsCalculator: PhysicsCalculating) throws -> Calculation<PartialPressure<Gas>>
 
     func bestBlend(
         for depth: Depth,
-        fractionOxygen: FractionalPressure,
+        partialPressure: PartialPressure<Oxygen>,
         using physicsCalculator: PhysicsCalculating) throws -> Calculation<Blend<Blended>>
 
     func equivalentAirDepth(
@@ -16,7 +16,7 @@ public protocol GasCalculating {
         with blend: Blend<Blended>) throws -> Calculation<DecimalResult<Depth>>
 
     func maximumOperatingDepth(
-        for fractionOxygen: FractionalPressure,
+        for partialPressure: PartialPressure<Oxygen>,
         in blend: Blend<Blended>) throws ->  Calculation<DecimalResult<Depth>>
 
     func partialPressure<Gas: GasRepresentable>(

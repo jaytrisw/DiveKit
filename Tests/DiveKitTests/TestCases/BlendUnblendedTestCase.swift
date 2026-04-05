@@ -8,10 +8,10 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
     func testAddWithValidInput() throws {
         // Given
         let oxygenFraction = 0.8
-        let partialPressure: PartialPressure = try .init(of: .oxygen, fractionalPressure: oxygenFraction)
+        let fractionalPressure = try FractionalPressure(of: .oxygen, fractionalPressure: oxygenFraction)
 
         // When
-        try sut.add(partialPressure)
+        try sut.add(fractionalPressure)
 
         // Then
         XCTAssertEqual(sut.components().count, 1)
@@ -21,12 +21,12 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
     func testAddWithInvalidLowerBound_consumingUnsafeAPI() throws {
         // Given
         let oxygenFraction = -0.8
-        let partialPressure: PartialPressure = .init(.oxygen, fractionalPressure: oxygenFraction)
+        let fractionalPressure = FractionalPressure(.oxygen, fractionalPressure: oxygenFraction)
         expectedError = .blend(.pressureRange(oxygenFraction, sut), "Blend<Unblended>.add(_:pressure:)")
 
         // When
         try XCTAssertThrowsError(
-            when: sut.add(partialPressure),
+            when: sut.add(fractionalPressure),
             then: expectedError) {
                 XCTAssertEqual($0.localizationKey, "dive.kit.error.blend.pressure.range")
             }
@@ -35,12 +35,12 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
     func testAddWithInvalidUpperBound_consumingUnsafeAPI() throws {
         // Given
         let oxygenFraction = 1.01
-        let partialPressure: PartialPressure = .init(.oxygen, fractionalPressure: oxygenFraction)
+        let fractionalPressure = FractionalPressure(.oxygen, fractionalPressure: oxygenFraction)
         expectedError = .blend(.pressureRange(oxygenFraction, sut), "Blend<Unblended>.add(_:pressure:)")
 
         // When
         try XCTAssertThrowsError(
-            when: sut.add(partialPressure),
+            when: sut.add(fractionalPressure),
             then: expectedError) {
                 XCTAssertEqual($0.localizationKey, "dive.kit.error.blend.pressure.range")
             }
@@ -49,10 +49,10 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
     func testAddingWithValidInput() throws {
         // Given
         let oxygenFraction = 0.8
-        let partialPressure: PartialPressure = try .init(of: .oxygen, fractionalPressure: oxygenFraction)
+        let fractionalPressure = try FractionalPressure(of: .oxygen, fractionalPressure: oxygenFraction)
 
         // When
-        let result = try sut.adding(partialPressure)
+        let result = try sut.adding(fractionalPressure)
 
         // Then
         XCTAssertEqual(result.components().count, 1)
@@ -112,18 +112,18 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
             }
     }
 
-    func testInitializeWithPartialPressures() throws {
+    func testInitializeWithFractionalPressures() throws {
         // Given
-        let oxygen = try PartialPressure(of: .oxygen, fractionalPressure: 0.40)
-        let nitrogen = try PartialPressure(of: .nitrogen, fractionalPressure: 0.60)
+        let oxygen = try FractionalPressure(of: .oxygen, fractionalPressure: 0.40)
+        let nitrogen = try FractionalPressure(of: .nitrogen, fractionalPressure: 0.60)
         sut = .init(oxygen, nitrogen)
 
         // When
         let result = try sut.blend()
 
         // Then
-        XCTAssertEqual(try result.partialPressure(of: .oxygen), oxygen)
-        XCTAssertEqual(try result.partialPressure(of: .nitrogen), nitrogen)
+        XCTAssertEqual(try result.fractionalPressure(of: .oxygen), oxygen)
+        XCTAssertEqual(try result.fractionalPressure(of: .nitrogen), nitrogen)
         XCTAssertEqual(result.totalPressure, 1.0)
         XCTAssertEqual(result.components().count, 2)
     }
@@ -131,9 +131,9 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
     func testInitializeWithResultBuilder() throws {
         // When
         sut = try .init { () throws(DiveKit.Error) in
-            try PartialPressure(of: .oxygen, fractionalPressure: 0.40)
+            try FractionalPressure(of: .oxygen, fractionalPressure: 0.40)
 
-            try PartialPressure(of: .nitrogen, fractionalPressure: 0.60)
+            try FractionalPressure(of: .nitrogen, fractionalPressure: 0.60)
         }
 
         // Then
@@ -143,8 +143,8 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
 
     func testInitializeWithResultBuilder_consumingUnsafeAPI() throws {
         // Given
-        let oxygen = PartialPressure(.oxygen, fractionalPressure: 0.40)
-        let nitrogen = PartialPressure(.nitrogen, fractionalPressure: 0.60)
+        let oxygen = FractionalPressure(.oxygen, fractionalPressure: 0.40)
+        let nitrogen = FractionalPressure(.nitrogen, fractionalPressure: 0.60)
 
         // When
         sut = .init {
