@@ -218,15 +218,13 @@ extension GasCalculatorImperialSaltwaterTestCase {
     func testMaximumOperatingDepthRejectsNegativeOxygenPartialPressure() throws {
         let partialPressure: PartialPressure<Oxygen> = -1.4
         let blend = try Blend<Blended>.enrichedAir(0.32)
-        expectedError = .range(
-            .lowerBound(partialPressure.value, 0),
-            "GasCalculator.maximumOperatingDepth(for:in:)")
+        expectedError = .negative(partialPressure, "GasCalculator.maximumOperatingDepth(for:in:)")
 
         // When
         try XCTAssertThrowsError(
             when: sut.maximumOperatingDepth(for: partialPressure, in: blend),
             then: expectedError) {
-                XCTAssertEqual($0.localizationKey, "dive.kit.error.range.lower.bound")
+                XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.partial.pressure")
             }
     }
 

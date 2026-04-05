@@ -54,9 +54,8 @@ extension GasCalculator: GasCalculating {
                     .range(.lowerBound($0, 0), .from(self))
                 }
                 .with { _ in
-                   try partialPressure.validate(using: .greater(than: 0), orThrow: {
-                       .range(.lowerBound($0.value, 0), .from(self))
-                   })
+                    try partialPressure.validate(using: .nonNegative) { .negative($0, .from(self)) }
+                        .map { try $0.validate(using: .greater(than: 0)) { .range(.lowerBound($0.value, 0), .from(self)) } }
                 }
                 .map { $0.second.value / $0.first }
                 .map { $0 - 1 }

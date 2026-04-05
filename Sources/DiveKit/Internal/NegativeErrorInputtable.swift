@@ -35,9 +35,9 @@ extension FractionalPressure: NegativeErrorInputtable {
         .fractionalPressure(fractionalPressure)
     }
 }
-extension PartialPressure<Oxygen>: NegativeErrorInputtable {
+extension PartialPressure: NegativeErrorInputtable {
     func negativeInput() -> Error.Negative {
-        .partialPressure(self)
+        .partialPressure(value)
     }
 }
 extension Minutes: NegativeErrorInputtable {
