@@ -1,7 +1,7 @@
 import XCTest
 @testable import DiveKit
 
-final class PartialPressureTestCase: XCTestCase {
+final class FractionalPressureTestCase: XCTestCase {
 
     func testInitializationStoresValidFractionalPressure() throws {
         // Given
