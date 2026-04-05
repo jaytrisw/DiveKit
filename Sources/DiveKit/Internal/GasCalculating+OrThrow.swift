@@ -19,7 +19,7 @@ internal extension GasCalculating {
         using physicsCalculator: PhysicsCalculating,
         with configuration: Configuration,
         _ callSite: CallSite) throws -> Calculation<PartialPressure<Gas>> {
-            try blend.fraction(of: gas)
+            try blend.fractionalPressure(of: gas)
                 .map { try partialPressure(
                     of: $0,
                     at: depth,

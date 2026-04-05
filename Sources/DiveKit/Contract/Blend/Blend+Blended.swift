@@ -3,7 +3,7 @@ import Foundation
 public enum Blended: BlendState, Sendable {}
 
 public extension Blend where State == Blended {
-    func fraction<Gas: GasRepresentable>(of gas: Gas) throws(DiveKit.Error) -> FractionalPressure<Gas> {
+    func fractionalPressure<Gas: GasRepresentable>(of gas: Gas) throws(DiveKit.Error) -> FractionalPressure<Gas> {
         try .init(of: gas, fractionalPressure: fractionalPressure(of: gas))
     }
 }

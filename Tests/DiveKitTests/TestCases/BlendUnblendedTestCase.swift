@@ -122,8 +122,8 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
         let result = try sut.blend()
 
         // Then
-        XCTAssertEqual(try result.fraction(of: .oxygen), oxygen)
-        XCTAssertEqual(try result.fraction(of: .nitrogen), nitrogen)
+        XCTAssertEqual(try result.fractionalPressure(of: .oxygen), oxygen)
+        XCTAssertEqual(try result.fractionalPressure(of: .nitrogen), nitrogen)
         XCTAssertEqual(result.totalPressure, 1.0)
         XCTAssertEqual(result.components().count, 2)
     }
