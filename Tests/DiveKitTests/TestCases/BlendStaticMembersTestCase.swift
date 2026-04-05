@@ -43,15 +43,16 @@ final class BlendStaticMembersTestCase: SystemUnderTestCase<Blend<Blended>> {
     func testEnrichedAirRejectsNegativeFraction() throws {
         // Given
         let fractionalPressure = -0.01
-        let expectedError: Error = .range(
-            .lowerBound(fractionalPressure, .zero),
+        let expectedError: Error = .negative(
+            .fractionalPressure(fractionalPressure),
             "FractionalPressure<Oxygen>.init(of:fractionalPressure:)")
 
         // When / Then
         try XCTAssertThrowsError(
             when: try Blend.enrichedAir(fractionalPressure),
-            then: expectedError
-        )
+            then: expectedError) {
+                XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.fractional.pressure")
+            }
     }
 
     func testEnrichedAirRejectsFractionGreaterThanOne() throws {
@@ -64,8 +65,7 @@ final class BlendStaticMembersTestCase: SystemUnderTestCase<Blend<Blended>> {
         // When / Then
         try XCTAssertThrowsError(
             when: try Blend.enrichedAir(fractionalPressure),
-            then: expectedError
-        )
+            then: expectedError)
     }
 
     func testEnrichedAirAcceptsBoundaryValues() throws {

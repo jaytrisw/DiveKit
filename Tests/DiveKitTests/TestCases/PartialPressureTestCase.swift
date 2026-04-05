@@ -19,15 +19,15 @@ final class PartialPressureTestCase: XCTestCase {
         // Given
         let gas = Oxygen()
         let fractionalPressure = -0.01
-        let expectedError: Error = .range(
-            .lowerBound(fractionalPressure, 0),
+        let expectedError: Error = .negative(
+            .fractionalPressure(fractionalPressure),
             "FractionalPressure<Oxygen>.init(of:fractionalPressure:)")
 
         // When / Then
         try XCTAssertThrowsError(
             when: try FractionalPressure(of: gas, fractionalPressure: fractionalPressure),
             then: expectedError) { error in
-                XCTAssertEqual(error.localizationKey, "dive.kit.error.range.lower.bound")
+                XCTAssertEqual(error.localizationKey, "dive.kit.error.negative.fractional.pressure")
             }
     }
 
