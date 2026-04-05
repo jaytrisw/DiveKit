@@ -10,11 +10,11 @@ final public class GasCalculator: ConfigurationProviding {
 
 extension GasCalculator: GasCalculating {
     public func partialPressure<Gas: GasRepresentable>(
-        of inputPartialPressure: FractionalPressure<Gas>,
+        of fractionalPressure: FractionalPressure<Gas>,
         at depth: Depth,
         using physicsCalculator: PhysicsCalculating) throws -> Calculation<PartialPressure<Gas>> {
             try partialPressure(
-                of: inputPartialPressure,
+                of: fractionalPressure,
                 at: depth,
                 using: physicsCalculator,
                 with: configuration,

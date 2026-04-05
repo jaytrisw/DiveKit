@@ -15,8 +15,8 @@ public extension Blend where State == Unblended {
                 orThrow: { .blend(.pressureRange(pressure, self), .from(self)) })
     }
 
-    mutating func add<Gas: GasRepresentable>(_ partialPressure: FractionalPressure<Gas>) throws {
-        try add(partialPressure.gas, pressure: partialPressure.value)
+    mutating func add<Gas: GasRepresentable>(_ fractionalPressure: FractionalPressure<Gas>) throws {
+        try add(fractionalPressure.gas, pressure: fractionalPressure.value)
     }
 
     mutating func fill<Gas: GasRepresentable>(with gas: Gas) throws {
@@ -32,8 +32,8 @@ public extension Blend where State == Unblended {
     }
 
     @discardableResult
-    func adding<Gas: GasRepresentable>(_ partialPressure: FractionalPressure<Gas>) throws -> Self {
-        try adding(partialPressure.gas, pressure: partialPressure.value)
+    func adding<Gas: GasRepresentable>(_ fractionalPressure: FractionalPressure<Gas>) throws -> Self {
+        try adding(fractionalPressure.gas, pressure: fractionalPressure.value)
     }
 
     @discardableResult

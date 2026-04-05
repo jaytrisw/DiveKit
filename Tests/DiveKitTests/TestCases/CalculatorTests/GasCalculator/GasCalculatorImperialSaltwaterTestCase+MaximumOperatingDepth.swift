@@ -230,7 +230,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
 
     func testMaximumOperatingDepthRejectsBlendWithZeroOxygen() throws {
         // Given
-        let fractionalPressure: PartialPressure<Oxygen> = 1.4
+        let partialPressure: PartialPressure<Oxygen> = 1.4
 
         let blend = try Blend<Blended> { () throws(DiveKit.Error) in
             try FractionalPressure(of: .oxygen, fractionalPressure: 0.0)
@@ -243,7 +243,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
 
         // When / Then
         try XCTAssertThrowsError(
-            when: sut.maximumOperatingDepth(for: fractionalPressure, in: blend),
+            when: sut.maximumOperatingDepth(for: partialPressure, in: blend),
             then: expectedError) {
                 XCTAssertEqual($0.localizationKey, "dive.kit.error.range.lower.bound")
             }

@@ -7,13 +7,13 @@ extension GasCalculatorImperialSaltwaterTestCase {
 
     func testPartialPressureValidInput() throws {
         // Given
-        let partialPressure = try FractionalPressure(of: .oxygen, fractionalPressure: 0.21)
+        let fractionalPressure = try FractionalPressure(of: .oxygen, fractionalPressure: 0.21)
         let depth: Depth = 33.0
 
         // When
         try XCTAssertCalculation(
             sut.partialPressure(
-                of: partialPressure,
+                of: fractionalPressure,
                 at: depth,
                 using: physicsCalculator)) { result, configuration in
                     // Then
@@ -25,13 +25,13 @@ extension GasCalculatorImperialSaltwaterTestCase {
 
     func testPartialPressureInvalidInput() throws {
         // Given
-        let partialPressure = try FractionalPressure(of: .oxygen, fractionalPressure: 0.21)
+        let fractionalPressure = try FractionalPressure(of: .oxygen, fractionalPressure: 0.21)
         let depth: Depth = -33.0
         expectedError = .negative(depth, "GasCalculator.partialPressure(of:at:using:)")
 
         // When
         try XCTAssertThrowsError(
-            when: sut.partialPressure(of: partialPressure, at: depth, using: physicsCalculator),
+            when: sut.partialPressure(of: fractionalPressure, at: depth, using: physicsCalculator),
             then: expectedError) {
                 XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.depth")
             }
@@ -101,10 +101,10 @@ extension GasCalculatorImperialSaltwaterTestCase {
     func testPartialPressureUnblendedInvalidBlendInput() throws {
         // Given
         let gas = Oxygen()
-        let fractionalPressure = 0.21
+        let oxygenFraction = 0.21
         let blend = try Blend<Unblended>(.init(of: .oxygen, fractionalPressure: 0.21))
         let depth: Depth = 33.0
-        expectedError = .blend(.totalPressure(fractionalPressure, blend), "GasCalculator.partialPressure(of:blending:at:using:)")
+        expectedError = .blend(.totalPressure(oxygenFraction, blend), "GasCalculator.partialPressure(of:blending:at:using:)")
 
         // When
         try XCTAssertThrowsError(

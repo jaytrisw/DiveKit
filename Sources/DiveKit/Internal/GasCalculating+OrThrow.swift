@@ -2,13 +2,13 @@ import Foundation
 
 internal extension GasCalculating {
     func partialPressure<Gas: GasRepresentable>(
-        of partialPressure: FractionalPressure<Gas>,
+        of fractionalPressure: FractionalPressure<Gas>,
         at depth: Depth,
         using physicsCalculator: PhysicsCalculating,
         with configuration: Configuration,
         _ callSite: CallSite) throws -> Calculation<PartialPressure<Gas>> {
             try physicsCalculator.atmospheresAbsolute(at: depth, with: configuration, callSite)
-                .map { $0.result.value * partialPressure.value }
+                .map { $0.result.value * fractionalPressure.value }
                 .map { .partialPressure($0, configuration: configuration) }
         }
 

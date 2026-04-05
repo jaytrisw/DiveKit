@@ -2,7 +2,7 @@ import Foundation
 
 public protocol GasCalculating {
     func partialPressure<Gas: GasRepresentable>(
-        of partialPressure: FractionalPressure<Gas>,
+        of fractionalPressure: FractionalPressure<Gas>,
         at depth: Depth,
         using physicsCalculator: PhysicsCalculating) throws -> Calculation<PartialPressure<Gas>>
 
