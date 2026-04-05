@@ -32,7 +32,7 @@ internal extension LocalizedKey.Error {
 internal extension LocalizedKey.Error {
     enum Negative {
         static let depth: LocalizedStringResource = "dive.kit.error.negative.depth"
-        static let partialPressure: LocalizedStringResource = "dive.kit.error.negative.fractional.pressure"
+        static let partialPressure: LocalizedStringResource = "dive.kit.error.negative.partial.pressure"
         static let minutes: LocalizedStringResource = "dive.kit.error.negative.minutes"
         static let pressure: LocalizedStringResource = "dive.kit.error.negative.pressure"
         static let volume: LocalizedStringResource = "dive.kit.error.negative.volume"

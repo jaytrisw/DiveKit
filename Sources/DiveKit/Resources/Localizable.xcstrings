@@ -41,6 +41,16 @@
         }
       }
     },
+    "dive.kit.error.negative.partial.pressure" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partial pressure input must not be a negative value"
+          }
+        }
+      }
+    },
     "dive.kit.error.negative.minutes" : {
       "localizations" : {
         "en" : {
