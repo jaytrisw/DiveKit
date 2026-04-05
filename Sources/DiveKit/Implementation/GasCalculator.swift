@@ -85,7 +85,7 @@ extension GasCalculator: GasCalculating {
         for minutes: Minutes,
         start startGas: Pressure,
         end endGas: Pressure,
-        using physicsCalculator: PhysicsCalculating) throws -> Calculation<DecimalResult<Pressure>> {
+        using physicsCalculator: PhysicsCalculating) throws -> Calculation<DecimalResult<Rate<Pressure>>> {
             try startGas.validate(using: .nonNegative, orThrow: { .negative($0, .from(self)) })
                 .map { try endGas.validate(using: .nonNegative, orThrow: { .negative($0, .from(self)) }) }
                 .map { startGas.value - endGas.value }
@@ -104,7 +104,7 @@ extension GasCalculator: GasCalculating {
         for minutes: Minutes,
         consuming gasConsumed: Pressure,
         with tank: Tank,
-        using physicsCalculator: PhysicsCalculating) throws -> Calculation<DecimalResult<Volume>> {
+        using physicsCalculator: PhysicsCalculating) throws -> Calculation<DecimalResult<Rate<Volume>>> {
             try tank.size.volume.validate(using: .nonNegative, orThrow: { .tank(.volume($0, tank), .from(self)) })
                 .map { try tank.size.ratedPressure.validate(using: .nonNegative, orThrow: { .tank(.ratedPressure($0, tank), .from(self)) })}
                 .map { try surfaceAirConsumption(
@@ -116,7 +116,7 @@ extension GasCalculator: GasCalculating {
                     .from(self))
                 }
                 .map { $0.result.value * tank.size.conversionFactor }
-                .map { .decimal($0, unit: \.volume, from: configuration) }
+                .map { .decimal($0, unit: Rate<Volume>.Unit.perMinute(configuration.units.volume), configuration: configuration) }
         }
 }
 

@@ -20,7 +20,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 using: physicsCalculator)) { result, configuration in
                     // Then
                     XCTAssertEqual(result.value, 16.097560975609756)
-                    XCTAssertEqual(result.unit, .psi)
+                    XCTAssertEqual(result.unit, .perMinute(.psi))
                     XCTAssertEqual(configuration, sut.configuration)
                 }
     }
@@ -60,6 +60,25 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 using: physicsCalculator),
             then: expectedError) {
                 XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.minutes")
+            }
+    }
+
+    func testSurfaceAirConsumptionConsumingRejectsZeroMinutes() throws {
+        // Given
+        let depth: Depth = 90.0
+        let minutes: Minutes = 0.0
+        let consuming: Pressure = 600.0
+        expectedError = .range(.lowerBound(0, 0), "GasCalculator.surfaceAirConsumption(at:for:consuming:using:)")
+
+        // When / Then
+        try XCTAssertThrowsError(
+            when: sut.surfaceAirConsumption(
+                at: depth,
+                for: minutes,
+                consuming: consuming,
+                using: physicsCalculator),
+            then: expectedError) {
+                XCTAssertEqual($0.localizationKey, "dive.kit.error.range.lower.bound")
             }
     }
     
@@ -102,7 +121,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 using: physicsCalculator)) { result, configuration in
                     // Then
                     XCTAssertEqual(result.value, 16.097560975609756)
-                    XCTAssertEqual(result.unit, .psi)
+                    XCTAssertEqual(result.unit, .perMinute(.psi))
                     XCTAssertEqual(configuration, sut.configuration)
                 }
     }

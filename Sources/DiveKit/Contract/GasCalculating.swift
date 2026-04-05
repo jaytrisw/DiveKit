@@ -30,12 +30,12 @@ public protocol GasCalculating {
         for minutes: Minutes,
         start startGas: Pressure,
         end endGas: Pressure,
-        using physicsCalculator: PhysicsCalculating) throws -> Calculation<DecimalResult<Pressure>>
+        using physicsCalculator: PhysicsCalculating) throws -> Calculation<DecimalResult<Rate<Pressure>>>
 
     func respiratoryMinuteVolume(
         at depth: Depth,
         for minutes: Minutes,
         consuming gasConsumed: Pressure,
         with tank: Tank,
-        using physicsCalculator: PhysicsCalculating) throws -> Calculation<DecimalResult<Volume>>
+        using physicsCalculator: PhysicsCalculating) throws -> Calculation<DecimalResult<Rate<Volume>>>
 }

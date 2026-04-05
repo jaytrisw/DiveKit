@@ -20,7 +20,7 @@ public extension GasCalculating where Self: ConfigurationProviding {
         at depth: Depth,
         for minutes: Minutes,
         consuming gasConsumed: Pressure,
-        using physicsCalculator: PhysicsCalculating) throws -> Calculation<DecimalResult<Pressure>> {
+        using physicsCalculator: PhysicsCalculating) throws -> Calculation<DecimalResult<Rate<Pressure>>> {
             try surfaceAirConsumption(
                 at: depth,
                 for: minutes,
