@@ -22,8 +22,8 @@ extension BuoyancyCalculator: BuoyancyCalculating {
                 .map { (mass: Mass) throws(DiveKit.Error) in
                     try volume.validate(using: .nonNegative, orThrow: { .negative($0, .from(self)) })
                 }
-                .map { (validatedVolume: Volume) throws(DiveKit.Error) in
-                    try buoyancy(of: .init(weight: weight, volume: validatedVolume))
+                .map { (volume: Volume) throws(DiveKit.Error) in
+                    try buoyancy(of: .init(weight: weight, volume: volume))
                 }
         }
 

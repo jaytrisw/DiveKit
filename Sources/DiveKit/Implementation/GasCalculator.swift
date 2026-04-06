@@ -66,8 +66,8 @@ extension GasCalculator: GasCalculating {
                 }
                 .with { (_: Double) throws(DiveKit.Error) in
                     try partialPressure.validate(using: .nonNegative) { .negative($0, .from(self)) }
-                        .map { (validatedPartialPressure: PartialPressure<Oxygen>) throws(DiveKit.Error) in
-                            try validatedPartialPressure.validate(using: .greater(than: 0)) { .range(.lowerBound($0.value, 0), .from(self)) }
+                        .map { (partialPressure: PartialPressure<Oxygen>) throws(DiveKit.Error) in
+                            try partialPressure.validate(using: .greater(than: 0)) { .range(.lowerBound($0.value, 0), .from(self)) }
                         }
                 }
                 .map { $0.second.value / $0.first }
