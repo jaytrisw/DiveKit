@@ -1,7 +1,7 @@
 import Foundation
 
-public extension Error {
-    var localizedDescription: String {
+extension Error: LocalizedError {
+    public var errorDescription: String? {
         localizedString(for: localizationKey, with: .init(describing: self))
     }
 }

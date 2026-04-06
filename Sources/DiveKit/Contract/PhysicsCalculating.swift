@@ -16,20 +16,20 @@ public protocol PhysicsCalculating {
     ///   if the configuration is invalid or insufficient for the calculation. Implementers should specify
     ///   the conditions under which errors are thrown.
     func gaugePressure(
-        at depth: Depth) throws -> Calculation<DecimalResult<Pressure>>
+        at depth: Depth) throws(DiveKit.Error) -> Calculation<DecimalResult<Pressure>>
 
     func airVolumeFromSurface(
         to depth: Depth,
-        with volume: Volume) throws -> Calculation<DecimalResult<Volume>>
+        with volume: Volume) throws(DiveKit.Error) -> Calculation<DecimalResult<Volume>>
 
     func airVolumeToSurface(
         from depth: Depth,
-        with volume: Volume) throws -> Calculation<DecimalResult<Volume>>
+        with volume: Volume) throws(DiveKit.Error) -> Calculation<DecimalResult<Volume>>
 
     func atmospheresAbsolute(
-        at depth: Depth) throws -> Calculation<DecimalResult<Pressure>>
+        at depth: Depth) throws(DiveKit.Error) -> Calculation<DecimalResult<Pressure>>
 
     func pressureChange(
         from firstDepth: Depth,
-        to secondDepth: Depth) throws -> Calculation<DecimalResult<Pressure>>
+        to secondDepth: Depth) throws(DiveKit.Error) -> Calculation<DecimalResult<Pressure>>
 }

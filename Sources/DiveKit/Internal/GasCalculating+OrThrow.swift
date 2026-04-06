@@ -6,7 +6,7 @@ internal extension GasCalculating {
         at depth: Depth,
         using physicsCalculator: PhysicsCalculating,
         with configuration: Configuration,
-        _ callSite: CallSite) throws -> Calculation<PartialPressure<Gas>> {
+        _ callSite: CallSite) throws(DiveKit.Error) -> Calculation<PartialPressure<Gas>> {
             try physicsCalculator.atmospheresAbsolute(at: depth, with: configuration, callSite)
                 .map { $0.result.value * fractionalPressure.value }
                 .map { .partialPressure($0, configuration: configuration) }
@@ -18,24 +18,30 @@ internal extension GasCalculating {
         at depth: Depth,
         using physicsCalculator: PhysicsCalculating,
         with configuration: Configuration,
-        _ callSite: CallSite) throws -> Calculation<PartialPressure<Gas>> {
+        _ callSite: CallSite) throws(DiveKit.Error) -> Calculation<PartialPressure<Gas>> {
             try blend.fractionalPressure(of: gas)
-                .map { try partialPressure(
-                    of: $0,
-                    at: depth,
-                    using: physicsCalculator,
-                    with: configuration,
-                    callSite) }
+                .map { (fractionalPressure: FractionalPressure<Gas>) throws(DiveKit.Error) in
+                    try partialPressure(
+                        of: fractionalPressure,
+                        at: depth,
+                        using: physicsCalculator,
+                        with: configuration,
+                        callSite)
+                }
         }
 
     func depthAirConsumption(
         for minutes: Minutes,
         consuming gasConsumed: Pressure,
         with configuration: Configuration,
-        _ callSite: CallSite) throws -> Calculation<DecimalResult<Rate<Pressure>>> {
+        _ callSite: CallSite) throws(DiveKit.Error) -> Calculation<DecimalResult<Rate<Pressure>>> {
             try minutes.validate( using: .nonNegative, orThrow: { .negative($0, callSite) })
-                .map { try $0.validate(using: .greater(than: 0)) { .range(.lowerBound($0.value, 0), callSite) } }
-                .map { try gasConsumed.validate( using: .nonNegative, orThrow: { .negative($0, callSite) }) }
+                .map { (minutes: Minutes) throws(DiveKit.Error) in
+                    try minutes.validate(using: .greater(than: 0)) { .range(.lowerBound($0.value, 0), callSite) }
+                }
+                .map { (minutes: Minutes) throws(DiveKit.Error) in
+                    try gasConsumed.validate( using: .nonNegative, orThrow: { .negative($0, callSite) })
+                }
                 .map { gasConsumed.value / minutes.value }
                 .map { .decimal($0, unit: .perMinute(configuration.units.pressure), configuration: configuration) }
         }
@@ -46,10 +52,10 @@ internal extension GasCalculating {
         consuming gasConsumed: Pressure,
         using physicsCalculator: PhysicsCalculating,
         with configuration: Configuration,
-        _ callSite: CallSite) throws -> Calculation<DecimalResult<Rate<Pressure>>> {
+        _ callSite: CallSite) throws(DiveKit.Error) -> Calculation<DecimalResult<Rate<Pressure>>> {
             try physicsCalculator.atmospheresAbsolute(at: depth, with: configuration, callSite)
                 .map { $0.result.value }
-                .with { _ in
+                .with { () throws(DiveKit.Error) in
                     try depthAirConsumption(for: minutes, consuming: gasConsumed, with: configuration, callSite).result.value
                 }
                 .map { $0.second / $0.first }

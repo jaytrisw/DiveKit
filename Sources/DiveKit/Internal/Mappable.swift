@@ -3,11 +3,11 @@ import Foundation
 internal protocol Mappable {}
 
 internal extension Mappable {
-    func map<Transform>(_ transform: () throws -> Transform) rethrows -> Transform {
+    func map<Transform>(_ transform: () throws(DiveKit.Error) -> Transform) throws(DiveKit.Error) -> Transform {
         try transform()
     }
 
-    func map<Transform>(_ transform: (Self) throws -> Transform) rethrows -> Transform {
+    func map<Transform>(_ transform: (Self) throws(DiveKit.Error) -> Transform) throws(DiveKit.Error) -> Transform {
         try transform(self)
     }
 }

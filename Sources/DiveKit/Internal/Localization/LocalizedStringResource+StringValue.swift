@@ -26,7 +26,7 @@ internal func localizedString(
     quantity: Double,
     with comment: @autoclosure () -> String) -> String {
         localizedString(for: key, with: comment()).withQuantity(quantity)
-            .map { $0.components(separatedBy: " ") }
+            .components(separatedBy: " ")
             .map {
                 guard let number = Double($0) else {
                     return $0
@@ -60,5 +60,3 @@ internal extension String {
         .init(format: self, locale: .current, arguments: arguments)
     }
 }
-
-extension String: Mappable {}

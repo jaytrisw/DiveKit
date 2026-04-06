@@ -12,7 +12,7 @@ extension GasCalculator: GasCalculating {
     public func partialPressure<Gas: GasRepresentable>(
         of fractionalPressure: FractionalPressure<Gas>,
         at depth: Depth,
-        using physicsCalculator: PhysicsCalculating) throws -> Calculation<PartialPressure<Gas>> {
+        using physicsCalculator: PhysicsCalculating) throws(DiveKit.Error) -> Calculation<PartialPressure<Gas>> {
             try partialPressure(
                 of: fractionalPressure,
                 at: depth,
@@ -24,26 +24,34 @@ extension GasCalculator: GasCalculating {
     public func bestBlend(
         for depth: Depth,
         partialPressure: PartialPressure<Oxygen>,
-        using physicsCalculator: PhysicsCalculating) throws -> Calculation<Blend<Blended>> {
+        using physicsCalculator: PhysicsCalculating) throws(DiveKit.Error) -> Calculation<Blend<Blended>> {
             try depth.validate(using: .nonNegative, orThrow: { .negative($0, .from(self)) })
-                .map { _ in
+                .map { (depth: Depth) throws(DiveKit.Error) in
                     try partialPressure.validate(using: .nonNegative) { .negative($0, .from(self)) }
-                        .map { try $0.validate(using: .greater(than: 0)) { .range(.lowerBound($0.value, 0), .from(self)) }}
+                        .map { (partialPressure: PartialPressure<Oxygen>) throws(DiveKit.Error) in
+                            try partialPressure.validate(using: .greater(than: 0)) { .range(.lowerBound($0.value, 0), .from(self)) }
+                        }
                 }
-                .map { try physicsCalculator.atmospheresAbsolute(at: depth, with: configuration, .from(self)) }
+                .map { (partialPressure: PartialPressure<Oxygen>) throws(DiveKit.Error) in
+                    try physicsCalculator.atmospheresAbsolute(at: depth, with: configuration, .from(self))
+                }
                 .map { partialPressure.value / $0.result.value }
                 .map { $0 * 100 }
                 .map { $0.rounded(.towardZero) }
                 .map { $0 / 100 }
-                .map { try .blend(.enrichedAir($0), configuration: configuration) }
+                .map { (fraction: Double) throws(DiveKit.Error) in
+                    try .blend(.enrichedAir(fraction), configuration: configuration)
+                }
         }
 
     public func equivalentAirDepth(
         for depth: Depth,
-        with blend: Blend<Blended>) throws -> Calculation<DecimalResult<Depth>> {
+        with blend: Blend<Blended>) throws(DiveKit.Error) -> Calculation<DecimalResult<Depth>> {
             try depth.validate(using: .nonNegative, orThrow: { .negative($0, .from(self)) })
                 .map { $0.value + configuration.water.pressure(configuration.units).increase.value }
-                .with { try blend.fractionalPressure(of: .nitrogen).value / Blend.air.fractionalPressure(of: .nitrogen).value }
+                .with { () throws(DiveKit.Error) in
+                    try blend.fractionalPressure(of: .nitrogen).value / Blend.air.fractionalPressure(of: .nitrogen).value
+                }
                 .map { $0.first * $0.second }
                 .map { $0 - configuration.water.pressure(configuration.units).increase.value }
                 .map { .decimal($0, unit: \.depth, from: configuration) }
@@ -51,14 +59,16 @@ extension GasCalculator: GasCalculating {
 
     public func maximumOperatingDepth(
         for partialPressure: PartialPressure<Oxygen>,
-        in blend: Blend<Blended>) throws -> Calculation<DecimalResult<Depth>> {
+        in blend: Blend<Blended>) throws(DiveKit.Error) -> Calculation<DecimalResult<Depth>> {
             try blend.fractionalPressure(of: .oxygen).value
                 .validate(using: .greater(than: 0)) {
                     .range(.lowerBound($0, 0), .from(self))
                 }
-                .with { _ in
+                .with { (_: Double) throws(DiveKit.Error) in
                     try partialPressure.validate(using: .nonNegative) { .negative($0, .from(self)) }
-                        .map { try $0.validate(using: .greater(than: 0)) { .range(.lowerBound($0.value, 0), .from(self)) } }
+                        .map { (partialPressure: PartialPressure<Oxygen>) throws(DiveKit.Error) in
+                            try partialPressure.validate(using: .greater(than: 0)) { .range(.lowerBound($0.value, 0), .from(self)) }
+                        }
                 }
                 .map { $0.second.value / $0.first }
                 .map { $0 - 1 }
@@ -70,7 +80,7 @@ extension GasCalculator: GasCalculating {
         of gas: Gas,
         in blend: Blend<Blended>,
         at depth: Depth,
-        using physicsCalculator: PhysicsCalculating) throws -> Calculation<PartialPressure<Gas>> {
+        using physicsCalculator: PhysicsCalculating) throws(DiveKit.Error) -> Calculation<PartialPressure<Gas>> {
             try partialPressure(
                 of: gas,
                 in: blend,
@@ -85,17 +95,20 @@ extension GasCalculator: GasCalculating {
         for minutes: Minutes,
         start startGas: Pressure,
         end endGas: Pressure,
-        using physicsCalculator: PhysicsCalculating) throws -> Calculation<DecimalResult<Rate<Pressure>>> {
+        using physicsCalculator: PhysicsCalculating) throws(DiveKit.Error) -> Calculation<DecimalResult<Rate<Pressure>>> {
             try startGas.validate(using: .nonNegative, orThrow: { .negative($0, .from(self)) })
-                .map { try endGas.validate(using: .nonNegative, orThrow: { .negative($0, .from(self)) }) }
+                .map { (_: Pressure) throws(DiveKit.Error) in
+                    try endGas.validate(using: .nonNegative, orThrow: { .negative($0, .from(self)) })
+                }
                 .map { startGas.value - endGas.value }
-                .map { try surfaceAirConsumption(
-                    at: depth,
-                    for: minutes,
-                    consuming: .init($0),
-                    using: physicsCalculator,
-                    with: configuration,
-                    .from(self))
+                .map { (consumedPressure: Double) throws(DiveKit.Error) in
+                    try surfaceAirConsumption(
+                        at: depth,
+                        for: minutes,
+                        consuming: .init(consumedPressure),
+                        using: physicsCalculator,
+                        with: configuration,
+                        .from(self))
                 }
         }
 
@@ -104,16 +117,19 @@ extension GasCalculator: GasCalculating {
         for minutes: Minutes,
         consuming gasConsumed: Pressure,
         with tank: Tank,
-        using physicsCalculator: PhysicsCalculating) throws -> Calculation<DecimalResult<Rate<Volume>>> {
+        using physicsCalculator: PhysicsCalculating) throws(DiveKit.Error) -> Calculation<DecimalResult<Rate<Volume>>> {
             try tank.size.volume.validate(using: .nonNegative, orThrow: { .tank(.volume($0, tank), .from(self)) })
-                .map { try tank.size.ratedPressure.validate(using: .nonNegative, orThrow: { .tank(.ratedPressure($0, tank), .from(self)) })}
-                .map { try surfaceAirConsumption(
-                    at: depth,
-                    for: minutes,
-                    consuming: gasConsumed,
-                    using: physicsCalculator,
-                    with: configuration,
-                    .from(self))
+                .map { (_: Volume) throws(DiveKit.Error) in
+                    try tank.size.ratedPressure.validate(using: .nonNegative, orThrow: { .tank(.ratedPressure($0, tank), .from(self)) })
+                }
+                .map { (_: Pressure) throws(DiveKit.Error) in
+                    try surfaceAirConsumption(
+                        at: depth,
+                        for: minutes,
+                        consuming: gasConsumed,
+                        using: physicsCalculator,
+                        with: configuration,
+                        .from(self))
                 }
                 .map { $0.result.value * tank.size.conversionFactor }
                 .map { .decimal($0, unit: .perMinute(configuration.units.volume), configuration: configuration) }

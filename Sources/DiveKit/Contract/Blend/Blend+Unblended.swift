@@ -7,7 +7,7 @@ public extension Blend where State == Unblended {
         self.init([:])
     }
 
-    mutating func add<Gas: GasRepresentable>(_ gas: Gas, pressure: Double) throws {
+    mutating func add<Gas: GasRepresentable>(_ gas: Gas, pressure: Double) throws(DiveKit.Error) {
         try pressure
             .validate(
                 using: .between(.zero, and: .one),
@@ -15,16 +15,16 @@ public extension Blend where State == Unblended {
                 orThrow: { .blend(.pressureRange(pressure, self), .from(self)) })
     }
 
-    mutating func add<Gas: GasRepresentable>(_ fractionalPressure: FractionalPressure<Gas>) throws {
+    mutating func add<Gas: GasRepresentable>(_ fractionalPressure: FractionalPressure<Gas>) throws(DiveKit.Error) {
         try add(fractionalPressure.gas, pressure: fractionalPressure.value)
     }
 
-    mutating func fill<Gas: GasRepresentable>(with gas: Gas) throws {
+    mutating func fill<Gas: GasRepresentable>(with gas: Gas) throws(DiveKit.Error) {
         try add(.init(of: gas, fractionalPressure: 1 - totalPressure))
     }
 
     @discardableResult
-    func adding<Gas: GasRepresentable>(_ gas: Gas, pressure: Double) throws -> Self {
+    func adding<Gas: GasRepresentable>(_ gas: Gas, pressure: Double) throws(DiveKit.Error) -> Self {
         var copy = self
         try copy.add(gas, pressure: pressure)
 
@@ -32,19 +32,19 @@ public extension Blend where State == Unblended {
     }
 
     @discardableResult
-    func adding<Gas: GasRepresentable>(_ fractionalPressure: FractionalPressure<Gas>) throws -> Self {
+    func adding<Gas: GasRepresentable>(_ fractionalPressure: FractionalPressure<Gas>) throws(DiveKit.Error) -> Self {
         try adding(fractionalPressure.gas, pressure: fractionalPressure.value)
     }
 
     @discardableResult
-    func filling<Gas: GasRepresentable>(with gas: Gas) throws -> Self {
+    func filling<Gas: GasRepresentable>(with gas: Gas) throws(DiveKit.Error) -> Self {
         var copy = self
         try copy.fill(with: gas)
 
         return copy
     }
 
-    func blend() throws -> Blend<Blended> {
+    func blend() throws(DiveKit.Error) -> Blend<Blended> {
         try blend(.from(self))
     }
 }

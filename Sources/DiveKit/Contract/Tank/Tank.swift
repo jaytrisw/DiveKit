@@ -9,7 +9,7 @@ public struct Tank: Sendable {
         self.size = size
     }
 
-    public init(blend: Blend<Unblended>, size: Size) throws {
+    public init(blend: Blend<Unblended>, size: Size) throws(DiveKit.Error) {
         self.blend = try blend.blend(.init(object: .init(describing: Self.self), function: #function))
         self.size = size
     }
