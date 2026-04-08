@@ -45,7 +45,7 @@ final class MassLocalizationTestCase: SystemUnderTestCase<Mass.Unit> {
         let result = sut.localizedDescription(for: style)
 
         // Then
-        XCTAssertEqual(result, "km")
+        XCTAssertEqual(result, "kg")
     }
 
     func testDescriptionFullImperial() {
@@ -95,7 +95,7 @@ final class MassLocalizationTestCase: SystemUnderTestCase<Mass.Unit> {
         let result = sut.localization(for: .quantity(quantity, style))
 
         // Then
-        XCTAssertEqual(result, "0 km")
+        XCTAssertEqual(result, "0 kg")
     }
 
     func testQuantityFullImperial() {
