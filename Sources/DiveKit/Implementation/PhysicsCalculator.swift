@@ -1,4 +1,6 @@
 import Foundation
+import DiveKitCore
+import DiveKitInternal
 
 public class PhysicsCalculator: ConfigurationProviding {
     public let configuration: Configuration

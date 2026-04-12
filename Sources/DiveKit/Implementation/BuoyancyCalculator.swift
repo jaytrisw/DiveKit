@@ -1,4 +1,6 @@
 import Foundation
+import DiveKitCore
+import DiveKitInternal
 
 public final class BuoyancyCalculator: ConfigurationProviding {
     public let configuration: Configuration

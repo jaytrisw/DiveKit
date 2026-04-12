@@ -1,4 +1,6 @@
 import Foundation
+import DiveKitCore
+import DiveKitInternal
 
 public extension GasCalculating where Self: ConfigurationProviding {
     func partialPressure<Gas: GasRepresentable>(

@@ -18,8 +18,29 @@ let package = Package(
     targets: [
         .target(
             name: "DiveKit",
+            dependencies: [
+                "DiveKitCore",
+                "DiveKitInternal",
+                "DiveKitLocalization",
+            ]
+        ),
+        .target(
+            name: "DiveKitCore"
+        ),
+        .target(
+            name: "DiveKitInternal",
+            dependencies: [
+                "DiveKitCore",
+            ]
+        ),
+        .target(
+            name: "DiveKitLocalization",
+            dependencies: [
+                "DiveKitCore",
+                "DiveKitInternal",
+            ],
             resources: [
-                .process("Resources")
+                .process("Resources"),
             ]
         ),
         .testTarget(

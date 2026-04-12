@@ -59,6 +59,79 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
         XCTAssertEqual(result.fractionalPressure(of: .oxygen), oxygenFraction)
     }
 
+    func testUpdateWithValidInput() throws {
+        // Given
+        let initialOxygenFraction = 0.8
+        let updatedOxygenFraction = 0.4
+        try sut.add(.oxygen, pressure: initialOxygenFraction)
+
+        // When
+        try sut.update(.oxygen, pressure: updatedOxygenFraction)
+
+        // Then
+        XCTAssertEqual(sut.components().count, 1)
+        XCTAssertEqual(sut.fractionalPressure(of: .oxygen), updatedOxygenFraction)
+    }
+
+    func testUpdateWithFractionalPressure() throws {
+        // Given
+        let initialOxygenFraction = 0.8
+        let updatedOxygenFraction = 0.4
+        let fractionalPressure = try FractionalPressure(of: .oxygen, fractionalPressure: updatedOxygenFraction)
+        try sut.add(.oxygen, pressure: initialOxygenFraction)
+
+        // When
+        try sut.update(fractionalPressure)
+
+        // Then
+        XCTAssertEqual(sut.components().count, 1)
+        XCTAssertEqual(sut.fractionalPressure(of: .oxygen), updatedOxygenFraction)
+    }
+
+    func testUpdateWithInvalidInput() throws {
+        // Given
+        let oxygenFraction = 1.01
+        expectedError = .blend(.pressureRange(oxygenFraction, sut), "Blend<Unblended>.update(_:pressure:)")
+
+        // When
+        try XCTAssertThrowsError(
+            when: sut.update(.oxygen, pressure: oxygenFraction),
+            then: expectedError) {
+                XCTAssertEqual($0.localizationKey, "dive.kit.error.blend.pressure.range")
+            }
+    }
+
+    func testUpdatingWithValidInput() throws {
+        // Given
+        let initialOxygenFraction = 0.8
+        let updatedOxygenFraction = 0.4
+        try sut.add(.oxygen, pressure: initialOxygenFraction)
+
+        // When
+        let result = try sut.updating(.oxygen, pressure: updatedOxygenFraction)
+
+        // Then
+        XCTAssertEqual(sut.fractionalPressure(of: .oxygen), initialOxygenFraction)
+        XCTAssertEqual(result.components().count, 1)
+        XCTAssertEqual(result.fractionalPressure(of: .oxygen), updatedOxygenFraction)
+    }
+
+    func testUpdatingWithFractionalPressure() throws {
+        // Given
+        let initialOxygenFraction = 0.8
+        let updatedOxygenFraction = 0.4
+        let fractionalPressure = try FractionalPressure(of: .oxygen, fractionalPressure: updatedOxygenFraction)
+        try sut.add(.oxygen, pressure: initialOxygenFraction)
+
+        // When
+        let result = try sut.updating(fractionalPressure)
+
+        // Then
+        XCTAssertEqual(sut.fractionalPressure(of: .oxygen), initialOxygenFraction)
+        XCTAssertEqual(result.components().count, 1)
+        XCTAssertEqual(result.fractionalPressure(of: .oxygen), updatedOxygenFraction)
+    }
+
     func testFillWithValidInput() throws {
         // Given
         let oxygen = Oxygen()
