@@ -6,6 +6,6 @@ package extension Blend where State == Unblended {
         try totalPressure.validate(using: .equal(to: .one)) {
             .blend(.totalPressure($0, self), callSite)
         }
-        return .init(storage)
+        return .init(self)
     }
 }

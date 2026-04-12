@@ -8,14 +8,29 @@ public extension Blend where State == Unblended {
     }
 
     mutating func add<Gas: GasRepresentable>(_ gas: Gas, pressure: Double) throws(Error) {
-        try pressure.validate(using: .between(.zero, and: .one)) {
-            .blend(.pressureRange($0, self), .from(self))
-        }
-        storage.updateValue(pressure, forKey: .init(gas))
+        try set(gas, pressure: pressure, function: #function)
     }
 
     mutating func add<Gas: GasRepresentable>(_ fractionalPressure: FractionalPressure<Gas>) throws(Error) {
         try add(fractionalPressure.gas, pressure: fractionalPressure.value)
+    }
+
+    mutating func update<Gas: GasRepresentable>(_ gas: Gas, pressure: Double) throws(Error) {
+        try set(gas, pressure: pressure, function: #function)
+    }
+
+    private mutating func set<Gas: GasRepresentable>(
+        _ gas: Gas,
+        pressure: Double,
+        function: StaticString) throws(Error) {
+        try pressure.validate(using: .between(.zero, and: .one)) {
+            .blend(.pressureRange($0, self), .from(self, function: function))
+        }
+        setFractionalPressure(pressure, for: gas)
+    }
+
+    mutating func update<Gas: GasRepresentable>(_ fractionalPressure: FractionalPressure<Gas>) throws(Error) {
+        try update(fractionalPressure.gas, pressure: fractionalPressure.value)
     }
 
     mutating func fill<Gas: GasRepresentable>(with gas: Gas) throws(Error) {
@@ -33,6 +48,19 @@ public extension Blend where State == Unblended {
     @discardableResult
     func adding<Gas: GasRepresentable>(_ fractionalPressure: FractionalPressure<Gas>) throws(Error) -> Self {
         try adding(fractionalPressure.gas, pressure: fractionalPressure.value)
+    }
+
+    @discardableResult
+    func updating<Gas: GasRepresentable>(_ gas: Gas, pressure: Double) throws(Error) -> Self {
+        var copy = self
+        try copy.update(gas, pressure: pressure)
+
+        return copy
+    }
+
+    @discardableResult
+    func updating<Gas: GasRepresentable>(_ fractionalPressure: FractionalPressure<Gas>) throws(Error) -> Self {
+        try updating(fractionalPressure.gas, pressure: fractionalPressure.value)
     }
 
     @discardableResult
