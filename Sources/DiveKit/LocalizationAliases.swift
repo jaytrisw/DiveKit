@@ -1,0 +1,13 @@
+@_documentation(visibility: private)
+import DiveKitLocalization
+
+public typealias DecimalUnitFormatStyle = DiveKitLocalization.DecimalUnitFormatStyle
+public typealias DecimalUnitLocalizable = DiveKitLocalization.DecimalUnitLocalizable
+public typealias DescriptionLocalizationComponent = DiveKitLocalization.DescriptionLocalizationComponent
+public typealias LocalizationComponent = DiveKitLocalization.LocalizationComponent
+public typealias LocalizationProviding = DiveKitLocalization.LocalizationProviding
+public typealias LocalizationStyle = DiveKitLocalization.LocalizationStyle
+public typealias LocalizedDescriptionProviding = DiveKitLocalization.LocalizedDescriptionProviding
+public typealias LocalizedTitleProviding = DiveKitLocalization.LocalizedTitleProviding
+public typealias QuantityLocalizationComponent = DiveKitLocalization.QuantityLocalizationComponent
+public typealias TitleLocalizationComponent = DiveKitLocalization.TitleLocalizationComponent

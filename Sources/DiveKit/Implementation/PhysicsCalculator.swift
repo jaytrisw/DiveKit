@@ -1,4 +1,8 @@
 import Foundation
+@_documentation(visibility: private)
+import DiveKitCore
+@_documentation(visibility: private)
+import DiveKitLocalization
 
 public class PhysicsCalculator: ConfigurationProviding {
     public let configuration: Configuration

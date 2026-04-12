@@ -1,0 +1,63 @@
+import SwiftUI
+import DiveKitCore
+
+package extension LocalizedStringResource {
+    var stringValue: String {
+        Mirror(reflecting: self)
+            .children
+            .first(where: { $0.label == "key" })
+            .flatMap { $0.value as? String }
+            .forceUnwrap("Failed to extract the key from \(self)")
+    }
+}
+
+package func localizedString(
+    for key: String,
+    with comment: @autoclosure () -> String) -> String {
+        returning(with: key) {
+            guard let localizedString = NSLocalizedString($0, bundle: LocalizedKey.mainBundle, comment: comment()) else {
+                return NSLocalizedString($0, bundle: .module, comment: comment())
+            }
+            return localizedString
+        }
+    }
+
+package func localizedString(
+    for key: String,
+    quantity: Double,
+    with comment: @autoclosure () -> String) -> String {
+        localizedString(for: key, with: comment()).withQuantity(quantity)
+            .components(separatedBy: " ")
+            .map {
+                guard let number = Double($0) else {
+                    return $0
+                }
+                return number.formatted(.number)
+            }
+            .joined(separator: " ")
+    }
+
+package func returning<T, R>(with input: T, closure: (T) -> R) -> R {
+    closure(input)
+}
+
+package func NSLocalizedString(
+    _ key: String,
+    tableName: String? = nil,
+    bundle: Bundle,
+    comment: String) -> String? {
+        guard NSLocalizedString(key, bundle: bundle, value: "", comment: comment) != key else {
+            return nil
+        }
+        return NSLocalizedString(key, bundle: bundle, value: "", comment: comment)
+}
+
+package extension String {
+    func withQuantity(_ argument: Double) -> String {
+        .localizedStringWithFormat(self, argument)
+    }
+
+    func withArguments(_ arguments: CVarArg...) -> String {
+        .init(format: self, locale: .current, arguments: arguments)
+    }
+}

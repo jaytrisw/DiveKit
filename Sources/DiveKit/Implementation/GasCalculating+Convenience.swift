@@ -1,4 +1,8 @@
 import Foundation
+@_documentation(visibility: private)
+import DiveKitCore
+@_documentation(visibility: private)
+import DiveKitLocalization
 
 public extension GasCalculating where Self: ConfigurationProviding {
     func partialPressure<Gas: GasRepresentable>(
