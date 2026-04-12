@@ -13,16 +13,6 @@ package extension Validatable {
             }
             return self
         }
-
-    func validate(
-        using validator: Validator<Self>,
-        onValidated perform: (Self) -> Void,
-        orThrow error: () -> Error) throws(Error) {
-            guard validator.validate(self) else {
-                throw error()
-            }
-            perform(self)
-        }
 }
 
 extension Double: Validatable {}
