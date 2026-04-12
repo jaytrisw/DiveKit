@@ -17,7 +17,7 @@ public protocol GasCalculating {
 
     func maximumOperatingDepth(
         for partialPressure: PartialPressure<Oxygen>,
-        in blend: Blend<Blended>) throws(Error) ->  Calculation<DecimalResult<Depth>>
+        in blend: Blend<Blended>) throws(Error) -> Calculation<DecimalResult<Depth>>
 
     func partialPressure<Gas: GasRepresentable>(
         of gas: Gas,

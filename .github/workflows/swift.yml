@@ -23,12 +23,16 @@ jobs:
           xcodebuild -version
           swift --version
 
+      - name: Run SwiftLint
+        run: swift package plugin --allow-writing-to-package-directory swiftlint --strict
+
       - name: Build
         run: swift build -v
 
       - name: Run Tests
         run: |
           xcodebuild test \
+            -skipPackagePluginValidation \
             -scheme DiveKit \
             -destination 'platform=macOS' \
             -testPlan DiveKit

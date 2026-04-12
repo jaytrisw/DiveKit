@@ -13,7 +13,7 @@ public struct Blend<State: BlendState>: Sendable {
         self.init(blend.storage)
     }
 
-    package init<each Gas: GasRepresentable>(_ values:  repeat ((each Gas), Double)) {
+    package init<each Gas: GasRepresentable>(_ values: repeat ((each Gas), Double)) {
         var storage: [AnyGas: Double] = [:]
         repeat _ = storage.updateValue((each values).1, forKey: .init((each values).0))
         self.init(storage)

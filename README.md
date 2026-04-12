@@ -12,3 +12,23 @@
 [![Build Status](https://app.bitrise.io/app/888b1200-4cd1-4e34-a305-0ab610355179/status.svg?token=QZtC4sYSLTadUfRmuxzzmQ&branch=main)](https://app.bitrise.io/app/888b1200-4cd1-4e34-a305-0ab610355179)
 [![CodeFactor](https://www.codefactor.io/repository/github/jaytrisw/divekit/badge)](https://www.codefactor.io/repository/github/jaytrisw/divekit)
 [![Codecov.io](https://codecov.io/github/jaytrisw/DiveKit/graph/badge.svg?token=NOoje9nTQv)](https://codecov.io/github/jaytrisw/DiveKit)
+
+## Development
+
+Run SwiftLint with the Swift Package plugin:
+
+```sh
+swift package plugin --allow-writing-to-package-directory swiftlint --strict
+```
+
+SwiftLint also runs during Xcode builds through the package build-tool plugin. The first local Xcode build may ask you to trust and enable the `SwiftLintBuildToolPlugin`.
+
+Run the macOS test plan:
+
+```sh
+xcodebuild test \
+  -skipPackagePluginValidation \
+  -scheme DiveKit \
+  -destination 'platform=macOS' \
+  -testPlan DiveKit
+```
