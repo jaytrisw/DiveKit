@@ -5,7 +5,7 @@ public extension Buoyancy {
         switch self {
             case let .positive(buoyantForce): buoyantForce
             case let .negative(buoyantForce): -buoyantForce
-            case .neutral: .one
+            case .neutral: 1
         }
     }
 }

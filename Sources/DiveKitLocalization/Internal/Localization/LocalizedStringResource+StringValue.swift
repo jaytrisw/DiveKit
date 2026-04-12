@@ -1,5 +1,6 @@
 import SwiftUI
 import DiveKitCore
+import DiveKitInternal
 
 package extension LocalizedStringResource {
     var stringValue: String {

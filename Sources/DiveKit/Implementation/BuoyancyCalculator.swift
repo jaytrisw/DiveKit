@@ -1,8 +1,6 @@
 import Foundation
-@_documentation(visibility: private)
 import DiveKitCore
-@_documentation(visibility: private)
-import DiveKitLocalization
+import DiveKitInternal
 
 public final class BuoyancyCalculator: ConfigurationProviding {
     public let configuration: Configuration

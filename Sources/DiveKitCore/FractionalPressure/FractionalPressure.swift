@@ -8,19 +8,6 @@ public struct FractionalPressure<Gas: GasRepresentable>: Sendable {
         self.gas = gas
         self.value = fractionalPressure
     }
-
-    public init(of gas: Gas, fractionalPressure: Double) throws(Error) {
-        let callSite: CallSite = .init(object: .init(describing: Self.self), function: #function)
-        try fractionalPressure.validate(using: .greaterThanOrEqual(to: .zero)) {
-            .negative(.fractionalPressure($0), callSite)
-        }
-        try fractionalPressure.validate(using: .lessThanOrEqual(to: .one)) {
-            .range(.upperBound($0, .one), .init(object: .init(describing: Self.self), function: #function))
-        }
-
-        self.gas = gas
-        self.value = fractionalPressure
-    }
 }
 
 extension FractionalPressure: Equatable {}

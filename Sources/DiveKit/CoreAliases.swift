@@ -1,8 +1,6 @@
-@_documentation(visibility: private)
 import DiveKitCore
 
 public typealias Blend = DiveKitCore.Blend
-public typealias BlendBuilder = DiveKitCore.BlendBuilder
 public typealias Blended = DiveKitCore.Blended
 public typealias BlendState = DiveKitCore.BlendState
 public typealias Buoyancy = DiveKitCore.Buoyancy

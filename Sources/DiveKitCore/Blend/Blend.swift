@@ -3,7 +3,7 @@ import Foundation
 public protocol BlendState: Sendable {}
 
 public struct Blend<State: BlendState>: Sendable {
-    var storage: [AnyGas: Double] = [:]
+    package var storage: [AnyGas: Double] = [:]
 
     package init(_ initialStorage: [AnyGas: Double]) {
         self.storage = initialStorage

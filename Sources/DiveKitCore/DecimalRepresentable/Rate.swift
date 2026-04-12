@@ -1,18 +1,30 @@
 import Foundation
 
-public struct Rate<Value: DecimalResultRepresentable>: Sendable
+public struct Rate<Value: DecimalResultRepresentable>: Sendable, Equatable, Hashable, Comparable, ExpressibleByFloatLiteral, ExpressibleByIntegerLiteral
     where Value.Unit: Codable & Hashable {
 
     public let value: Double
-}
 
-extension Rate: DecimalRepresentable {
     public init(_ value: Double) {
         self.value = value
     }
-}
 
-extension Rate: Equatable {}
+    public init(floatLiteral value: Float) {
+        self.init(.init(value))
+    }
+
+    public init(integerLiteral value: Int) {
+        self.init(.init(value))
+    }
+
+    public static func < (lhs: Self, rhs: Self) -> Bool {
+        lhs.value < rhs.value
+    }
+
+    public static var zero: Self {
+        .init(.zero)
+    }
+}
 
 extension Rate: DecimalResultRepresentable {
     public typealias Unit = RateUnit<Value.Unit>

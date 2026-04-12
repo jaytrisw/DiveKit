@@ -1,8 +1,6 @@
 import Foundation
-@_documentation(visibility: private)
 import DiveKitCore
-@_documentation(visibility: private)
-import DiveKitLocalization
+import DiveKitInternal
 
 final public class GasCalculator: ConfigurationProviding {
     public let configuration: Configuration

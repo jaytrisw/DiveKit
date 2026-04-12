@@ -8,11 +8,6 @@ public struct Tank: Sendable {
         self.blend = blend
         self.size = size
     }
-
-    public init(blend: Blend<Unblended>, size: Size) throws(Error) {
-        self.blend = try blend.blend(.init(object: .init(describing: Self.self), function: #function))
-        self.size = size
-    }
 }
 
 extension Tank: Equatable {}

@@ -1,4 +1,3 @@
-@_documentation(visibility: private)
 import DiveKitLocalization
 
 package typealias LocalizedKey = DiveKitLocalization.LocalizedKey

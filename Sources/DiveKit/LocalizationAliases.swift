@@ -1,4 +1,3 @@
-@_documentation(visibility: private)
 import DiveKitLocalization
 
 public typealias DecimalUnitFormatStyle = DiveKitLocalization.DecimalUnitFormatStyle
