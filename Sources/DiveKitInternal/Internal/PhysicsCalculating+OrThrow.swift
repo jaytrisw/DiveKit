@@ -10,7 +10,7 @@ package extension PhysicsCalculating {
                 .map { $0.value / configuration.water.pressure(configuration.units).increase.value }
                 .map { .decimal($0, unit: .atmospheres, configuration: configuration) }
         }
-    
+
     func atmospheresAbsolute(
         at depth: Depth,
         with configuration: Configuration,

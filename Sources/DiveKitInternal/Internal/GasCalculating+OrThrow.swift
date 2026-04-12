@@ -36,12 +36,12 @@ package extension GasCalculating {
         consuming gasConsumed: Pressure,
         with configuration: Configuration,
         _ callSite: CallSite) throws(Error) -> Calculation<DecimalResult<Rate<Pressure>>> {
-            try minutes.validate( using: .nonNegative, orThrow: { .negative($0, callSite) })
+            try minutes.validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
                 .map { (minutes: Minutes) throws(Error) in
                     try minutes.validate(using: .greater(than: 0)) { .range(.lowerBound($0.value, 0), callSite) }
                 }
-                .map { (minutes: Minutes) throws(Error) in
-                    try gasConsumed.validate( using: .nonNegative, orThrow: { .negative($0, callSite) })
+                .map { (_: Minutes) throws(Error) in
+                    try gasConsumed.validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
                 }
                 .map { gasConsumed.value / minutes.value }
                 .map { .decimal($0, unit: .perMinute(configuration.units.pressure), configuration: configuration) }

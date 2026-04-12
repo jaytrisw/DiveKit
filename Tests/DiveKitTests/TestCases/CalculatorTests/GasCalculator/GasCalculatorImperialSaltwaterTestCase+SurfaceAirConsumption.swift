@@ -2,15 +2,15 @@ import XCTest
 @testable import DiveKit
 
 extension GasCalculatorImperialSaltwaterTestCase {
-    
+
     // MARK: surfaceAirConsumption(at:for:consuming:using:)
-    
+
     func testSurfaceAirConsumptionConsumingValidInput() throws {
         // Given
         let depth: Depth = 90.0
         let minutes: Minutes = 10.0
         let consuming: Pressure = 600.0
-        
+
         // When
         try XCTAssertCalculation(
             sut.surfaceAirConsumption(
@@ -24,7 +24,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
                     XCTAssertEqual(configuration, sut.configuration)
                 }
     }
-    
+
     func testSurfaceAirConsumptionConsumingInvalidDepthInput() throws {
         // Given
         let depth: Depth = -90.0
@@ -43,7 +43,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.depth")
             }
     }
-    
+
     func testSurfaceAirConsumptionConsumingInvalidMinutesInput() throws {
         // Given
         let depth: Depth = 90.0
@@ -81,7 +81,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 XCTAssertEqual($0.localizationKey, "dive.kit.error.range.lower.bound")
             }
     }
-    
+
     func testSurfaceAirConsumptionConsumingInvalidConsumingInput() throws {
         // Given
         let depth: Depth = 90.0
@@ -101,16 +101,16 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.pressure")
             }
     }
-    
+
     // MARK: surfaceAirConsumption(at:for:start:end:using:)
-    
+
     func testSurfaceAirConsumptionStartEndValidInput() throws {
         // Given
         let depth: Depth = 90.0
         let minutes: Minutes = 10.0
         let startPressure: Pressure = 3000.0
         let endPressure: Pressure = 2400.0
-        
+
         // When
         try XCTAssertCalculation(
             sut.surfaceAirConsumption(
@@ -125,7 +125,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
                     XCTAssertEqual(configuration, sut.configuration)
                 }
     }
-    
+
     func testSurfaceAirConsumptionStartEndInvalidDepthInput() throws {
         // Given
         let depth: Depth = -90.0
@@ -146,7 +146,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.depth")
             }
     }
-    
+
     func testSurfaceAirConsumptionStartEndInvalidTimeInput() throws {
         // Given
         let depth: Depth = 90.0
@@ -167,7 +167,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.minutes")
             }
     }
-    
+
     func testSurfaceAirConsumptionStartEndInvalidStartPressureInput() throws {
         // Given
         let depth: Depth = 90.0
@@ -188,7 +188,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.pressure")
             }
     }
-    
+
     func testSurfaceAirConsumptionStartEndInvalidEndPressureInput() throws {
         // Given
         let depth: Depth = 90.0
@@ -209,7 +209,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.pressure")
             }
     }
-    
+
     func testSurfaceAirConsumptionStartEndInvalidCalculatedConsumingPressureInput() throws {
         // Given
         let depth: Depth = 90.0
@@ -231,5 +231,5 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.pressure")
             }
     }
-    
+
 }

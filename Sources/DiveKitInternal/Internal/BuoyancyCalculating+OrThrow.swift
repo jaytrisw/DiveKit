@@ -7,7 +7,7 @@ package extension BuoyancyCalculating {
         with configuration: Configuration,
         _ callSite: CallSite) throws(Error) -> Calculation<Buoyancy> {
             try object.weight.validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
-                .map { (mass: Mass) throws(Error) in
+                .map { (_: Mass) throws(Error) in
                     try object.volume.validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
                 }
                 .map { object.volume.value * configuration.water.weight(configuration.units).value }

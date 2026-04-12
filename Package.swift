@@ -12,8 +12,11 @@ let package = Package(
         .library(
             name: "DiveKit",
             targets: [
-                "DiveKit",
+                "DiveKit"
             ])
+    ],
+    dependencies: [
+        .package(url: "https://github.com/SimplyDanny/SwiftLintPlugins", from: "0.63.2")
     ],
     targets: [
         .target(
@@ -21,34 +24,49 @@ let package = Package(
             dependencies: [
                 "DiveKitCore",
                 "DiveKitInternal",
-                "DiveKitLocalization",
+                "DiveKitLocalization"
+            ],
+            plugins: [
+                .plugin(name: "SwiftLintBuildToolPlugin", package: "SwiftLintPlugins")
             ]
         ),
         .target(
-            name: "DiveKitCore"
+            name: "DiveKitCore",
+            plugins: [
+                .plugin(name: "SwiftLintBuildToolPlugin", package: "SwiftLintPlugins")
+            ]
         ),
         .target(
             name: "DiveKitInternal",
             dependencies: [
-                "DiveKitCore",
+                "DiveKitCore"
+            ],
+            plugins: [
+                .plugin(name: "SwiftLintBuildToolPlugin", package: "SwiftLintPlugins")
             ]
         ),
         .target(
             name: "DiveKitLocalization",
             dependencies: [
                 "DiveKitCore",
-                "DiveKitInternal",
+                "DiveKitInternal"
             ],
             resources: [
-                .process("Resources"),
+                .process("Resources")
+            ],
+            plugins: [
+                .plugin(name: "SwiftLintBuildToolPlugin", package: "SwiftLintPlugins")
             ]
         ),
         .testTarget(
             name: "DiveKitTests",
             dependencies: [
-                "DiveKit",
+                "DiveKit"
             ],
             resources: [
                 .process("Resources")
+            ],
+            plugins: [
+                .plugin(name: "SwiftLintBuildToolPlugin", package: "SwiftLintPlugins")
             ])
     ])
