@@ -1,12 +1,6 @@
 import Foundation
 import DiveKitCore
-
-@resultBuilder
-public enum BlendBuilder {
-    public static func buildBlock<each Gas: GasRepresentable, State: BlendState>(_ components: repeat FractionalPressure<each Gas>) -> Blend<State> {
-        .init(repeat ((each components).gas, (each components).value))
-    }
-}
+import DiveKitInternal
 
 package extension Blend where State == Blended {
     init(@BlendBuilder builder: () -> Self) {
