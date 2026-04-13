@@ -1,4 +1,6 @@
 import Foundation
+import DiveKitCore
+import DiveKitInternal
 
 public class PhysicsCalculator: ConfigurationProviding {
     public let configuration: Configuration
@@ -18,7 +20,7 @@ extension PhysicsCalculator: PhysicsCalculating {
         to depth: Depth,
         with volume: Volume) throws(DiveKit.Error) -> Calculation<DecimalResult<Volume>> {
             try volume.validate(using: .nonNegative, orThrow: { .negative($0, .from(self)) })
-                .map { (volume: Volume) throws(DiveKit.Error) in
+                .map { (_: Volume) throws(DiveKit.Error) in
                     try atmospheresAbsolute(at: depth, with: configuration, .from(self))
                 }
                 .map { volume.value / $0.result.value }
@@ -29,7 +31,7 @@ extension PhysicsCalculator: PhysicsCalculating {
         from depth: Depth,
         with volume: Volume) throws(DiveKit.Error) -> Calculation<DecimalResult<Volume>> {
             try volume.validate(using: .nonNegative, orThrow: { .negative($0, .from(self)) })
-                .map { (volume: Volume) throws(DiveKit.Error) in
+                .map { (_: Volume) throws(DiveKit.Error) in
                     try atmospheresAbsolute(at: depth, with: configuration, .from(self))
                 }
                 .map { volume.value * $0.result.value }

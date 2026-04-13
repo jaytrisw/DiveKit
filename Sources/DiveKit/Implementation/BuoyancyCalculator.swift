@@ -1,4 +1,6 @@
 import Foundation
+import DiveKitCore
+import DiveKitInternal
 
 public final class BuoyancyCalculator: ConfigurationProviding {
     public let configuration: Configuration
@@ -19,7 +21,7 @@ extension BuoyancyCalculator: BuoyancyCalculating {
         andDisplacing volume: Volume) throws(DiveKit.Error) -> Calculation<Buoyancy> {
             try weight
                 .validate(using: .nonNegative, orThrow: { .negative($0, .from(self)) })
-                .map { (mass: Mass) throws(DiveKit.Error) in
+                .map { (_: Mass) throws(DiveKit.Error) in
                     try volume.validate(using: .nonNegative, orThrow: { .negative($0, .from(self)) })
                 }
                 .map { (volume: Volume) throws(DiveKit.Error) in

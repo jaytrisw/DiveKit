@@ -1,4 +1,6 @@
 import Foundation
+import DiveKitCore
+import DiveKitInternal
 
 final public class GasCalculator: ConfigurationProviding {
     public let configuration: Configuration
@@ -26,13 +28,13 @@ extension GasCalculator: GasCalculating {
         partialPressure: PartialPressure<Oxygen>,
         using physicsCalculator: PhysicsCalculating) throws(DiveKit.Error) -> Calculation<Blend<Blended>> {
             try depth.validate(using: .nonNegative, orThrow: { .negative($0, .from(self)) })
-                .map { (depth: Depth) throws(DiveKit.Error) in
+                .map { (_: Depth) throws(DiveKit.Error) in
                     try partialPressure.validate(using: .nonNegative) { .negative($0, .from(self)) }
                         .map { (partialPressure: PartialPressure<Oxygen>) throws(DiveKit.Error) in
                             try partialPressure.validate(using: .greater(than: 0)) { .range(.lowerBound($0.value, 0), .from(self)) }
                         }
                 }
-                .map { (partialPressure: PartialPressure<Oxygen>) throws(DiveKit.Error) in
+                .map { (_: PartialPressure<Oxygen>) throws(DiveKit.Error) in
                     try physicsCalculator.atmospheresAbsolute(at: depth, with: configuration, .from(self))
                 }
                 .map { partialPressure.value / $0.result.value }
