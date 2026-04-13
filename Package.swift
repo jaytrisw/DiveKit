@@ -13,13 +13,35 @@ let package = Package(
             name: "DiveKit",
             targets: [
                 "DiveKit"
+            ]),
+        .executable(
+            name: "catalog-sync",
+            targets: [
+                "DiveKitCatalogSync"
             ])
     ],
     dependencies: [
+        .package(url: "https://github.com/apple/swift-argument-parser", from: "1.5.0"),
         .package(url: "https://github.com/swiftlang/swift-docc-plugin", from: "1.4.6"),
         .package(url: "https://github.com/SimplyDanny/SwiftLintPlugins", from: "0.63.2")
     ],
     targets: [
+        .executableTarget(
+            name: "DiveKitCatalogSync",
+            dependencies: [
+                "DiveKitCatalogSyncCore",
+                .product(name: "ArgumentParser", package: "swift-argument-parser")
+            ],
+            plugins: [
+                .plugin(name: "SwiftLintBuildToolPlugin", package: "SwiftLintPlugins")
+            ]
+        ),
+        .target(
+            name: "DiveKitCatalogSyncCore",
+            plugins: [
+                .plugin(name: "SwiftLintBuildToolPlugin", package: "SwiftLintPlugins")
+            ]
+        ),
         .target(
             name: "DiveKit",
             dependencies: [
@@ -59,6 +81,14 @@ let package = Package(
                 .plugin(name: "SwiftLintBuildToolPlugin", package: "SwiftLintPlugins")
             ]
         ),
+        .testTarget(
+            name: "DiveKitCatalogSyncTests",
+            dependencies: [
+                "DiveKitCatalogSyncCore"
+            ],
+            plugins: [
+                .plugin(name: "SwiftLintBuildToolPlugin", package: "SwiftLintPlugins")
+            ]),
         .testTarget(
             name: "DiveKitTests",
             dependencies: [

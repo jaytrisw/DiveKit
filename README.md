@@ -32,3 +32,30 @@ xcodebuild test \
   -destination 'platform=macOS' \
   -testPlan DiveKit
 ```
+
+## String Catalog Sync
+
+DiveKit includes a small CLI for copying missing library localization keys into a host app string catalog:
+
+```sh
+swift run divekit-catalog-sync \
+  --target /path/to/HostApp/Localizable.xcstrings
+```
+
+On first run, when the target catalog does not exist, the tool copies DiveKit's catalog to the target path. On later runs, it only adds keys that are missing from the host catalog. Existing host keys are left untouched so apps can override DiveKit's default strings or add their own translations.
+
+When running the tool outside the DiveKit package root, pass the package catalog explicitly:
+
+```sh
+swift run divekit-catalog-sync \
+  --source /path/to/DiveKit/Sources/DiveKitLocalization/Resources/Localizable.xcstrings \
+  --target /path/to/HostApp/Localizable.xcstrings
+```
+
+Preview changes without writing:
+
+```sh
+swift run divekit-catalog-sync \
+  --target /path/to/HostApp/Localizable.xcstrings \
+  --dry-run
+```
