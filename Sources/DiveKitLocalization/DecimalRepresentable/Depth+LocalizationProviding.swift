@@ -1,7 +1,15 @@
 import Foundation
 import DiveKitCore
 
+/// Allows depth units to provide localized titles, descriptions, and quantities.
+///
+/// - Since: 1.0.0
 extension Depth.Unit: LocalizationProviding {
+    /// Returns a localization key or localized quantity for a depth unit component.
+    ///
+    /// - Parameter component: The depth unit component to localize.
+    /// - Returns: A localized string for `component`.
+    /// - Since: 1.0.0
     public func localization(for component: LocalizationComponent) -> String {
         switch component {
             case .title:
@@ -15,6 +23,11 @@ extension Depth.Unit: LocalizationProviding {
 }
 
 private extension Depth.Unit {
+    /// Returns the localization key for a depth unit description.
+    ///
+    /// - Parameter style: The localization style to use.
+    /// - Returns: A localization key.
+    /// - Since: 1.0.0
     func description(_ style: LocalizationStyle) -> String {
         String {
             switch (self, style) {
@@ -30,6 +43,11 @@ private extension Depth.Unit {
         }
     }
 
+    /// Returns the localization key for a depth unit quantity.
+    ///
+    /// - Parameter style: The localization style to use.
+    /// - Returns: A localization key.
+    /// - Since: 1.0.0
     func quantity(_ style: LocalizationStyle) -> String {
         String {
             switch (self, style) {
