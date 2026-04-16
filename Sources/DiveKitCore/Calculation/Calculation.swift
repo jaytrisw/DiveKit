@@ -2,16 +2,8 @@ import Foundation
 
 /// A value produced by a calculation together with the configuration used.
 ///
-/// `Calculation` keeps result values tied to the units and water model that
-/// produced them, which is especially important for values that carry units.
-///
-/// ## Example
-///
-/// ```swift
-/// let calculation = try calculator.gaugePressure(at: 30)
-/// let pressure = calculation.result
-/// let configuration = calculation.configuration
-/// ```
+/// `Calculation` keeps result values tied to the units and water model used to
+/// produce them, which is especially important for values that carry units.
 ///
 /// - Since: 1.0.0
 public struct Calculation<Result: ResultRepresentable>: Sendable {

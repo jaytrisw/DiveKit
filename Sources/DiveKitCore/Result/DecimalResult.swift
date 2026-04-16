@@ -5,14 +5,6 @@ import Foundation
 /// `DecimalResult` is used when the calculation output is a domain decimal
 /// value such as `Depth`, `Pressure`, `Volume`, or `Rate`.
 ///
-/// ## Example
-///
-/// ```swift
-/// let result = calculation.result
-/// let value = result.value
-/// let unit = result.unit
-/// ```
-///
 /// - Since: 1.0.0
 public struct DecimalResult<Decimal: DecimalResultRepresentable>: Sendable {
     /// The raw numeric result.

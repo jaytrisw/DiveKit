@@ -5,12 +5,6 @@ import Foundation
 /// `Pressure` stores the numeric amount independently from units. A
 /// `DecimalResult<Pressure>` carries the unit used for presentation.
 ///
-/// ## Example
-///
-/// ```swift
-/// let pressure = Pressure(200)
-/// ```
-///
 /// - Since: 1.0.0
 public struct Pressure: Sendable, Equatable, Hashable {
     /// The raw numeric pressure.

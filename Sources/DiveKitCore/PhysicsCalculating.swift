@@ -2,8 +2,8 @@ import Foundation
 
 /// A calculator that performs pressure and volume physics calculations.
 ///
-/// Conforming implementations throw `DiveKitCore.Error` for invalid domain
-/// inputs, such as negative depths or volumes.
+/// Conforming types report invalid domain inputs, such as negative depths or
+/// volumes, by throwing ``Error``.
 ///
 /// - Since: 1.0.0
 public protocol PhysicsCalculating {
@@ -11,7 +11,7 @@ public protocol PhysicsCalculating {
     ///
     /// - Parameter depth: The depth at which to calculate gauge pressure.
     /// - Returns: A calculation containing gauge pressure.
-    /// - Throws: `DiveKitCore.Error.negative` if `depth` is negative.
+    /// - Throws: ``Error/negative(_:_:)`` if `depth` is negative.
     /// - Since: 1.0.0
     func gaugePressure(
         at depth: Depth) throws(Error) -> Calculation<DecimalResult<Pressure>>
@@ -22,7 +22,7 @@ public protocol PhysicsCalculating {
     ///   - depth: The target depth.
     ///   - volume: The volume at the surface.
     /// - Returns: A calculation containing volume at depth.
-    /// - Throws: `DiveKitCore.Error.negative` for invalid negative inputs.
+    /// - Throws: ``Error/negative(_:_:)`` if `depth` or `volume` is negative.
     /// - Since: 1.0.0
     func airVolumeFromSurface(
         to depth: Depth,
@@ -34,7 +34,7 @@ public protocol PhysicsCalculating {
     ///   - depth: The starting depth.
     ///   - volume: The volume at depth.
     /// - Returns: A calculation containing surface-equivalent volume.
-    /// - Throws: `DiveKitCore.Error.negative` for invalid negative inputs.
+    /// - Throws: ``Error/negative(_:_:)`` if `depth` or `volume` is negative.
     /// - Since: 1.0.0
     func airVolumeToSurface(
         from depth: Depth,
@@ -44,7 +44,7 @@ public protocol PhysicsCalculating {
     ///
     /// - Parameter depth: The depth at which to calculate absolute pressure.
     /// - Returns: A calculation containing absolute pressure in atmospheres.
-    /// - Throws: `DiveKitCore.Error.negative` if `depth` is negative.
+    /// - Throws: ``Error/negative(_:_:)`` if `depth` is negative.
     /// - Since: 1.0.0
     func atmospheresAbsolute(
         at depth: Depth) throws(Error) -> Calculation<DecimalResult<Pressure>>
@@ -55,7 +55,7 @@ public protocol PhysicsCalculating {
     ///   - firstDepth: The starting depth.
     ///   - secondDepth: The ending depth.
     /// - Returns: A calculation containing the pressure difference.
-    /// - Throws: `DiveKitCore.Error.negative` if either depth is negative.
+    /// - Throws: ``Error/negative(_:_:)`` if either depth is negative.
     /// - Since: 1.0.0
     func pressureChange(
         from firstDepth: Depth,

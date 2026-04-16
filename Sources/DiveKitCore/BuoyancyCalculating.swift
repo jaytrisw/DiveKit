@@ -2,8 +2,8 @@ import Foundation
 
 /// A calculator that performs buoyancy calculations.
 ///
-/// Conforming implementations throw `DiveKitCore.Error` for invalid domain
-/// inputs, such as negative weights or volumes.
+/// Conforming types report invalid domain inputs, such as negative weights or
+/// volumes, by throwing ``Error``.
 ///
 /// - Since: 1.0.0
 public protocol BuoyancyCalculating {
@@ -11,7 +11,7 @@ public protocol BuoyancyCalculating {
     ///
     /// - Parameter object: The object to evaluate.
     /// - Returns: A calculation containing the object's buoyancy.
-    /// - Throws: `DiveKitCore.Error.negative` if the object's weight or volume is negative.
+    /// - Throws: ``Error/negative(_:_:)`` if the object's weight or volume is negative.
     /// - Since: 1.0.0
     func buoyancy(
         of object: Object) throws(Error) -> Calculation<Buoyancy>
@@ -22,7 +22,7 @@ public protocol BuoyancyCalculating {
     ///   - weight: The object's weight.
     ///   - volume: The object's displaced volume.
     /// - Returns: A calculation containing the resulting buoyancy.
-    /// - Throws: `DiveKitCore.Error.negative` if `weight` or `volume` is negative.
+    /// - Throws: ``Error/negative(_:_:)`` if `weight` or `volume` is negative.
     /// - Since: 1.0.0
     func buoyancyOfObject(
         weighing weight: Mass,
@@ -34,7 +34,7 @@ public protocol BuoyancyCalculating {
     ///   - weight: The object's weight.
     ///   - buoyancy: The object's buoyancy.
     /// - Returns: A calculation containing the resulting volume.
-    /// - Throws: `DiveKitCore.Error.negative` if `weight` is negative.
+    /// - Throws: ``Error/negative(_:_:)`` if `weight` is negative.
     /// - Since: 1.0.0
     func volumeOfObject(
         weighing weight: Mass,

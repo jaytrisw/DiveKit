@@ -5,12 +5,6 @@ import Foundation
 /// `Volume` stores the numeric amount independently from units. A
 /// `DecimalResult<Volume>` carries the unit used for presentation.
 ///
-/// ## Example
-///
-/// ```swift
-/// let volume = Volume(80)
-/// ```
-///
 /// - Since: 1.0.0
 public struct Volume: Sendable, Equatable, Hashable {
     /// The raw numeric volume.

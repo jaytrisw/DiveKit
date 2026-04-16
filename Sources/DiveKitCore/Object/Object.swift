@@ -5,12 +5,6 @@ import Foundation
 /// `Object` combines weight and displaced volume so buoyancy calculations can
 /// compare the object's weight with the weight of displaced water.
 ///
-/// ## Example
-///
-/// ```swift
-/// let object = Object(weight: 10, volume: 8)
-/// ```
-///
 /// - Since: 1.0.0
 public struct Object: Sendable {
     /// The object's weight.

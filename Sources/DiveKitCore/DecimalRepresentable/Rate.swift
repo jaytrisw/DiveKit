@@ -5,12 +5,6 @@ import Foundation
 /// `Rate` represents values such as pressure per minute or volume per minute.
 /// The base value determines the unit carried by `RateUnit`.
 ///
-/// ## Example
-///
-/// ```swift
-/// let sac = Rate<Pressure>(18)
-/// ```
-///
 /// - Since: 1.0.0
 public struct Rate<Value: DecimalResultRepresentable>: Sendable, Equatable, Hashable
     where Value.Unit: Codable & Hashable {

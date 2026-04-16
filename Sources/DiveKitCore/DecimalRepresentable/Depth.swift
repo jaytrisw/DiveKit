@@ -5,12 +5,6 @@ import Foundation
 /// `Depth` stores the numeric depth independently from display or calculation
 /// units. Units are attached to calculation results through `DecimalResult`.
 ///
-/// ## Example
-///
-/// ```swift
-/// let depth = Depth(30)
-/// ```
-///
 /// - Since: 1.0.0
 public struct Depth: Sendable, Equatable, Hashable {
     /// The raw numeric depth.

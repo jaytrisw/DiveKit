@@ -6,12 +6,6 @@ import Foundation
 /// `Configuration` determines whether the value is interpreted as pounds or
 /// kilograms in calculation results.
 ///
-/// ## Example
-///
-/// ```swift
-/// let weight = Mass(12)
-/// ```
-///
 /// - Since: 1.0.0
 public struct Mass: Sendable, Equatable, Hashable {
     /// The raw numeric mass or weight.

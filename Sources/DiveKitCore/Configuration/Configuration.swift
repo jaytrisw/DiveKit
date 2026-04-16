@@ -5,12 +5,6 @@ import Foundation
 /// `Configuration` determines how domain values are interpreted and which
 /// water density and pressure model a calculator uses.
 ///
-/// ## Example
-///
-/// ```swift
-/// let configuration = Configuration(units: .metric, water: .salt)
-/// ```
-///
 /// - Since: 1.0.0
 public struct Configuration: Sendable {
     /// The unit system used for calculation results.

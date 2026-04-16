@@ -2,8 +2,8 @@ import Foundation
 
 /// A calculator that performs gas planning and gas consumption calculations.
 ///
-/// Conforming implementations throw `DiveKitCore.Error` for invalid domain
-/// inputs, blend validation failures, and range violations.
+/// Conforming types report invalid domain inputs, blend validation failures,
+/// and range violations by throwing ``Error``.
 ///
 /// - Since: 1.0.0
 public protocol GasCalculating {
@@ -14,7 +14,7 @@ public protocol GasCalculating {
     ///   - depth: The depth at which to calculate partial pressure.
     ///   - physicsCalculator: The physics calculator used for absolute pressure.
     /// - Returns: A calculation containing gas partial pressure.
-    /// - Throws: A `DiveKitCore.Error` from the underlying pressure calculation.
+    /// - Throws: An ``Error`` from the underlying pressure calculation.
     /// - Since: 1.0.0
     func partialPressure<Gas: GasRepresentable>(
         of fractionalPressure: FractionalPressure<Gas>,
@@ -28,7 +28,9 @@ public protocol GasCalculating {
     ///   - partialPressure: The target oxygen partial pressure.
     ///   - physicsCalculator: The physics calculator used for absolute pressure.
     /// - Returns: A calculation containing the resulting validated blend.
-    /// - Throws: `DiveKitCore.Error` for invalid depth, partial pressure, or blend range.
+    /// - Throws: ``Error/negative(_:_:)`` if `depth` or `partialPressure` is
+    ///   negative, or ``Error/range(_:_:)`` if `partialPressure` is zero or the
+    ///   resulting oxygen fraction is outside the valid blend range.
     /// - Since: 1.0.0
     func bestBlend(
         for depth: Depth,
@@ -41,7 +43,9 @@ public protocol GasCalculating {
     ///   - depth: The actual depth.
     ///   - blend: The validated blend.
     /// - Returns: A calculation containing equivalent air depth.
-    /// - Throws: `DiveKitCore.Error.negative` if `depth` is negative.
+    /// - Throws: ``Error/negative(_:_:)`` if `depth` is negative, or an
+    ///   ``Error/blend(_:_:)`` if the blend cannot produce a valid nitrogen
+    ///   fraction.
     /// - Since: 1.0.0
     func equivalentAirDepth(
         for depth: Depth,
@@ -53,7 +57,9 @@ public protocol GasCalculating {
     ///   - partialPressure: The maximum allowed oxygen partial pressure.
     ///   - blend: The validated blend.
     /// - Returns: A calculation containing maximum operating depth.
-    /// - Throws: `DiveKitCore.Error` for invalid oxygen fraction or partial pressure.
+    /// - Throws: ``Error/negative(_:_:)`` if `partialPressure` is negative, or
+    ///   ``Error/range(_:_:)`` if `partialPressure` or the blend's oxygen
+    ///   fraction is zero.
     /// - Since: 1.0.0
     func maximumOperatingDepth(
         for partialPressure: PartialPressure<Oxygen>,
@@ -67,7 +73,8 @@ public protocol GasCalculating {
     ///   - depth: The depth at which to calculate partial pressure.
     ///   - physicsCalculator: The physics calculator used for absolute pressure.
     /// - Returns: A calculation containing gas partial pressure.
-    /// - Throws: `DiveKitCore.Error` for invalid blend or pressure inputs.
+    /// - Throws: An ``Error`` if the blend cannot produce a valid fractional
+    ///   pressure for `gas`, or if the underlying pressure calculation fails.
     /// - Since: 1.0.0
     func partialPressure<Gas: GasRepresentable>(
         of gas: Gas,
@@ -83,8 +90,10 @@ public protocol GasCalculating {
     ///   - startGas: The starting tank pressure.
     ///   - endGas: The ending tank pressure.
     ///   - physicsCalculator: The physics calculator used for absolute pressure.
-    /// - Returns: A calculation containing surface air consumption.
-    /// - Throws: `DiveKitCore.Error` for invalid pressure, depth, or time inputs.
+    /// - Returns: A calculation containing the surface air consumption rate.
+    /// - Throws: ``Error/negative(_:_:)`` if `depth`, `minutes`, `startGas`,
+    ///   `endGas`, or the consumed pressure is negative, or
+    ///   ``Error/range(_:_:)`` if `minutes` is zero.
     /// - Since: 1.0.0
     func surfaceAirConsumption(
         at depth: Depth,
@@ -102,7 +111,10 @@ public protocol GasCalculating {
     ///   - tank: The tank used for the dive.
     ///   - physicsCalculator: The physics calculator used for absolute pressure.
     /// - Returns: A calculation containing respiratory minute volume.
-    /// - Throws: `DiveKitCore.Error` for invalid tank, pressure, depth, or time inputs.
+    /// - Throws: ``Error/tank(_:_:)`` if the tank volume or rated pressure is
+    ///   negative, ``Error/negative(_:_:)`` if `depth`, `minutes`, or
+    ///   `gasConsumed` is negative, or ``Error/range(_:_:)`` if `minutes` is
+    ///   zero.
     /// - Since: 1.0.0
     func respiratoryMinuteVolume(
         at depth: Depth,

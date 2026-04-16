@@ -14,12 +14,6 @@ public protocol BlendState: Sendable {}
 /// `Blend` stores fractional pressures for gases. The `State` generic
 /// distinguishes unvalidated mixtures from validated blended mixtures.
 ///
-/// ## Example
-///
-/// ```swift
-/// let oxygenFraction = blend.fractionalPressure(of: Oxygen())
-/// ```
-///
 /// - Since: 1.0.0
 public struct Blend<State: BlendState>: Sendable {
     /// Storage keyed by type-erased gas identity.
