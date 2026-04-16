@@ -15,6 +15,8 @@ DiveKit calculations are built around three ideas:
 Use a unit system and water model to create a configuration.
 
 ```swift
+import DiveKit
+
 let configuration = Configuration(units: .metric, water: .salt)
 ```
 
@@ -25,8 +27,8 @@ Use `.metric` for meters, kilograms, bar, and liters. Use `.imperial` for feet, 
 Create a calculator with the configuration and call a calculation method.
 
 ```swift
-let physics = PhysicsCalculator(configuration: configuration)
-let pressure = try physics.atmospheresAbsolute(at: 30)
+let physicsCalculator = PhysicsCalculator(configuration: configuration)
+let pressure = try physicsCalculator.atmospheresAbsolute(at: 30)
 
 print(pressure.result.value)
 print(pressure.result.unit)
@@ -36,11 +38,11 @@ The result is typed. For example, `atmospheresAbsolute(at:)` returns a `Calculat
 
 ## Handle Errors
 
-Throwing DiveKit APIs throw `Error`.
+Throwing DiveKit APIs throw `DiveKit.Error`.
 
 ```swift
 do {
-    let pressure = try physics.gaugePressure(at: -10)
+    let pressure = try physicsCalculator.gaugePressure(at: -10)
 } catch let error as DiveKit.Error {
     print(error.localizedDescription)
 }
@@ -54,16 +56,24 @@ Use localization format styles to render values with localized units.
 
 ```swift
 let depth = Depth(30)
-let localized = depth.formatted(.depth(.meters, style: .short))
+let formattedDepth = depth.formatted(.depth(.meters, style: .short))
 ```
 
-## Related APIs
+## Additional API Names
 
-### Related Types
+`Configuration`, `Calculation`, and `Error` are the core names used in this walkthrough.
 
-- `Configuration`
-- `Calculation`
-- `PhysicsCalculator`
-- `GasCalculator`
-- `BuoyancyCalculator`
-- `Error`
+## Topics
+
+### Calculators
+
+- ``PhysicsCalculator``
+- ``GasCalculator``
+- ``BuoyancyCalculator``
+
+### Next Steps
+
+- <doc:Calculations>
+- <doc:GasBlends>
+- <doc:Localization>
+- <doc:Errors>

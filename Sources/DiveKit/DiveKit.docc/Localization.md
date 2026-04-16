@@ -8,7 +8,7 @@ DiveKit provides localization protocols and format styles for decimal domain val
 
 ```swift
 let depth = Depth(30)
-let text = depth.formatted(.depth(.meters, style: .short))
+let formattedDepth = depth.formatted(.depth(.meters, style: .short))
 ```
 
 ## Format Raw Values
@@ -16,7 +16,7 @@ let text = depth.formatted(.depth(.meters, style: .short))
 You can also format a raw `Double` when the format style supplies the domain type.
 
 ```swift
-let text = 30.0.formatted(.depth(.meters, style: .full))
+let formattedDepth = 30.0.formatted(.depth(.meters, style: .full))
 ```
 
 ## Format Rates
@@ -25,7 +25,7 @@ Rates use the base unit they are measured per minute in.
 
 ```swift
 let rate = Rate<Pressure>(18)
-let text = rate.formatted(.rate(.perMinute(.bar), style: .short))
+let formattedRate = rate.formatted(.rate(.perMinute(.bar), style: .short))
 ```
 
 ## Localize Units
@@ -33,11 +33,11 @@ let text = rate.formatted(.rate(.perMinute(.bar), style: .short))
 Units provide localized titles, descriptions, and quantity strings.
 
 ```swift
-let title = Pressure.Unit.bar.localizedTitle
-let description = Pressure.Unit.bar.localizedDescription(for: .full)
+let localizedTitle = Pressure.Unit.bar.localizedTitle
+let localizedDescription = Pressure.Unit.bar.localizedDescription(for: .full)
 ```
 
-## Related APIs
+## Additional API Names
 
 ### Localization Types
 

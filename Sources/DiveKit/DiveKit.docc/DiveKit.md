@@ -9,19 +9,21 @@ DiveKit provides calculators and model types for common recreational diving calc
 Use `Configuration` to choose a unit system and water model, then create a calculator for the domain you need:
 
 ```swift
-let configuration = Configuration(units: .metric, water: .salt)
-let physics = PhysicsCalculator(configuration: configuration)
+import DiveKit
 
-let pressure = try physics.atmospheresAbsolute(at: 30)
+let configuration = Configuration(units: .metric, water: .salt)
+let physicsCalculator = PhysicsCalculator(configuration: configuration)
+
+let absolutePressure = try physicsCalculator.atmospheresAbsolute(at: 30)
 ```
 
-Throwing APIs use typed throws and throw `Error` for recoverable domain failures, such as negative inputs, range violations, invalid blends, and invalid tank values.
+Throwing APIs use typed throws and throw `DiveKit.Error` for recoverable domain failures, such as negative inputs, range violations, invalid blends, and invalid tank values.
 
 ```swift
 do {
     let oxygen = try FractionalPressure(of: Oxygen(), fractionalPressure: 0.32)
     let partialPressure = try GasCalculator(configuration: configuration)
-        .partialPressure(of: oxygen, at: 30, using: physics)
+        .partialPressure(of: oxygen, at: 30, using: physicsCalculator)
 } catch let error as DiveKit.Error {
     print(error.localizedDescription)
 }
@@ -42,9 +44,9 @@ The selected unit system controls result units such as `Depth.Unit`, `Pressure.U
 
 DiveKit includes three calculator types:
 
-- `PhysicsCalculator` for pressure and volume calculations.
-- `GasCalculator` for partial pressure, blend planning, MOD, EAD, SAC, and RMV calculations.
-- `BuoyancyCalculator` for object buoyancy and related volume calculations.
+- ``PhysicsCalculator`` for pressure and volume calculations.
+- ``GasCalculator`` for partial pressure, blend planning, MOD, EAD, SAC, and RMV calculations.
+- ``BuoyancyCalculator`` for object buoyancy and related volume calculations.
 
 Each calculator stores the configuration used to produce `Calculation` values.
 
@@ -67,25 +69,20 @@ DiveKit includes localization helpers for unit titles, descriptions, quantities,
 
 ```swift
 let depth = Depth(30)
-let formatted = depth.formatted(.depth(.meters, style: .short))
+let formattedDepth = depth.formatted(.depth(.meters, style: .short))
 ```
 
-## Related APIs
+## Additional API Names
 
 ### Essentials
 
-- <doc:GettingStarted>
 - `Configuration`
 - `Units`
 - `Water`
 
 ### Calculations
 
-- <doc:Calculations>
 - `Calculation`
-- `PhysicsCalculator`
-- `GasCalculator`
-- `BuoyancyCalculator`
 - `PhysicsCalculating`
 - `GasCalculating`
 - `BuoyancyCalculating`
@@ -106,7 +103,6 @@ let formatted = depth.formatted(.depth(.meters, style: .short))
 
 ### Gas Blends
 
-- <doc:GasBlends>
 - `Blend`
 - `BlendState`
 - `Blended`
@@ -118,7 +114,6 @@ let formatted = depth.formatted(.depth(.meters, style: .short))
 
 ### Localization
 
-- <doc:Localization>
 - `LocalizationStyle`
 - `LocalizationComponent`
 - `LocalizationProviding`
@@ -127,6 +122,21 @@ let formatted = depth.formatted(.depth(.meters, style: .short))
 
 ### Errors
 
-- <doc:Errors>
 - `Error`
 - `CallSite`
+
+## Topics
+
+### Articles
+
+- <doc:GettingStarted>
+- <doc:Calculations>
+- <doc:GasBlends>
+- <doc:Localization>
+- <doc:Errors>
+
+### Calculators
+
+- ``PhysicsCalculator``
+- ``GasCalculator``
+- ``BuoyancyCalculator``

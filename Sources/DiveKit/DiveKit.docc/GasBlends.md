@@ -44,7 +44,7 @@ let air = Blend.air
 let ean32 = try Blend.enrichedAir(0.32)
 ```
 
-## Related APIs
+## Additional API Names
 
 ### Blend Types
 
