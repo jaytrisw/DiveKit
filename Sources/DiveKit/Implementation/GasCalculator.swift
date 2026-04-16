@@ -22,8 +22,6 @@ final public class GasCalculator: ConfigurationProviding {
     ///
     /// - Parameter configuration: The configuration used for calculations.
     ///
-    /// ## Example
-    ///
     /// ```swift
     /// let calculator = GasCalculator(configuration: configuration)
     /// ```
@@ -42,13 +40,11 @@ extension GasCalculator: GasCalculating {
     ///   - depth: The depth at which the calculation is performed.
     ///   - physicsCalculator: A calculator used to determine absolute pressure.
     /// - Returns: A calculation containing the partial pressure.
-    /// - Throws: A `DiveKit.Error` from the underlying absolute-pressure calculation.
+    /// - Throws: A `Error` from the underlying absolute-pressure calculation.
     ///
     /// ## Formula
     ///
     /// `partial pressure = absolute pressure × fractional pressure`
-    ///
-    /// ## Example
     ///
     /// ```swift
     /// let oxygen = try FractionalPressure(of: Oxygen(), fractionalPressure: 0.32)
@@ -79,14 +75,12 @@ extension GasCalculator: GasCalculating {
     ///   - partialPressure: The desired oxygen partial pressure.
     ///   - physicsCalculator: A calculator used to determine absolute pressure.
     /// - Returns: A calculation containing the optimal blend.
-    /// - Throws: `DiveKit.Error.negative` if `depth` or `partialPressure` is
-    ///   negative, or `DiveKit.Error.range` if `partialPressure` is zero.
+    /// - Throws: `Error.negative` if `depth` or `partialPressure` is
+    ///   negative, or `Error.range` if `partialPressure` is zero.
     ///
     /// ## Formula
     ///
     /// `oxygen fraction = desired oxygen partial pressure ÷ absolute pressure`
-    ///
-    /// ## Example
     ///
     /// ```swift
     /// let blend = try calculator.bestBlend(
@@ -128,13 +122,11 @@ extension GasCalculator: GasCalculating {
     ///   - depth: The actual depth.
     ///   - blend: The gas mixture.
     /// - Returns: A calculation containing the equivalent air depth.
-    /// - Throws: `DiveKit.Error.negative` if `depth` is negative.
+    /// - Throws: `Error.negative` if `depth` is negative.
     ///
     /// ## Formula
     ///
     /// `EAD = ((depth + pressure increase per atmosphere) × nitrogen ratio) - pressure increase per atmosphere`
-    ///
-    /// ## Example
     ///
     /// ```swift
     /// let ead = try calculator.equivalentAirDepth(
@@ -165,14 +157,12 @@ extension GasCalculator: GasCalculating {
     ///   - partialPressure: The maximum allowable oxygen partial pressure.
     ///   - blend: The gas mixture.
     /// - Returns: A calculation containing the maximum operating depth.
-    /// - Throws: `DiveKit.Error.negative` if `partialPressure` is negative, or
-    ///   `DiveKit.Error.range` if the oxygen fraction or `partialPressure` is zero.
+    /// - Throws: `Error.negative` if `partialPressure` is negative, or
+    ///   `Error.range` if the oxygen fraction or `partialPressure` is zero.
     ///
     /// ## Formula
     ///
     /// `MOD = ((oxygen partial pressure ÷ oxygen fraction) - 1) × pressure increase per atmosphere`
-    ///
-    /// ## Example
     ///
     /// ```swift
     /// let mod = try calculator.maximumOperatingDepth(
@@ -209,14 +199,12 @@ extension GasCalculator: GasCalculating {
     ///   - depth: The depth.
     ///   - physicsCalculator: A physics calculator.
     /// - Returns: A calculation containing the partial pressure.
-    /// - Throws: A `DiveKit.Error` if the blend cannot produce a valid
+    /// - Throws: A `Error` if the blend cannot produce a valid
     ///   fractional pressure for `gas`, or if the absolute-pressure calculation fails.
     ///
     /// ## Formula
     ///
     /// `partial pressure = absolute pressure × fractional pressure`
-    ///
-    /// ## Example
     ///
     /// ```swift
     /// let pp = try calculator.partialPressure(
@@ -251,14 +239,12 @@ extension GasCalculator: GasCalculating {
     ///   - endGas: Ending pressure.
     ///   - physicsCalculator: A physics calculator.
     /// - Returns: A calculation containing the SAC rate.
-    /// - Throws: `DiveKit.Error.negative` if `startGas` or `endGas` is negative,
-    ///   or a `DiveKit.Error` from surface air consumption validation.
+    /// - Throws: `Error.negative` if `startGas` or `endGas` is negative,
+    ///   or a `Error` from surface air consumption validation.
     ///
     /// ## Formula
     ///
     /// `gas consumed = start pressure - end pressure`
-    ///
-    /// ## Example
     ///
     /// ```swift
     /// let sac = try calculator.surfaceAirConsumption(
@@ -305,14 +291,12 @@ extension GasCalculator: GasCalculating {
     ///   - tank: The tank used.
     ///   - physicsCalculator: A physics calculator.
     /// - Returns: A calculation containing the RMV.
-    /// - Throws: `DiveKit.Error.tank` if the tank volume or rated pressure is
-    ///   negative, or a `DiveKit.Error` from surface air consumption validation.
+    /// - Throws: `Error.tank` if the tank volume or rated pressure is
+    ///   negative, or a `Error` from surface air consumption validation.
     ///
     /// ## Formula
     ///
     /// `RMV = SAC × tank conversion factor`
-    ///
-    /// ## Example
     ///
     /// ```swift
     /// let rmv = try calculator.respiratoryMinuteVolume(
@@ -360,8 +344,6 @@ private extension Tank.Size {
     /// ## Formula
     ///
     /// `conversion factor = volume ÷ rated pressure`
-    ///
-    /// ## Example
     ///
     /// ```swift
     /// let factor = tank.size.conversionFactor

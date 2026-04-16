@@ -7,9 +7,7 @@ public extension Blend where State == Blended {
     /// This blend represents atmospheric air using typical fractional pressures
     /// for oxygen, nitrogen, and trace gases.
     ///
-    /// - Returns: A `Blend<Blended>` representing air.
-    ///
-    /// ## Example
+    /// - Returns: A `Blend` in the `Blended` state representing air.
     ///
     /// ```swift
     /// let air = Blend.air
@@ -35,15 +33,13 @@ public extension Blend where State == Blended {
     /// the remainder.
     ///
     /// - Parameter fraction: The fractional pressure of oxygen.
-    /// - Returns: A `Blend<Blended>` representing enriched air.
-    /// - Throws: `DiveKit.Error.negative` if `fraction` is negative, or
-    ///   `DiveKit.Error.range` if `fraction` is greater than `1`.
+    /// - Returns: A `Blend` in the `Blended` state representing enriched air.
+    /// - Throws: `Error.negative` if `fraction` is negative, or
+    ///   `Error.range` if `fraction` is greater than `1`.
     ///
     /// ## Formula
     ///
     /// `nitrogen fraction = 1.0 - oxygen fraction`
-    ///
-    /// ## Example
     ///
     /// ```swift
     /// let enrichedAir = try Blend.enrichedAir(0.32) // EAN32

@@ -10,10 +10,8 @@ public extension Blend where State == Blended {
     ///
     /// - Parameter gas: The gas whose fractional pressure should be retrieved.
     /// - Returns: A `FractionalPressure` representing the gas's contribution to the blend.
-    /// - Throws: `DiveKit.Error.negative` if the stored fractional pressure is
-    ///   negative, or `DiveKit.Error.range` if it is greater than `1`.
-    ///
-    /// ## Example
+    /// - Throws: `Error.negative` if the stored fractional pressure is
+    ///   negative, or `Error.range` if it is greater than `1`.
     ///
     /// ```swift
     /// let oxygen = try blend.fractionalPressure(of: Oxygen())
@@ -37,8 +35,6 @@ extension CallSite {
     ///   - blend: The blend used to derive the diagnostic object name.
     ///   - function: The calling function. Defaults to the caller's function name.
     /// - Returns: A `CallSite` for blend-related errors and diagnostics.
-    ///
-    /// ## Example
     ///
     /// ```swift
     /// let callSite = CallSite.from(blend)

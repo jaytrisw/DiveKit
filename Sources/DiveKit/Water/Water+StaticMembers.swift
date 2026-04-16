@@ -9,8 +9,6 @@ public extension Water {
     ///
     /// - Returns: A `Water` instance configured for salt water conditions.
     ///
-    /// ## Example
-    ///
     /// ```swift
     /// let water = Water.salt
     /// ```
@@ -31,8 +29,6 @@ public extension Water {
     /// pressure increase per unit depth, based on the selected unit system.
     ///
     /// - Returns: A `Water` instance configured for fresh water conditions.
-    ///
-    /// ## Example
     ///
     /// ```swift
     /// let water = Water.fresh

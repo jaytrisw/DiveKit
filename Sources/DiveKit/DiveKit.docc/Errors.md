@@ -1,10 +1,10 @@
 # Errors
 
-Handle recoverable validation and calculation failures with `DiveKit.Error`.
+Handle recoverable validation and calculation failures with `Error`.
 
 ## Overview
 
-DiveKit throwing APIs use typed throws and throw `DiveKit.Error`. Each error includes a `CallSite` so diagnostics can identify where the failure originated.
+DiveKit throwing APIs use typed throws and throw `Error`. Each error includes a `CallSite` so diagnostics can identify where the failure originated.
 
 ```swift
 do {
@@ -16,7 +16,7 @@ do {
 
 ## Error Categories
 
-`DiveKit.Error` groups failures by domain:
+`Error` groups failures by domain:
 
 - `negative` for values that must not be negative.
 - `range` for lower-bound or upper-bound violations.
@@ -25,15 +25,15 @@ do {
 
 ## Localized Descriptions
 
-`DiveKit.Error` conforms to `LocalizedError` through DiveKit's localization support.
+`Error` conforms to `LocalizedError` through DiveKit's localization support.
 
 ```swift
 let message = error.localizedDescription
 ```
 
-## Topics
+## Related APIs
 
 ### Error Types
 
-- ``Error``
-- ``CallSite``
+- `Error`
+- `CallSite`

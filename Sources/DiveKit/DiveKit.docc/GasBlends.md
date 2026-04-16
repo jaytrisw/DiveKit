@@ -6,8 +6,8 @@ Build gas mixtures with fractional pressures and validate them before use.
 
 `Blend` uses a state marker to distinguish an incomplete or unvalidated mix from a validated mix.
 
-- `Blend<Unblended>` can be edited.
-- `Blend<Blended>` represents a mix that has passed blend validation.
+- `Blend` in the `Unblended` state can be edited.
+- `Blend` in the `Blended` state represents a mix that has passed blend validation.
 
 ## Build a Blend
 
@@ -44,23 +44,23 @@ let air = Blend.air
 let ean32 = try Blend.enrichedAir(0.32)
 ```
 
-## Topics
+## Related APIs
 
 ### Blend Types
 
-- ``Blend``
-- ``BlendState``
-- ``Blended``
-- ``Unblended``
+- `Blend`
+- `BlendState`
+- `Blended`
+- `Unblended`
 
 ### Gas Types
 
-- ``GasRepresentable``
-- ``Oxygen``
-- ``Nitrogen``
-- ``Trace``
+- `GasRepresentable`
+- `Oxygen`
+- `Nitrogen`
+- `Trace`
 
 ### Fractional Pressure
 
-- ``FractionalPressure``
-- ``PartialPressure``
+- `FractionalPressure`
+- `PartialPressure`

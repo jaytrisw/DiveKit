@@ -11,10 +11,8 @@ public extension Tank {
     /// - Parameters:
     ///   - blend: The unblended gas mixture to store in the tank.
     ///   - size: The physical size specification of the tank.
-    /// - Throws: `DiveKit.Error.blend` if `blend` cannot be converted into a
+    /// - Throws: `Error.blend` if `blend` cannot be converted into a
     ///   valid blended state.
-    ///
-    /// ## Example
     ///
     /// ```swift
     /// let tank = try Tank(

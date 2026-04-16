@@ -5,9 +5,7 @@ import DiveKitInternal
 public extension Blend where State == Unblended {
     /// Creates an empty unblended gas mixture.
     ///
-    /// - Returns: An empty `Blend<Unblended>`.
-    ///
-    /// ## Example
+    /// - Returns: An empty `Blend` in the `Unblended` state.
     ///
     /// ```swift
     /// let blend = Blend<Unblended>()
@@ -23,9 +21,7 @@ public extension Blend where State == Unblended {
     /// - Parameters:
     ///   - gas: The gas to add.
     ///   - pressure: The fractional pressure of the gas.
-    /// - Throws: `DiveKit.Error.blend` if `pressure` is not within `0...1`.
-    ///
-    /// ## Example
+    /// - Throws: `Error.blend` if `pressure` is not within `0...1`.
     ///
     /// ```swift
     /// try blend.add(Oxygen(), pressure: 0.21)
@@ -39,10 +35,8 @@ public extension Blend where State == Unblended {
     /// Adds a fractional pressure to the blend.
     ///
     /// - Parameter fractionalPressure: The fractional pressure to add.
-    /// - Throws: `DiveKit.Error.blend` if the fractional pressure value is not
+    /// - Throws: `Error.blend` if the fractional pressure value is not
     ///   within `0...1`.
-    ///
-    /// ## Example
     ///
     /// ```swift
     /// try blend.add(FractionalPressure(of: Oxygen(), fractionalPressure: 0.21))
@@ -58,9 +52,7 @@ public extension Blend where State == Unblended {
     /// - Parameters:
     ///   - gas: The gas to update.
     ///   - pressure: The new fractional pressure.
-    /// - Throws: `DiveKit.Error.blend` if `pressure` is not within `0...1`.
-    ///
-    /// ## Example
+    /// - Throws: `Error.blend` if `pressure` is not within `0...1`.
     ///
     /// ```swift
     /// try blend.update(Oxygen(), pressure: 0.32)
@@ -74,10 +66,8 @@ public extension Blend where State == Unblended {
     /// Updates the fractional pressure using a `FractionalPressure` value.
     ///
     /// - Parameter fractionalPressure: The new fractional pressure.
-    /// - Throws: `DiveKit.Error.blend` if the fractional pressure value is not
+    /// - Throws: `Error.blend` if the fractional pressure value is not
     ///   within `0...1`.
-    ///
-    /// ## Example
     ///
     /// ```swift
     /// try blend.update(FractionalPressure(of: Oxygen(), fractionalPressure: 0.32))
@@ -93,14 +83,12 @@ public extension Blend where State == Unblended {
     /// This method calculates the remaining capacity (`1 - totalPressure`) and assigns it to `gas`.
     ///
     /// - Parameter gas: The gas used to fill the remaining capacity.
-    /// - Throws: `DiveKit.Error.blend` if the remaining fractional pressure is
+    /// - Throws: `Error.blend` if the remaining fractional pressure is
     ///   not within `0...1`.
     ///
     /// ## Formula
     ///
     /// `remaining fraction = 1 - total pressure`
-    ///
-    /// ## Example
     ///
     /// ```swift
     /// try blend.fill(with: Nitrogen())
@@ -126,10 +114,8 @@ public extension Blend where State == Unblended {
     /// - Parameters:
     ///   - gas: The gas to add.
     ///   - pressure: The fractional pressure.
-    /// - Returns: A new `Blend<Unblended>` with the gas added.
-    /// - Throws: `DiveKit.Error.blend` if `pressure` is not within `0...1`.
-    ///
-    /// ## Example
+    /// - Returns: A new `Blend` in the `Unblended` state with the gas added.
+    /// - Throws: `Error.blend` if `pressure` is not within `0...1`.
     ///
     /// ```swift
     /// let updated = try blend.adding(Oxygen(), pressure: 0.21)
@@ -148,10 +134,8 @@ public extension Blend where State == Unblended {
     ///
     /// - Parameter fractionalPressure: The fractional pressure to add.
     /// - Returns: A new blend with the value added.
-    /// - Throws: `DiveKit.Error.blend` if the fractional pressure value is not
+    /// - Throws: `Error.blend` if the fractional pressure value is not
     ///   within `0...1`.
-    ///
-    /// ## Example
     ///
     /// ```swift
     /// let updated = try blend.adding(FractionalPressure(of: Oxygen(), fractionalPressure: 0.21))
@@ -169,9 +153,7 @@ public extension Blend where State == Unblended {
     ///   - gas: The gas to update.
     ///   - pressure: The new fractional pressure.
     /// - Returns: A new blend with the updated value.
-    /// - Throws: `DiveKit.Error.blend` if `pressure` is not within `0...1`.
-    ///
-    /// ## Example
+    /// - Throws: `Error.blend` if `pressure` is not within `0...1`.
     ///
     /// ```swift
     /// let updated = try blend.updating(Oxygen(), pressure: 0.32)
@@ -190,10 +172,8 @@ public extension Blend where State == Unblended {
     ///
     /// - Parameter fractionalPressure: The new fractional pressure.
     /// - Returns: A new blend with the updated value.
-    /// - Throws: `DiveKit.Error.blend` if the fractional pressure value is not
+    /// - Throws: `Error.blend` if the fractional pressure value is not
     ///   within `0...1`.
-    ///
-    /// ## Example
     ///
     /// ```swift
     /// let updated = try blend.updating(FractionalPressure(of: Oxygen(), fractionalPressure: 0.32))
@@ -209,14 +189,12 @@ public extension Blend where State == Unblended {
     ///
     /// - Parameter gas: The gas used to fill the remaining capacity.
     /// - Returns: A new blend with the remaining capacity filled.
-    /// - Throws: `DiveKit.Error.blend` if the remaining fractional pressure is
+    /// - Throws: `Error.blend` if the remaining fractional pressure is
     ///   not within `0...1`.
     ///
     /// ## Formula
     ///
     /// `remaining fraction = 1 - total pressure`
-    ///
-    /// ## Example
     ///
     /// ```swift
     /// let updated = try blend.filling(with: Nitrogen())
@@ -234,16 +212,14 @@ public extension Blend where State == Unblended {
     /// Converts the unblended mixture into a blended state.
     ///
     /// This method validates that the total fractional pressure equals `1`
-    /// before producing a `Blend<Blended>`.
+    /// before producing a `Blend` in the `Blended` state.
     ///
     /// - Returns: A blended gas mixture.
-    /// - Throws: `DiveKit.Error.blend` if the mixture is not normalized.
+    /// - Throws: `Error.blend` if the mixture is not normalized.
     ///
     /// ## Invariant
     ///
     /// The total fractional pressure must equal `1`.
-    ///
-    /// ## Example
     ///
     /// ```swift
     /// let blended = try blend.blend()

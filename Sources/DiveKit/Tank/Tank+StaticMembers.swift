@@ -13,8 +13,6 @@ public extension Tank {
     ///   - blend: The gas blend contained in the tank.
     /// - Returns: A `Tank` configured with cubic feet units.
     ///
-    /// ## Example
-    ///
     /// ```swift
     /// let tank = Tank.cubicFeet(
     ///     80,

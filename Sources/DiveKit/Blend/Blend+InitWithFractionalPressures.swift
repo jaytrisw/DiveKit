@@ -4,12 +4,10 @@ import DiveKitCore
 package extension Blend where State == Blended {
     /// Creates a blended gas mixture from a list of fractional pressures.
     ///
-    /// This initializer allows constructing a `Blend<Blended>` by passing
+    /// This initializer allows constructing a `Blend` in the `Blended` state by passing
     /// multiple `FractionalPressure` values directly.
     ///
     /// - Parameter fractionalPressures: A variadic list of fractional pressures.
-    ///
-    /// ## Example
     ///
     /// ```swift
     /// let blend = Blend<Blended>(
@@ -28,12 +26,10 @@ package extension Blend where State == Blended {
 public extension Blend where State == Unblended {
     /// Creates an unblended gas mixture from a list of fractional pressures.
     ///
-    /// This initializer allows constructing a `Blend<Unblended>` by passing
+    /// This initializer allows constructing a `Blend` in the `Unblended` state by passing
     /// multiple `FractionalPressure` values directly.
     ///
     /// - Parameter fractionalPressures: A variadic list of fractional pressures.
-    ///
-    /// ## Example
     ///
     /// ```swift
     /// let blend = Blend<Unblended>(

@@ -24,7 +24,7 @@ let expanded = try physics.airVolumeToSurface(from: 99, with: 20)
 let change = try physics.pressureChange(from: 33, to: 99)
 ```
 
-Depth and volume inputs must be non-negative. When validation fails, these APIs throw `DiveKit.Error`.
+`Depth` and `Volume` inputs must be non-negative. When validation fails, these APIs throw `Error`.
 
 ## Gas Calculations
 
@@ -43,7 +43,7 @@ let partialPressure = try gas.partialPressure(
 
 Use `bestBlend(for:partialPressure:using:)`, `maximumOperatingDepth(for:in:)`, and `equivalentAirDepth(for:with:)` for planning calculations.
 
-Use `surfaceAirConsumption` and `respiratoryMinuteVolume` for gas consumption calculations.
+Use `surfaceAirConsumption(at:for:start:end:using:)` and `respiratoryMinuteVolume(at:for:consuming:with:using:)` for gas consumption calculations.
 
 ## Buoyancy Calculations
 
@@ -60,23 +60,23 @@ let result = try buoyancy.buoyancyOfObject(
 
 Weight and volume inputs must be non-negative.
 
-## Topics
+## Related APIs
 
 ### Calculator Types
 
-- ``PhysicsCalculator``
-- ``GasCalculator``
-- ``BuoyancyCalculator``
+- `PhysicsCalculator`
+- `GasCalculator`
+- `BuoyancyCalculator`
 
 ### Calculator Protocols
 
-- ``PhysicsCalculating``
-- ``GasCalculating``
-- ``BuoyancyCalculating``
+- `PhysicsCalculating`
+- `GasCalculating`
+- `BuoyancyCalculating`
 
 ### Result Types
 
-- ``Calculation``
-- ``DecimalResult``
-- ``ResultRepresentable``
-- ``DecimalResultRepresentable``
+- `Calculation`
+- `DecimalResult`
+- `ResultRepresentable`
+- `DecimalResultRepresentable`

@@ -20,8 +20,6 @@ public final class BuoyancyCalculator: ConfigurationProviding {
     ///
     /// - Parameter configuration: The configuration used for calculations.
     ///
-    /// ## Example
-    ///
     /// ```swift
     /// let calculator = BuoyancyCalculator(configuration: configuration)
     /// ```
@@ -37,13 +35,11 @@ extension BuoyancyCalculator: BuoyancyCalculating {
     ///
     /// - Parameter object: The object whose buoyancy should be calculated.
     /// - Returns: A calculation containing the resulting `Buoyancy`.
-    /// - Throws: `DiveKit.Error.negative` if the object's weight or volume is negative.
+    /// - Throws: `Error.negative` if the object's weight or volume is negative.
     ///
     /// ## Formula
     ///
     /// `buoyancy = displaced water weight - object weight`
-    ///
-    /// ## Example
     ///
     /// ```swift
     /// let result = try calculator.buoyancy(of: object)
@@ -61,13 +57,11 @@ extension BuoyancyCalculator: BuoyancyCalculating {
     ///   - weight: The weight of the object.
     ///   - volume: The volume of water displaced by the object.
     /// - Returns: A calculation containing the resulting `Buoyancy`.
-    /// - Throws: `DiveKit.Error.negative` if `weight` or `volume` is negative.
+    /// - Throws: `Error.negative` if `weight` or `volume` is negative.
     ///
     /// ## Formula
     ///
     /// `buoyancy = displaced water weight - object weight`
-    ///
-    /// ## Example
     ///
     /// ```swift
     /// let result = try calculator.buoyancyOfObject(
@@ -96,13 +90,11 @@ extension BuoyancyCalculator: BuoyancyCalculating {
     ///   - weight: The weight of the object.
     ///   - buoyancy: The buoyancy of the object.
     /// - Returns: A calculation containing the resulting volume.
-    /// - Throws: `DiveKit.Error.negative` if `weight` is negative.
+    /// - Throws: `Error.negative` if `weight` is negative.
     ///
     /// ## Formula
     ///
     /// `volume = (weight + buoyant force) ÷ water density`
-    ///
-    /// ## Example
     ///
     /// ```swift
     /// let result = try calculator.volumeOfObject(

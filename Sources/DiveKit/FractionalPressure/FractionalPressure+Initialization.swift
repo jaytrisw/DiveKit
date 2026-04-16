@@ -11,10 +11,8 @@ public extension FractionalPressure {
     /// - Parameters:
     ///   - gas: The gas associated with the fractional pressure.
     ///   - fractionalPressure: The fractional pressure value.
-    /// - Throws: `DiveKit.Error.negative` if `fractionalPressure` is negative,
-    ///   or `DiveKit.Error.range` if it is greater than `1`.
-    ///
-    /// ## Example
+    /// - Throws: `Error.negative` if `fractionalPressure` is negative,
+    ///   or `Error.range` if it is greater than `1`.
     ///
     /// ```swift
     /// let fraction = try FractionalPressure(

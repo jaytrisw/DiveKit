@@ -37,19 +37,19 @@ let title = Pressure.Unit.bar.localizedTitle
 let description = Pressure.Unit.bar.localizedDescription(for: .full)
 ```
 
-## Topics
+## Related APIs
 
 ### Localization Types
 
-- ``LocalizationStyle``
-- ``LocalizationComponent``
-- ``LocalizationProviding``
-- ``LocalizedTitleProviding``
-- ``LocalizedDescriptionProviding``
+- `LocalizationStyle`
+- `LocalizationComponent`
+- `LocalizationProviding`
+- `LocalizedTitleProviding`
+- `LocalizedDescriptionProviding`
 
 ### Formatting
 
-- ``DecimalUnitLocalizable``
-- ``DecimalUnitFormatStyle``
-- ``DecimalUnitLocalizable/formatted(_:)``
-- ``Double/formatted(_:)``
+- `DecimalUnitLocalizable`
+- `DecimalUnitFormatStyle`
+- `DecimalUnitLocalizable.formatted(_:)`
+- `Double.formatted(_:)`

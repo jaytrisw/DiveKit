@@ -14,14 +14,12 @@ public extension GasCalculating where Self: ConfigurationProviding {
     ///   - depth: The depth at which to calculate partial pressure.
     ///   - physicsCalculator: A calculator used to determine absolute pressure at depth.
     /// - Returns: A calculation containing the partial pressure of the gas.
-    /// - Throws: `DiveKit.Error.blend` if the blend cannot be normalized, or a
-    ///   `DiveKit.Error` from the partial-pressure calculation.
+    /// - Throws: `Error.blend` if the blend cannot be normalized, or a
+    ///   `Error` from the partial-pressure calculation.
     ///
     /// ## Formula
     ///
     /// `partial pressure = absolute pressure × fractional pressure`
-    ///
-    /// ## Example
     ///
     /// ```swift
     /// let result = try calculator.partialPressure(
@@ -61,14 +59,12 @@ public extension GasCalculating where Self: ConfigurationProviding {
     ///   - gasConsumed: The amount of gas consumed.
     ///   - physicsCalculator: A calculator used to determine absolute pressure at depth.
     /// - Returns: A calculation containing the surface air consumption rate.
-    /// - Throws: `DiveKit.Error.negative` for negative `depth`, `minutes`, or
-    ///   `gasConsumed`, or `DiveKit.Error.range` when `minutes` is zero.
+    /// - Throws: `Error.negative` for negative `depth`, `minutes`, or
+    ///   `gasConsumed`, or `Error.range` when `minutes` is zero.
     ///
     /// ## Formula
     ///
     /// `SAC = depth consumption ÷ absolute pressure`
-    ///
-    /// ## Example
     ///
     /// ```swift
     /// let sac = try calculator.surfaceAirConsumption(
@@ -103,14 +99,12 @@ public extension GasCalculating where Self: ConfigurationProviding {
     ///   - depth: The actual depth.
     ///   - blend: The unblended gas mixture.
     /// - Returns: A calculation containing the equivalent air depth.
-    /// - Throws: `DiveKit.Error.blend` if the blend cannot be normalized, or
-    ///   `DiveKit.Error.negative` if `depth` is negative.
+    /// - Throws: `Error.blend` if the blend cannot be normalized, or
+    ///   `Error.negative` if `depth` is negative.
     ///
     /// ## Formula
     ///
     /// `EAD = ((depth + pressure increase per atmosphere) × nitrogen ratio) - pressure increase per atmosphere`
-    ///
-    /// ## Example
     ///
     /// ```swift
     /// let ead = try calculator.equivalentAirDepth(

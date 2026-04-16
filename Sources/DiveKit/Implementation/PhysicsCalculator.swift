@@ -21,8 +21,6 @@ public class PhysicsCalculator: ConfigurationProviding {
     ///
     /// - Parameter configuration: The configuration used for calculations.
     ///
-    /// ## Example
-    ///
     /// ```swift
     /// let calculator = PhysicsCalculator(configuration: configuration)
     /// ```
@@ -38,13 +36,11 @@ extension PhysicsCalculator: PhysicsCalculating {
     ///
     /// - Parameter depth: The depth at which to calculate gauge pressure.
     /// - Returns: A calculation containing the gauge pressure.
-    /// - Throws: `DiveKit.Error.negative` if `depth` is negative.
+    /// - Throws: `Error.negative` if `depth` is negative.
     ///
     /// ## Formula
     ///
     /// `gauge pressure = depth ÷ pressure increase per atmosphere`
-    ///
-    /// ## Example
     ///
     /// ```swift
     /// let pressure = try calculator.gaugePressure(at: 30)
@@ -65,13 +61,11 @@ extension PhysicsCalculator: PhysicsCalculating {
     ///   - depth: The target depth.
     ///   - volume: The volume at the surface.
     /// - Returns: A calculation containing the compressed volume at depth.
-    /// - Throws: `DiveKit.Error.negative` if `volume` or `depth` is negative.
+    /// - Throws: `Error.negative` if `volume` or `depth` is negative.
     ///
     /// ## Formula
     ///
     /// `volume at depth = surface volume ÷ absolute pressure`
-    ///
-    /// ## Example
     ///
     /// ```swift
     /// let volumeAtDepth = try calculator.airVolumeFromSurface(
@@ -102,13 +96,11 @@ extension PhysicsCalculator: PhysicsCalculating {
     ///   - depth: The starting depth.
     ///   - volume: The volume at depth.
     /// - Returns: A calculation containing the expanded surface volume.
-    /// - Throws: `DiveKit.Error.negative` if `volume` or `depth` is negative.
+    /// - Throws: `Error.negative` if `volume` or `depth` is negative.
     ///
     /// ## Formula
     ///
     /// `surface volume = volume at depth × absolute pressure`
-    ///
-    /// ## Example
     ///
     /// ```swift
     /// let surfaceVolume = try calculator.airVolumeToSurface(
@@ -138,13 +130,11 @@ extension PhysicsCalculator: PhysicsCalculating {
     ///
     /// - Parameter depth: The depth at which to calculate pressure.
     /// - Returns: A calculation containing the absolute pressure.
-    /// - Throws: `DiveKit.Error.negative` if `depth` is negative.
+    /// - Throws: `Error.negative` if `depth` is negative.
     ///
     /// ## Formula
     ///
     /// `absolute pressure = gauge pressure + 1`
-    ///
-    /// ## Example
     ///
     /// ```swift
     /// let pressure = try calculator.atmospheresAbsolute(at: 30)
@@ -163,13 +153,11 @@ extension PhysicsCalculator: PhysicsCalculating {
     ///   - firstDepth: The starting depth.
     ///   - secondDepth: The ending depth.
     /// - Returns: A calculation containing the pressure difference.
-    /// - Throws: `DiveKit.Error.negative` if either depth is negative.
+    /// - Throws: `Error.negative` if either depth is negative.
     ///
     /// ## Formula
     ///
     /// `pressure change = second absolute pressure - first absolute pressure`
-    ///
-    /// ## Example
     ///
     /// ```swift
     /// let delta = try calculator.pressureChange(

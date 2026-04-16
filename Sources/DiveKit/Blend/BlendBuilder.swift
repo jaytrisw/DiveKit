@@ -5,12 +5,10 @@ import DiveKitInternal
 package extension Blend where State == Blended {
     /// Creates a blended gas mixture using a result builder.
     ///
-    /// This initializer allows declarative construction of a `Blend<Blended>`
-    /// using ``BlendBuilder``.
+    /// This initializer allows declarative construction of a `Blend` in the `Blended` state
+    /// using `BlendBuilder`.
     ///
     /// - Parameter builder: A result builder that produces a blended `Blend`.
-    ///
-    /// ## Example
     ///
     /// ```swift
     /// let blend = Blend<Blended> {
@@ -29,12 +27,10 @@ package extension Blend where State == Blended {
 package extension Blend where State == Unblended {
     /// Creates an unblended gas mixture using a result builder.
     ///
-    /// This initializer allows declarative construction of a `Blend<Unblended>`
-    /// using ``BlendBuilder``.
+    /// This initializer allows declarative construction of a `Blend` in the `Unblended` state
+    /// using `BlendBuilder`.
     ///
     /// - Parameter builder: A result builder that produces an unblended `Blend`.
-    ///
-    /// ## Example
     ///
     /// ```swift
     /// let blend = Blend<Unblended> {
@@ -43,7 +39,7 @@ package extension Blend where State == Unblended {
     /// }
     /// ```
     ///
-    /// - Note: The resulting blend may require validation via `blend(_:)`
+    /// - Note: The resulting blend may require validation via `blend()`
     ///   before it can be used as a `Blended` state.
     /// - Since: 1.0.0
     init(@BlendBuilder builder: () -> Self) {
@@ -54,13 +50,11 @@ package extension Blend where State == Unblended {
 public extension Blend where State == Blended {
     /// Creates a blended gas mixture using a throwing result builder.
     ///
-    /// This initializer allows declarative construction of a `Blend<Blended>`
+    /// This initializer allows declarative construction of a `Blend` in the `Blended` state
     /// where the builder may throw during evaluation.
     ///
     /// - Parameter builder: A throwing result builder that produces a blended `Blend`.
-    /// - Throws: The `DiveKit.Error` thrown by `builder`.
-    ///
-    /// ## Example
+    /// - Throws: The `Error` thrown by `builder`.
     ///
     /// ```swift
     /// let blend = try Blend<Blended> {
@@ -79,13 +73,11 @@ public extension Blend where State == Blended {
 public extension Blend where State == Unblended {
     /// Creates an unblended gas mixture using a throwing result builder.
     ///
-    /// This initializer allows declarative construction of a `Blend<Unblended>`
+    /// This initializer allows declarative construction of a `Blend` in the `Unblended` state
     /// where the builder may throw during evaluation.
     ///
     /// - Parameter builder: A throwing result builder that produces an unblended `Blend`.
-    /// - Throws: The `DiveKit.Error` thrown by `builder`.
-    ///
-    /// ## Example
+    /// - Throws: The `Error` thrown by `builder`.
     ///
     /// ```swift
     /// let blend = try Blend<Unblended> {
@@ -94,7 +86,7 @@ public extension Blend where State == Unblended {
     /// }
     /// ```
     ///
-    /// - Note: The resulting blend may require validation via `blend(_:)`
+    /// - Note: The resulting blend may require validation via `blend()`
     ///   before it can be converted into a `Blended` state.
     /// - Since: 1.0.0
     init(@BlendBuilder builder: () throws(Error) -> Self) throws(Error) {

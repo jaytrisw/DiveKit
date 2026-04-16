@@ -15,7 +15,7 @@ let physics = PhysicsCalculator(configuration: configuration)
 let pressure = try physics.atmospheresAbsolute(at: 30)
 ```
 
-Throwing APIs use typed throws and throw `DiveKit.Error` for recoverable domain failures, such as negative inputs, range violations, invalid blends, and invalid tank values.
+Throwing APIs use typed throws and throw `Error` for recoverable domain failures, such as negative inputs, range violations, invalid blends, and invalid tank values.
 
 ```swift
 do {
@@ -59,7 +59,7 @@ let nitrox32 = try Blend<Unblended>()
     .blend()
 ```
 
-Use `Blend<Unblended>` while building a mix, then call `blend()` to validate that the total fractional pressure equals `1`.
+Use `Blend` in the `Unblended` state while building a mix, then call `blend()` to validate that the total fractional pressure equals `1`.
 
 ### Localization
 
@@ -70,63 +70,63 @@ let depth = Depth(30)
 let formatted = depth.formatted(.depth(.meters, style: .short))
 ```
 
-## Topics
+## Related APIs
 
 ### Essentials
 
 - <doc:GettingStarted>
-- ``Configuration``
-- ``Units``
-- ``Water``
+- `Configuration`
+- `Units`
+- `Water`
 
 ### Calculations
 
 - <doc:Calculations>
-- ``Calculation``
-- ``PhysicsCalculator``
-- ``GasCalculator``
-- ``BuoyancyCalculator``
-- ``PhysicsCalculating``
-- ``GasCalculating``
-- ``BuoyancyCalculating``
+- `Calculation`
+- `PhysicsCalculator`
+- `GasCalculator`
+- `BuoyancyCalculator`
+- `PhysicsCalculating`
+- `GasCalculating`
+- `BuoyancyCalculating`
 
 ### Domain Values
 
-- ``Depth``
-- ``Mass``
-- ``Minutes``
-- ``Pressure``
-- ``Volume``
-- ``Rate``
-- ``PartialPressure``
-- ``FractionalPressure``
-- ``Buoyancy``
-- ``Object``
-- ``Tank``
+- `Depth`
+- `Mass`
+- `Minutes`
+- `Pressure`
+- `Volume`
+- `Rate`
+- `PartialPressure`
+- `FractionalPressure`
+- `Buoyancy`
+- `Object`
+- `Tank`
 
 ### Gas Blends
 
 - <doc:GasBlends>
-- ``Blend``
-- ``BlendState``
-- ``Blended``
-- ``Unblended``
-- ``GasRepresentable``
-- ``Oxygen``
-- ``Nitrogen``
-- ``Trace``
+- `Blend`
+- `BlendState`
+- `Blended`
+- `Unblended`
+- `GasRepresentable`
+- `Oxygen`
+- `Nitrogen`
+- `Trace`
 
 ### Localization
 
 - <doc:Localization>
-- ``LocalizationStyle``
-- ``LocalizationComponent``
-- ``LocalizationProviding``
-- ``DecimalUnitLocalizable``
-- ``DecimalUnitFormatStyle``
+- `LocalizationStyle`
+- `LocalizationComponent`
+- `LocalizationProviding`
+- `DecimalUnitLocalizable`
+- `DecimalUnitFormatStyle`
 
 ### Errors
 
 - <doc:Errors>
-- ``Error``
-- ``CallSite``
+- `Error`
+- `CallSite`

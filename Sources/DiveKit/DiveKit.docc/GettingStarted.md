@@ -32,11 +32,11 @@ print(pressure.result.value)
 print(pressure.result.unit)
 ```
 
-The result is typed. For example, `atmospheresAbsolute(at:)` returns `Calculation<DecimalResult<Pressure>>`.
+The result is typed. For example, `atmospheresAbsolute(at:)` returns a `Calculation` whose result is a `DecimalResult` of `Pressure`.
 
 ## Handle Errors
 
-Throwing DiveKit APIs throw `DiveKit.Error`.
+Throwing DiveKit APIs throw `Error`.
 
 ```swift
 do {
@@ -57,13 +57,13 @@ let depth = Depth(30)
 let localized = depth.formatted(.depth(.meters, style: .short))
 ```
 
-## Topics
+## Related APIs
 
 ### Related Types
 
-- ``Configuration``
-- ``Calculation``
-- ``PhysicsCalculator``
-- ``GasCalculator``
-- ``BuoyancyCalculator``
-- ``Error``
+- `Configuration`
+- `Calculation`
+- `PhysicsCalculator`
+- `GasCalculator`
+- `BuoyancyCalculator`
+- `Error`

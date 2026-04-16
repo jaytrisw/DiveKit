@@ -11,8 +11,6 @@ public extension ConfigurationProviding {
     ///   - units: The unit system used for calculations.
     ///   - water: The water configuration used for density and pressure calculations.
     ///
-    /// ## Example
-    ///
     /// ```swift
     /// let calculator = BuoyancyCalculator(
     ///     .metric,
