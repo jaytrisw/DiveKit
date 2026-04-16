@@ -4,7 +4,7 @@ import DiveKitCore
 /// A decimal domain value whose unit can be localized.
 ///
 /// Conforming values provide their raw number and unit localization behavior so
-/// `DecimalUnitFormatStyle` can produce localized output.
+/// ``DecimalUnitFormatStyle`` can produce localized output.
 ///
 /// - Since: 1.0.0
 public protocol DecimalUnitLocalizable: Sendable {
@@ -29,7 +29,7 @@ public protocol DecimalUnitLocalizable: Sendable {
     /// - Parameters:
     ///   - unit: The unit to use for localization.
     ///   - style: The localization style to use.
-    /// - Returns: A localized string.
+    /// - Returns: A localized string that combines the value and unit.
     /// - Since: 1.0.0
     func localization(for unit: Unit, style: LocalizationStyle) -> String
 }
@@ -43,7 +43,7 @@ extension DecimalUnitLocalizable where Unit.Component: QuantityLocalizationCompo
     /// - Parameters:
     ///   - unit: The unit to use for localization.
     ///   - style: The localization style to use.
-    /// - Returns: A localized quantity string.
+    /// - Returns: A localized string that combines the value and unit.
     /// - Since: 1.0.0
     public func localization(for unit: Unit, style: LocalizationStyle) -> String {
         unit.localization(for: .quantity(value, style))

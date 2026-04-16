@@ -1,14 +1,14 @@
 import Foundation
 import DiveKitCore
 
-/// Allows pressure units to provide localized titles, descriptions, and quantities.
+/// Makes pressure units provide localized titles, descriptions, and quantities.
 ///
 /// - Since: 1.0.0
 extension Pressure.Unit: LocalizationProviding {
-    /// Returns a localization key or localized quantity for a pressure unit component.
+    /// Returns localized text for a pressure unit component.
     ///
     /// - Parameter component: The pressure unit component to localize.
-    /// - Returns: A localized string for `component`.
+    /// - Returns: The localized text for `component`.
     /// - Since: 1.0.0
     public func localization(for component: LocalizationComponent) -> String {
         switch component {

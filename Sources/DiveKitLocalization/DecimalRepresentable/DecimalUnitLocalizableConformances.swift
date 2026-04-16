@@ -1,24 +1,24 @@
 import Foundation
 import DiveKitCore
 
-/// Allows depth values to be formatted with localized units.
+/// Makes depth values formattable with localized units.
 ///
 /// - Since: 1.0.0
 extension Depth: DecimalUnitLocalizable {}
-/// Allows mass values to be formatted with localized units.
+/// Makes mass values formattable with localized units.
 ///
 /// - Since: 1.0.0
 extension Mass: DecimalUnitLocalizable {}
-/// Allows pressure values to be formatted with localized units.
+/// Makes pressure values formattable with localized units.
 ///
 /// - Since: 1.0.0
 extension Pressure: DecimalUnitLocalizable {}
-/// Allows volume values to be formatted with localized units.
+/// Makes volume values formattable with localized units.
 ///
 /// - Since: 1.0.0
 extension Volume: DecimalUnitLocalizable {}
 
-/// Allows rate values to be formatted with localized units.
+/// Makes rate values formattable with localized units.
 ///
 /// - Since: 1.0.0
 extension Rate: DecimalUnitLocalizable
@@ -31,7 +31,7 @@ extension Rate: DecimalUnitLocalizable
     /// - Parameters:
     ///   - unit: The rate unit to use.
     ///   - style: The localization style to use.
-    /// - Returns: A localized rate quantity.
+    /// - Returns: A localized string that combines the rate value and unit.
     /// - Since: 1.0.0
     public func localization(for unit: Unit, style: LocalizationStyle) -> String {
         unit.localization(for: .quantity(value, style))

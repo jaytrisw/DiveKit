@@ -41,7 +41,7 @@ package func localizedString(
 ///   - key: The localization key to resolve.
 ///   - quantity: The quantity used for localized string formatting.
 ///   - comment: A translator-facing comment for the key.
-/// - Returns: The localized and quantity-formatted string.
+/// - Returns: The localized string with `quantity` applied.
 /// - Since: 1.0.0
 package func localizedString(
     for key: String,
@@ -58,7 +58,7 @@ package func localizedString(
             .joined(separator: " ")
     }
 
-/// Passes an input into a closure.
+/// Invokes a closure with an input value and returns the closure result.
 ///
 /// - Parameters:
 ///   - input: The input value.

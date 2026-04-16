@@ -1,10 +1,10 @@
 import Foundation
 import DiveKitCore
 
-/// A type that resolves localization keys for supported components.
+/// A type that resolves localized text for supported components.
 ///
-/// `LocalizationProviding` supplies the key lookup used by default title and
-/// description localization helpers.
+/// `LocalizationProviding` supplies the component lookup used by default title
+/// and description localization helpers.
 ///
 /// - Since: 1.0.0
 public protocol LocalizationProviding: LocalizedTitleProviding, LocalizedDescriptionProviding {
@@ -13,10 +13,10 @@ public protocol LocalizationProviding: LocalizedTitleProviding, LocalizedDescrip
     /// - Since: 1.0.0
     associatedtype Component
 
-    /// Returns a localization key for a component.
+    /// Returns localized text for a component.
     ///
     /// - Parameter component: The component to localize.
-    /// - Returns: A localization key.
+    /// - Returns: The localized text for `component`.
     /// - Since: 1.0.0
     func localization(for component: Component) -> String
 }

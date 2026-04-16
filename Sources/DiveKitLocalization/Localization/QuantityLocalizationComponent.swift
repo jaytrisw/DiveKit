@@ -10,7 +10,7 @@ public protocol QuantityLocalizationComponent {
     /// - Parameters:
     ///   - quantity: The numeric quantity to localize.
     ///   - style: The localization style to use.
-    /// - Returns: A quantity component.
+    /// - Returns: A component representing a quantity request.
     /// - Since: 1.0.0
     static func quantity(_ quantity: Double, _ style: LocalizationStyle) -> Self
 }

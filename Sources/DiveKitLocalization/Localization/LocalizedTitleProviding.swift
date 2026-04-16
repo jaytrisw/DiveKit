@@ -5,7 +5,7 @@ import DiveKitCore
 ///
 /// - Since: 1.0.0
 public protocol LocalizedTitleProviding {
-    /// The localized title.
+    /// The localized title for the value or unit family.
     ///
     /// - Since: 1.0.0
     var localizedTitle: String { get }

@@ -1,14 +1,14 @@
 import Foundation
 import DiveKitCore
 
-/// Allows mass units to provide localized titles, descriptions, and quantities.
+/// Makes mass units provide localized titles, descriptions, and quantities.
 ///
 /// - Since: 1.0.0
 extension Mass.Unit: LocalizationProviding {
-    /// Returns a localization key or localized quantity for a mass unit component.
+    /// Returns localized text for a mass unit component.
     ///
     /// - Parameter component: The mass unit component to localize.
-    /// - Returns: A localized string for `component`.
+    /// - Returns: The localized text for `component`.
     /// - Since: 1.0.0
     public func localization(for component: LocalizationComponent) -> String {
         switch component {

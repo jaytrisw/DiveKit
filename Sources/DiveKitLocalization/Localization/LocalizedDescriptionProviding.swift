@@ -13,7 +13,7 @@ public protocol LocalizedDescriptionProviding {
     /// Returns a localized description for a style.
     ///
     /// - Parameter style: The localization style to use.
-    /// - Returns: A localized description.
+    /// - Returns: The localized description for `style`.
     /// - Since: 1.0.0
     func localizedDescription(for style: Style) -> String
 }

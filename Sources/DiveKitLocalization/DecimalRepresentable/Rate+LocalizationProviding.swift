@@ -1,7 +1,7 @@
 import Foundation
 import DiveKitCore
 
-/// Allows rate units to provide localized titles, descriptions, and quantities.
+/// Makes rate units provide localized titles, descriptions, and quantities.
 ///
 /// - Since: 1.0.0
 extension RateUnit: LocalizedTitleProviding, LocalizedDescriptionProviding, LocalizationProviding
@@ -9,10 +9,10 @@ extension RateUnit: LocalizedTitleProviding, LocalizedDescriptionProviding, Loca
     BaseUnit: LocalizationProviding,
     BaseUnit.Component == LocalizationComponent {
 
-    /// Returns a localization key or localized quantity for a rate unit component.
+    /// Returns localized text for a rate unit component.
     ///
     /// - Parameter component: The rate unit component to localize.
-    /// - Returns: A localized string for `component`.
+    /// - Returns: The localized text for `component`.
     /// - Since: 1.0.0
     public func localization(for component: LocalizationComponent) -> String {
         switch component {

@@ -5,11 +5,11 @@ import DiveKitCore
 ///
 /// - Since: 1.0.0
 public enum LocalizationComponent: Sendable {
-    /// The localized title for a value or unit.
+    /// The localized title for a value or unit family.
     ///
     /// - Since: 1.0.0
     case title
-    /// The localized description for a style.
+    /// The localized unit description for a style.
     ///
     /// - Since: 1.0.0
     case description(_ style: LocalizationStyle)
@@ -19,27 +19,27 @@ public enum LocalizationComponent: Sendable {
     case quantity(_ quantity: Double, _ style: LocalizationStyle)
 }
 
-/// Allows localization components to be encoded and decoded.
+/// Makes localization components encodable and decodable.
 ///
 /// - Since: 1.0.0
 extension LocalizationComponent: Codable {}
-/// Allows localization components to be used in hashed collections.
+/// Makes localization components usable in hashed collections.
 ///
 /// - Since: 1.0.0
 extension LocalizationComponent: Hashable {}
-/// Allows localization components to be compared.
+/// Makes localization components comparable.
 ///
 /// - Since: 1.0.0
 extension LocalizationComponent: Equatable {}
-/// Allows `LocalizationComponent.title` to satisfy title component requirements.
+/// Makes ``LocalizationComponent/title`` satisfy title component requirements.
 ///
 /// - Since: 1.0.0
 extension LocalizationComponent: TitleLocalizationComponent {}
-/// Allows `LocalizationComponent.description(_:)` to satisfy description component requirements.
+/// Makes ``LocalizationComponent/description(_:)`` satisfy description component requirements.
 ///
 /// - Since: 1.0.0
 extension LocalizationComponent: DescriptionLocalizationComponent {}
-/// Allows `LocalizationComponent.quantity(_:_:)` to satisfy quantity component requirements.
+/// Makes ``LocalizationComponent/quantity(_:_:)`` satisfy quantity component requirements.
 ///
 /// - Since: 1.0.0
 extension LocalizationComponent: QuantityLocalizationComponent {}
