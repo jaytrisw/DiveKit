@@ -4,14 +4,12 @@ import DiveKitCore
 package extension Double {
     /// Pairs this value with another value produced by a throwing closure.
     ///
-    /// Use this helper when a calculation needs to keep the original `Double`
+    /// Use this helper when a calculation needs to keep the original ``Swift/Double``
     /// alongside a derived value without introducing a temporary local.
     ///
     /// - Parameter transform: A closure that produces the paired value.
-    /// - Returns: A `Tuple` where `first` is `self` and `second` is the result of `transform`.
-    /// - Throws: The `DiveKitCore.Error` thrown by `transform`.
-    ///
-    /// ## Example
+    /// - Returns: A ``Tuple`` where `first` is `self` and `second` is the result of `transform`.
+    /// - Throws: The ``DiveKitCore/Error`` thrown by `transform`.
     ///
     /// ```swift
     /// let absoluteAndConsumption = try absolutePressure.with {
@@ -41,10 +39,8 @@ package extension Double {
     /// a calculation pipeline.
     ///
     /// - Parameter transform: A closure that derives a value from `self`.
-    /// - Returns: A `Tuple` where `first` is `self` and `second` is the transformed value.
-    /// - Throws: The `DiveKitCore.Error` thrown by `transform`.
-    ///
-    /// ## Example
+    /// - Returns: A ``Tuple`` where `first` is `self` and `second` is the transformed value.
+    /// - Throws: The ``DiveKitCore/Error`` thrown by `transform`.
     ///
     /// ```swift
     /// let pair = try 4.0.with { pressure in

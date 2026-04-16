@@ -1,10 +1,10 @@
 import Foundation
 import DiveKitCore
 
-/// A marker protocol that enables validation through `Validator`.
+/// A marker protocol that enables validation through ``Validator``.
 ///
-/// Types conforming to `Validatable` gain access to validation utilities that
-/// enforce constraints and throw typed `DiveKitCore.Error` values when those
+/// Types conforming to ``Validatable`` gain access to validation utilities that
+/// enforce constraints and throw typed ``DiveKitCore/Error`` values when those
 /// constraints fail.
 ///
 /// - Since: 1.0.0
@@ -17,12 +17,10 @@ package extension Validatable {
     /// way while keeping error construction flexible and context-aware.
     ///
     /// - Parameters:
-    ///   - validator: A `Validator` that determines whether the value is valid.
+    ///   - validator: A ``Validator`` that determines whether the value is valid.
     ///   - error: A closure that produces the domain error when validation fails.
     /// - Returns: The validated instance (`self`) if validation succeeds.
-    /// - Throws: The `DiveKitCore.Error` returned by `error` if validation fails.
-    ///
-    /// ## Example
+    /// - Throws: The ``DiveKitCore/Error`` returned by `error` if validation fails.
     ///
     /// ```swift
     /// try depth.validate(using: .nonNegative) {
@@ -44,11 +42,11 @@ package extension Validatable {
         }
 }
 
-/// Allows raw decimal values to be validated by internal helpers.
+/// Makes ``Swift/Double`` values validatable by internal helpers.
 ///
 /// - Since: 1.0.0
 extension Double: Validatable {}
-/// Allows depth values to be validated by internal helpers.
+/// Makes ``DiveKitCore/Depth`` values validatable by internal helpers.
 ///
 /// - Since: 1.0.0
 extension Depth: Validatable {}

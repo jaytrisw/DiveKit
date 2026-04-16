@@ -14,14 +14,12 @@ package extension GasCalculating {
     ///   - configuration: The calculation configuration.
     ///   - callSite: The location where the calculation was requested.
     /// - Returns: A calculation containing the partial pressure of the gas at `depth`.
-    /// - Throws: A `DiveKitCore.Error` from the underlying absolute-pressure calculation,
-    ///   currently `DiveKitCore.Error.negative` when `depth` is negative.
+    /// - Throws: A ``DiveKitCore/Error`` from the underlying absolute-pressure calculation,
+    ///   currently ``DiveKitCore/Error/negative(_:_:)`` when `depth` is negative.
     ///
     /// ## Formula
     ///
     /// `partial pressure = absolute pressure × fractional pressure`
-    ///
-    /// ## Example
     ///
     /// ```swift
     /// let result = try calculator.partialPressure(
@@ -58,15 +56,13 @@ package extension GasCalculating {
     ///   - configuration: The calculation configuration.
     ///   - callSite: The location where the calculation was requested.
     /// - Returns: A calculation containing the partial pressure of `gas` at `depth`.
-    /// - Throws: A `DiveKitCore.Error` if the blend cannot produce a valid
+    /// - Throws: A ``DiveKitCore/Error`` if the blend cannot produce a valid
     ///   fractional pressure for `gas`, or if the underlying absolute-pressure
     ///   calculation fails.
     ///
     /// ## Formula
     ///
     /// `partial pressure = absolute pressure × fractional pressure`
-    ///
-    /// ## Example
     ///
     /// ```swift
     /// let result = try calculator.partialPressure(
@@ -109,14 +105,12 @@ package extension GasCalculating {
     ///   - configuration: The calculation configuration.
     ///   - callSite: The location where the calculation was requested.
     /// - Returns: A calculation containing the gas consumption rate at depth.
-    /// - Throws: `DiveKitCore.Error.negative` if `minutes` or `gasConsumed` is
-    ///   negative, or `DiveKitCore.Error.range` if `minutes` is zero.
+    /// - Throws: ``DiveKitCore/Error/negative(_:_:)`` if `minutes` or `gasConsumed` is
+    ///   negative, or ``DiveKitCore/Error/range(_:_:)`` if `minutes` is zero.
     ///
     /// ## Formula
     ///
     /// `depth air consumption = gas consumed ÷ time`
-    ///
-    /// ## Example
     ///
     /// ```swift
     /// let result = try calculator.depthAirConsumption(
@@ -158,15 +152,13 @@ package extension GasCalculating {
     ///   - configuration: The calculation configuration.
     ///   - callSite: The location where the calculation was requested.
     /// - Returns: A calculation containing the surface air consumption rate.
-    /// - Throws: A `DiveKitCore.Error` from the absolute-pressure calculation
+    /// - Throws: A ``DiveKitCore/Error`` from the absolute-pressure calculation
     ///   or depth air consumption validation. This includes negative `depth`,
     ///   negative `minutes`, negative `gasConsumed`, and zero `minutes`.
     ///
     /// ## Formula
     ///
     /// `surface air consumption = depth air consumption ÷ absolute pressure`
-    ///
-    /// ## Example
     ///
     /// ```swift
     /// let result = try calculator.surfaceAirConsumption(

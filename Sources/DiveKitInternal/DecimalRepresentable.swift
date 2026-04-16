@@ -6,18 +6,16 @@ import DiveKitCore
 /// - Since: 1.0.0
 package typealias ExpressibleBy = ExpressibleByFloatLiteral & ExpressibleByIntegerLiteral
 
-/// A package-internal contract for domain values backed by a `Double`.
+/// A package-internal contract for domain values backed by a ``Swift/Double``.
 ///
-/// `DecimalRepresentable` gives DiveKit's decimal domain wrappers a common
+/// ``DecimalRepresentable`` gives DiveKit's decimal domain wrappers a common
 /// comparison, literal, validation, and mapping surface while preserving the
-/// stronger type information of values such as `Depth`, `Pressure`, and
-/// `Volume`.
+/// stronger type information of values such as ``DiveKitCore/Depth``,
+/// ``DiveKitCore/Pressure``, and ``DiveKitCore/Volume``.
 ///
 /// Conforming types must provide a stored or computed `value` and an
-/// initializer that accepts a `Double`. Default implementations are provided
+/// initializer that accepts a ``Swift/Double``. Default implementations are provided
 /// for literal initialization and comparison.
-///
-/// ## Example
 ///
 /// ```swift
 /// struct Depth: DecimalRepresentable {
@@ -34,15 +32,15 @@ package typealias ExpressibleBy = ExpressibleByFloatLiteral & ExpressibleByInteg
 ///
 /// - Note: Conforming types are expected to enforce any domain-specific
 ///   invariants (such as valid ranges) within their initializer or through
-///   `Validatable` conformance.
+///   ``Validatable`` conformance.
 /// - Since: 1.0.0
 package protocol DecimalRepresentable: Equatable, Hashable, Comparable, ExpressibleBy, Validatable, Mappable {
-    /// The underlying `Double` value.
+    /// The underlying ``Swift/Double`` value.
     ///
     /// - Since: 1.0.0
     var value: Double { get }
 
-    /// Creates a new instance from a `Double` value.
+    /// Creates a new instance from a ``Swift/Double`` value.
     ///
     /// - Parameter value: The raw value to wrap.
     /// - Since: 1.0.0

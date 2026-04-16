@@ -5,15 +5,13 @@ package extension Calculation {
     /// Creates a calculation representing a gas partial pressure.
     ///
     /// This convenience factory wraps the raw partial-pressure value in the
-    /// strongly typed `PartialPressure<Gas>` result and preserves the
+    /// strongly typed ``DiveKitCore/PartialPressure`` result and preserves the
     /// configuration used by the calculation.
     ///
     /// - Parameters:
     ///   - value: The calculated partial-pressure value.
     ///   - configuration: The calculation configuration.
-    /// - Returns: A calculation containing `PartialPressure<Gas>`.
-    ///
-    /// ## Example
+    /// - Returns: A calculation containing ``DiveKitCore/PartialPressure``.
     ///
     /// ```swift
     /// let calculation: Calculation<PartialPressure<Oxygen>> = .partialPressure(

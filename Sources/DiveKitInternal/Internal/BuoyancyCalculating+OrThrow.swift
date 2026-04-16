@@ -15,9 +15,9 @@ package extension BuoyancyCalculating {
     ///   - configuration: The calculation configuration, including unit and water settings.
     ///   - callSite: The location where the calculation is requested.
     ///
-    /// - Returns: A `Calculation` containing the resulting `Buoyancy`.
+    /// - Returns: A ``DiveKitCore/Calculation`` containing the resulting ``DiveKitCore/Buoyancy``.
     ///
-    /// - Throws: `DiveKitCore.Error.negative` if the object's weight or volume
+    /// - Throws: ``DiveKitCore/Error/negative(_:_:)`` if the object's weight or volume
     ///   is negative.
     ///
     /// ## Formula
@@ -28,8 +28,6 @@ package extension BuoyancyCalculating {
     ///
     /// where displaced water weight is derived from the object's volume and the
     /// configured water density.
-    ///
-    /// ## Example
     ///
     /// ```swift
     /// let result = try calculator.buoyancy(

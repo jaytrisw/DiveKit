@@ -2,11 +2,9 @@ import Foundation
 
 /// A lightweight package-internal pair of values.
 ///
-/// `Tuple` gives internal calculation pipelines a named return type when two
+/// ``Tuple`` gives internal calculation pipelines a named return type when two
 /// intermediate values need to travel together. It is intentionally small and
 /// does not add behavior beyond storing `first` and `second`.
-///
-/// ## Example
 ///
 /// ```swift
 /// let pair = Tuple(first: Pressure(4), second: Rate<Pressure>(12))

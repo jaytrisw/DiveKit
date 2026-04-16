@@ -15,17 +15,15 @@ extension Optional {
     ///
     /// - Returns: The wrapped value if `self` is `.some`.
     ///
-    /// ## Example
-    ///
     /// ```swift
     /// let value: Int? = 42
     /// let unwrapped = value.forceUnwrap("Expected value to be present")
     /// ```
     ///
-    /// - Warning: If the value is `nil`, this method raises an `NSException`.
+    /// - Warning: If the value is `nil`, this method raises an ``Foundation/NSException``.
     ///   Swift code cannot recover from Objective-C exceptions, so use this only
     ///   for programmer errors or unrecoverable internal invariants.
-    /// - Note: This method does not throw `DiveKitCore.Error`; it raises an
+    /// - Note: This method does not throw ``DiveKitCore/Error``; it raises an
     ///   Objective-C exception instead.
     /// - Since: 1.0.0
     package func forceUnwrap(
@@ -42,7 +40,7 @@ extension Optional {
 /// Raises an Objective-C exception and never returns normally.
 ///
 /// This helper exists so internal code can express unrecoverable invariant
-/// failures in expression contexts. It raises `NSException` first, then calls
+/// failures in expression contexts. It raises ``Foundation/NSException`` first, then calls
 /// `preconditionFailure(_:)` as a Swift control-flow fallback.
 ///
 /// - Parameters:

@@ -3,11 +3,9 @@ import DiveKitCore
 
 /// A reusable validation rule for a value.
 ///
-/// `Validator` is a small wrapper around a predicate. Calculation code combines
-/// validators before converting failures into typed `DiveKitCore.Error` values
-/// with `Validatable.validate(using:orThrow:)`.
-///
-/// ## Example
+/// ``Validator`` is a small wrapper around a predicate. Calculation code combines
+/// validators before converting failures into typed ``DiveKitCore/Error`` values
+/// with ``Validatable/validate(using:orThrow:)``.
 ///
 /// ```swift
 /// let isPositive = Validator<Double>.greater(than: 0)
@@ -42,8 +40,6 @@ package extension Validator {
     ///
     /// - Parameter other: Another validator to combine with.
     /// - Returns: A new validator that returns `true` if either validator returns `true`.
-    ///
-    /// ## Example
     ///
     /// ```swift
     /// let isZero = Validator<Int> { $0 == 0 }

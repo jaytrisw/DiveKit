@@ -8,8 +8,6 @@ package extension Validator where Value == Double {
     ///   - upper: The upper bound, inclusive.
     /// - Returns: A validator that returns `true` if the value is between `lower` and `upper`.
     ///
-    /// ## Example
-    ///
     /// ```swift
     /// let validator = Validator<Double>.between(0, and: 1)
     /// validator.validate(0.5) // true
@@ -26,8 +24,6 @@ package extension Validator where Value == Double {
     /// - Parameter bound: The lower bound that values must exceed.
     /// - Returns: A validator that returns `true` if the value is greater than `bound`.
     ///
-    /// ## Example
-    ///
     /// ```swift
     /// Validator<Double>.greater(than: 0).validate(1) // true
     /// ```
@@ -41,8 +37,6 @@ package extension Validator where Value == Double {
     ///
     /// - Parameter bound: The upper bound that values must be less than.
     /// - Returns: A validator that returns `true` if the value is less than `bound`.
-    ///
-    /// ## Example
     ///
     /// ```swift
     /// Validator<Double>.less(than: 1).validate(0.5) // true
@@ -58,8 +52,6 @@ package extension Validator where Value == Double {
     /// - Parameter other: The value to compare against.
     /// - Returns: A validator that returns `true` if the value is equal to `other`.
     ///
-    /// ## Example
-    ///
     /// ```swift
     /// Validator<Double>.equal(to: 1).validate(1) // true
     /// ```
@@ -73,7 +65,7 @@ package extension Validator where Value == Double {
 package extension Validator where Value == Double {
     /// Returns a validator that succeeds when the value is greater than or equal to a bound.
     ///
-    /// This is composed from `greater(than:)` and `equal(to:)`.
+    /// This is composed from ``Validator/greater(than:)`` and ``Validator/equal(to:)``.
     ///
     /// - Parameter bound: The lower bound, inclusive.
     /// - Returns: A validator that returns `true` if the value is greater than or equal to `bound`.
@@ -84,7 +76,7 @@ package extension Validator where Value == Double {
 
     /// Returns a validator that succeeds when the value is less than or equal to a bound.
     ///
-    /// This is composed from `less(than:)` and `equal(to:)`.
+    /// This is composed from ``Validator/less(than:)`` and ``Validator/equal(to:)``.
     ///
     /// - Parameter bound: The upper bound, inclusive.
     /// - Returns: A validator that returns `true` if the value is less than or equal to `bound`.

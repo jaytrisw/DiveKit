@@ -9,8 +9,6 @@ package extension Validator where Value: DecimalRepresentable {
     /// - Returns: A validator that returns `true` if the value is greater than
     ///   or equal to `.zero`.
     ///
-    /// ## Example
-    ///
     /// ```swift
     /// let isValid = Validator<Depth>.nonNegative
     /// isValid.validate(10)  // true
@@ -26,8 +24,6 @@ package extension Validator where Value: DecimalRepresentable {
     ///
     /// - Parameter bound: The lower bound that values must exceed.
     /// - Returns: A validator that returns `true` if the value is greater than `bound`.
-    ///
-    /// ## Example
     ///
     /// ```swift
     /// let isGreaterThanTen = Validator<Depth>.greater(than: 10)

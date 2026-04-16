@@ -5,18 +5,16 @@ package extension Blend where State == Unblended {
     /// Validates and converts an unblended gas mixture into a blended state.
     ///
     /// This method validates that the total pressure of the mixture is equal to `1`
-    /// before allowing the transition to a `Blended` state. This ensures the mixture
+    /// before allowing the transition to a ``DiveKitCore/Blended`` state. This ensures the mixture
     /// represents a fully normalized composition.
     ///
     /// - Parameter callSite: The location where the blend operation is performed.
-    /// - Returns: A new `Blend` in the `Blended` state.
-    /// - Throws: `DiveKitCore.Error.blend` if the total pressure is not equal to `1`.
+    /// - Returns: A new ``DiveKitCore/Blend`` in the ``DiveKitCore/Blended`` state.
+    /// - Throws: ``DiveKitCore/Error/blend(_:_:)`` if the total pressure is not equal to `1`.
     ///
     /// ## Invariant
     ///
     /// - The sum of all component pressures must equal `1`.
-    ///
-    /// ## Example
     ///
     /// ```swift
     /// let blended = try unblendedBlend.blend(callSite)

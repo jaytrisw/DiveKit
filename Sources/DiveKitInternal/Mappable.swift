@@ -3,15 +3,13 @@ import DiveKitCore
 
 /// A marker protocol that provides package-internal mapping helpers.
 ///
-/// Types conforming to `Mappable` gain access to `map` functions that
+/// Types conforming to ``Mappable`` gain access to `map` functions that
 /// enable transforming values in a lightweight, composable way.
 ///
 /// Unlike standard `map` operations on collections or optionals, these methods
 /// operate on the instance itself. They are used heavily in calculation
 /// pipelines so validation, transformation, and typed error propagation can
 /// stay in a single expression.
-///
-/// ## Example
 ///
 /// ```swift
 /// struct Value: Mappable {
@@ -36,7 +34,7 @@ package extension Mappable {
     ///
     /// - Parameter transform: A closure that produces a transformed value.
     /// - Returns: The result of `transform`.
-    /// - Throws: The `DiveKitCore.Error` thrown by `transform`.
+    /// - Throws: The ``DiveKitCore/Error`` thrown by `transform`.
     /// - Since: 1.0.0
     func map<Transform>(
         _ transform: () throws(Error) -> Transform) throws(Error) -> Transform {
@@ -50,9 +48,7 @@ package extension Mappable {
     ///
     /// - Parameter transform: A closure that transforms `self`.
     /// - Returns: The result of applying `transform` to `self`.
-    /// - Throws: The `DiveKitCore.Error` thrown by `transform`.
-    ///
-    /// ## Example
+    /// - Throws: The ``DiveKitCore/Error`` thrown by `transform`.
     ///
     /// ```swift
     /// let value = 2

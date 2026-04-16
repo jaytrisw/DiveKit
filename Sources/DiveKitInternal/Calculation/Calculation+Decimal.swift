@@ -4,16 +4,14 @@ import DiveKitCore
 package extension Calculation {
     /// Creates a decimal calculation using a unit from the active configuration.
     ///
-    /// This factory wraps a raw `Double` in a `DecimalResult` and stores the
+    /// This factory wraps a raw ``Swift/Double`` in a ``DiveKitCore/DecimalResult`` and stores the
     /// configuration used to produce it.
     ///
     /// - Parameters:
     ///   - value: The numeric result of the calculation.
     ///   - keyPath: A key path to the configured unit for `Value`.
     ///   - configuration: The configuration used by the calculation.
-    /// - Returns: A calculation whose result is a `DecimalResult<Value>`.
-    ///
-    /// ## Example
+    /// - Returns: A calculation whose result is a ``DiveKitCore/DecimalResult``.
     ///
     /// ```swift
     /// let calculation: Calculation<DecimalResult<Depth>> = .decimal(
@@ -36,15 +34,13 @@ package extension Calculation {
     /// Creates a decimal calculation using an explicit unit.
     ///
     /// Use this overload when the result unit is known directly instead of
-    /// being read from `Configuration.units`.
+    /// being read from ``DiveKitCore/Configuration/units``.
     ///
     /// - Parameters:
     ///   - value: The numeric result of the calculation.
     ///   - unit: The unit to attach to the decimal result.
     ///   - configuration: The configuration used by the calculation.
-    /// - Returns: A calculation whose result is a `DecimalResult<Value>`.
-    ///
-    /// ## Example
+    /// - Returns: A calculation whose result is a ``DiveKitCore/DecimalResult``.
     ///
     /// ```swift
     /// let calculation: Calculation<DecimalResult<Rate<Pressure>>> = .decimal(

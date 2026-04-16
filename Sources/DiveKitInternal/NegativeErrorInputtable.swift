@@ -10,7 +10,7 @@ package extension Error {
     /// - Parameters:
     ///   - value: A value capable of producing a corresponding negative input representation.
     ///   - callSite: The location where the error originated.
-    /// - Returns: A `DiveKitCore.Error.negative` value for the given input.
+    /// - Returns: A ``DiveKitCore/Error/negative(_:_:)`` value for the given input.
     /// - Since: 1.0.0
     static func negative<E: NegativeErrorInputtable>(
         _ value: E,
@@ -23,22 +23,22 @@ package extension Error {
 ///
 /// Conforming types define how they should be represented when used as the
 /// source of a negative input validation failure. This enables consistent,
-/// type-safe `DiveKitCore.Error.negative` construction across domain values.
+/// type-safe ``DiveKitCore/Error/negative(_:_:)`` construction across domain values.
 ///
 /// - Since: 1.0.0
 package protocol NegativeErrorInputtable {
     /// Returns a representation of the value suitable for a negative input error.
     ///
-    /// - Returns: An `Error.Negative` describing this value.
+    /// - Returns: An ``DiveKitCore/Error/Negative`` describing this value.
     /// - Since: 1.0.0
     func negativeInput() -> Error.Negative
 }
 
-/// Maps `Depth` values into negative-depth errors.
+/// Maps ``DiveKitCore/Depth`` values into negative-depth errors.
 ///
 /// - Since: 1.0.0
 extension Depth: NegativeErrorInputtable {
-    /// Returns a negative input representation for a `Depth` value.
+    /// Returns a negative input representation for a ``DiveKitCore/Depth`` value.
     ///
     /// - Since: 1.0.0
     package func negativeInput() -> Error.Negative {
@@ -46,11 +46,11 @@ extension Depth: NegativeErrorInputtable {
     }
 }
 
-/// Maps `Volume` values into negative-volume errors.
+/// Maps ``DiveKitCore/Volume`` values into negative-volume errors.
 ///
 /// - Since: 1.0.0
 extension Volume: NegativeErrorInputtable {
-    /// Returns a negative input representation for a `Volume` value.
+    /// Returns a negative input representation for a ``DiveKitCore/Volume`` value.
     ///
     /// - Since: 1.0.0
     package func negativeInput() -> Error.Negative {
@@ -58,11 +58,11 @@ extension Volume: NegativeErrorInputtable {
     }
 }
 
-/// Maps `Mass` values into negative-weight errors.
+/// Maps ``DiveKitCore/Mass`` values into negative-weight errors.
 ///
 /// - Since: 1.0.0
 extension Mass: NegativeErrorInputtable {
-    /// Returns a negative input representation for a `Mass` value.
+    /// Returns a negative input representation for a ``DiveKitCore/Mass`` value.
     ///
     /// - Since: 1.0.0
     package func negativeInput() -> Error.Negative {
@@ -70,11 +70,11 @@ extension Mass: NegativeErrorInputtable {
     }
 }
 
-/// Maps `Pressure` values into negative-pressure errors.
+/// Maps ``DiveKitCore/Pressure`` values into negative-pressure errors.
 ///
 /// - Since: 1.0.0
 extension Pressure: NegativeErrorInputtable {
-    /// Returns a negative input representation for a `Pressure` value.
+    /// Returns a negative input representation for a ``DiveKitCore/Pressure`` value.
     ///
     /// - Since: 1.0.0
     package func negativeInput() -> Error.Negative {
@@ -82,11 +82,11 @@ extension Pressure: NegativeErrorInputtable {
     }
 }
 
-/// Maps `FractionalPressure` values into negative-fractional-pressure errors.
+/// Maps ``DiveKitCore/FractionalPressure`` values into negative-fractional-pressure errors.
 ///
 /// - Since: 1.0.0
 extension FractionalPressure: NegativeErrorInputtable {
-    /// Returns a negative input representation for a `FractionalPressure` value.
+    /// Returns a negative input representation for a ``DiveKitCore/FractionalPressure`` value.
     ///
     /// - Since: 1.0.0
     package func negativeInput() -> Error.Negative {
@@ -94,11 +94,11 @@ extension FractionalPressure: NegativeErrorInputtable {
     }
 }
 
-/// Maps `PartialPressure` values into negative-partial-pressure errors.
+/// Maps ``DiveKitCore/PartialPressure`` values into negative-partial-pressure errors.
 ///
 /// - Since: 1.0.0
 extension PartialPressure: NegativeErrorInputtable {
-    /// Returns a negative input representation for a `PartialPressure` value.
+    /// Returns a negative input representation for a ``DiveKitCore/PartialPressure`` value.
     ///
     /// - Since: 1.0.0
     package func negativeInput() -> Error.Negative {
@@ -106,11 +106,11 @@ extension PartialPressure: NegativeErrorInputtable {
     }
 }
 
-/// Maps `Minutes` values into negative-minutes errors.
+/// Maps ``DiveKitCore/Minutes`` values into negative-minutes errors.
 ///
 /// - Since: 1.0.0
 extension Minutes: NegativeErrorInputtable {
-    /// Returns a negative input representation for a `Minutes` value.
+    /// Returns a negative input representation for a ``DiveKitCore/Minutes`` value.
     ///
     /// - Since: 1.0.0
     package func negativeInput() -> Error.Negative {

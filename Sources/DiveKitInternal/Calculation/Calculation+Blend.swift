@@ -4,15 +4,13 @@ import DiveKitCore
 package extension Calculation {
     /// Creates a calculation representing a blended gas mixture.
     ///
-    /// This convenience method wraps a `Blend<Blended>` value in a `Calculation`,
+    /// This convenience method wraps a ``DiveKitCore/Blend`` value in a ``DiveKitCore/Calculation``,
     /// associating it with the provided configuration.
     ///
     /// - Parameters:
     ///   - blend: The blended gas mixture.
     ///   - configuration: The calculation configuration.
     /// - Returns: A calculation containing the provided blend.
-    ///
-    /// ## Example
     ///
     /// ```swift
     /// let calculation = Calculation.blend(
@@ -22,7 +20,7 @@ package extension Calculation {
     /// ```
     ///
     /// - Note: This method does not perform validation. The `blend` is expected
-    ///   to already be in a valid `Blended` state.
+    ///   to already be in a valid ``DiveKitCore/Blended`` state.
     /// - Since: 1.0.0
     static func blend(
         _ blend: Blend<Blended>,
