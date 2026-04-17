@@ -1,0 +1,141 @@
+name: Verify
+
+on:
+  workflow_call:
+    inputs:
+      ref:
+        description: Git ref or SHA to verify.
+        required: true
+        type: string
+      collect_coverage:
+        description: Export macOS test coverage as an LCOV artifact.
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  test:
+    runs-on: macos-15
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+
+      - name: Select Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: "latest-stable"
+
+      - name: Get toolchain versions
+        run: |
+          set -euo pipefail
+          xcodebuild -version
+          swift --version
+
+      - name: Run SwiftLint
+        run: |
+          set -euo pipefail
+          swift package plugin --allow-writing-to-package-directory swiftlint --strict
+
+      - name: Build
+        run: |
+          set -euo pipefail
+          swift build -v
+
+      - name: Run tests
+        env:
+          COLLECT_COVERAGE: ${{ inputs.collect_coverage }}
+        run: |
+          set -euo pipefail
+
+          coverage_args=()
+          if [[ "$COLLECT_COVERAGE" == "true" ]]; then
+            mkdir -p .build/coverage
+            coverage_args=(
+              -enableCodeCoverage YES
+              -derivedDataPath .build/coverage-derived-data
+              -resultBundlePath .build/coverage/DiveKit.xcresult
+            )
+          fi
+
+          xcodebuild test \
+            -skipPackagePluginValidation \
+            -scheme DiveKit \
+            -destination 'platform=macOS' \
+            -testPlan DiveKit \
+            "${coverage_args[@]}"
+
+      - name: Export LCOV coverage report
+        if: inputs.collect_coverage
+        run: |
+          set -euo pipefail
+
+          profile_data="$(find .build/coverage-derived-data/Build/ProfileData -name Coverage.profdata -print -quit)"
+          test -n "$profile_data"
+
+          coverage_targets=(
+            DiveKit
+            DiveKitCore
+            DiveKitInternal
+            DiveKitLocalization
+          )
+
+          objects=()
+          for target in "${coverage_targets[@]}"; do
+            matches=()
+            while IFS= read -r object; do
+              matches+=("$object")
+            done < <(find .build/coverage-derived-data/Build/Products -type f -name "${target}.o" | sort)
+
+            if [[ "${#matches[@]}" -ne 1 ]]; then
+              echo "Expected one object file for ${target}, found ${#matches[@]}."
+              printf '%s\n' "${matches[@]}"
+              exit 1
+            fi
+
+            objects+=("${matches[0]}")
+          done
+
+          object_args=()
+          for object in "${objects[@]:1}"; do
+            object_args+=(-object "$object")
+          done
+
+          xcrun llvm-cov export \
+            -format=lcov \
+            -instr-profile "$profile_data" \
+            -ignore-filename-regex='(/Tests/|/\.build/)' \
+            "${objects[0]}" \
+            "${object_args[@]}" \
+            > .build/coverage/lcov.info
+
+          test -s .build/coverage/lcov.info
+
+      - name: Validate coverage targets
+        if: inputs.collect_coverage
+        run: |
+          set -euo pipefail
+          for target in DiveKit DiveKitCore DiveKitInternal DiveKitLocalization; do
+            grep -q "Sources/${target}/" .build/coverage/lcov.info
+          done
+
+      - name: Upload coverage artifact
+        if: inputs.collect_coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: divekit-lcov
+          path: .build/coverage/lcov.info
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Run iOS tests
+        run: |
+          set -euo pipefail
+          xcodebuild test \
+            -skipPackagePluginValidation \
+            -scheme DiveKit \
+            -destination 'platform=iOS Simulator,name=iPhone 16,OS=latest' \
+            -testPlan DiveKit

@@ -9,15 +9,7 @@
     }
   ],
   "defaultOptions" : {
-    "codeCoverage" : {
-      "targets" : [
-        {
-          "containerPath" : "container:",
-          "identifier" : "DiveKit",
-          "name" : "DiveKit"
-        }
-      ]
-    },
+    "codeCoverage" : true,
     "language" : "en",
     "region" : "US",
     "testExecutionOrdering" : "random"
