@@ -83,20 +83,33 @@ jobs:
             DiveKitLocalization
           )
 
+          build_dir=.build/coverage-derived-data/Build
+          product_dir="${build_dir}/Products"
+          intermediates_dir="${build_dir}/Intermediates.noindex"
           objects=()
           for target in "${coverage_targets[@]}"; do
             matches=()
-            while IFS= read -r object; do
-              matches+=("$object")
-            done < <(find .build/coverage-derived-data/Build/Products -type f -name "${target}.o" | sort)
+            if [[ -d "$product_dir" ]]; then
+              while IFS= read -r object; do
+                matches+=("$object")
+              done < <(find "$product_dir" -type f -name "${target}.o" | sort)
+            fi
 
-            if [[ "${#matches[@]}" -ne 1 ]]; then
-              echo "Expected one object file for ${target}, found ${#matches[@]}."
-              printf '%s\n' "${matches[@]}"
+            if [[ "${#matches[@]}" -eq 0 && -d "$intermediates_dir" ]]; then
+              while IFS= read -r object; do
+                matches+=("$object")
+              done < <(find "$intermediates_dir" -type f -path "*/${target}.build/Objects-normal/*/*.o" | sort)
+            fi
+
+            if [[ "${#matches[@]}" -eq 0 ]]; then
+              echo "Expected coverage object files for ${target}, found none."
+              echo "Searched ${product_dir}/**/${target}.o"
+              echo "Searched ${intermediates_dir}/**/${target}.build/Objects-normal/**/*.o"
               exit 1
             fi
 
-            objects+=("${matches[0]}")
+            printf 'Using %s coverage object(s) for %s.\n' "${#matches[@]}" "$target"
+            objects+=("${matches[@]}")
           done
 
           object_args=()
