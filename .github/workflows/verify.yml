@@ -51,22 +51,23 @@ jobs:
         run: |
           set -euo pipefail
 
-          coverage_args=()
+          xcodebuild_args=(
+            -skipPackagePluginValidation
+            -scheme DiveKit
+            -destination 'platform=macOS'
+            -testPlan DiveKit
+          )
+
           if [[ "$COLLECT_COVERAGE" == "true" ]]; then
             mkdir -p .build/coverage
-            coverage_args=(
+            xcodebuild_args+=(
               -enableCodeCoverage YES
               -derivedDataPath .build/coverage-derived-data
               -resultBundlePath .build/coverage/DiveKit.xcresult
             )
           fi
 
-          xcodebuild test \
-            -skipPackagePluginValidation \
-            -scheme DiveKit \
-            -destination 'platform=macOS' \
-            -testPlan DiveKit \
-            "${coverage_args[@]}"
+          xcodebuild test "${xcodebuild_args[@]}"
 
       - name: Export LCOV coverage report
         if: inputs.collect_coverage
