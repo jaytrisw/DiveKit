@@ -1,0 +1,182 @@
+name: Documentation
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_ref:
+        description: Git ref or SHA to build. Leave blank for the selected branch. SHA builds require target_branch.
+        required: false
+        type: string
+      target_branch:
+        description: Branch to update. Leave blank for the selected branch. Required when source_ref is a SHA.
+        required: false
+        type: string
+      version:
+        description: Documentation bundle version. Leave blank to use version.json.
+        required: false
+        type: string
+  workflow_call:
+    outputs:
+      commit_sha:
+        description: SHA to tag; documentation commit SHA if created, otherwise the target branch SHA used as the docs base.
+        value: ${{ jobs.update.outputs.commit_sha }}
+      docs_changed:
+        description: Whether generated documentation changed and a documentation commit was created.
+        value: ${{ jobs.update.outputs.docs_changed }}
+    inputs:
+      source_ref:
+        description: Git ref or SHA to build. SHA builds require target_branch.
+        required: false
+        type: string
+      target_branch:
+        description: Branch to update. Required when source_ref is a SHA.
+        required: false
+        type: string
+      version:
+        description: Documentation bundle version.
+        required: false
+        type: string
+
+jobs:
+  update:
+    runs-on: macos-15
+    permissions:
+      contents: write
+    outputs:
+      commit_sha: ${{ steps.commit.outputs.commit_sha }}
+      docs_changed: ${{ steps.commit.outputs.docs_changed }}
+
+    steps:
+      - name: Validate inputs
+        env:
+          SOURCE_REF: ${{ inputs.source_ref }}
+          TARGET_BRANCH: ${{ inputs.target_branch }}
+        run: |
+          set -euo pipefail
+
+          if [[ "$SOURCE_REF" =~ ^[0-9a-fA-F]{40}$ && -z "$TARGET_BRANCH" ]]; then
+            echo "Manual documentation runs from a detached SHA require target_branch."
+            exit 1
+          fi
+
+          if [[ -n "$TARGET_BRANCH" ]]; then
+            git check-ref-format --branch "$TARGET_BRANCH" >/dev/null
+          fi
+
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          ref: ${{ inputs.source_ref || inputs.target_branch || github.ref_name }}
+
+      - name: Select Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: "latest-stable"
+
+      - name: Resolve documentation version
+        id: version
+        env:
+          DOCUMENTATION_VERSION: ${{ inputs.version }}
+        run: |
+          set -euo pipefail
+
+          VERSION="$DOCUMENTATION_VERSION"
+          if [[ -z "$VERSION" ]]; then
+            VERSION="$(jq -re '.version | select(type == "string" and length > 0)' version.json)"
+          fi
+
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Build DocC archive
+        env:
+          DOCUMENTATION_VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          set -euo pipefail
+
+          VERSION="$DOCUMENTATION_VERSION"
+
+          OUTPUT_DIR=".build/docc"
+          mkdir -p "$OUTPUT_DIR"
+
+          swift package dump-symbol-graph
+
+          SYMBOL_GRAPH_DIR=""
+          while IFS= read -r symbol_graph_file; do
+            candidate_dir="$(dirname "$symbol_graph_file")"
+            if [[ -f "$candidate_dir/DiveKitCore.symbols.json" && -f "$candidate_dir/DiveKitLocalization.symbols.json" ]]; then
+              SYMBOL_GRAPH_DIR="$candidate_dir"
+              break
+            fi
+          done < <(find .build -type f -name 'DiveKit.symbols.json')
+
+          if [[ -z "$SYMBOL_GRAPH_DIR" ]]; then
+            echo "Unable to find complete DiveKit symbol graph directory after generating symbol graphs"
+            exit 1
+          fi
+
+          swift package --allow-writing-to-directory "$OUTPUT_DIR" \
+            generate-documentation \
+            --target DiveKit \
+            --disable-indexing \
+            --additional-symbol-graph-dir "$SYMBOL_GRAPH_DIR" \
+            --fallback-display-name DiveKit \
+            --fallback-bundle-identifier com.jtw.DiveKit \
+            --fallback-bundle-version "$VERSION" \
+            --output-path "$OUTPUT_DIR" \
+            --transform-for-static-hosting \
+            --hosting-base-path "/${{ github.event.repository.name }}"
+
+          touch "$OUTPUT_DIR/.nojekyll"
+
+      - name: Checkout documentation target
+        env:
+          TARGET_BRANCH: ${{ inputs.target_branch || github.ref_name }}
+        run: |
+          set -euo pipefail
+
+          if [[ -z "$TARGET_BRANCH" ]]; then
+            echo "Unable to determine the branch to update."
+            exit 1
+          fi
+
+          git fetch origin "+refs/heads/${TARGET_BRANCH}:refs/remotes/origin/${TARGET_BRANCH}"
+          git checkout -B "$TARGET_BRANCH" "origin/${TARGET_BRANCH}"
+
+      - name: Commit documentation
+        id: commit
+        env:
+          DOCUMENTATION_VERSION: ${{ steps.version.outputs.version }}
+          TARGET_BRANCH: ${{ inputs.target_branch || github.ref_name }}
+        run: |
+          set -euo pipefail
+
+          if [[ -z "$TARGET_BRANCH" ]]; then
+            echo "Unable to determine the branch to update."
+            exit 1
+          fi
+
+          VERSION="$DOCUMENTATION_VERSION"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          rm -rf docs
+          mkdir -p docs
+          cp -a .build/docc/. docs/
+
+          if [[ -n "$(git status --porcelain -- docs)" ]]; then
+            git add docs
+            git commit -m "Update documentation for ${VERSION} [skip ci]"
+            git push origin "HEAD:${TARGET_BRANCH}" || {
+              git fetch origin "+refs/heads/${TARGET_BRANCH}:refs/remotes/origin/${TARGET_BRANCH}"
+              git rebase "origin/${TARGET_BRANCH}"
+              git push origin "HEAD:${TARGET_BRANCH}"
+            }
+            echo "docs_changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Generated documentation is unchanged."
+            echo "docs_changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+          echo "commit_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
