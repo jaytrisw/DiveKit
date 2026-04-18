@@ -1,0 +1,55 @@
+name: Coverage
+
+on:
+  workflow_call:
+    inputs:
+      ref:
+        description: Git ref or SHA to test with coverage.
+        required: true
+        type: string
+    secrets:
+      CODECOV_TOKEN:
+        required: false
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Git ref or SHA to test with coverage. Defaults to the selected workflow ref.
+        required: false
+        type: string
+
+jobs:
+  verify:
+    uses: ./.github/workflows/verify.yml
+    permissions:
+      contents: read
+    with:
+      ref: ${{ inputs.ref || github.sha }}
+      collect_coverage: true
+
+  upload_coverage:
+    needs: verify
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.ref || github.sha }}
+
+      - name: Download coverage artifact
+        uses: actions/download-artifact@v7
+        with:
+          name: divekit-lcov
+          path: .build/coverage
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v6
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: .build/coverage/lcov.info
+          disable_search: true
+          flags: macos
+          name: DiveKit macOS coverage
+          slug: jaytrisw/DiveKit
+          fail_ci_if_error: true

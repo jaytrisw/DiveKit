@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main", "develop" ]
+  pull_request:
+    branches: [ "main", "develop" ]
+
+jobs:
+  verify:
+    uses: ./.github/workflows/verify.yml
+    permissions:
+      contents: read
+    with:
+      ref: ${{ github.sha }}
+      collect_coverage: true
+
+  coverage:
+    needs: verify
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+
+      - name: Download coverage artifact
+        uses: actions/download-artifact@v7
+        with:
+          name: divekit-lcov
+          path: .build/coverage
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v6
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: .build/coverage/lcov.info
+          disable_search: true
+          flags: macos
+          name: DiveKit macOS coverage
+          slug: jaytrisw/DiveKit
+          fail_ci_if_error: true

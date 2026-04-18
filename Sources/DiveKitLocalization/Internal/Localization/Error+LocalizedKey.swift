@@ -2,6 +2,9 @@ import Foundation
 import DiveKitCore
 
 package extension Error {
+    /// The localization key for this domain error.
+    ///
+    /// - Since: 1.0.0
     var localizationKey: String {
         switch self {
             case let .negative(negative, _): negative.localizationKey
@@ -13,6 +16,9 @@ package extension Error {
 }
 
 package extension Error.Range {
+    /// The localization key for this range error payload.
+    ///
+    /// - Since: 1.0.0
     var localizationKey: String {
         String {
             switch self {
@@ -24,6 +30,9 @@ package extension Error.Range {
 }
 
 package extension Error.Tank {
+    /// The localization key for this tank error payload.
+    ///
+    /// - Since: 1.0.0
     var localizationKey: String {
         String {
             switch self {
@@ -35,6 +44,9 @@ package extension Error.Tank {
 }
 
 package extension Error.Blend {
+    /// The localization key for this blend error payload.
+    ///
+    /// - Since: 1.0.0
     var localizationKey: String {
         String {
             switch self {
@@ -46,6 +58,9 @@ package extension Error.Blend {
 }
 
 package extension Error.Negative {
+    /// The localization key for this negative input error payload.
+    ///
+    /// - Since: 1.0.0
     var localizationKey: String {
         String {
             switch self {

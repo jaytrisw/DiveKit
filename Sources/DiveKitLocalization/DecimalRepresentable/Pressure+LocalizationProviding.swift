@@ -1,7 +1,15 @@
 import Foundation
 import DiveKitCore
 
+/// Makes pressure units provide localized titles, descriptions, and quantities.
+///
+/// - Since: 1.0.0
 extension Pressure.Unit: LocalizationProviding {
+    /// Returns localized text for a pressure unit component.
+    ///
+    /// - Parameter component: The pressure unit component to localize.
+    /// - Returns: The localized text for `component`.
+    /// - Since: 1.0.0
     public func localization(for component: LocalizationComponent) -> String {
         switch component {
             case .title:
@@ -15,6 +23,11 @@ extension Pressure.Unit: LocalizationProviding {
 }
 
 private extension Pressure.Unit {
+    /// Returns the localization key for a pressure unit description.
+    ///
+    /// - Parameter style: The localization style to use.
+    /// - Returns: A localization key.
+    /// - Since: 1.0.0
     func description(_ style: LocalizationStyle) -> String {
         String {
             switch (self, style) {
@@ -34,6 +47,11 @@ private extension Pressure.Unit {
         }
     }
 
+    /// Returns the localization key for a pressure unit quantity.
+    ///
+    /// - Parameter style: The localization style to use.
+    /// - Returns: A localization key.
+    /// - Since: 1.0.0
     func quantity(_ style: LocalizationStyle) -> String {
         String {
             switch (self, style) {
