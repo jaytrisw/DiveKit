@@ -36,6 +36,13 @@ on:
         description: Documentation bundle version.
         required: false
         type: string
+    secrets:
+      CI_NAME:
+        required: true
+      CI_EMAIL:
+        required: true
+      CI_SSH_PRIVATE_KEY:
+        required: true
 
 jobs:
   update:
@@ -152,6 +159,52 @@ jobs:
           git fetch origin "+refs/heads/${TARGET_BRANCH}:refs/remotes/origin/${TARGET_BRANCH}"
           git checkout -B "$TARGET_BRANCH" "origin/${TARGET_BRANCH}"
 
+      - name: Configure SSH signing key
+        env:
+          CI_NAME: ${{ secrets.CI_NAME }}
+          CI_EMAIL: ${{ secrets.CI_EMAIL }}
+          CI_SSH_PRIVATE_KEY: ${{ secrets.CI_SSH_PRIVATE_KEY }}
+        run: |
+          set -euo pipefail
+
+          if [[ -z "$CI_NAME" ]]; then
+            echo "Missing required secret: CI_NAME"
+            exit 1
+          fi
+
+          if [[ -z "$CI_EMAIL" ]]; then
+            echo "Missing required secret: CI_EMAIL"
+            exit 1
+          fi
+
+          if [[ -z "$CI_SSH_PRIVATE_KEY" ]]; then
+            echo "Missing required secret: CI_SSH_PRIVATE_KEY"
+            exit 1
+          fi
+
+          KEY_PATH="$RUNNER_TEMP/ci_signing_key"
+          printf '%s\n' "$CI_SSH_PRIVATE_KEY" > "$KEY_PATH"
+          chmod 600 "$KEY_PATH"
+
+          PUBKEY_PATH="$KEY_PATH.pub"
+          if ! ssh-keygen -y -f "$KEY_PATH" > "$PUBKEY_PATH"; then
+            echo "CI_SSH_PRIVATE_KEY is not a valid SSH private key or requires a passphrase"
+            exit 1
+          fi
+          chmod 644 "$PUBKEY_PATH"
+
+          eval "$(ssh-agent -s)"
+          ssh-add "$KEY_PATH"
+
+          echo "SSH_AUTH_SOCK=$SSH_AUTH_SOCK" >> "$GITHUB_ENV"
+          echo "SSH_AGENT_PID=$SSH_AGENT_PID" >> "$GITHUB_ENV"
+
+          git config user.name "$CI_NAME"
+          git config user.email "$CI_EMAIL"
+          git config gpg.format ssh
+          git config user.signingkey "$PUBKEY_PATH"
+          git config commit.gpgSign true
+
       - name: Commit documentation
         id: commit
         env:
@@ -166,9 +219,6 @@ jobs:
           fi
 
           VERSION="$DOCUMENTATION_VERSION"
-
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           rm -rf docs
           mkdir -p docs

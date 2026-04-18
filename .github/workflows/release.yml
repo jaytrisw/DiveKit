@@ -205,6 +205,10 @@ jobs:
     uses: ./.github/workflows/documentation.yml
     permissions:
       contents: write
+    secrets:
+      CI_NAME: ${{ secrets.CI_NAME }}
+      CI_EMAIL: ${{ secrets.CI_EMAIL }}
+      CI_SSH_PRIVATE_KEY: ${{ secrets.CI_SSH_PRIVATE_KEY }}
     with:
       source_ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.merge_commit_sha || github.sha }}
       target_branch: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.ref || github.ref_name }}
