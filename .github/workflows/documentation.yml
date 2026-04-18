@@ -99,12 +99,17 @@ jobs:
           OUTPUT_DIR=".build/docc"
           mkdir -p "$OUTPUT_DIR"
 
+          find .build -type d -name symbolgraph -prune -exec rm -rf {} +
+
+          set +e
           swift package dump-symbol-graph
+          DUMP_SYMBOL_GRAPH_STATUS=$?
+          set -e
 
           SYMBOL_GRAPH_DIR=""
           while IFS= read -r symbol_graph_file; do
             candidate_dir="$(dirname "$symbol_graph_file")"
-            if [[ -f "$candidate_dir/DiveKitCore.symbols.json" && -f "$candidate_dir/DiveKitLocalization.symbols.json" ]]; then
+            if [[ -f "$candidate_dir/DiveKitCore.symbols.json" && -f "$candidate_dir/DiveKitInternal.symbols.json" && -f "$candidate_dir/DiveKitLocalization.symbols.json" ]]; then
               SYMBOL_GRAPH_DIR="$candidate_dir"
               break
             fi
@@ -113,6 +118,10 @@ jobs:
           if [[ -z "$SYMBOL_GRAPH_DIR" ]]; then
             echo "Unable to find complete DiveKit symbol graph directory after generating symbol graphs"
             exit 1
+          fi
+
+          if [[ "$DUMP_SYMBOL_GRAPH_STATUS" -ne 0 ]]; then
+            echo "swift package dump-symbol-graph exited with status ${DUMP_SYMBOL_GRAPH_STATUS}, but the required DiveKit symbol graphs were generated."
           fi
 
           swift package --allow-writing-to-directory "$OUTPUT_DIR" \
