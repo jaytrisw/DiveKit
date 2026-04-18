@@ -22,7 +22,7 @@ public extension Blend where State == Blended {
     }
 }
 
-private extension CallSite {
+extension CallSite {
     /// Creates call-site context for diagnostics that originate from a blend.
     ///
     /// The object name is derived from the ``Blend`` type description and paired
