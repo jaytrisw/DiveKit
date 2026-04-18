@@ -1,18 +1,19 @@
 import Foundation
 import DiveKitCore
+import DiveKitInternal
 
 package extension Blend where State == Blended {
-    /// Creates a blended gas mixture from a list of fractional pressures.
+    /// Creates a blended gas mixture from the supplied fractional pressures.
     ///
-    /// This initializer allows constructing a `Blend` in the `Blended` state by passing
-    /// multiple `FractionalPressure` values directly.
+    /// This initializer allows constructing a ``Blend`` in the blended state by passing
+    /// multiple ``FractionalPressure`` values directly.
     ///
     /// - Parameter fractionalPressures: A variadic list of fractional pressures.
     ///
     /// ```swift
     /// let blend = Blend<Blended>(
-    ///     FractionalPressure(Oxygen(), fractionalPressure: 0.21),
-    ///     FractionalPressure(Nitrogen(), fractionalPressure: 0.79)
+    ///     FractionalPressure(.oxygen, fractionalPressure: 0.21),
+    ///     FractionalPressure(.nitrogen, fractionalPressure: 0.79)
     /// )
     /// ```
     ///
@@ -24,22 +25,22 @@ package extension Blend where State == Blended {
 }
 
 public extension Blend where State == Unblended {
-    /// Creates an unblended gas mixture from a list of fractional pressures.
+    /// Creates an unblended gas mixture from the supplied fractional pressures.
     ///
-    /// This initializer allows constructing a `Blend` in the `Unblended` state by passing
-    /// multiple `FractionalPressure` values directly.
+    /// This initializer allows constructing a ``Blend`` in the unblended state by passing
+    /// multiple ``FractionalPressure`` values directly.
     ///
     /// - Parameter fractionalPressures: A variadic list of fractional pressures.
     ///
     /// ```swift
     /// let blend = Blend<Unblended>(
-    ///     FractionalPressure(Oxygen(), fractionalPressure: 0.32),
-    ///     FractionalPressure(Nitrogen(), fractionalPressure: 0.68)
+    ///     FractionalPressure(.oxygen, fractionalPressure: 0.32),
+    ///     FractionalPressure(.nitrogen, fractionalPressure: 0.68)
     /// )
     /// ```
     ///
-    /// - Note: The resulting blend may require validation using `blend()`
-    ///   before it can be used as a `Blended` state.
+    /// - Note: The resulting blend requires validation using ``blend()``
+    ///   before it can be used as a blended state.
     /// - Since: 1.0.0
     init<each Gas: GasRepresentable>(_ fractionalPressures: repeat FractionalPressure<each Gas>) {
         self.init(repeat ((each fractionalPressures).gas, (each fractionalPressures).value))

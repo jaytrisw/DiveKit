@@ -14,10 +14,6 @@ package extension PhysicsCalculating {
     /// - Returns: A calculation containing the gauge pressure at `depth`.
     /// - Throws: ``DiveKitCore/Error/negative(_:_:)`` if `depth` is negative.
     ///
-    /// ## Formula
-    ///
-    /// `gauge pressure = depth ÷ pressure increase per atmosphere`
-    ///
     /// ```swift
     /// let result = try calculator.gaugePressure(
     ///     at: 20,
@@ -49,10 +45,6 @@ package extension PhysicsCalculating {
     /// - Returns: A calculation containing the absolute pressure at `depth`.
     /// - Throws: ``DiveKitCore/Error/negative(_:_:)`` if `depth` is negative. This
     ///   method only throws typed domain errors forwarded from ``gaugePressure(at:with:_:)``.
-    ///
-    /// ## Formula
-    ///
-    /// `absolute pressure = gauge pressure + 1`
     ///
     /// ```swift
     /// let result = try calculator.atmospheresAbsolute(

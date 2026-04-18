@@ -38,10 +38,6 @@ extension PhysicsCalculator: PhysicsCalculating {
     /// - Returns: A calculation containing the gauge pressure.
     /// - Throws: `Error.negative` if `depth` is negative.
     ///
-    /// ## Formula
-    ///
-    /// `gauge pressure = depth ÷ pressure increase per atmosphere`
-    ///
     /// ```swift
     /// let pressure = try calculator.gaugePressure(at: 30)
     /// ```
@@ -62,10 +58,6 @@ extension PhysicsCalculator: PhysicsCalculating {
     ///   - volume: The volume at the surface.
     /// - Returns: A calculation containing the compressed volume at depth.
     /// - Throws: `Error.negative` if `volume` or `depth` is negative.
-    ///
-    /// ## Formula
-    ///
-    /// `volume at depth = surface volume ÷ absolute pressure`
     ///
     /// ```swift
     /// let volumeAtDepth = try calculator.airVolumeFromSurface(
@@ -98,10 +90,6 @@ extension PhysicsCalculator: PhysicsCalculating {
     /// - Returns: A calculation containing the expanded surface volume.
     /// - Throws: `Error.negative` if `volume` or `depth` is negative.
     ///
-    /// ## Formula
-    ///
-    /// `surface volume = volume at depth × absolute pressure`
-    ///
     /// ```swift
     /// let surfaceVolume = try calculator.airVolumeToSurface(
     ///     from: 30,
@@ -132,10 +120,6 @@ extension PhysicsCalculator: PhysicsCalculating {
     /// - Returns: A calculation containing the absolute pressure.
     /// - Throws: `Error.negative` if `depth` is negative.
     ///
-    /// ## Formula
-    ///
-    /// `absolute pressure = gauge pressure + 1`
-    ///
     /// ```swift
     /// let pressure = try calculator.atmospheresAbsolute(at: 30)
     /// ```
@@ -154,10 +138,6 @@ extension PhysicsCalculator: PhysicsCalculating {
     ///   - secondDepth: The ending depth.
     /// - Returns: A calculation containing the pressure difference.
     /// - Throws: `Error.negative` if either depth is negative.
-    ///
-    /// ## Formula
-    ///
-    /// `pressure change = second absolute pressure - first absolute pressure`
     ///
     /// ```swift
     /// let delta = try calculator.pressureChange(

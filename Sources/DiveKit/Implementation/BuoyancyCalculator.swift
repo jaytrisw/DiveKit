@@ -31,15 +31,11 @@ public final class BuoyancyCalculator: ConfigurationProviding {
 }
 
 extension BuoyancyCalculator: BuoyancyCalculating {
-    /// Calculates the buoyancy of an object.
+    /// Calculates the buoyancy of an `Object`.
     ///
     /// - Parameter object: The object whose buoyancy should be calculated.
     /// - Returns: A calculation containing the resulting `Buoyancy`.
     /// - Throws: `Error.negative` if the object's weight or volume is negative.
-    ///
-    /// ## Formula
-    ///
-    /// `buoyancy = displaced water weight - object weight`
     ///
     /// ```swift
     /// let result = try calculator.buoyancy(of: object)
@@ -51,17 +47,13 @@ extension BuoyancyCalculator: BuoyancyCalculating {
             try buoyancy(of: object, with: configuration, .from(self))
         }
 
-    /// Calculates the buoyancy of an object from its weight and displaced volume.
+    /// Calculates the buoyancy of an object from its `Mass` and displaced `Volume`.
     ///
     /// - Parameters:
     ///   - weight: The weight of the object.
     ///   - volume: The volume of water displaced by the object.
     /// - Returns: A calculation containing the resulting `Buoyancy`.
     /// - Throws: `Error.negative` if `weight` or `volume` is negative.
-    ///
-    /// ## Formula
-    ///
-    /// `buoyancy = displaced water weight - object weight`
     ///
     /// ```swift
     /// let result = try calculator.buoyancyOfObject(
@@ -84,17 +76,13 @@ extension BuoyancyCalculator: BuoyancyCalculating {
                 }
         }
 
-    /// Calculates the volume of an object given its weight and buoyancy.
+    /// Calculates the volume of an object given its `Mass` and `Buoyancy`.
     ///
     /// - Parameters:
     ///   - weight: The weight of the object.
     ///   - buoyancy: The buoyancy of the object.
     /// - Returns: A calculation containing the resulting volume.
     /// - Throws: `Error.negative` if `weight` is negative.
-    ///
-    /// ## Formula
-    ///
-    /// `volume = (weight + buoyant force) ÷ water density`
     ///
     /// ```swift
     /// let result = try calculator.volumeOfObject(

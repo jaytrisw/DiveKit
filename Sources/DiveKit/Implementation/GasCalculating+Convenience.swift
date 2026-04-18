@@ -17,10 +17,6 @@ public extension GasCalculating where Self: ConfigurationProviding {
     /// - Throws: `Error.blend` if the blend cannot be normalized, or a
     ///   `Error` from the partial-pressure calculation.
     ///
-    /// ## Formula
-    ///
-    /// `partial pressure = absolute pressure × fractional pressure`
-    ///
     /// ```swift
     /// let result = try calculator.partialPressure(
     ///     of: Oxygen(),
@@ -62,10 +58,6 @@ public extension GasCalculating where Self: ConfigurationProviding {
     /// - Throws: `Error.negative` for negative `depth`, `minutes`, or
     ///   `gasConsumed`, or `Error.range` when `minutes` is zero.
     ///
-    /// ## Formula
-    ///
-    /// `SAC = depth consumption ÷ absolute pressure`
-    ///
     /// ```swift
     /// let sac = try calculator.surfaceAirConsumption(
     ///     at: 30,
@@ -101,10 +93,6 @@ public extension GasCalculating where Self: ConfigurationProviding {
     /// - Returns: A calculation containing the equivalent air depth.
     /// - Throws: `Error.blend` if the blend cannot be normalized, or
     ///   `Error.negative` if `depth` is negative.
-    ///
-    /// ## Formula
-    ///
-    /// `EAD = ((depth + pressure increase per atmosphere) × nitrogen ratio) - pressure increase per atmosphere`
     ///
     /// ```swift
     /// let ead = try calculator.equivalentAirDepth(

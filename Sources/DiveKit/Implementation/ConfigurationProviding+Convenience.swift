@@ -2,10 +2,10 @@ import Foundation
 import DiveKitCore
 
 public extension ConfigurationProviding {
-    /// Creates a conforming type using units and water configuration.
+    /// Creates a conforming type using a `Configuration` with the specified `Units` and `Water`.
     ///
     /// This convenience initializer constructs a `Configuration` from the provided
-    /// `units` and `water`, then forwards it to the designated initializer.
+    /// `Units` and `Water`, then forwards it to the designated initializer.
     ///
     /// - Parameters:
     ///   - units: The unit system used for calculations.

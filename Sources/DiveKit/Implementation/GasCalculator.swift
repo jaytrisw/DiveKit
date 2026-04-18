@@ -42,10 +42,6 @@ extension GasCalculator: GasCalculating {
     /// - Returns: A calculation containing the partial pressure.
     /// - Throws: A `Error` from the underlying absolute-pressure calculation.
     ///
-    /// ## Formula
-    ///
-    /// `partial pressure = absolute pressure × fractional pressure`
-    ///
     /// ```swift
     /// let oxygen = try FractionalPressure(of: Oxygen(), fractionalPressure: 0.32)
     /// let pp = try calculator.partialPressure(
@@ -77,10 +73,6 @@ extension GasCalculator: GasCalculating {
     /// - Returns: A calculation containing the optimal blend.
     /// - Throws: `Error.negative` if `depth` or `partialPressure` is
     ///   negative, or `Error.range` if `partialPressure` is zero.
-    ///
-    /// ## Formula
-    ///
-    /// `oxygen fraction = desired oxygen partial pressure ÷ absolute pressure`
     ///
     /// ```swift
     /// let blend = try calculator.bestBlend(
@@ -124,10 +116,6 @@ extension GasCalculator: GasCalculating {
     /// - Returns: A calculation containing the equivalent air depth.
     /// - Throws: `Error.negative` if `depth` is negative.
     ///
-    /// ## Formula
-    ///
-    /// `EAD = ((depth + pressure increase per atmosphere) × nitrogen ratio) - pressure increase per atmosphere`
-    ///
     /// ```swift
     /// let ead = try calculator.equivalentAirDepth(
     ///     for: 30,
@@ -159,10 +147,6 @@ extension GasCalculator: GasCalculating {
     /// - Returns: A calculation containing the maximum operating depth.
     /// - Throws: `Error.negative` if `partialPressure` is negative, or
     ///   `Error.range` if the oxygen fraction or `partialPressure` is zero.
-    ///
-    /// ## Formula
-    ///
-    /// `MOD = ((oxygen partial pressure ÷ oxygen fraction) - 1) × pressure increase per atmosphere`
     ///
     /// ```swift
     /// let mod = try calculator.maximumOperatingDepth(
@@ -202,10 +186,6 @@ extension GasCalculator: GasCalculating {
     /// - Throws: A `Error` if the blend cannot produce a valid
     ///   fractional pressure for `gas`, or if the absolute-pressure calculation fails.
     ///
-    /// ## Formula
-    ///
-    /// `partial pressure = absolute pressure × fractional pressure`
-    ///
     /// ```swift
     /// let pp = try calculator.partialPressure(
     ///     of: Oxygen(),
@@ -241,10 +221,6 @@ extension GasCalculator: GasCalculating {
     /// - Returns: A calculation containing the SAC rate.
     /// - Throws: `Error.negative` if `startGas` or `endGas` is negative,
     ///   or a `Error` from surface air consumption validation.
-    ///
-    /// ## Formula
-    ///
-    /// `gas consumed = start pressure - end pressure`
     ///
     /// ```swift
     /// let sac = try calculator.surfaceAirConsumption(
@@ -294,10 +270,6 @@ extension GasCalculator: GasCalculating {
     /// - Throws: `Error.tank` if the tank volume or rated pressure is
     ///   negative, or a `Error` from surface air consumption validation.
     ///
-    /// ## Formula
-    ///
-    /// `RMV = SAC × tank conversion factor`
-    ///
     /// ```swift
     /// let rmv = try calculator.respiratoryMinuteVolume(
     ///     at: 30,
@@ -340,10 +312,6 @@ private extension Tank.Size {
     /// rated pressure, allowing conversion from pressure units to volume units.
     ///
     /// - Returns: The conversion factor as `volume ÷ rated pressure`.
-    ///
-    /// ## Formula
-    ///
-    /// `conversion factor = volume ÷ rated pressure`
     ///
     /// ```swift
     /// let factor = tank.size.conversionFactor

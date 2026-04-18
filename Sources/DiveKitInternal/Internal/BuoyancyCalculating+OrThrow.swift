@@ -20,15 +20,6 @@ package extension BuoyancyCalculating {
     /// - Throws: ``DiveKitCore/Error/negative(_:_:)`` if the object's weight or volume
     ///   is negative.
     ///
-    /// ## Formula
-    ///
-    /// The calculation is performed as:
-    ///
-    /// `buoyancy = displaced water weight - object weight`
-    ///
-    /// where displaced water weight is derived from the object's volume and the
-    /// configured water density.
-    ///
     /// ```swift
     /// let result = try calculator.buoyancy(
     ///     of: object,

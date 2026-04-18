@@ -16,7 +16,7 @@ public extension FractionalPressure {
     ///
     /// ```swift
     /// let fraction = try FractionalPressure(
-    ///     of: Oxygen(),
+    ///     of: .oxygen,
     ///     fractionalPressure: 0.32
     /// )
     /// ```

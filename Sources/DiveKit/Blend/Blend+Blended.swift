@@ -5,40 +5,34 @@ import DiveKitInternal
 public extension Blend where State == Blended {
     /// Returns the fractional pressure of a specific gas in the blend.
     ///
-    /// This method retrieves the fractional pressure for `gas` and wraps it
-    /// in a `FractionalPressure` type, ensuring the value is valid.
+    /// This method retrieves the ``FractionalPressure``  for `gas`.
     ///
     /// - Parameter gas: The gas whose fractional pressure should be retrieved.
-    /// - Returns: A `FractionalPressure` representing the gas's contribution to the blend.
-    /// - Throws: `Error.negative` if the stored fractional pressure is
-    ///   negative, or `Error.range` if it is greater than `1`.
+    /// - Returns: A ``FractionalPressure`` representing the gas's contribution to the blend.
+    /// - Throws: If the stored fractional pressure is negative or greater than `1`.
     ///
     /// ```swift
-    /// let oxygen = try blend.fractionalPressure(of: Oxygen())
+    /// let oxygenFractionalPressure = try blend.fractionalPressure(of: .oxygen)
     /// ```
     ///
-    /// - Note: The blend must already be in a valid `Blended` state.
+    /// - Note: The ``Blend`` must already be in a valid blended state.
     /// - Since: 1.0.0
     func fractionalPressure<Gas: GasRepresentable>(of gas: Gas) throws(Error) -> FractionalPressure<Gas> {
         try .init(of: gas, fractionalPressure: fractionalPressure(of: gas))
     }
 }
 
-extension CallSite {
+private extension CallSite {
     /// Creates call-site context for diagnostics that originate from a blend.
     ///
-    /// The object name is derived from the blend's type description and paired
+    /// The object name is derived from the ``Blend`` type description and paired
     /// with the caller's function name. This keeps blend validation errors
     /// focused on the API that requested the operation.
     ///
     /// - Parameters:
     ///   - blend: The blend used to derive the diagnostic object name.
     ///   - function: The calling function. Defaults to the caller's function name.
-    /// - Returns: A `CallSite` for blend-related errors and diagnostics.
-    ///
-    /// ```swift
-    /// let callSite = CallSite.from(blend)
-    /// ```
+    /// - Returns: A ``CallSite`` for blend-related errors and diagnostics.
     ///
     /// - Note: The object description is derived from `String(describing:)`
     ///   and truncated to remove parameter details for readability.
