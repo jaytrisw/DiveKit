@@ -16,7 +16,8 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
 
         // Then
         #expect(sut.components().count == 1)
-        try #expect(try sut.fractionalPressure(of: .oxygen) == oxygenFraction)
+        let result = sut.fractionalPressure(of: .oxygen)
+        #expect(result == oxygenFraction)
     }
 
     @Test
@@ -60,7 +61,8 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
 
         // Then
         #expect(result.components().count == 1)
-        try #expect(try result.fractionalPressure(of: .oxygen) == oxygenFraction)
+        let oxygen = result.fractionalPressure(of: .oxygen)
+        #expect(oxygen == oxygenFraction)
     }
 
     @Test
@@ -75,7 +77,8 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
 
         // Then
         #expect(sut.components().count == 1)
-        try #expect(try sut.fractionalPressure(of: .oxygen) == updatedOxygenFraction)
+        let result = sut.fractionalPressure(of: .oxygen)
+        #expect(result == updatedOxygenFraction)
     }
 
     @Test
@@ -91,7 +94,8 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
 
         // Then
         #expect(sut.components().count == 1)
-        try #expect(try sut.fractionalPressure(of: .oxygen) == updatedOxygenFraction)
+        let result = sut.fractionalPressure(of: .oxygen)
+        #expect(result == updatedOxygenFraction)
     }
 
     @Test
@@ -119,9 +123,11 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
         let result = try sut.updating(.oxygen, pressure: updatedOxygenFraction)
 
         // Then
-        try #expect(try sut.fractionalPressure(of: .oxygen) == initialOxygenFraction)
+        let initialOxygen = sut.fractionalPressure(of: .oxygen)
+        #expect(initialOxygen == initialOxygenFraction)
         #expect(result.components().count == 1)
-        try #expect(try result.fractionalPressure(of: .oxygen) == updatedOxygenFraction)
+        let updatedOxygen = result.fractionalPressure(of: .oxygen)
+        #expect(updatedOxygen == updatedOxygenFraction)
     }
 
     @Test
@@ -136,9 +142,11 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
         let result = try sut.updating(fractionalPressure)
 
         // Then
-        try #expect(try sut.fractionalPressure(of: .oxygen) == initialOxygenFraction)
+        let initialOxygen = sut.fractionalPressure(of: .oxygen)
+        #expect(initialOxygen == initialOxygenFraction)
         #expect(result.components().count == 1)
-        try #expect(try result.fractionalPressure(of: .oxygen) == updatedOxygenFraction)
+        let updatedOxygen = result.fractionalPressure(of: .oxygen)
+        #expect(updatedOxygen == updatedOxygenFraction)
     }
 
     @Test
@@ -151,7 +159,8 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
 
         // Then
         #expect(sut.components().count == 1)
-        try #expect(try sut.fractionalPressure(of: .oxygen) == 1)
+        let result = sut.fractionalPressure(of: .oxygen)
+        #expect(result == 1)
     }
 
     @Test
@@ -164,7 +173,8 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
 
         // Then
         #expect(result.components().count == 1)
-        try #expect(try result.fractionalPressure(of: .oxygen) == 1)
+        let oxygenFraction = result.fractionalPressure(of: .oxygen)
+        #expect(oxygenFraction == 1)
         #expect(result.components().first.forceUnwrap().isEqual(to: .oxygen))
     }
 
@@ -179,7 +189,8 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
 
         // Then
         #expect(result.components().count == 1)
-        try #expect(try result.fractionalPressure(of: .oxygen) == 1)
+        let oxygenFraction = try result.fractionalPressure(of: .oxygen)
+        #expect(oxygenFraction.value == 1)
     }
 
     @Test
@@ -209,8 +220,10 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
         let result = try sut.blend()
 
         // Then
-        try #expect(try result.fractionalPressure(of: .oxygen) == oxygen)
-        try #expect(try result.fractionalPressure(of: .nitrogen) == nitrogen)
+        let resultOxygen = try result.fractionalPressure(of: .oxygen)
+        let resultNitrogen = try result.fractionalPressure(of: .nitrogen)
+        #expect(resultOxygen == oxygen)
+        #expect(resultNitrogen == nitrogen)
         #expect(result.totalPressure == 1.0)
         #expect(result.components().count == 2)
     }

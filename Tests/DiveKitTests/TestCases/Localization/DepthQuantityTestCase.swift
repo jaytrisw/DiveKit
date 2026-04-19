@@ -20,9 +20,11 @@ final class DepthQuantityTestCase: ThrowingMethodUnderTestCase<Depth.Unit, Quant
         ]
 
         // When
-        try data.forEach {
+        for value in data {
+            let result = try mut(value.input)
+
             // Then
-            try #expect(try mut($0.input) == $0.output)
+            #expect(result == value.output)
         }
     }
 

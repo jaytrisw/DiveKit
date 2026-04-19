@@ -18,9 +18,11 @@ final class AtmospheresAbsoluteTestCaseTest: ThrowingMethodUnderTestCase<Physics
         ]
 
         // When
-        try data.forEach {
+        for value in data {
+            let result = try mut(value.input)
+
             // Then
-            try #expect(try mut($0.input) == $0.output)
+            #expect(result == value.output)
         }
     }
 
@@ -39,9 +41,11 @@ final class AtmospheresAbsoluteTestCaseTest: ThrowingMethodUnderTestCase<Physics
         ]
 
         // When
-        try data.forEach {
+        for value in data {
+            let result = try mut(value.input)
+
             // Then
-            try #expect(try mut($0.input) == $0.output)
+            #expect(result == value.output)
         }
     }
 }

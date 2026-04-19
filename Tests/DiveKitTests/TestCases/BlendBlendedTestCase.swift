@@ -45,7 +45,8 @@ final class BlendBlendedTestCase: SystemUnderTestCase<Blend<Blended>> {
         sut = try .init(.init(of: oxygen, fractionalPressure: oxygenFraction))
 
         // Then
-        try #expect(try sut.fractionalPressure(of: oxygen).value == oxygenFraction)
+        let result = try sut.fractionalPressure(of: oxygen)
+        #expect(result.value == oxygenFraction)
         #expect(sut.components().count == 1)
     }
 

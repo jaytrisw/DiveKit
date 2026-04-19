@@ -15,7 +15,8 @@ extension GasCalculatorImperialSaltwaterTestCase {
         try expectCalculation(
             sut.bestBlend(for: depth, partialPressure: partialPressure, using: physicsCalculator)) { result, configuration in
                 // Then
-                try #expect(try result.fractionalPressure(of: .oxygen) == 0.32)
+                let oxygenFraction = try result.fractionalPressure(of: .oxygen)
+                #expect(oxygenFraction.value == 0.32)
                 #expect(configuration == sut.configuration)
             }
     }
