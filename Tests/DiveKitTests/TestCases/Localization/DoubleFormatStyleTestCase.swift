@@ -1,7 +1,8 @@
-import XCTest
+import Testing
 @testable import DiveKit
 
 final class DoubleFormatStyleTestCase: SystemUnderTestCase<Double> {
+    @Test
     func testFormatStyleDepth() {
         // Given
         sut = 15
@@ -10,9 +11,10 @@ final class DoubleFormatStyleTestCase: SystemUnderTestCase<Double> {
         let result = sut.formatted(.depth(.feet, style: .full))
 
         // Then
-        XCTAssertEqual(result, "15 feet")
+        expectEqual(result, "15 feet")
     }
 
+    @Test
     func testFormatStyleMass() {
         // Given
         sut = 15
@@ -21,9 +23,10 @@ final class DoubleFormatStyleTestCase: SystemUnderTestCase<Double> {
         let result = sut.formatted(.mass(.pounds, style: .full))
 
         // Then
-        XCTAssertEqual(result, "15 pounds")
+        expectEqual(result, "15 pounds")
     }
 
+    @Test
     func testFormatStylePressure() {
         // Given
         sut = 15
@@ -32,9 +35,10 @@ final class DoubleFormatStyleTestCase: SystemUnderTestCase<Double> {
         let result = sut.formatted(.pressure(.atmospheres, style: .full))
 
         // Then
-        XCTAssertEqual(result, "15 atmospheres")
+        expectEqual(result, "15 atmospheres")
     }
 
+    @Test
     func testFormatStyleVolume() {
         // Given
         sut = 15
@@ -43,6 +47,6 @@ final class DoubleFormatStyleTestCase: SystemUnderTestCase<Double> {
         let result = sut.formatted(.volume(.cubicFeet, style: .full))
 
         // Then
-        XCTAssertEqual(result, "15 cubic feet")
+        expectEqual(result, "15 cubic feet")
     }
 }

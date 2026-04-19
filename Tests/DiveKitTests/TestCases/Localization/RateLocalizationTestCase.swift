@@ -1,28 +1,32 @@
-import XCTest
+import Testing
 @testable import DiveKit
 
-final class RateLocalizationTestCase: XCTestCase {
+final class RateLocalizationTestCase {
+    @Test
     func testLocalizedTitle() {
         let sut = Rate<Pressure>.Unit.perMinute(.psi)
 
-        XCTAssertEqual(sut.localizedTitle, "Pressure Rate")
+        expectEqual(sut.localizedTitle, "Pressure Rate")
     }
 
+    @Test
     func testDescriptionShort() {
         let sut = Rate<Pressure>.Unit.perMinute(.psi)
 
-        XCTAssertEqual(sut.localizedDescription(for: .short), "psi/min")
+        expectEqual(sut.localizedDescription(for: .short), "psi/min")
     }
 
+    @Test
     func testDescriptionFull() {
         let sut = Rate<Volume>.Unit.perMinute(.cubicFeet)
 
-        XCTAssertEqual(sut.localizedDescription(for: .full), "cubic feet per minute")
+        expectEqual(sut.localizedDescription(for: .full), "cubic feet per minute")
     }
 
+    @Test
     func testQuantityFull() {
         let sut = Rate<Pressure>.Unit.perMinute(.psi)
 
-        XCTAssertEqual(sut.localization(for: .quantity(1, .full)), "1 pound per square inch per minute")
+        expectEqual(sut.localization(for: .quantity(1, .full)), "1 pound per square inch per minute")
     }
 }

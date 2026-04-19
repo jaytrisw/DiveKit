@@ -1,10 +1,10 @@
-import XCTest
+import Testing
 @testable import DiveKit
 
-final class LocalizedStringTestCase: XCTestCase {
+final class LocalizedStringTestCase {
+    @Test
     func testLocalizedStringFromMainBundle() {
         // Given
-        let expectation = expectation(description: #function)
         let key = "test.localization.key"
 
         LocalizedKey.$mainBundle.withValue(.module) {
@@ -12,16 +12,13 @@ final class LocalizedStringTestCase: XCTestCase {
             let result = localizedString(for: key, with: .init())
 
             // Then
-            XCTAssertEqual(result, "TEST LOCALIZED STRING")
-            expectation.fulfill()
+            expectEqual(result, "TEST LOCALIZED STRING")
         }
-
-        wait(for: [expectation])
     }
 
+    @Test
     func testLocalizedStringWithQuantityFromMainBundle() {
         // Given
-        let expectation = expectation(description: #function)
         let key = "test.localization.key.quantity"
 
         LocalizedKey.$mainBundle.withValue(.module) {
@@ -29,10 +26,7 @@ final class LocalizedStringTestCase: XCTestCase {
             let result = localizedString(for: key, quantity: 1, with: .init())
 
             // Then
-            XCTAssertEqual(result, "1 TEST LOCALIZED STRING WITH QUANTITY")
-            expectation.fulfill()
+            expectEqual(result, "1 TEST LOCALIZED STRING WITH QUANTITY")
         }
-
-        wait(for: [expectation])
     }
 }

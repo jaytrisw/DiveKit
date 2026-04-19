@@ -1,10 +1,11 @@
-import XCTest
+import Testing
 @testable import DiveKit
 
 extension GasCalculatorImperialSaltwaterTestCase {
 
     // MARK: respiratoryMinuteVolume(at:for:consuming:with:using:)
 
+    @Test
     func testRespiratoryMinuteVolumeValidInput() throws {
         // Given
         let depth: Depth = 40.0
@@ -15,7 +16,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
         let tank = Tank.cubicFeet(volume, ratedPressure: ratedPressure, with: .air)
 
         // When
-        try XCTAssertCalculation(
+        try expectCalculation(
             sut.respiratoryMinuteVolume(
                 at: depth,
                 for: minutes,
@@ -23,12 +24,13 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 with: tank,
                 using: physicsCalculator)) { result, configuration in
                     // Then
-                    XCTAssertEqual(result.value, 0.778082191780822)
-                    XCTAssertEqual(result.unit, .perMinute(.cubicFeet))
-                    XCTAssertEqual(configuration, sut.configuration)
+                    expectEqual(result.value, 0.778082191780822)
+                    expectEqual(result.unit, .perMinute(.cubicFeet))
+                    expectEqual(configuration, sut.configuration)
                 }
     }
 
+    @Test
     func testRespiratoryMinuteVolumeInvalidDepthInput() throws {
         // Given
         let depth: Depth = -40.0
@@ -40,7 +42,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
         expectedError = .negative(depth, "GasCalculator.respiratoryMinuteVolume(at:for:consuming:with:using:)")
 
         // When
-        try XCTAssertThrowsError(
+        try expectThrowsError(
             when: sut.respiratoryMinuteVolume(
                 at: depth,
                 for: minutes,
@@ -48,10 +50,11 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 with: tank,
                 using: physicsCalculator),
             then: expectedError) {
-                XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.depth")
+                expectEqual($0.localizationKey, "dive.kit.error.negative.depth")
             }
     }
 
+    @Test
     func testRespiratoryMinuteVolumeInvalidMinutesInput() throws {
         // Given
         let depth: Depth = 40.0
@@ -63,7 +66,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
         expectedError = .negative(minutes, "GasCalculator.respiratoryMinuteVolume(at:for:consuming:with:using:)")
 
         // When
-        try XCTAssertThrowsError(
+        try expectThrowsError(
             when: sut.respiratoryMinuteVolume(
                 at: depth,
                 for: minutes,
@@ -71,10 +74,11 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 with: tank,
                 using: physicsCalculator),
             then: expectedError) {
-                XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.minutes")
+                expectEqual($0.localizationKey, "dive.kit.error.negative.minutes")
             }
     }
 
+    @Test
     func testRespiratoryMinuteVolumeRejectsZeroMinutes() throws {
         // Given
         let depth: Depth = 40.0
@@ -86,7 +90,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
         expectedError = .range(.lowerBound(0, 0), "GasCalculator.respiratoryMinuteVolume(at:for:consuming:with:using:)")
 
         // When / Then
-        try XCTAssertThrowsError(
+        try expectThrowsError(
             when: sut.respiratoryMinuteVolume(
                 at: depth,
                 for: minutes,
@@ -94,10 +98,11 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 with: tank,
                 using: physicsCalculator),
             then: expectedError) {
-                XCTAssertEqual($0.localizationKey, "dive.kit.error.range.lower.bound")
+                expectEqual($0.localizationKey, "dive.kit.error.range.lower.bound")
             }
     }
 
+    @Test
     func testRespiratoryMinuteVolumeInvalidConsumedInput() throws {
         // Given
         let depth: Depth = 40.0
@@ -109,7 +114,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
         expectedError = .negative(consuming, "GasCalculator.respiratoryMinuteVolume(at:for:consuming:with:using:)")
 
         // When
-        try XCTAssertThrowsError(
+        try expectThrowsError(
             when: sut.respiratoryMinuteVolume(
                 at: depth,
                 for: minutes,
@@ -117,10 +122,11 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 with: tank,
                 using: physicsCalculator),
             then: expectedError) {
-                XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.pressure")
+                expectEqual($0.localizationKey, "dive.kit.error.negative.pressure")
             }
     }
 
+    @Test
     func testRespiratoryMinuteVolumeInvalidTankVolumeInput() throws {
         // Given
         let depth: Depth = 40.0
@@ -132,7 +138,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
         expectedError = .tank(.volume(volume, tank), "GasCalculator.respiratoryMinuteVolume(at:for:consuming:with:using:)")
 
         // When
-        try XCTAssertThrowsError(
+        try expectThrowsError(
             when: sut.respiratoryMinuteVolume(
                 at: depth,
                 for: minutes,
@@ -140,10 +146,11 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 with: tank,
                 using: physicsCalculator),
             then: expectedError) {
-                XCTAssertEqual($0.localizationKey, "dive.kit.error.tank.size.volume")
+                expectEqual($0.localizationKey, "dive.kit.error.tank.size.volume")
             }
     }
 
+    @Test
     func testRespiratoryMinuteVolumeInvalidTankRatedPressureInput() throws {
         // Given
         let depth: Depth = 40.0
@@ -155,7 +162,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
         expectedError = .tank(.ratedPressure(ratedPressure, tank), "GasCalculator.respiratoryMinuteVolume(at:for:consuming:with:using:)")
 
         // When
-        try XCTAssertThrowsError(
+        try expectThrowsError(
             when: sut.respiratoryMinuteVolume(
                 at: depth,
                 for: minutes,
@@ -163,7 +170,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 with: tank,
                 using: physicsCalculator),
             then: expectedError) {
-                XCTAssertEqual($0.localizationKey, "dive.kit.error.tank.size.rated.pressure")
+                expectEqual($0.localizationKey, "dive.kit.error.tank.size.rated.pressure")
             }
     }
 }

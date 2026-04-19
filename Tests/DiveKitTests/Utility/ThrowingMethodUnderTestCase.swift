@@ -1,17 +1,9 @@
-import XCTest
+import Testing
 
-open class ThrowingMethodUnderTestCase<SUT, Input: Equatable, Output: Equatable>: SystemUnderTestCase<SUT> {
+class ThrowingMethodUnderTestCase<SUT, Input: Equatable, Output: Equatable>: SystemUnderTestCase<SUT> {
 
     public var data: [Data]!
     public var mut: ((Input) throws -> Output)!
-
-    override open func tearDown() {
-        sut = .none
-        mut = .none
-        data = .none
-
-        super.tearDown()
-    }
 
     public struct Data {
         public let input: Input

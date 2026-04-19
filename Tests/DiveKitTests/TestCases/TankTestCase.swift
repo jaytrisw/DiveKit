@@ -1,8 +1,9 @@
-import XCTest
+import Testing
 @testable import DiveKit
 
 final class TankTestCase: SystemUnderTestCase<Tank> {
 
+    @Test
     func testInitializeWithUnblended() throws {
         // Given
         let fractionalPressure = 1.0
@@ -12,9 +13,10 @@ final class TankTestCase: SystemUnderTestCase<Tank> {
         let size = Tank.Size(volume: volume, ratedPressure: pressure, unit: .cubicFeet)
 
         // When
-        XCTAssertNoThrow(try Tank(blend: blend, size: size))
+        _ = try Tank(blend: blend, size: size)
     }
 
+    @Test
     func testInitializeWithUnblendedThrows() throws {
         // Given
         let fractionalPressure = 0.5
@@ -25,10 +27,10 @@ final class TankTestCase: SystemUnderTestCase<Tank> {
         let expectedError = Error.blend(.totalPressure(fractionalPressure, blend), "Tank.init(blend:size:)")
 
         // When
-        try XCTAssertThrowsError(
+        try expectThrowsError(
             when: Tank(blend: blend, size: size),
             then: expectedError) {
-                XCTAssertEqual($0.localizationKey, "dive.kit.error.blend.total.pressure")
+                expectEqual($0.localizationKey, "dive.kit.error.blend.total.pressure")
             }
     }
 }

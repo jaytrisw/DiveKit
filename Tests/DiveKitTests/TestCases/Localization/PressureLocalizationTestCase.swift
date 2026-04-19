@@ -1,7 +1,8 @@
-import XCTest
+import Testing
 @testable import DiveKit
 
 final class PressureLocalizationTestCase: SystemUnderTestCase<Pressure.Unit> {
+    @Test
     func testLocalizedTitleDImperial() {
         // Given
         sut = .psi
@@ -10,9 +11,10 @@ final class PressureLocalizationTestCase: SystemUnderTestCase<Pressure.Unit> {
         let result = sut.localizedTitle
 
         // Then
-        XCTAssertEqual(result, "Pressure")
+        expectEqual(result, "Pressure")
     }
 
+    @Test
     func testLocalizedTitleMetric() {
         // Given
         sut = .bar
@@ -21,9 +23,10 @@ final class PressureLocalizationTestCase: SystemUnderTestCase<Pressure.Unit> {
         let result = sut.localizedTitle
 
         // Then
-        XCTAssertEqual(result, "Pressure")
+        expectEqual(result, "Pressure")
     }
 
+    @Test
     func testLocalizedTitleAtmospheres() {
         // Given
         sut = .atmospheres
@@ -32,9 +35,10 @@ final class PressureLocalizationTestCase: SystemUnderTestCase<Pressure.Unit> {
         let result = sut.localizedTitle
 
         // Then
-        XCTAssertEqual(result, "Pressure")
+        expectEqual(result, "Pressure")
     }
 
+    @Test
     func testDescriptionShortImperial() {
         // Given
         let style: LocalizationStyle = .short
@@ -44,9 +48,10 @@ final class PressureLocalizationTestCase: SystemUnderTestCase<Pressure.Unit> {
         let result = sut.localizedDescription(for: style)
 
         // Then
-        XCTAssertEqual(result, "psi")
+        expectEqual(result, "psi")
     }
 
+    @Test
     func testDescriptionShortMetric() {
         // Given
         let style: LocalizationStyle = .short
@@ -56,9 +61,10 @@ final class PressureLocalizationTestCase: SystemUnderTestCase<Pressure.Unit> {
         let result = sut.localizedDescription(for: style)
 
         // Then
-        XCTAssertEqual(result, "bar")
+        expectEqual(result, "bar")
     }
 
+    @Test
     func testDescriptionShortAtmospheres() {
         // Given
         let style: LocalizationStyle = .short
@@ -68,9 +74,10 @@ final class PressureLocalizationTestCase: SystemUnderTestCase<Pressure.Unit> {
         let result = sut.localizedDescription(for: style)
 
         // Then
-        XCTAssertEqual(result, "atm")
+        expectEqual(result, "atm")
     }
 
+    @Test
     func testDescriptionFullImperial() {
         // Given
         let style: LocalizationStyle = .full
@@ -80,9 +87,10 @@ final class PressureLocalizationTestCase: SystemUnderTestCase<Pressure.Unit> {
         let result = sut.localizedDescription(for: style)
 
         // Then
-        XCTAssertEqual(result, "pounds per square inch")
+        expectEqual(result, "pounds per square inch")
     }
 
+    @Test
     func testDescriptionFullMetric() {
         // Given
         let style: LocalizationStyle = .full
@@ -92,9 +100,10 @@ final class PressureLocalizationTestCase: SystemUnderTestCase<Pressure.Unit> {
         let result = sut.localizedDescription(for: style)
 
         // Then
-        XCTAssertEqual(result, "bar")
+        expectEqual(result, "bar")
     }
 
+    @Test
     func testDescriptionFullAtmospheres() {
         // Given
         let style: LocalizationStyle = .full
@@ -104,9 +113,10 @@ final class PressureLocalizationTestCase: SystemUnderTestCase<Pressure.Unit> {
         let result = sut.localizedDescription(for: style)
 
         // Then
-        XCTAssertEqual(result, "atmospheres")
+        expectEqual(result, "atmospheres")
     }
 
+    @Test
     func testQuantityShortImperial() {
         // Given
         let quantity: Double = .zero
@@ -117,9 +127,10 @@ final class PressureLocalizationTestCase: SystemUnderTestCase<Pressure.Unit> {
         let result = sut.localization(for: .quantity(quantity, style))
 
         // Then
-        XCTAssertEqual(result, "0 psi")
+        expectEqual(result, "0 psi")
     }
 
+    @Test
     func testQuantityShortMetric() {
         // Given
         let quantity: Double = .zero
@@ -130,9 +141,10 @@ final class PressureLocalizationTestCase: SystemUnderTestCase<Pressure.Unit> {
         let result = sut.localization(for: .quantity(quantity, style))
 
         // Then
-        XCTAssertEqual(result, "0 bar")
+        expectEqual(result, "0 bar")
     }
 
+    @Test
     func testQuantityShortAtmospheres() {
         // Given
         let quantity: Double = .zero
@@ -143,9 +155,10 @@ final class PressureLocalizationTestCase: SystemUnderTestCase<Pressure.Unit> {
         let result = sut.localization(for: .quantity(quantity, style))
 
         // Then
-        XCTAssertEqual(result, "0 atm")
+        expectEqual(result, "0 atm")
     }
 
+    @Test
     func testQuantityFullImperial() {
         // Given
         let quantity: Double = .zero
@@ -156,9 +169,10 @@ final class PressureLocalizationTestCase: SystemUnderTestCase<Pressure.Unit> {
         let result = sut.localization(for: .quantity(quantity, style))
 
         // Then
-        XCTAssertEqual(result, "0 pounds per square inch")
+        expectEqual(result, "0 pounds per square inch")
     }
 
+    @Test
     func testQuantityFullMetric() {
         // Given
         let quantity: Double = .zero
@@ -169,9 +183,10 @@ final class PressureLocalizationTestCase: SystemUnderTestCase<Pressure.Unit> {
         let result = sut.localization(for: .quantity(quantity, style))
 
         // Then
-        XCTAssertEqual(result, "0 bar")
+        expectEqual(result, "0 bar")
     }
 
+    @Test
     func testQuantityFullAtmospheres() {
         // Given
         let quantity: Double = .zero
@@ -182,9 +197,10 @@ final class PressureLocalizationTestCase: SystemUnderTestCase<Pressure.Unit> {
         let result = sut.localization(for: .quantity(quantity, style))
 
         // Then
-        XCTAssertEqual(result, "0 atmospheres")
+        expectEqual(result, "0 atmospheres")
     }
 
+    @Test
     func testOneQuantityFullImperial() {
         // Given
         let quantity: Double = 1
@@ -195,9 +211,10 @@ final class PressureLocalizationTestCase: SystemUnderTestCase<Pressure.Unit> {
         let result = sut.localization(for: .quantity(quantity, style))
 
         // Then
-        XCTAssertEqual(result, "1 pound per square inch")
+        expectEqual(result, "1 pound per square inch")
     }
 
+    @Test
     func testOneQuantityFullMetric() {
         // Given
         let quantity: Double = 1
@@ -208,9 +225,10 @@ final class PressureLocalizationTestCase: SystemUnderTestCase<Pressure.Unit> {
         let result = sut.localization(for: .quantity(quantity, style))
 
         // Then
-        XCTAssertEqual(result, "1 bar")
+        expectEqual(result, "1 bar")
     }
 
+    @Test
     func testOneQuantityFullAtmospheres() {
         // Given
         let quantity: Double = 1
@@ -221,6 +239,6 @@ final class PressureLocalizationTestCase: SystemUnderTestCase<Pressure.Unit> {
         let result = sut.localization(for: .quantity(quantity, style))
 
         // Then
-        XCTAssertEqual(result, "1 atmosphere")
+        expectEqual(result, "1 atmosphere")
     }
 }

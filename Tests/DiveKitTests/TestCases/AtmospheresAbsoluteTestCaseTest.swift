@@ -1,8 +1,9 @@
-import XCTest
+import Testing
 @testable import DiveKit
 
 final class AtmospheresAbsoluteTestCaseTest: ThrowingMethodUnderTestCase<PhysicsCalculator, Depth, Calculation<DecimalResult<Pressure>>> {
 
+    @Test
     func testMetricSaltwater() throws {
         // Given
         sut = .init(.metric, water: .salt)
@@ -19,10 +20,11 @@ final class AtmospheresAbsoluteTestCaseTest: ThrowingMethodUnderTestCase<Physics
         // When
         try data.forEach {
             // Then
-            XCTAssertEqual(try mut($0.input), $0.output)
+            try expectEqual(try mut($0.input), $0.output)
         }
     }
 
+    @Test
     func testImperialSaltwater() throws {
         // Given
         sut = .init(.imperial, water: .salt)
@@ -39,7 +41,7 @@ final class AtmospheresAbsoluteTestCaseTest: ThrowingMethodUnderTestCase<Physics
         // When
         try data.forEach {
             // Then
-            XCTAssertEqual(try mut($0.input), $0.output)
+            try expectEqual(try mut($0.input), $0.output)
         }
     }
 }

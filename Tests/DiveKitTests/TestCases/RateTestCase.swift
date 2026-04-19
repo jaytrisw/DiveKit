@@ -1,7 +1,8 @@
-import XCTest
+import Testing
 @testable import DiveKit
 
 final class RateTestCase: SystemUnderTestCase<Rate<Pressure>> {
+    @Test
     func testInit() {
         // Given
         let expected: Double = 15
@@ -10,18 +11,20 @@ final class RateTestCase: SystemUnderTestCase<Rate<Pressure>> {
         sut = .init(expected)
 
         // Then
-        XCTAssertEqual(sut.value, expected)
+        expectEqual(sut.value, expected)
     }
 
+    @Test
     func testEquatable() {
         // Given
         let lhs: Rate<Pressure> = 15
         let rhs: Rate<Pressure> = 15
 
         // Then
-        XCTAssertEqual(lhs, rhs)
+        expectEqual(lhs, rhs)
     }
 
+    @Test
     func testLocalization() {
         // Given
         sut = 15
@@ -30,6 +33,6 @@ final class RateTestCase: SystemUnderTestCase<Rate<Pressure>> {
         let result = sut.localization(for: .perMinute(.psi), style: .short)
 
         // Then
-        XCTAssertEqual(result, "15 psi/min")
+        expectEqual(result, "15 psi/min")
     }
 }

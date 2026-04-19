@@ -1,7 +1,8 @@
-import XCTest
+import Testing
 @testable import DiveKit
 
 final class MassLocalizationTestCase: SystemUnderTestCase<Mass.Unit> {
+    @Test
     func testLocalizedTitleDImperial() {
         // Given
         sut = .pounds
@@ -10,9 +11,10 @@ final class MassLocalizationTestCase: SystemUnderTestCase<Mass.Unit> {
         let result = sut.localizedTitle
 
         // Then
-        XCTAssertEqual(result, "Mass")
+        expectEqual(result, "Mass")
     }
 
+    @Test
     func testLocalizedTitleMetric() {
         // Given
         sut = .kilograms
@@ -21,9 +23,10 @@ final class MassLocalizationTestCase: SystemUnderTestCase<Mass.Unit> {
         let result = sut.localizedTitle
 
         // Then
-        XCTAssertEqual(result, "Mass")
+        expectEqual(result, "Mass")
     }
 
+    @Test
     func testDescriptionShortImperial() {
         // Given
         let style: LocalizationStyle = .short
@@ -33,9 +36,10 @@ final class MassLocalizationTestCase: SystemUnderTestCase<Mass.Unit> {
         let result = sut.localizedDescription(for: style)
 
         // Then
-        XCTAssertEqual(result, "lbs")
+        expectEqual(result, "lbs")
     }
 
+    @Test
     func testDescriptionShortMetric() {
         // Given
         let style: LocalizationStyle = .short
@@ -45,9 +49,10 @@ final class MassLocalizationTestCase: SystemUnderTestCase<Mass.Unit> {
         let result = sut.localizedDescription(for: style)
 
         // Then
-        XCTAssertEqual(result, "kg")
+        expectEqual(result, "kg")
     }
 
+    @Test
     func testDescriptionFullImperial() {
         // Given
         let style: LocalizationStyle = .full
@@ -57,9 +62,10 @@ final class MassLocalizationTestCase: SystemUnderTestCase<Mass.Unit> {
         let result = sut.localizedDescription(for: style)
 
         // Then
-        XCTAssertEqual(result, "pounds")
+        expectEqual(result, "pounds")
     }
 
+    @Test
     func testDescriptionFullMetric() {
         // Given
         let style: LocalizationStyle = .full
@@ -69,9 +75,10 @@ final class MassLocalizationTestCase: SystemUnderTestCase<Mass.Unit> {
         let result = sut.localizedDescription(for: style)
 
         // Then
-        XCTAssertEqual(result, "kilograms")
+        expectEqual(result, "kilograms")
     }
 
+    @Test
     func testQuantityShortImperial() {
         // Given
         let quantity: Double = .zero
@@ -82,9 +89,10 @@ final class MassLocalizationTestCase: SystemUnderTestCase<Mass.Unit> {
         let result = sut.localization(for: .quantity(quantity, style))
 
         // Then
-        XCTAssertEqual(result, "0 lbs")
+        expectEqual(result, "0 lbs")
     }
 
+    @Test
     func testQuantityShortMetric() {
         // Given
         let quantity: Double = .zero
@@ -95,9 +103,10 @@ final class MassLocalizationTestCase: SystemUnderTestCase<Mass.Unit> {
         let result = sut.localization(for: .quantity(quantity, style))
 
         // Then
-        XCTAssertEqual(result, "0 kg")
+        expectEqual(result, "0 kg")
     }
 
+    @Test
     func testQuantityFullImperial() {
         // Given
         let quantity: Double = .zero
@@ -108,9 +117,10 @@ final class MassLocalizationTestCase: SystemUnderTestCase<Mass.Unit> {
         let result = sut.localization(for: .quantity(quantity, style))
 
         // Then
-        XCTAssertEqual(result, "0 pounds")
+        expectEqual(result, "0 pounds")
     }
 
+    @Test
     func testQuantityFullMetric() {
         // Given
         let quantity: Double = .zero
@@ -121,9 +131,10 @@ final class MassLocalizationTestCase: SystemUnderTestCase<Mass.Unit> {
         let result = sut.localization(for: .quantity(quantity, style))
 
         // Then
-        XCTAssertEqual(result, "0 kilograms")
+        expectEqual(result, "0 kilograms")
     }
 
+    @Test
     func testOneQuantityFullImperial() {
         // Given
         let quantity: Double = 1
@@ -134,9 +145,10 @@ final class MassLocalizationTestCase: SystemUnderTestCase<Mass.Unit> {
         let result = sut.localization(for: .quantity(quantity, style))
 
         // Then
-        XCTAssertEqual(result, "1 pound")
+        expectEqual(result, "1 pound")
     }
 
+    @Test
     func testOneQuantityFullMetric() {
         // Given
         let quantity: Double = 1
@@ -147,6 +159,6 @@ final class MassLocalizationTestCase: SystemUnderTestCase<Mass.Unit> {
         let result = sut.localization(for: .quantity(quantity, style))
 
         // Then
-        XCTAssertEqual(result, "1 kilogram")
+        expectEqual(result, "1 kilogram")
     }
 }

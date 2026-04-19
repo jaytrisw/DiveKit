@@ -1,8 +1,9 @@
-import XCTest
+import Testing
 @testable import DiveKit
 
-final class FractionalPressureTestCase: XCTestCase {
+final class FractionalPressureTestCase {
 
+    @Test
     func testInitializationStoresValidFractionalPressure() throws {
         // Given
         let gas = Oxygen()
@@ -11,10 +12,11 @@ final class FractionalPressureTestCase: XCTestCase {
         let sut = try FractionalPressure(of: gas, fractionalPressure: 0.21)
 
         // Then
-        XCTAssertEqual(sut.gas, gas)
-        XCTAssertEqual(sut.value, 0.21)
+        expectEqual(sut.gas, gas)
+        expectEqual(sut.value, 0.21)
     }
 
+    @Test
     func testInitializationRejectsNegativeFractionalPressure() throws {
         // Given
         let gas = Oxygen()
@@ -24,13 +26,14 @@ final class FractionalPressureTestCase: XCTestCase {
             "FractionalPressure<Oxygen>.init(of:fractionalPressure:)")
 
         // When / Then
-        try XCTAssertThrowsError(
+        try expectThrowsError(
             when: try FractionalPressure(of: gas, fractionalPressure: fractionalPressure),
             then: expectedError) { error in
-                XCTAssertEqual(error.localizationKey, "dive.kit.error.negative.fractional.pressure")
+                expectEqual(error.localizationKey, "dive.kit.error.negative.fractional.pressure")
             }
     }
 
+    @Test
     func testInitializationRejectsFractionalPressureGreaterThanOne() throws {
         // Given
         let gas = Oxygen()
@@ -40,13 +43,14 @@ final class FractionalPressureTestCase: XCTestCase {
             "FractionalPressure<Oxygen>.init(of:fractionalPressure:)")
 
         // When / Then
-        try XCTAssertThrowsError(
+        try expectThrowsError(
             when: try FractionalPressure(of: gas, fractionalPressure: fractionalPressure),
             then: expectedError) { error in
-                XCTAssertEqual(error.localizationKey, "dive.kit.error.range.upper.bound")
+                expectEqual(error.localizationKey, "dive.kit.error.range.upper.bound")
             }
     }
 
+    @Test
     func testNegativeErrorMapsUnsafeFractionalPressureToFractionalPressureInput() throws {
         // Given
         let fractionalPressure = -0.01
@@ -55,10 +59,10 @@ final class FractionalPressureTestCase: XCTestCase {
             "FractionalPressure<Oxygen>.init(of:fractionalPressure:)")
 
         // When / Then
-        try XCTAssertThrowsError(
+        try expectThrowsError(
             when: try FractionalPressure(of: .oxygen, fractionalPressure: fractionalPressure),
             then: expectedError) { error in
-                XCTAssertEqual(error.localizationKey, "dive.kit.error.negative.fractional.pressure")
+                expectEqual(error.localizationKey, "dive.kit.error.negative.fractional.pressure")
 
             }
     }

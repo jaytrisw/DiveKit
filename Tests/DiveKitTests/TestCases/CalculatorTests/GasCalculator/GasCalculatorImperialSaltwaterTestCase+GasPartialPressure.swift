@@ -1,28 +1,30 @@
-import XCTest
+import Testing
 @testable import DiveKit
 
 extension GasCalculatorImperialSaltwaterTestCase {
 
     // MARK: partialPressure(of:at:using:)
 
+    @Test
     func testPartialPressureValidInput() throws {
         // Given
         let fractionalPressure = try FractionalPressure(of: .oxygen, fractionalPressure: 0.21)
         let depth: Depth = 33.0
 
         // When
-        try XCTAssertCalculation(
+        try expectCalculation(
             sut.partialPressure(
                 of: fractionalPressure,
                 at: depth,
                 using: physicsCalculator)) { result, configuration in
                     // Then
-                    XCTAssertEqual(result.value, 0.42)
-                    XCTAssertEqual(result.unit, .atmospheres)
-                    XCTAssertEqual(configuration, sut.configuration)
+                    expectEqual(result.value, 0.42)
+                    expectEqual(result.unit, .atmospheres)
+                    expectEqual(configuration, sut.configuration)
             }
     }
 
+    @Test
     func testPartialPressureInvalidInput() throws {
         // Given
         let fractionalPressure = try FractionalPressure(of: .oxygen, fractionalPressure: 0.21)
@@ -30,15 +32,16 @@ extension GasCalculatorImperialSaltwaterTestCase {
         expectedError = .negative(depth, "GasCalculator.partialPressure(of:at:using:)")
 
         // When
-        try XCTAssertThrowsError(
+        try expectThrowsError(
             when: sut.partialPressure(of: fractionalPressure, at: depth, using: physicsCalculator),
             then: expectedError) {
-                XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.depth")
+                expectEqual($0.localizationKey, "dive.kit.error.negative.depth")
             }
     }
 
     // MARK: partialPressure(of:in:at:using:)
 
+    @Test
     func testPartialPressureBlendedValidInput() throws {
         // Given
         let gas = Oxygen()
@@ -46,19 +49,20 @@ extension GasCalculatorImperialSaltwaterTestCase {
         let depth: Depth = 33.0
 
         // When
-        try XCTAssertCalculation(
+        try expectCalculation(
             sut.partialPressure(
                 of: gas,
                 in: blend,
                 at: depth,
                 using: physicsCalculator)) { result, configuration in
                     // Then
-                    XCTAssertEqual(result.value, 0.418)
-                    XCTAssertEqual(result.unit, .atmospheres)
-                    XCTAssertEqual(configuration, sut.configuration)
+                    expectEqual(result.value, 0.418)
+                    expectEqual(result.unit, .atmospheres)
+                    expectEqual(configuration, sut.configuration)
                 }
     }
 
+    @Test
     func testPartialPressureBlendedInvalidInput() throws {
         // Given
         let gas = Oxygen()
@@ -67,15 +71,16 @@ extension GasCalculatorImperialSaltwaterTestCase {
         expectedError = .negative(depth, "GasCalculator.partialPressure(of:in:at:using:)")
 
         // When
-        try XCTAssertThrowsError(
+        try expectThrowsError(
             when: sut.partialPressure(of: gas, in: blend, at: depth, using: physicsCalculator),
             then: expectedError) {
-                XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.depth")
+                expectEqual($0.localizationKey, "dive.kit.error.negative.depth")
             }
     }
 
     // MARK: partialPressure(of:blending:at:using:)
 
+    @Test
     func testPartialPressureUnblendedValidInput() throws {
         // Given
         let gas = Oxygen()
@@ -85,19 +90,20 @@ extension GasCalculatorImperialSaltwaterTestCase {
         let depth: Depth = 33.0
 
         // When
-        try XCTAssertCalculation(
+        try expectCalculation(
             sut.partialPressure(
                 of: gas,
                 blending: blend,
                 at: depth,
                 using: physicsCalculator)) { result, configuration in
                     // Then
-                    XCTAssertEqual(result.value, 0.42)
-                    XCTAssertEqual(result.unit, .atmospheres)
-                    XCTAssertEqual(configuration, sut.configuration)
+                    expectEqual(result.value, 0.42)
+                    expectEqual(result.unit, .atmospheres)
+                    expectEqual(configuration, sut.configuration)
                 }
     }
 
+    @Test
     func testPartialPressureUnblendedInvalidBlendInput() throws {
         // Given
         let gas = Oxygen()
@@ -107,13 +113,14 @@ extension GasCalculatorImperialSaltwaterTestCase {
         expectedError = .blend(.totalPressure(oxygenFraction, blend), "GasCalculator.partialPressure(of:blending:at:using:)")
 
         // When
-        try XCTAssertThrowsError(
+        try expectThrowsError(
             when: sut.partialPressure(of: gas, blending: blend, at: depth, using: physicsCalculator),
             then: expectedError) {
-                XCTAssertEqual($0.localizationKey, "dive.kit.error.blend.total.pressure")
+                expectEqual($0.localizationKey, "dive.kit.error.blend.total.pressure")
             }
     }
 
+    @Test
     func testPartialPressureUnblendedInvalidInput() throws {
         // Given
         let gas = Oxygen()
@@ -124,10 +131,10 @@ extension GasCalculatorImperialSaltwaterTestCase {
         expectedError = .negative(depth, "GasCalculator.partialPressure(of:blending:at:using:)")
 
         // When
-        try XCTAssertThrowsError(
+        try expectThrowsError(
             when: sut.partialPressure(of: gas, blending: blend, at: depth, using: physicsCalculator),
             then: expectedError) {
-                XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.depth")
+                expectEqual($0.localizationKey, "dive.kit.error.negative.depth")
             }
     }
 }

@@ -1,7 +1,8 @@
-import XCTest
+import Testing
 @testable import DiveKit
 
 final class SaltWaterConstantsTestCase: SystemUnderTestCase<Water> {
+    @Test
     func testImperialWeightConstants() {
         // Given
         let units = Units.imperial
@@ -10,11 +11,12 @@ final class SaltWaterConstantsTestCase: SystemUnderTestCase<Water> {
         let result = sut.weight(units)
 
         // Then
-        XCTAssertEqual(result.value, 64)
-        XCTAssertEqual(result.unit, .pounds)
-        XCTAssertEqual(result.volume, .cubicFeet)
+        expectEqual(result.value, 64)
+        expectEqual(result.unit, .pounds)
+        expectEqual(result.volume, .cubicFeet)
     }
 
+    @Test
     func testImperialPressureIncreaseConstants() {
         // Given
         let units = Units.imperial
@@ -23,10 +25,11 @@ final class SaltWaterConstantsTestCase: SystemUnderTestCase<Water> {
         let result = sut.pressure(units)
 
         // Then
-        XCTAssertEqual(result.increase.value, 33)
-        XCTAssertEqual(result.increase.unit, .feet)
+        expectEqual(result.increase.value, 33)
+        expectEqual(result.increase.unit, .feet)
     }
 
+    @Test
     func testMetricWeightConstants() {
         // Given
         let units = Units.metric
@@ -35,11 +38,12 @@ final class SaltWaterConstantsTestCase: SystemUnderTestCase<Water> {
         let result = sut.weight(units)
 
         // Then
-        XCTAssertEqual(result.value, 1.03)
-        XCTAssertEqual(result.unit, .kilograms)
-        XCTAssertEqual(result.volume, .liters)
+        expectEqual(result.value, 1.03)
+        expectEqual(result.unit, .kilograms)
+        expectEqual(result.volume, .liters)
     }
 
+    @Test
     func testMetricPressureIncreaseConstants() {
         // Given
         let units = Units.metric
@@ -48,8 +52,8 @@ final class SaltWaterConstantsTestCase: SystemUnderTestCase<Water> {
         let result = sut.pressure(units)
 
         // Then
-        XCTAssertEqual(result.increase.value, 10)
-        XCTAssertEqual(result.increase.unit, .meters)
+        expectEqual(result.increase.value, 10)
+        expectEqual(result.increase.unit, .meters)
     }
 
     override func createSUT() {

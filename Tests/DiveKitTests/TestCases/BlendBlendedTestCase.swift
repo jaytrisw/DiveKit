@@ -1,8 +1,9 @@
-import XCTest
+import Testing
 @testable @_spi(unsafe) import DiveKit
 
 final class BlendBlendedTestCase: SystemUnderTestCase<Blend<Blended>> {
 
+    @Test
     func testFraction() throws {
         // Given
         let gas = Oxygen()
@@ -14,10 +15,11 @@ final class BlendBlendedTestCase: SystemUnderTestCase<Blend<Blended>> {
         let result = try sut.fractionalPressure(of: gas)
 
         // Then
-        XCTAssertEqual(result.value, 1.0)
-        XCTAssertEqual(result.gas, gas)
+        expectEqual(result.value, 1.0)
+        expectEqual(result.gas, gas)
     }
 
+    @Test
     func testFractionGasNotInBlend() throws {
         // Given
         let gas = Oxygen()
@@ -29,10 +31,11 @@ final class BlendBlendedTestCase: SystemUnderTestCase<Blend<Blended>> {
         let result = try sut.fractionalPressure(of: gas)
 
         // Then
-        XCTAssertEqual(result.value, 0)
-        XCTAssertEqual(result.gas, gas)
+        expectEqual(result.value, 0)
+        expectEqual(result.gas, gas)
     }
 
+    @Test
     func testInitializationWithParameterPacks() throws {
         // Given
         let oxygen = Oxygen()
@@ -42,10 +45,11 @@ final class BlendBlendedTestCase: SystemUnderTestCase<Blend<Blended>> {
         sut = try .init(.init(of: oxygen, fractionalPressure: oxygenFraction))
 
         // Then
-        XCTAssertEqual(try sut.fractionalPressure(of: oxygen).value, oxygenFraction)
-        XCTAssertEqual(sut.components().count, 1)
+        try expectEqual(try sut.fractionalPressure(of: oxygen).value, oxygenFraction)
+        expectEqual(sut.components().count, 1)
     }
 
+    @Test
     func testInitializeWithResultBuilder() throws {
         // When
         sut = try .init { () throws(DiveKit.Error) in
@@ -55,10 +59,11 @@ final class BlendBlendedTestCase: SystemUnderTestCase<Blend<Blended>> {
         }
 
         // Then
-        XCTAssertEqual(sut.totalPressure, 1.0)
-        XCTAssertEqual(sut.components().count, 2)
+        expectEqual(sut.totalPressure, 1.0)
+        expectEqual(sut.components().count, 2)
     }
 
+    @Test
     func testInitializeWithResultBuilder_consumingUnsafeAPI() throws {
         // Given
         let oxygen = FractionalPressure(.oxygen, fractionalPressure: 0.40)
@@ -72,7 +77,7 @@ final class BlendBlendedTestCase: SystemUnderTestCase<Blend<Blended>> {
         }
 
         // Then
-        XCTAssertEqual(sut.totalPressure, 1.0)
-        XCTAssertEqual(sut.components().count, 2)
+        expectEqual(sut.totalPressure, 1.0)
+        expectEqual(sut.components().count, 2)
     }
 }

@@ -1,7 +1,8 @@
-import XCTest
+import Testing
 @testable import DiveKit
 
 final class RateFormatStyleTestCase: SystemUnderTestCase<Rate<Pressure>> {
+    @Test
     func testFormatStyle() {
         // Given
         sut = 15
@@ -10,6 +11,6 @@ final class RateFormatStyleTestCase: SystemUnderTestCase<Rate<Pressure>> {
         let result = sut.formatted(.rate(.perMinute(.psi), style: .full))
 
         // Then
-        XCTAssertEqual(result, "15 pounds per square inch per minute")
+        expectEqual(result, "15 pounds per square inch per minute")
     }
 }

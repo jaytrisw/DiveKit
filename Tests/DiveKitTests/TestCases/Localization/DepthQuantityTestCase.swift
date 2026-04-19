@@ -1,8 +1,9 @@
-import XCTest
+import Testing
 @testable import DiveKit
 
 final class DepthQuantityTestCase: ThrowingMethodUnderTestCase<Depth.Unit, Quantity, String> {
 
+    @Test
     func testImperial() throws {
         // Given
         sut = .feet
@@ -21,7 +22,7 @@ final class DepthQuantityTestCase: ThrowingMethodUnderTestCase<Depth.Unit, Quant
         // When
         try data.forEach {
             // Then
-            XCTAssertEqual(try mut($0.input), $0.output)
+            try expectEqual(try mut($0.input), $0.output)
         }
     }
 

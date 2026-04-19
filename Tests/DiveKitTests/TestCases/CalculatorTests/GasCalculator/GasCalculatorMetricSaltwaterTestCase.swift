@@ -1,24 +1,25 @@
-import XCTest
+import Testing
 @testable import DiveKit
 
 final class GasCalculatorMetricSaltwaterTestCase: SystemUnderTestCase<GasCalculator> {
 
     private var physicsCalculator: PhysicsCalculator!
 
+    @Test
     func test() throws {
         // Given
 
         // When
-        try XCTAssertCalculation(
+        try expectCalculation(
             sut.surfaceAirConsumption(
                 at: 15,
                 for: 10,
                 consuming: 40,
                 using: physicsCalculator)) { result, configuration in
                     // Then
-                    XCTAssertEqual(result.value, 1.6)
-                    XCTAssertEqual(result.unit, .perMinute(.bar))
-                    XCTAssertEqual(configuration, sut.configuration)
+                    expectEqual(result.value, 1.6)
+                    expectEqual(result.unit, .perMinute(.bar))
+                    expectEqual(configuration, sut.configuration)
                 }
     }
 

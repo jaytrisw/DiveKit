@@ -1,7 +1,8 @@
-import XCTest
+import Testing
 @testable import DiveKit
 
 final class PressureFormatStyleTestCase: SystemUnderTestCase<Pressure> {
+    @Test
     func testFormatStyle() {
         // Given
         sut = 15
@@ -10,6 +11,6 @@ final class PressureFormatStyleTestCase: SystemUnderTestCase<Pressure> {
         let result = sut.formatted(.pressure(.atmospheres, style: .full))
 
         // Then
-        XCTAssertEqual(result, "15 atmospheres")
+        expectEqual(result, "15 atmospheres")
     }
 }

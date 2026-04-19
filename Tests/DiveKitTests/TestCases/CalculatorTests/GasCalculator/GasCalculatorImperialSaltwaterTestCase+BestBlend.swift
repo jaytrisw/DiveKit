@@ -1,24 +1,26 @@
-import XCTest
+import Testing
 @testable import DiveKit
 
 extension GasCalculatorImperialSaltwaterTestCase {
 
     // MARK: bestBlend(for:partialPressure:using:)
 
+    @Test
     func testBestBlendValidInput() throws {
         // Given
         let depth: Depth = 111.0
         let partialPressure: PartialPressure<Oxygen> = 1.4
 
         // When
-        try XCTAssertCalculation(
+        try expectCalculation(
             sut.bestBlend(for: depth, partialPressure: partialPressure, using: physicsCalculator)) { result, configuration in
                 // Then
-                XCTAssertEqual(result.fractionalPressure(of: .oxygen), 0.32)
-                XCTAssertEqual(configuration, sut.configuration)
+                expectEqual(result.fractionalPressure(of: .oxygen), 0.32)
+                expectEqual(configuration, sut.configuration)
             }
     }
 
+    @Test
     func testBestBlendInvalidDepthInput() throws {
         // Given
         let depth: Depth = -111.0
@@ -26,13 +28,14 @@ extension GasCalculatorImperialSaltwaterTestCase {
         expectedError = .negative(depth, "GasCalculator.bestBlend(for:partialPressure:using:)")
 
         // When
-        try XCTAssertThrowsError(
+        try expectThrowsError(
             when: sut.bestBlend(for: depth, partialPressure: partialPressure, using: physicsCalculator),
             then: expectedError) {
-                XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.depth")
+                expectEqual($0.localizationKey, "dive.kit.error.negative.depth")
             }
     }
 
+    @Test
     func testBestBlendInvalidOxygenPartialPressureInput() throws {
         // Given
         let depth: Depth = 111.0
@@ -40,13 +43,14 @@ extension GasCalculatorImperialSaltwaterTestCase {
         expectedError = .negative(partialPressure, "GasCalculator.bestBlend(for:partialPressure:using:)")
 
         // When
-        try XCTAssertThrowsError(
+        try expectThrowsError(
             when: sut.bestBlend(for: depth, partialPressure: partialPressure, using: physicsCalculator),
             then: expectedError) {
-                XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.partial.pressure")
+                expectEqual($0.localizationKey, "dive.kit.error.negative.partial.pressure")
             }
     }
 
+    @Test
     func testBestBlendRejectsZeroOxygenPartialPressure() throws {
         // Given
         let depth: Depth = 111.0
@@ -56,10 +60,10 @@ extension GasCalculatorImperialSaltwaterTestCase {
             "GasCalculator.bestBlend(for:partialPressure:using:)")
 
         // When / Then
-        try XCTAssertThrowsError(
+        try expectThrowsError(
             when: sut.bestBlend(for: depth, partialPressure: partialPressure, using: physicsCalculator),
             then: expectedError) {
-                XCTAssertEqual($0.localizationKey, "dive.kit.error.range.lower.bound")
+                expectEqual($0.localizationKey, "dive.kit.error.range.lower.bound")
             }
     }
 }

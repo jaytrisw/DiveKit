@@ -1,8 +1,9 @@
-import XCTest
+import Testing
 @testable import DiveKit
 
 final class BuoyancyTestCase: SystemUnderTestCase<Buoyancy> {
 
+    @Test
     func testInitializerWithZero() {
         // Given
         let value: Double = .zero
@@ -11,9 +12,10 @@ final class BuoyancyTestCase: SystemUnderTestCase<Buoyancy> {
         sut = .init(value)
 
         // Then
-        XCTAssertEqual(sut, .neutral)
+        expectEqual(sut, .neutral)
     }
 
+    @Test
     func testInitializerWithPositiveValue() {
         // Given
         let value: Double = .random(in: 1 ... 100)
@@ -22,9 +24,10 @@ final class BuoyancyTestCase: SystemUnderTestCase<Buoyancy> {
         sut = .init(value)
 
         // Then
-        XCTAssertEqual(sut, .positive(value))
+        expectEqual(sut, .positive(value))
     }
 
+    @Test
     func testInitializerWithNegativeValue() {
         // Given
         let value: Double = .random(in: -100 ... -1)
@@ -33,6 +36,6 @@ final class BuoyancyTestCase: SystemUnderTestCase<Buoyancy> {
         sut = .init(value)
 
         // Then
-        XCTAssertEqual(sut, .negative(abs(value)))
+        expectEqual(sut, .negative(abs(value)))
     }
 }

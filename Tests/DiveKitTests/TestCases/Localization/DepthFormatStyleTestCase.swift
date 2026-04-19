@@ -1,7 +1,8 @@
-import XCTest
+import Testing
 @testable import DiveKit
 
 final class DepthFormatStyleTestCase: SystemUnderTestCase<Depth> {
+    @Test
     func testFormatStyle() {
         // Given
         sut = 15
@@ -10,6 +11,6 @@ final class DepthFormatStyleTestCase: SystemUnderTestCase<Depth> {
         let result = sut.formatted(.depth(.feet, style: .full))
 
         // Then
-        XCTAssertEqual(result, "15 feet")
+        expectEqual(result, "15 feet")
     }
 }

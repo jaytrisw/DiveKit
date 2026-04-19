@@ -1,4 +1,4 @@
-import XCTest
+import Testing
 @testable import DiveKit
 
 final class GasCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<GasCalculator> {

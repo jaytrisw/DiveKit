@@ -1,7 +1,8 @@
-import XCTest
+import Testing
 @testable import DiveKit
 
 final class BlendStaticMembersTestCase: SystemUnderTestCase<Blend<Blended>> {
+    @Test
     func testAir() throws {
         // Given
         sut = .air
@@ -12,16 +13,17 @@ final class BlendStaticMembersTestCase: SystemUnderTestCase<Blend<Blended>> {
         let trace = try sut.fractionalPressure(of: .trace)
 
         // Then
-        XCTAssertEqual(oxygen.value, 0.209)
-        XCTAssertEqual(oxygen.gas, .oxygen)
-        XCTAssertEqual(nitrogen.value, 0.79)
-        XCTAssertEqual(nitrogen.gas, .nitrogen)
-        XCTAssertEqual(trace.value, 0.001)
-        XCTAssertEqual(trace.gas, .trace)
-        XCTAssertEqual(sut.totalPressure, 1.0)
-        XCTAssertEqual(sut.components().count, 3)
+        expectEqual(oxygen.value, 0.209)
+        expectEqual(oxygen.gas, .oxygen)
+        expectEqual(nitrogen.value, 0.79)
+        expectEqual(nitrogen.gas, .nitrogen)
+        expectEqual(trace.value, 0.001)
+        expectEqual(trace.gas, .trace)
+        expectEqual(sut.totalPressure, 1.0)
+        expectEqual(sut.components().count, 3)
     }
 
+    @Test
     func testEnrichedAir() throws {
         // Given
         let oxygenFraction = 0.32
@@ -32,14 +34,15 @@ final class BlendStaticMembersTestCase: SystemUnderTestCase<Blend<Blended>> {
         let nitrogen = try sut.fractionalPressure(of: .nitrogen)
 
         // Then
-        XCTAssertEqual(oxygen.value, oxygenFraction)
-        XCTAssertEqual(oxygen.gas, .oxygen)
-        XCTAssertEqual(nitrogen.value, 0.68, accuracy: 0.1)
-        XCTAssertEqual(nitrogen.gas, .nitrogen)
-        XCTAssertEqual(sut.totalPressure, 1.0)
-        XCTAssertEqual(sut.components().count, 2)
+        expectEqual(oxygen.value, oxygenFraction)
+        expectEqual(oxygen.gas, .oxygen)
+        expectEqual(nitrogen.value, 0.68, accuracy: 0.1)
+        expectEqual(nitrogen.gas, .nitrogen)
+        expectEqual(sut.totalPressure, 1.0)
+        expectEqual(sut.components().count, 2)
     }
 
+    @Test
     func testEnrichedAirRejectsNegativeFraction() throws {
         // Given
         let fractionalPressure = -0.01
@@ -48,13 +51,14 @@ final class BlendStaticMembersTestCase: SystemUnderTestCase<Blend<Blended>> {
             "FractionalPressure<Oxygen>.init(of:fractionalPressure:)")
 
         // When / Then
-        try XCTAssertThrowsError(
+        try expectThrowsError(
             when: try Blend.enrichedAir(fractionalPressure),
             then: expectedError) {
-                XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.fractional.pressure")
+                expectEqual($0.localizationKey, "dive.kit.error.negative.fractional.pressure")
             }
     }
 
+    @Test
     func testEnrichedAirRejectsFractionGreaterThanOne() throws {
         // Given
         let fractionalPressure = 1.01
@@ -63,13 +67,14 @@ final class BlendStaticMembersTestCase: SystemUnderTestCase<Blend<Blended>> {
             "FractionalPressure<Oxygen>.init(of:fractionalPressure:)")
 
         // When / Then
-        try XCTAssertThrowsError(
+        try expectThrowsError(
             when: try Blend.enrichedAir(fractionalPressure),
             then: expectedError)
     }
 
+    @Test
     func testEnrichedAirAcceptsBoundaryValues() throws {
-        XCTAssertNoThrow(try Blend.enrichedAir(0.0))
-        XCTAssertNoThrow(try Blend.enrichedAir(1.0))
+        _ = try Blend.enrichedAir(0.0)
+        _ = try Blend.enrichedAir(1.0)
     }
 }

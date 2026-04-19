@@ -1,20 +1,12 @@
-import XCTest
+import Testing
 
-open class SystemUnderTestCase<SUT>: XCTestCase {
+class SystemUnderTestCase<SUT> {
 
     public var sut: SUT!
 
-    override open func setUp() {
-        super.setUp()
-
+    init() {
         createSUT()
     }
 
-    override open func tearDown() {
-        sut = .none
-
-        super.tearDown()
-    }
-
-    open func createSUT() {}
+    func createSUT() {}
 }

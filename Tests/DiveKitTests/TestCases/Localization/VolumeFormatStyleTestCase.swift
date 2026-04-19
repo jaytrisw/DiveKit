@@ -1,7 +1,8 @@
-import XCTest
+import Testing
 @testable import DiveKit
 
 final class VolumeFormatStyleTestCase: SystemUnderTestCase<Volume> {
+    @Test
     func testFormatStyle() {
         // Given
         sut = 15
@@ -10,6 +11,6 @@ final class VolumeFormatStyleTestCase: SystemUnderTestCase<Volume> {
         let result = sut.formatted(.volume(.cubicFeet, style: .full))
 
         // Then
-        XCTAssertEqual(result, "15 cubic feet")
+        expectEqual(result, "15 cubic feet")
     }
 }
