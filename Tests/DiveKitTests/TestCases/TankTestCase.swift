@@ -30,7 +30,7 @@ final class TankTestCase: SystemUnderTestCase<Tank> {
         try expectThrowsError(
             when: Tank(blend: blend, size: size),
             then: expectedError) {
-                expectEqual($0.localizationKey, "dive.kit.error.blend.total.pressure")
+                #expect($0.localizationKey == "dive.kit.error.blend.total.pressure")
             }
     }
 }

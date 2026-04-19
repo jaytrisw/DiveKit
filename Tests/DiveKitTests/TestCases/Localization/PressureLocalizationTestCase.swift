@@ -11,7 +11,7 @@ final class PressureLocalizationTestCase: SystemUnderTestCase<Pressure.Unit> {
         let result = sut.localizedTitle
 
         // Then
-        expectEqual(result, "Pressure")
+        #expect(result == "Pressure")
     }
 
     @Test
@@ -23,7 +23,7 @@ final class PressureLocalizationTestCase: SystemUnderTestCase<Pressure.Unit> {
         let result = sut.localizedTitle
 
         // Then
-        expectEqual(result, "Pressure")
+        #expect(result == "Pressure")
     }
 
     @Test
@@ -35,7 +35,7 @@ final class PressureLocalizationTestCase: SystemUnderTestCase<Pressure.Unit> {
         let result = sut.localizedTitle
 
         // Then
-        expectEqual(result, "Pressure")
+        #expect(result == "Pressure")
     }
 
     @Test
@@ -48,7 +48,7 @@ final class PressureLocalizationTestCase: SystemUnderTestCase<Pressure.Unit> {
         let result = sut.localizedDescription(for: style)
 
         // Then
-        expectEqual(result, "psi")
+        #expect(result == "psi")
     }
 
     @Test
@@ -61,7 +61,7 @@ final class PressureLocalizationTestCase: SystemUnderTestCase<Pressure.Unit> {
         let result = sut.localizedDescription(for: style)
 
         // Then
-        expectEqual(result, "bar")
+        #expect(result == "bar")
     }
 
     @Test
@@ -74,7 +74,7 @@ final class PressureLocalizationTestCase: SystemUnderTestCase<Pressure.Unit> {
         let result = sut.localizedDescription(for: style)
 
         // Then
-        expectEqual(result, "atm")
+        #expect(result == "atm")
     }
 
     @Test
@@ -87,7 +87,7 @@ final class PressureLocalizationTestCase: SystemUnderTestCase<Pressure.Unit> {
         let result = sut.localizedDescription(for: style)
 
         // Then
-        expectEqual(result, "pounds per square inch")
+        #expect(result == "pounds per square inch")
     }
 
     @Test
@@ -100,7 +100,7 @@ final class PressureLocalizationTestCase: SystemUnderTestCase<Pressure.Unit> {
         let result = sut.localizedDescription(for: style)
 
         // Then
-        expectEqual(result, "bar")
+        #expect(result == "bar")
     }
 
     @Test
@@ -113,7 +113,7 @@ final class PressureLocalizationTestCase: SystemUnderTestCase<Pressure.Unit> {
         let result = sut.localizedDescription(for: style)
 
         // Then
-        expectEqual(result, "atmospheres")
+        #expect(result == "atmospheres")
     }
 
     @Test
@@ -127,7 +127,7 @@ final class PressureLocalizationTestCase: SystemUnderTestCase<Pressure.Unit> {
         let result = sut.localization(for: .quantity(quantity, style))
 
         // Then
-        expectEqual(result, "0 psi")
+        #expect(result == "0 psi")
     }
 
     @Test
@@ -141,7 +141,7 @@ final class PressureLocalizationTestCase: SystemUnderTestCase<Pressure.Unit> {
         let result = sut.localization(for: .quantity(quantity, style))
 
         // Then
-        expectEqual(result, "0 bar")
+        #expect(result == "0 bar")
     }
 
     @Test
@@ -155,7 +155,7 @@ final class PressureLocalizationTestCase: SystemUnderTestCase<Pressure.Unit> {
         let result = sut.localization(for: .quantity(quantity, style))
 
         // Then
-        expectEqual(result, "0 atm")
+        #expect(result == "0 atm")
     }
 
     @Test
@@ -169,7 +169,7 @@ final class PressureLocalizationTestCase: SystemUnderTestCase<Pressure.Unit> {
         let result = sut.localization(for: .quantity(quantity, style))
 
         // Then
-        expectEqual(result, "0 pounds per square inch")
+        #expect(result == "0 pounds per square inch")
     }
 
     @Test
@@ -183,7 +183,7 @@ final class PressureLocalizationTestCase: SystemUnderTestCase<Pressure.Unit> {
         let result = sut.localization(for: .quantity(quantity, style))
 
         // Then
-        expectEqual(result, "0 bar")
+        #expect(result == "0 bar")
     }
 
     @Test
@@ -197,7 +197,7 @@ final class PressureLocalizationTestCase: SystemUnderTestCase<Pressure.Unit> {
         let result = sut.localization(for: .quantity(quantity, style))
 
         // Then
-        expectEqual(result, "0 atmospheres")
+        #expect(result == "0 atmospheres")
     }
 
     @Test
@@ -211,7 +211,7 @@ final class PressureLocalizationTestCase: SystemUnderTestCase<Pressure.Unit> {
         let result = sut.localization(for: .quantity(quantity, style))
 
         // Then
-        expectEqual(result, "1 pound per square inch")
+        #expect(result == "1 pound per square inch")
     }
 
     @Test
@@ -225,7 +225,7 @@ final class PressureLocalizationTestCase: SystemUnderTestCase<Pressure.Unit> {
         let result = sut.localization(for: .quantity(quantity, style))
 
         // Then
-        expectEqual(result, "1 bar")
+        #expect(result == "1 bar")
     }
 
     @Test
@@ -239,6 +239,6 @@ final class PressureLocalizationTestCase: SystemUnderTestCase<Pressure.Unit> {
         let result = sut.localization(for: .quantity(quantity, style))
 
         // Then
-        expectEqual(result, "1 atmosphere")
+        #expect(result == "1 atmosphere")
     }
 }

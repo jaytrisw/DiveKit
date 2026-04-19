@@ -11,7 +11,7 @@ final class MassLocalizationTestCase: SystemUnderTestCase<Mass.Unit> {
         let result = sut.localizedTitle
 
         // Then
-        expectEqual(result, "Mass")
+        #expect(result == "Mass")
     }
 
     @Test
@@ -23,7 +23,7 @@ final class MassLocalizationTestCase: SystemUnderTestCase<Mass.Unit> {
         let result = sut.localizedTitle
 
         // Then
-        expectEqual(result, "Mass")
+        #expect(result == "Mass")
     }
 
     @Test
@@ -36,7 +36,7 @@ final class MassLocalizationTestCase: SystemUnderTestCase<Mass.Unit> {
         let result = sut.localizedDescription(for: style)
 
         // Then
-        expectEqual(result, "lbs")
+        #expect(result == "lbs")
     }
 
     @Test
@@ -49,7 +49,7 @@ final class MassLocalizationTestCase: SystemUnderTestCase<Mass.Unit> {
         let result = sut.localizedDescription(for: style)
 
         // Then
-        expectEqual(result, "kg")
+        #expect(result == "kg")
     }
 
     @Test
@@ -62,7 +62,7 @@ final class MassLocalizationTestCase: SystemUnderTestCase<Mass.Unit> {
         let result = sut.localizedDescription(for: style)
 
         // Then
-        expectEqual(result, "pounds")
+        #expect(result == "pounds")
     }
 
     @Test
@@ -75,7 +75,7 @@ final class MassLocalizationTestCase: SystemUnderTestCase<Mass.Unit> {
         let result = sut.localizedDescription(for: style)
 
         // Then
-        expectEqual(result, "kilograms")
+        #expect(result == "kilograms")
     }
 
     @Test
@@ -89,7 +89,7 @@ final class MassLocalizationTestCase: SystemUnderTestCase<Mass.Unit> {
         let result = sut.localization(for: .quantity(quantity, style))
 
         // Then
-        expectEqual(result, "0 lbs")
+        #expect(result == "0 lbs")
     }
 
     @Test
@@ -103,7 +103,7 @@ final class MassLocalizationTestCase: SystemUnderTestCase<Mass.Unit> {
         let result = sut.localization(for: .quantity(quantity, style))
 
         // Then
-        expectEqual(result, "0 kg")
+        #expect(result == "0 kg")
     }
 
     @Test
@@ -117,7 +117,7 @@ final class MassLocalizationTestCase: SystemUnderTestCase<Mass.Unit> {
         let result = sut.localization(for: .quantity(quantity, style))
 
         // Then
-        expectEqual(result, "0 pounds")
+        #expect(result == "0 pounds")
     }
 
     @Test
@@ -131,7 +131,7 @@ final class MassLocalizationTestCase: SystemUnderTestCase<Mass.Unit> {
         let result = sut.localization(for: .quantity(quantity, style))
 
         // Then
-        expectEqual(result, "0 kilograms")
+        #expect(result == "0 kilograms")
     }
 
     @Test
@@ -145,7 +145,7 @@ final class MassLocalizationTestCase: SystemUnderTestCase<Mass.Unit> {
         let result = sut.localization(for: .quantity(quantity, style))
 
         // Then
-        expectEqual(result, "1 pound")
+        #expect(result == "1 pound")
     }
 
     @Test
@@ -159,6 +159,6 @@ final class MassLocalizationTestCase: SystemUnderTestCase<Mass.Unit> {
         let result = sut.localization(for: .quantity(quantity, style))
 
         // Then
-        expectEqual(result, "1 kilogram")
+        #expect(result == "1 kilogram")
     }
 }

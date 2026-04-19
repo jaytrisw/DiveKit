@@ -11,6 +11,6 @@ final class DepthFormatStyleTestCase: SystemUnderTestCase<Depth> {
         let result = sut.formatted(.depth(.feet, style: .full))
 
         // Then
-        expectEqual(result, "15 feet")
+        #expect(result == "15 feet")
     }
 }

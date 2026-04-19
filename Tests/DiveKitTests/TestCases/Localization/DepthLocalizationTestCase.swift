@@ -11,7 +11,7 @@ final class DepthLocalizationTestCase: SystemUnderTestCase<Depth.Unit> {
         let result = sut.localizedTitle
 
         // Then
-        expectEqual(result, "Depth")
+        #expect(result == "Depth")
     }
 
     @Test
@@ -23,7 +23,7 @@ final class DepthLocalizationTestCase: SystemUnderTestCase<Depth.Unit> {
         let result = sut.localizedTitle
 
         // Then
-        expectEqual(result, "Depth")
+        #expect(result == "Depth")
     }
 
     @Test
@@ -36,7 +36,7 @@ final class DepthLocalizationTestCase: SystemUnderTestCase<Depth.Unit> {
         let result = sut.localizedDescription(for: style)
 
         // Then
-        expectEqual(result, "ft")
+        #expect(result == "ft")
     }
 
     @Test
@@ -49,7 +49,7 @@ final class DepthLocalizationTestCase: SystemUnderTestCase<Depth.Unit> {
         let result = sut.localizedDescription(for: style)
 
         // Then
-        expectEqual(result, "m")
+        #expect(result == "m")
     }
 
     @Test
@@ -62,7 +62,7 @@ final class DepthLocalizationTestCase: SystemUnderTestCase<Depth.Unit> {
         let result = sut.localizedDescription(for: style)
 
         // Then
-        expectEqual(result, "feet")
+        #expect(result == "feet")
     }
 
     @Test
@@ -75,7 +75,7 @@ final class DepthLocalizationTestCase: SystemUnderTestCase<Depth.Unit> {
         let result = sut.localizedDescription(for: style)
 
         // Then
-        expectEqual(result, "meters")
+        #expect(result == "meters")
     }
 
     @Test
@@ -89,7 +89,7 @@ final class DepthLocalizationTestCase: SystemUnderTestCase<Depth.Unit> {
         let result = sut.localization(for: .quantity(quantity, style))
 
         // Then
-        expectEqual(result, "0 ft")
+        #expect(result == "0 ft")
     }
 
     @Test
@@ -103,7 +103,7 @@ final class DepthLocalizationTestCase: SystemUnderTestCase<Depth.Unit> {
         let result = sut.localization(for: .quantity(quantity, style))
 
         // Then
-        expectEqual(result, "0 m")
+        #expect(result == "0 m")
     }
 
     @Test
@@ -117,7 +117,7 @@ final class DepthLocalizationTestCase: SystemUnderTestCase<Depth.Unit> {
         let result = sut.localization(for: .quantity(quantity, style))
 
         // Then
-        expectEqual(result, "0 feet")
+        #expect(result == "0 feet")
     }
 
     @Test
@@ -131,7 +131,7 @@ final class DepthLocalizationTestCase: SystemUnderTestCase<Depth.Unit> {
         let result = sut.localization(for: .quantity(quantity, style))
 
         // Then
-        expectEqual(result, "0 meters")
+        #expect(result == "0 meters")
     }
 
     @Test
@@ -145,7 +145,7 @@ final class DepthLocalizationTestCase: SystemUnderTestCase<Depth.Unit> {
         let result = sut.localization(for: .quantity(quantity, style))
 
         // Then
-        expectEqual(result, "1 foot")
+        #expect(result == "1 foot")
     }
 
     @Test
@@ -159,6 +159,6 @@ final class DepthLocalizationTestCase: SystemUnderTestCase<Depth.Unit> {
         let result = sut.localization(for: .quantity(quantity, style))
 
         // Then
-        expectEqual(result, "1 meter")
+        #expect(result == "1 meter")
     }
 }

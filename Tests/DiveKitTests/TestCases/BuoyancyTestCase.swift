@@ -12,7 +12,7 @@ final class BuoyancyTestCase: SystemUnderTestCase<Buoyancy> {
         sut = .init(value)
 
         // Then
-        expectEqual(sut, .neutral)
+        #expect(sut == .neutral)
     }
 
     @Test
@@ -24,7 +24,7 @@ final class BuoyancyTestCase: SystemUnderTestCase<Buoyancy> {
         sut = .init(value)
 
         // Then
-        expectEqual(sut, .positive(value))
+        #expect(sut == .positive(value))
     }
 
     @Test
@@ -36,6 +36,6 @@ final class BuoyancyTestCase: SystemUnderTestCase<Buoyancy> {
         sut = .init(value)
 
         // Then
-        expectEqual(sut, .negative(abs(value)))
+        #expect(sut == .negative(abs(value)))
     }
 }

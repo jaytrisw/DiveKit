@@ -18,9 +18,9 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 at: depth,
                 using: physicsCalculator)) { result, configuration in
                     // Then
-                    expectEqual(result.value, 0.42)
-                    expectEqual(result.unit, .atmospheres)
-                    expectEqual(configuration, sut.configuration)
+                    #expect(result.value == 0.42)
+                    #expect(result.unit == .atmospheres)
+                    #expect(configuration == sut.configuration)
             }
     }
 
@@ -35,7 +35,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
         try expectThrowsError(
             when: sut.partialPressure(of: fractionalPressure, at: depth, using: physicsCalculator),
             then: expectedError) {
-                expectEqual($0.localizationKey, "dive.kit.error.negative.depth")
+                #expect($0.localizationKey == "dive.kit.error.negative.depth")
             }
     }
 
@@ -56,9 +56,9 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 at: depth,
                 using: physicsCalculator)) { result, configuration in
                     // Then
-                    expectEqual(result.value, 0.418)
-                    expectEqual(result.unit, .atmospheres)
-                    expectEqual(configuration, sut.configuration)
+                    #expect(result.value == 0.418)
+                    #expect(result.unit == .atmospheres)
+                    #expect(configuration == sut.configuration)
                 }
     }
 
@@ -74,7 +74,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
         try expectThrowsError(
             when: sut.partialPressure(of: gas, in: blend, at: depth, using: physicsCalculator),
             then: expectedError) {
-                expectEqual($0.localizationKey, "dive.kit.error.negative.depth")
+                #expect($0.localizationKey == "dive.kit.error.negative.depth")
             }
     }
 
@@ -97,9 +97,9 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 at: depth,
                 using: physicsCalculator)) { result, configuration in
                     // Then
-                    expectEqual(result.value, 0.42)
-                    expectEqual(result.unit, .atmospheres)
-                    expectEqual(configuration, sut.configuration)
+                    #expect(result.value == 0.42)
+                    #expect(result.unit == .atmospheres)
+                    #expect(configuration == sut.configuration)
                 }
     }
 
@@ -116,7 +116,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
         try expectThrowsError(
             when: sut.partialPressure(of: gas, blending: blend, at: depth, using: physicsCalculator),
             then: expectedError) {
-                expectEqual($0.localizationKey, "dive.kit.error.blend.total.pressure")
+                #expect($0.localizationKey == "dive.kit.error.blend.total.pressure")
             }
     }
 
@@ -134,7 +134,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
         try expectThrowsError(
             when: sut.partialPressure(of: gas, blending: blend, at: depth, using: physicsCalculator),
             then: expectedError) {
-                expectEqual($0.localizationKey, "dive.kit.error.negative.depth")
+                #expect($0.localizationKey == "dive.kit.error.negative.depth")
             }
     }
 }

@@ -11,7 +11,7 @@ final class DoubleFormatStyleTestCase: SystemUnderTestCase<Double> {
         let result = sut.formatted(.depth(.feet, style: .full))
 
         // Then
-        expectEqual(result, "15 feet")
+        #expect(result == "15 feet")
     }
 
     @Test
@@ -23,7 +23,7 @@ final class DoubleFormatStyleTestCase: SystemUnderTestCase<Double> {
         let result = sut.formatted(.mass(.pounds, style: .full))
 
         // Then
-        expectEqual(result, "15 pounds")
+        #expect(result == "15 pounds")
     }
 
     @Test
@@ -35,7 +35,7 @@ final class DoubleFormatStyleTestCase: SystemUnderTestCase<Double> {
         let result = sut.formatted(.pressure(.atmospheres, style: .full))
 
         // Then
-        expectEqual(result, "15 atmospheres")
+        #expect(result == "15 atmospheres")
     }
 
     @Test
@@ -47,6 +47,6 @@ final class DoubleFormatStyleTestCase: SystemUnderTestCase<Double> {
         let result = sut.formatted(.volume(.cubicFeet, style: .full))
 
         // Then
-        expectEqual(result, "15 cubic feet")
+        #expect(result == "15 cubic feet")
     }
 }

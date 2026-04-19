@@ -18,8 +18,8 @@ final class BuoyancyCalculatorMetricSaltwaterTestCase: SystemUnderTestCase<Buoya
         try expectCalculation(
             sut.buoyancy(of: object)) { result, configuration in
                 // Then
-                expectEqual(result, .negative(3))
-                expectEqual(configuration, sut.configuration)
+                #expect(result == .negative(3))
+                #expect(configuration == sut.configuration)
         }
     }
 
@@ -34,8 +34,8 @@ final class BuoyancyCalculatorMetricSaltwaterTestCase: SystemUnderTestCase<Buoya
         try expectCalculation(
             sut.buoyancy(of: object)) { result, configuration in
                 // Then
-                expectEqual(result, .neutral)
-                expectEqual(configuration, sut.configuration)
+                #expect(result == .neutral)
+                #expect(configuration == sut.configuration)
             }
     }
 
@@ -51,7 +51,7 @@ final class BuoyancyCalculatorMetricSaltwaterTestCase: SystemUnderTestCase<Buoya
         try expectThrowsError(
             when: sut.buoyancy(of: object),
             then: expectedError) {
-                expectEqual($0.localizationKey, "dive.kit.error.negative.weight")
+                #expect($0.localizationKey == "dive.kit.error.negative.weight")
             }
     }
 
@@ -67,7 +67,7 @@ final class BuoyancyCalculatorMetricSaltwaterTestCase: SystemUnderTestCase<Buoya
         try expectThrowsError(
             when: sut.buoyancy(of: object),
             then: expectedError) {
-                expectEqual($0.localizationKey, "dive.kit.error.negative.volume")
+                #expect($0.localizationKey == "dive.kit.error.negative.volume")
             }
     }
 
@@ -85,8 +85,8 @@ final class BuoyancyCalculatorMetricSaltwaterTestCase: SystemUnderTestCase<Buoya
                 weighing: weight,
                 andDisplacing: volume)) { result, configuration in
                     // Then
-                    expectEqual(result, .positive(0.5))
-                    expectEqual(configuration, sut.configuration)
+                    #expect(result == .positive(0.5))
+                    #expect(configuration == sut.configuration)
                 }
     }
 
@@ -101,7 +101,7 @@ final class BuoyancyCalculatorMetricSaltwaterTestCase: SystemUnderTestCase<Buoya
         try expectThrowsError(
             when: sut.buoyancyOfObject(weighing: weight, andDisplacing: volume),
             then: expectedError) {
-                expectEqual($0.localizationKey, "dive.kit.error.negative.weight")
+                #expect($0.localizationKey == "dive.kit.error.negative.weight")
             }
     }
 
@@ -116,7 +116,7 @@ final class BuoyancyCalculatorMetricSaltwaterTestCase: SystemUnderTestCase<Buoya
         try expectThrowsError(
             when: sut.buoyancyOfObject(weighing: weight, andDisplacing: volume),
             then: expectedError) {
-                expectEqual($0.localizationKey, "dive.kit.error.negative.volume")
+                #expect($0.localizationKey == "dive.kit.error.negative.volume")
             }
     }
 
@@ -134,8 +134,8 @@ final class BuoyancyCalculatorMetricSaltwaterTestCase: SystemUnderTestCase<Buoya
                 weighing: weight,
                 with: buoyancy)) { result, configuration in
                     // Then
-                    expectEqual(result.value, 53.398058252427184)
-                    expectEqual(configuration, sut.configuration)
+                    #expect(result.value == 53.398058252427184)
+                    #expect(configuration == sut.configuration)
                 }
     }
 
@@ -150,7 +150,7 @@ final class BuoyancyCalculatorMetricSaltwaterTestCase: SystemUnderTestCase<Buoya
         try expectThrowsError(
             when: sut.volumeOfObject(weighing: weight, with: buoyancy),
             then: expectedError) {
-                expectEqual($0.localizationKey, "dive.kit.error.negative.weight")
+                #expect($0.localizationKey == "dive.kit.error.negative.weight")
             }
     }
 
@@ -166,8 +166,8 @@ final class BuoyancyCalculatorMetricSaltwaterTestCase: SystemUnderTestCase<Buoya
                 weighing: weight,
                 with: buoyancy)) { result, configuration in
                     // Then
-                    expectEqual(result.value, 92.23300970873787)
-                    expectEqual(configuration, sut.configuration)
+                    #expect(result.value == 92.23300970873787)
+                    #expect(configuration == sut.configuration)
                 }
     }
 

@@ -11,6 +11,6 @@ final class RateFormatStyleTestCase: SystemUnderTestCase<Rate<Pressure>> {
         let result = sut.formatted(.rate(.perMinute(.psi), style: .full))
 
         // Then
-        expectEqual(result, "15 pounds per square inch per minute")
+        #expect(result == "15 pounds per square inch per minute")
     }
 }

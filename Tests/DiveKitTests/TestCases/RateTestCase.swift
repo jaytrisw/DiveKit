@@ -11,7 +11,7 @@ final class RateTestCase: SystemUnderTestCase<Rate<Pressure>> {
         sut = .init(expected)
 
         // Then
-        expectEqual(sut.value, expected)
+        #expect(sut.value == expected)
     }
 
     @Test
@@ -21,7 +21,7 @@ final class RateTestCase: SystemUnderTestCase<Rate<Pressure>> {
         let rhs: Rate<Pressure> = 15
 
         // Then
-        expectEqual(lhs, rhs)
+        #expect(lhs == rhs)
     }
 
     @Test
@@ -33,6 +33,6 @@ final class RateTestCase: SystemUnderTestCase<Rate<Pressure>> {
         let result = sut.localization(for: .perMinute(.psi), style: .short)
 
         // Then
-        expectEqual(result, "15 psi/min")
+        #expect(result == "15 psi/min")
     }
 }

@@ -12,7 +12,7 @@ final class LocalizedStringTestCase {
             let result = localizedString(for: key, with: .init())
 
             // Then
-            expectEqual(result, "TEST LOCALIZED STRING")
+            #expect(result == "TEST LOCALIZED STRING")
         }
     }
 
@@ -26,7 +26,7 @@ final class LocalizedStringTestCase {
             let result = localizedString(for: key, quantity: 1, with: .init())
 
             // Then
-            expectEqual(result, "1 TEST LOCALIZED STRING WITH QUANTITY")
+            #expect(result == "1 TEST LOCALIZED STRING WITH QUANTITY")
         }
     }
 }

@@ -13,14 +13,14 @@ final class BlendStaticMembersTestCase: SystemUnderTestCase<Blend<Blended>> {
         let trace = try sut.fractionalPressure(of: .trace)
 
         // Then
-        expectEqual(oxygen.value, 0.209)
-        expectEqual(oxygen.gas, .oxygen)
-        expectEqual(nitrogen.value, 0.79)
-        expectEqual(nitrogen.gas, .nitrogen)
-        expectEqual(trace.value, 0.001)
-        expectEqual(trace.gas, .trace)
-        expectEqual(sut.totalPressure, 1.0)
-        expectEqual(sut.components().count, 3)
+        #expect(oxygen.value == 0.209)
+        #expect(oxygen.gas == .oxygen)
+        #expect(nitrogen.value == 0.79)
+        #expect(nitrogen.gas == .nitrogen)
+        #expect(trace.value == 0.001)
+        #expect(trace.gas == .trace)
+        #expect(sut.totalPressure == 1.0)
+        #expect(sut.components().count == 3)
     }
 
     @Test
@@ -34,12 +34,12 @@ final class BlendStaticMembersTestCase: SystemUnderTestCase<Blend<Blended>> {
         let nitrogen = try sut.fractionalPressure(of: .nitrogen)
 
         // Then
-        expectEqual(oxygen.value, oxygenFraction)
-        expectEqual(oxygen.gas, .oxygen)
-        expectEqual(nitrogen.value, 0.68, accuracy: 0.1)
-        expectEqual(nitrogen.gas, .nitrogen)
-        expectEqual(sut.totalPressure, 1.0)
-        expectEqual(sut.components().count, 2)
+        #expect(oxygen.value == oxygenFraction)
+        #expect(oxygen.gas == .oxygen)
+        #expect(abs(nitrogen.value - 0.68) <= 0.1)
+        #expect(nitrogen.gas == .nitrogen)
+        #expect(sut.totalPressure == 1.0)
+        #expect(sut.components().count == 2)
     }
 
     @Test
@@ -54,7 +54,7 @@ final class BlendStaticMembersTestCase: SystemUnderTestCase<Blend<Blended>> {
         try expectThrowsError(
             when: try Blend.enrichedAir(fractionalPressure),
             then: expectedError) {
-                expectEqual($0.localizationKey, "dive.kit.error.negative.fractional.pressure")
+                #expect($0.localizationKey == "dive.kit.error.negative.fractional.pressure")
             }
     }
 

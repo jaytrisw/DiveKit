@@ -11,7 +11,7 @@ final class VolumeLocalizationTestCase: SystemUnderTestCase<Volume.Unit> {
         let result = sut.localizedTitle
 
         // Then
-        expectEqual(result, "Volume")
+        #expect(result == "Volume")
     }
 
     @Test
@@ -23,7 +23,7 @@ final class VolumeLocalizationTestCase: SystemUnderTestCase<Volume.Unit> {
         let result = sut.localizedTitle
 
         // Then
-        expectEqual(result, "Volume")
+        #expect(result == "Volume")
     }
 
     @Test
@@ -36,7 +36,7 @@ final class VolumeLocalizationTestCase: SystemUnderTestCase<Volume.Unit> {
         let result = sut.localizedDescription(for: style)
 
         // Then
-        expectEqual(result, "cu ft")
+        #expect(result == "cu ft")
     }
 
     @Test
@@ -49,7 +49,7 @@ final class VolumeLocalizationTestCase: SystemUnderTestCase<Volume.Unit> {
         let result = sut.localizedDescription(for: style)
 
         // Then
-        expectEqual(result, "l")
+        #expect(result == "l")
     }
 
     @Test
@@ -62,7 +62,7 @@ final class VolumeLocalizationTestCase: SystemUnderTestCase<Volume.Unit> {
         let result = sut.localizedDescription(for: style)
 
         // Then
-        expectEqual(result, "cubic feet")
+        #expect(result == "cubic feet")
     }
 
     @Test
@@ -75,7 +75,7 @@ final class VolumeLocalizationTestCase: SystemUnderTestCase<Volume.Unit> {
         let result = sut.localizedDescription(for: style)
 
         // Then
-        expectEqual(result, "liters")
+        #expect(result == "liters")
     }
 
     @Test
@@ -89,7 +89,7 @@ final class VolumeLocalizationTestCase: SystemUnderTestCase<Volume.Unit> {
         let result = sut.localization(for: .quantity(quantity, style))
 
         // Then
-        expectEqual(result, "0 cu ft")
+        #expect(result == "0 cu ft")
     }
 
     @Test
@@ -103,7 +103,7 @@ final class VolumeLocalizationTestCase: SystemUnderTestCase<Volume.Unit> {
         let result = sut.localization(for: .quantity(quantity, style))
 
         // Then
-        expectEqual(result, "0 l")
+        #expect(result == "0 l")
     }
 
     @Test
@@ -117,7 +117,7 @@ final class VolumeLocalizationTestCase: SystemUnderTestCase<Volume.Unit> {
         let result = sut.localization(for: .quantity(quantity, style))
 
         // Then
-        expectEqual(result, "0 cubic feet")
+        #expect(result == "0 cubic feet")
     }
 
     @Test
@@ -131,7 +131,7 @@ final class VolumeLocalizationTestCase: SystemUnderTestCase<Volume.Unit> {
         let result = sut.localization(for: .quantity(quantity, style))
 
         // Then
-        expectEqual(result, "0 liters")
+        #expect(result == "0 liters")
     }
 
     @Test
@@ -145,7 +145,7 @@ final class VolumeLocalizationTestCase: SystemUnderTestCase<Volume.Unit> {
         let result = sut.localization(for: .quantity(quantity, style))
 
         // Then
-        expectEqual(result, "1 cubic foot")
+        #expect(result == "1 cubic foot")
     }
 
     @Test
@@ -159,6 +159,6 @@ final class VolumeLocalizationTestCase: SystemUnderTestCase<Volume.Unit> {
         let result = sut.localization(for: .quantity(quantity, style))
 
         // Then
-        expectEqual(result, "1 liter")
+        #expect(result == "1 liter")
     }
 }

@@ -11,6 +11,6 @@ final class ErrorTestCase: SystemUnderTestCase<Error> {
         let result = sut.localizedDescription
 
         // Then
-        expectEqual(result, "Depth input must not be a negative value")
+        #expect(result == "Depth input must not be a negative value")
     }
 }

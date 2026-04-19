@@ -17,9 +17,9 @@ final class GasCalculatorMetricSaltwaterTestCase: SystemUnderTestCase<GasCalcula
                 consuming: 40,
                 using: physicsCalculator)) { result, configuration in
                     // Then
-                    expectEqual(result.value, 1.6)
-                    expectEqual(result.unit, .perMinute(.bar))
-                    expectEqual(configuration, sut.configuration)
+                    #expect(result.value == 1.6)
+                    #expect(result.unit == .perMinute(.bar))
+                    #expect(configuration == sut.configuration)
                 }
     }
 

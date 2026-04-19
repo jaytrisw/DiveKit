@@ -16,9 +16,9 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
         try expectCalculation(
             sut.gaugePressure(at: depth)) { result, configuration in
                 // Then
-                expectEqual(result.value, 1)
-                expectEqual(result.unit, .atmospheres)
-                expectEqual(configuration, sut.configuration)
+                #expect(result.value == 1)
+                #expect(result.unit == .atmospheres)
+                #expect(configuration == sut.configuration)
             }
     }
 
@@ -32,7 +32,7 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
         try expectThrowsError(
             when: sut.gaugePressure(at: depth),
             then: expectedError) {
-                expectEqual($0.localizationKey, "dive.kit.error.negative.depth")
+                #expect($0.localizationKey == "dive.kit.error.negative.depth")
             }
     }
 
@@ -47,9 +47,9 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
         try expectCalculation(
             sut.atmospheresAbsolute(at: depth)) { result, configuration in
                 // Then
-                expectEqual(result.value, 2)
-                expectEqual(result.unit, .atmospheres)
-                expectEqual(configuration, sut.configuration)
+                #expect(result.value == 2)
+                #expect(result.unit == .atmospheres)
+                #expect(configuration == sut.configuration)
             }
     }
 
@@ -63,7 +63,7 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
         try expectThrowsError(
             when: sut.atmospheresAbsolute(at: depth),
             then: expectedError) {
-                expectEqual($0.localizationKey, "dive.kit.error.negative.depth")
+                #expect($0.localizationKey == "dive.kit.error.negative.depth")
             }
     }
 
@@ -79,9 +79,9 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
         try expectCalculation(
             sut.pressureChange(from: fromDepth, to: toDepth)) { result, configuration in
                 // Then
-                expectEqual(result.value, 1)
-                expectEqual(result.unit, .atmospheres)
-                expectEqual(configuration, sut.configuration)
+                #expect(result.value == 1)
+                #expect(result.unit == .atmospheres)
+                #expect(configuration == sut.configuration)
             }
     }
 
@@ -96,7 +96,7 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
         try expectThrowsError(
             when: sut.pressureChange(from: fromDepth, to: toDepth),
             then: expectedError) {
-                expectEqual($0.localizationKey, "dive.kit.error.negative.depth")
+                #expect($0.localizationKey == "dive.kit.error.negative.depth")
             }
     }
 
@@ -111,7 +111,7 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
         try expectThrowsError(
             when: sut.pressureChange(from: fromDepth, to: toDepth),
             then: expectedError) {
-                expectEqual($0.localizationKey, "dive.kit.error.negative.depth")
+                #expect($0.localizationKey == "dive.kit.error.negative.depth")
             }
     }
 
@@ -127,9 +127,9 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
         try expectCalculation(
             sut.airVolumeFromSurface(to: depth, with: volume)) { result, configuration in
                 // Then
-                expectEqual(result.value, 2)
-                expectEqual(result.unit, .cubicFeet)
-                expectEqual(configuration, sut.configuration)
+                #expect(result.value == 2)
+                #expect(result.unit == .cubicFeet)
+                #expect(configuration == sut.configuration)
             }
     }
 
@@ -144,7 +144,7 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
         try expectThrowsError(
             when: sut.airVolumeFromSurface(to: depth, with: volume),
             then: expectedError) {
-                expectEqual($0.localizationKey, "dive.kit.error.negative.depth")
+                #expect($0.localizationKey == "dive.kit.error.negative.depth")
             }
     }
 
@@ -159,7 +159,7 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
         try expectThrowsError(
             when: sut.airVolumeFromSurface(to: depth, with: volume),
             then: expectedError) {
-                expectEqual($0.localizationKey, "dive.kit.error.negative.volume")
+                #expect($0.localizationKey == "dive.kit.error.negative.volume")
             }
     }
 
@@ -175,9 +175,9 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
         try expectCalculation(
             sut.airVolumeToSurface(from: depth, with: volume)) { result, configuration in
                 // Then
-                expectEqual(result.value, 18)
-                expectEqual(result.unit, .cubicFeet)
-                expectEqual(configuration, sut.configuration)
+                #expect(result.value == 18)
+                #expect(result.unit == .cubicFeet)
+                #expect(configuration == sut.configuration)
             }
     }
 
@@ -192,7 +192,7 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
         try expectThrowsError(
             when: sut.airVolumeToSurface(from: depth, with: volume),
             then: expectedError) {
-                expectEqual($0.localizationKey, "dive.kit.error.negative.depth")
+                #expect($0.localizationKey == "dive.kit.error.negative.depth")
             }
     }
 
@@ -207,7 +207,7 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
         try expectThrowsError(
             when: sut.airVolumeToSurface(from: depth, with: volume),
             then: expectedError) {
-                expectEqual($0.localizationKey, "dive.kit.error.negative.volume")
+                #expect($0.localizationKey == "dive.kit.error.negative.volume")
             }
     }
 

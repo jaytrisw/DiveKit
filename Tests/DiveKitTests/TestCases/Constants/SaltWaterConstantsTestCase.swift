@@ -11,9 +11,9 @@ final class SaltWaterConstantsTestCase: SystemUnderTestCase<Water> {
         let result = sut.weight(units)
 
         // Then
-        expectEqual(result.value, 64)
-        expectEqual(result.unit, .pounds)
-        expectEqual(result.volume, .cubicFeet)
+        #expect(result.value == 64)
+        #expect(result.unit == .pounds)
+        #expect(result.volume == .cubicFeet)
     }
 
     @Test
@@ -25,8 +25,8 @@ final class SaltWaterConstantsTestCase: SystemUnderTestCase<Water> {
         let result = sut.pressure(units)
 
         // Then
-        expectEqual(result.increase.value, 33)
-        expectEqual(result.increase.unit, .feet)
+        #expect(result.increase.value == 33)
+        #expect(result.increase.unit == .feet)
     }
 
     @Test
@@ -38,9 +38,9 @@ final class SaltWaterConstantsTestCase: SystemUnderTestCase<Water> {
         let result = sut.weight(units)
 
         // Then
-        expectEqual(result.value, 1.03)
-        expectEqual(result.unit, .kilograms)
-        expectEqual(result.volume, .liters)
+        #expect(result.value == 1.03)
+        #expect(result.unit == .kilograms)
+        #expect(result.volume == .liters)
     }
 
     @Test
@@ -52,8 +52,8 @@ final class SaltWaterConstantsTestCase: SystemUnderTestCase<Water> {
         let result = sut.pressure(units)
 
         // Then
-        expectEqual(result.increase.value, 10)
-        expectEqual(result.increase.unit, .meters)
+        #expect(result.increase.value == 10)
+        #expect(result.increase.unit == .meters)
     }
 
     override func createSUT() {

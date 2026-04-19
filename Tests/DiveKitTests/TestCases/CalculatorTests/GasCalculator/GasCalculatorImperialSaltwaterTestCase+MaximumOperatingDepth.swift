@@ -15,9 +15,9 @@ extension GasCalculatorImperialSaltwaterTestCase {
         try expectCalculation(
             sut.maximumOperatingDepth(for: partialPressure, in: blend)) { result, configuration in
                 // Then
-                expectEqual(result.value, 131.99999719006675, accuracy: 0.0001)
-                expectEqual(result.unit, .feet)
-                expectEqual(configuration, sut.configuration)
+                #expect(abs(result.value - 131.99999719006675) <= 0.0001)
+                #expect(result.unit == .feet)
+                #expect(configuration == sut.configuration)
             }
     }
 
@@ -31,9 +31,9 @@ extension GasCalculatorImperialSaltwaterTestCase {
         try expectCalculation(
             sut.maximumOperatingDepth(for: partialPressure, in: blend)) { result, configuration in
                 // Then
-                expectEqual(result.value, 120.99999737739564, accuracy: 0.0001)
-                expectEqual(result.unit, .feet)
-                expectEqual(configuration, sut.configuration)
+                #expect(abs(result.value - 120.99999737739564) <= 0.0001)
+                #expect(result.unit == .feet)
+                #expect(configuration == sut.configuration)
             }
     }
 
@@ -47,9 +47,9 @@ extension GasCalculatorImperialSaltwaterTestCase {
         try expectCalculation(
             sut.maximumOperatingDepth(for: partialPressure, in: blend)) { result, configuration in
                 // Then
-                expectEqual(result.value, 111.3749975413084, accuracy: 0.0001)
-                expectEqual(result.unit, .feet)
-                expectEqual(configuration, sut.configuration)
+                #expect(abs(result.value - 111.3749975413084) <= 0.0001)
+                #expect(result.unit == .feet)
+                #expect(configuration == sut.configuration)
             }
     }
 
@@ -63,9 +63,9 @@ extension GasCalculatorImperialSaltwaterTestCase {
         try expectCalculation(
             sut.maximumOperatingDepth(for: partialPressure, in: blend)) { result, configuration in
                 // Then
-                expectEqual(result.value, 102.88235062711377, accuracy: 0.0001)
-                expectEqual(result.unit, .feet)
-                expectEqual(configuration, sut.configuration)
+                #expect(abs(result.value - 102.88235062711377) <= 0.0001)
+                #expect(result.unit == .feet)
+                #expect(configuration == sut.configuration)
             }
     }
 
@@ -79,9 +79,9 @@ extension GasCalculatorImperialSaltwaterTestCase {
         try expectCalculation(
             sut.maximumOperatingDepth(for: partialPressure, in: blend)) { result, configuration in
                 // Then
-                expectEqual(result.value, 95.3333311478297, accuracy: 0.0001)
-                expectEqual(result.unit, .feet)
-                expectEqual(configuration, sut.configuration)
+                #expect(abs(result.value - 95.3333311478297) <= 0.0001)
+                #expect(result.unit == .feet)
+                #expect(configuration == sut.configuration)
             }
     }
 
@@ -95,9 +95,9 @@ extension GasCalculatorImperialSaltwaterTestCase {
         try expectCalculation(
             sut.maximumOperatingDepth(for: partialPressure, in: blend)) { result, configuration in
                 // Then
-                expectEqual(result.value, 82.49999803304672, accuracy: 0.0001)
-                expectEqual(result.unit, .feet)
-                expectEqual(configuration, sut.configuration)
+                #expect(abs(result.value - 82.49999803304672) <= 0.0001)
+                #expect(result.unit == .feet)
+                #expect(configuration == sut.configuration)
             }
     }
 
@@ -111,9 +111,9 @@ extension GasCalculatorImperialSaltwaterTestCase {
         try expectCalculation(
             sut.maximumOperatingDepth(for: partialPressure, in: blend)) { result, configuration in
                 // Then
-                expectEqual(result.value, 155.5714313813618, accuracy: 0.0001)
-                expectEqual(result.unit, .feet)
-                expectEqual(configuration, sut.configuration)
+                #expect(abs(result.value - 155.5714313813618) <= 0.0001)
+                #expect(result.unit == .feet)
+                #expect(configuration == sut.configuration)
             }
     }
 
@@ -127,9 +127,9 @@ extension GasCalculatorImperialSaltwaterTestCase {
         try expectCalculation(
             sut.maximumOperatingDepth(for: partialPressure, in: blend)) { result, configuration in
                 // Then
-                expectEqual(result.value, 143.00000262260437, accuracy: 0.0001)
-                expectEqual(result.unit, .feet)
-                expectEqual(configuration, sut.configuration)
+                #expect(abs(result.value - 143.00000262260437) <= 0.0001)
+                #expect(result.unit == .feet)
+                #expect(configuration == sut.configuration)
             }
     }
 
@@ -143,9 +143,9 @@ extension GasCalculatorImperialSaltwaterTestCase {
         try expectCalculation(
             sut.maximumOperatingDepth(for: partialPressure, in: blend)) { result, configuration in
                 // Then
-                expectEqual(result.value, 132.0000024586916, accuracy: 0.0001)
-                expectEqual(result.unit, .feet)
-                expectEqual(configuration, sut.configuration)
+                #expect(abs(result.value - 132.0000024586916) <= 0.0001)
+                #expect(result.unit == .feet)
+                #expect(configuration == sut.configuration)
             }
     }
 
@@ -159,9 +159,9 @@ extension GasCalculatorImperialSaltwaterTestCase {
         try expectCalculation(
             sut.maximumOperatingDepth(for: partialPressure, in: blend)) { result, configuration in
                 // Then
-                expectEqual(result.value, 122.29411996112148, accuracy: 0.0001)
-                expectEqual(result.unit, .feet)
-                expectEqual(configuration, sut.configuration)
+                #expect(abs(result.value - 122.29411996112148) <= 0.0001)
+                #expect(result.unit == .feet)
+                #expect(configuration == sut.configuration)
             }
     }
 
@@ -175,9 +175,9 @@ extension GasCalculatorImperialSaltwaterTestCase {
         try expectCalculation(
             sut.maximumOperatingDepth(for: partialPressure, in: blend)) { result, configuration in
                 // Then
-                expectEqual(result.value, 113.6666688521703, accuracy: 0.0001)
-                expectEqual(result.unit, .feet)
-                expectEqual(configuration, sut.configuration)
+                #expect(abs(result.value - 113.6666688521703) <= 0.0001)
+                #expect(result.unit == .feet)
+                #expect(configuration == sut.configuration)
             }
     }
 
@@ -191,9 +191,9 @@ extension GasCalculatorImperialSaltwaterTestCase {
         try expectCalculation(
             sut.maximumOperatingDepth(for: partialPressure, in: blend)) { result, configuration in
                 // Then
-                expectEqual(result.value, 99.00000196695328, accuracy: 0.0001)
-                expectEqual(result.unit, .feet)
-                expectEqual(configuration, sut.configuration)
+                #expect(abs(result.value - 99.00000196695328) <= 0.0001)
+                #expect(result.unit == .feet)
+                #expect(configuration == sut.configuration)
             }
     }
 
@@ -207,9 +207,9 @@ extension GasCalculatorImperialSaltwaterTestCase {
         try expectCalculation(
             sut.maximumOperatingDepth(for: partialPressure, in: blend)) { result, configuration in
                 // Then
-                expectEqual(result.value, 188.0526278144435, accuracy: 0.0001)
-                expectEqual(result.unit, .feet)
-                expectEqual(configuration, sut.configuration)
+                #expect(abs(result.value - 188.0526278144435) <= 0.0001)
+                #expect(result.unit == .feet)
+                #expect(configuration == sut.configuration)
             }
     }
 
@@ -223,9 +223,9 @@ extension GasCalculatorImperialSaltwaterTestCase {
         try expectCalculation(
             sut.maximumOperatingDepth(for: partialPressure, in: blend)) { result, configuration in
                 // Then
-                expectEqual(result.value, 219.6315827118723, accuracy: 0.0001)
-                expectEqual(result.unit, .feet)
-                expectEqual(configuration, sut.configuration)
+                #expect(abs(result.value - 219.6315827118723) <= 0.0001)
+                #expect(result.unit == .feet)
+                #expect(configuration == sut.configuration)
             }
     }
 
@@ -239,7 +239,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
         try expectThrowsError(
             when: sut.maximumOperatingDepth(for: partialPressure, in: blend),
             then: expectedError) {
-                expectEqual($0.localizationKey, "dive.kit.error.negative.partial.pressure")
+                #expect($0.localizationKey == "dive.kit.error.negative.partial.pressure")
             }
     }
 
@@ -261,7 +261,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
         try expectThrowsError(
             when: sut.maximumOperatingDepth(for: partialPressure, in: blend),
             then: expectedError) {
-                expectEqual($0.localizationKey, "dive.kit.error.range.lower.bound")
+                #expect($0.localizationKey == "dive.kit.error.range.lower.bound")
             }
     }
 
@@ -279,7 +279,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
         try expectThrowsError(
             when: sut.maximumOperatingDepth(for: partialPressure, in: blend),
             then: expectedError) {
-                expectEqual($0.localizationKey, "dive.kit.error.range.lower.bound")
+                #expect($0.localizationKey == "dive.kit.error.range.lower.bound")
             }
     }
 }

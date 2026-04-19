@@ -15,8 +15,8 @@ extension GasCalculatorImperialSaltwaterTestCase {
         try expectCalculation(
             sut.bestBlend(for: depth, partialPressure: partialPressure, using: physicsCalculator)) { result, configuration in
                 // Then
-                expectEqual(result.fractionalPressure(of: .oxygen), 0.32)
-                expectEqual(configuration, sut.configuration)
+                try #expect(try result.fractionalPressure(of: .oxygen) == 0.32)
+                #expect(configuration == sut.configuration)
             }
     }
 
@@ -31,7 +31,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
         try expectThrowsError(
             when: sut.bestBlend(for: depth, partialPressure: partialPressure, using: physicsCalculator),
             then: expectedError) {
-                expectEqual($0.localizationKey, "dive.kit.error.negative.depth")
+                #expect($0.localizationKey == "dive.kit.error.negative.depth")
             }
     }
 
@@ -46,7 +46,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
         try expectThrowsError(
             when: sut.bestBlend(for: depth, partialPressure: partialPressure, using: physicsCalculator),
             then: expectedError) {
-                expectEqual($0.localizationKey, "dive.kit.error.negative.partial.pressure")
+                #expect($0.localizationKey == "dive.kit.error.negative.partial.pressure")
             }
     }
 
@@ -63,7 +63,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
         try expectThrowsError(
             when: sut.bestBlend(for: depth, partialPressure: partialPressure, using: physicsCalculator),
             then: expectedError) {
-                expectEqual($0.localizationKey, "dive.kit.error.range.lower.bound")
+                #expect($0.localizationKey == "dive.kit.error.range.lower.bound")
             }
     }
 }

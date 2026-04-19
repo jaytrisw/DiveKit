@@ -20,7 +20,7 @@ final class AtmospheresAbsoluteTestCaseTest: ThrowingMethodUnderTestCase<Physics
         // When
         try data.forEach {
             // Then
-            try expectEqual(try mut($0.input), $0.output)
+            try #expect(try mut($0.input) == $0.output)
         }
     }
 
@@ -41,7 +41,7 @@ final class AtmospheresAbsoluteTestCaseTest: ThrowingMethodUnderTestCase<Physics
         // When
         try data.forEach {
             // Then
-            try expectEqual(try mut($0.input), $0.output)
+            try #expect(try mut($0.input) == $0.output)
         }
     }
 }

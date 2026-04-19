@@ -12,8 +12,8 @@ final class FractionalPressureTestCase {
         let sut = try FractionalPressure(of: gas, fractionalPressure: 0.21)
 
         // Then
-        expectEqual(sut.gas, gas)
-        expectEqual(sut.value, 0.21)
+        #expect(sut.gas == gas)
+        #expect(sut.value == 0.21)
     }
 
     @Test
@@ -29,7 +29,7 @@ final class FractionalPressureTestCase {
         try expectThrowsError(
             when: try FractionalPressure(of: gas, fractionalPressure: fractionalPressure),
             then: expectedError) { error in
-                expectEqual(error.localizationKey, "dive.kit.error.negative.fractional.pressure")
+                #expect(error.localizationKey == "dive.kit.error.negative.fractional.pressure")
             }
     }
 
@@ -46,7 +46,7 @@ final class FractionalPressureTestCase {
         try expectThrowsError(
             when: try FractionalPressure(of: gas, fractionalPressure: fractionalPressure),
             then: expectedError) { error in
-                expectEqual(error.localizationKey, "dive.kit.error.range.upper.bound")
+                #expect(error.localizationKey == "dive.kit.error.range.upper.bound")
             }
     }
 
@@ -62,7 +62,7 @@ final class FractionalPressureTestCase {
         try expectThrowsError(
             when: try FractionalPressure(of: .oxygen, fractionalPressure: fractionalPressure),
             then: expectedError) { error in
-                expectEqual(error.localizationKey, "dive.kit.error.negative.fractional.pressure")
+                #expect(error.localizationKey == "dive.kit.error.negative.fractional.pressure")
 
             }
     }

@@ -11,6 +11,6 @@ final class PressureFormatStyleTestCase: SystemUnderTestCase<Pressure> {
         let result = sut.formatted(.pressure(.atmospheres, style: .full))
 
         // Then
-        expectEqual(result, "15 atmospheres")
+        #expect(result == "15 atmospheres")
     }
 }

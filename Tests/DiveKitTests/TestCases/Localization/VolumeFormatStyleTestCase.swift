@@ -11,6 +11,6 @@ final class VolumeFormatStyleTestCase: SystemUnderTestCase<Volume> {
         let result = sut.formatted(.volume(.cubicFeet, style: .full))
 
         // Then
-        expectEqual(result, "15 cubic feet")
+        #expect(result == "15 cubic feet")
     }
 }

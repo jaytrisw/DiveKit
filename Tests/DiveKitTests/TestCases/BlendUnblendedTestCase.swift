@@ -15,8 +15,8 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
         try sut.add(fractionalPressure)
 
         // Then
-        expectEqual(sut.components().count, 1)
-        expectEqual(sut.fractionalPressure(of: .oxygen), oxygenFraction)
+        #expect(sut.components().count == 1)
+        try #expect(try sut.fractionalPressure(of: .oxygen) == oxygenFraction)
     }
 
     @Test
@@ -30,7 +30,7 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
         try expectThrowsError(
             when: sut.add(fractionalPressure),
             then: expectedError) {
-                expectEqual($0.localizationKey, "dive.kit.error.blend.pressure.range")
+                #expect($0.localizationKey == "dive.kit.error.blend.pressure.range")
             }
     }
 
@@ -45,7 +45,7 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
         try expectThrowsError(
             when: sut.add(fractionalPressure),
             then: expectedError) {
-                expectEqual($0.localizationKey, "dive.kit.error.blend.pressure.range")
+                #expect($0.localizationKey == "dive.kit.error.blend.pressure.range")
             }
     }
 
@@ -59,8 +59,8 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
         let result = try sut.adding(fractionalPressure)
 
         // Then
-        expectEqual(result.components().count, 1)
-        expectEqual(result.fractionalPressure(of: .oxygen), oxygenFraction)
+        #expect(result.components().count == 1)
+        try #expect(try result.fractionalPressure(of: .oxygen) == oxygenFraction)
     }
 
     @Test
@@ -74,8 +74,8 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
         try sut.update(.oxygen, pressure: updatedOxygenFraction)
 
         // Then
-        expectEqual(sut.components().count, 1)
-        expectEqual(sut.fractionalPressure(of: .oxygen), updatedOxygenFraction)
+        #expect(sut.components().count == 1)
+        try #expect(try sut.fractionalPressure(of: .oxygen) == updatedOxygenFraction)
     }
 
     @Test
@@ -90,8 +90,8 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
         try sut.update(fractionalPressure)
 
         // Then
-        expectEqual(sut.components().count, 1)
-        expectEqual(sut.fractionalPressure(of: .oxygen), updatedOxygenFraction)
+        #expect(sut.components().count == 1)
+        try #expect(try sut.fractionalPressure(of: .oxygen) == updatedOxygenFraction)
     }
 
     @Test
@@ -104,7 +104,7 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
         try expectThrowsError(
             when: sut.update(.oxygen, pressure: oxygenFraction),
             then: expectedError) {
-                expectEqual($0.localizationKey, "dive.kit.error.blend.pressure.range")
+                #expect($0.localizationKey == "dive.kit.error.blend.pressure.range")
             }
     }
 
@@ -119,9 +119,9 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
         let result = try sut.updating(.oxygen, pressure: updatedOxygenFraction)
 
         // Then
-        expectEqual(sut.fractionalPressure(of: .oxygen), initialOxygenFraction)
-        expectEqual(result.components().count, 1)
-        expectEqual(result.fractionalPressure(of: .oxygen), updatedOxygenFraction)
+        try #expect(try sut.fractionalPressure(of: .oxygen) == initialOxygenFraction)
+        #expect(result.components().count == 1)
+        try #expect(try result.fractionalPressure(of: .oxygen) == updatedOxygenFraction)
     }
 
     @Test
@@ -136,9 +136,9 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
         let result = try sut.updating(fractionalPressure)
 
         // Then
-        expectEqual(sut.fractionalPressure(of: .oxygen), initialOxygenFraction)
-        expectEqual(result.components().count, 1)
-        expectEqual(result.fractionalPressure(of: .oxygen), updatedOxygenFraction)
+        try #expect(try sut.fractionalPressure(of: .oxygen) == initialOxygenFraction)
+        #expect(result.components().count == 1)
+        try #expect(try result.fractionalPressure(of: .oxygen) == updatedOxygenFraction)
     }
 
     @Test
@@ -150,8 +150,8 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
         try sut.fill(with: oxygen)
 
         // Then
-        expectEqual(sut.components().count, 1)
-        expectEqual(sut.fractionalPressure(of: .oxygen), 1)
+        #expect(sut.components().count == 1)
+        try #expect(try sut.fractionalPressure(of: .oxygen) == 1)
     }
 
     @Test
@@ -163,8 +163,8 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
         let result = try sut.filling(with: oxygen)
 
         // Then
-        expectEqual(result.components().count, 1)
-        expectEqual(result.fractionalPressure(of: .oxygen), 1)
+        #expect(result.components().count == 1)
+        try #expect(try result.fractionalPressure(of: .oxygen) == 1)
         #expect(result.components().first.forceUnwrap().isEqual(to: .oxygen))
     }
 
@@ -178,8 +178,8 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
         let result = try sut.blend()
 
         // Then
-        expectEqual(result.components().count, 1)
-        expectEqual(result.fractionalPressure(of: .oxygen), 1)
+        #expect(result.components().count == 1)
+        try #expect(try result.fractionalPressure(of: .oxygen) == 1)
     }
 
     @Test
@@ -194,7 +194,7 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
         try expectThrowsError(
             when: sut.blend(),
             then: expectedError) {
-                expectEqual($0.localizationKey, "dive.kit.error.blend.total.pressure")
+                #expect($0.localizationKey == "dive.kit.error.blend.total.pressure")
             }
     }
 
@@ -209,10 +209,10 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
         let result = try sut.blend()
 
         // Then
-        try expectEqual(try result.fractionalPressure(of: .oxygen), oxygen)
-        try expectEqual(try result.fractionalPressure(of: .nitrogen), nitrogen)
-        expectEqual(result.totalPressure, 1.0)
-        expectEqual(result.components().count, 2)
+        try #expect(try result.fractionalPressure(of: .oxygen) == oxygen)
+        try #expect(try result.fractionalPressure(of: .nitrogen) == nitrogen)
+        #expect(result.totalPressure == 1.0)
+        #expect(result.components().count == 2)
     }
 
     @Test
@@ -225,8 +225,8 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
         }
 
         // Then
-        expectEqual(sut.totalPressure, 1.0)
-        expectEqual(sut.components().count, 2)
+        #expect(sut.totalPressure == 1.0)
+        #expect(sut.components().count == 2)
     }
 
     @Test
@@ -243,8 +243,8 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
         }
 
         // Then
-        expectEqual(sut.totalPressure, 1.0)
-        expectEqual(sut.components().count, 2)
+        #expect(sut.totalPressure == 1.0)
+        #expect(sut.components().count == 2)
     }
 
     override func createSUT() {

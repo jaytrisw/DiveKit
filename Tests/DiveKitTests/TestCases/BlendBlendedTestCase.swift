@@ -15,8 +15,8 @@ final class BlendBlendedTestCase: SystemUnderTestCase<Blend<Blended>> {
         let result = try sut.fractionalPressure(of: gas)
 
         // Then
-        expectEqual(result.value, 1.0)
-        expectEqual(result.gas, gas)
+        #expect(result.value == 1.0)
+        #expect(result.gas == gas)
     }
 
     @Test
@@ -31,8 +31,8 @@ final class BlendBlendedTestCase: SystemUnderTestCase<Blend<Blended>> {
         let result = try sut.fractionalPressure(of: gas)
 
         // Then
-        expectEqual(result.value, 0)
-        expectEqual(result.gas, gas)
+        #expect(result.value == 0)
+        #expect(result.gas == gas)
     }
 
     @Test
@@ -45,8 +45,8 @@ final class BlendBlendedTestCase: SystemUnderTestCase<Blend<Blended>> {
         sut = try .init(.init(of: oxygen, fractionalPressure: oxygenFraction))
 
         // Then
-        try expectEqual(try sut.fractionalPressure(of: oxygen).value, oxygenFraction)
-        expectEqual(sut.components().count, 1)
+        try #expect(try sut.fractionalPressure(of: oxygen).value == oxygenFraction)
+        #expect(sut.components().count == 1)
     }
 
     @Test
@@ -59,8 +59,8 @@ final class BlendBlendedTestCase: SystemUnderTestCase<Blend<Blended>> {
         }
 
         // Then
-        expectEqual(sut.totalPressure, 1.0)
-        expectEqual(sut.components().count, 2)
+        #expect(sut.totalPressure == 1.0)
+        #expect(sut.components().count == 2)
     }
 
     @Test
@@ -77,7 +77,7 @@ final class BlendBlendedTestCase: SystemUnderTestCase<Blend<Blended>> {
         }
 
         // Then
-        expectEqual(sut.totalPressure, 1.0)
-        expectEqual(sut.components().count, 2)
+        #expect(sut.totalPressure == 1.0)
+        #expect(sut.components().count == 2)
     }
 }

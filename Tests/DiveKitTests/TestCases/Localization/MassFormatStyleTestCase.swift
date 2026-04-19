@@ -11,6 +11,6 @@ final class MassFormatStyleTestCase: SystemUnderTestCase<Mass> {
         let result = sut.formatted(.mass(.pounds, style: .full))
 
         // Then
-        expectEqual(result, "15 pounds")
+        #expect(result == "15 pounds")
     }
 }
