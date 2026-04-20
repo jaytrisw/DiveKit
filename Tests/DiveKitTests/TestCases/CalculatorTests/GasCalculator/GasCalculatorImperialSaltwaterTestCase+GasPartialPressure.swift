@@ -6,7 +6,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
     // MARK: partialPressure(of:at:using:)
 
     @Test
-    func testPartialPressureValidInput() throws {
+    func partialPressureValidInput() throws {
         // Given
         let fractionalPressure = try FractionalPressure(of: .oxygen, fractionalPressure: 0.21)
         let depth: Depth = 33.0
@@ -25,7 +25,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
     }
 
     @Test(.tags(.error))
-    func testPartialPressureInvalidInput() throws {
+    func partialPressureInvalidInput() throws {
         // Given
         let fractionalPressure = try FractionalPressure(of: .oxygen, fractionalPressure: 0.21)
         let depth: Depth = -33.0
@@ -42,7 +42,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
     // MARK: partialPressure(of:in:at:using:)
 
     @Test
-    func testPartialPressureBlendedValidInput() throws {
+    func partialPressureBlendedValidInput() throws {
         // Given
         let gas = Oxygen()
         let blend = Blend<Blended>.air
@@ -63,7 +63,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
     }
 
     @Test(.tags(.error))
-    func testPartialPressureBlendedInvalidInput() throws {
+    func partialPressureBlendedInvalidInput() throws {
         // Given
         let gas = Oxygen()
         let blend = Blend<Blended>.air
@@ -81,7 +81,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
     // MARK: partialPressure(of:blending:at:using:)
 
     @Test
-    func testPartialPressureUnblendedValidInput() throws {
+    func partialPressureUnblendedValidInput() throws {
         // Given
         let gas = Oxygen()
         let blend = try Blend()
@@ -104,7 +104,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
     }
 
     @Test(.tags(.error))
-    func testPartialPressureUnblendedInvalidBlendInput() throws {
+    func partialPressureUnblendedInvalidBlendInput() throws {
         // Given
         let gas = Oxygen()
         let oxygenFraction = 0.21
@@ -121,7 +121,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
     }
 
     @Test(.tags(.error))
-    func testPartialPressureUnblendedInvalidInput() throws {
+    func partialPressureUnblendedInvalidInput() throws {
         // Given
         let gas = Oxygen()
         let blend = try Blend()

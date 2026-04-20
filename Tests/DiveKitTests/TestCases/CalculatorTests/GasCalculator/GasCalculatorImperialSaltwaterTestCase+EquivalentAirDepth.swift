@@ -6,7 +6,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
     // MARK: equivalentAirDepth(for:with:)
 
     @Test
-    func testEquivalentAirDepthValidInput() throws {
+    func equivalentAirDepthValidInput() throws {
         // Given
         let depth: Depth = 80.0
         let blend = try Blend<Blended>.enrichedAir(0.4)
@@ -22,7 +22,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
     }
 
     @Test
-    func testEquivalentAirDepthUnblendedValidInput() throws {
+    func equivalentAirDepthUnblendedValidInput() throws {
         // Given
         let depth: Depth = 80.0
         let blend = try Blend<Unblended>()
@@ -40,7 +40,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
     }
 
     @Test(.tags(.error))
-    func testEquivalentAirDepthInvalidDepthInput() throws {
+    func equivalentAirDepthInvalidDepthInput() throws {
         // Given
         let depth: Depth = -80.0
         let blend = try Blend<Blended>.enrichedAir(0.4)
@@ -55,7 +55,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
     }
 
     @Test(.tags(.error))
-    func testEquivalentAirDepthUnblendedInvalidBlendInput() throws {
+    func equivalentAirDepthUnblendedInvalidBlendInput() throws {
         // Given
         let depth: Depth = 80.0
         let fractionalPressure = 0.4

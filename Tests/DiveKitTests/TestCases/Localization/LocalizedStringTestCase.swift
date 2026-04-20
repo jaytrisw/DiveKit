@@ -3,7 +3,7 @@ import Testing
 
 struct LocalizedStringTestCase {
     @Test
-    func testLocalizedStringFromMainBundle() {
+    func localizedStringFromMainBundle() {
         // Given
         let key = "test.localization.key"
 
@@ -17,7 +17,7 @@ struct LocalizedStringTestCase {
     }
 
     @Test
-    func testLocalizedStringWithQuantityFromMainBundle() {
+    func localizedStringWithQuantityFromMainBundle() {
         // Given
         let key = "test.localization.key.quantity"
 

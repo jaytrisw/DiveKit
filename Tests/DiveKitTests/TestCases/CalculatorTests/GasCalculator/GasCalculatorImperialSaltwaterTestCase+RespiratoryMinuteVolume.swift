@@ -6,7 +6,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
     // MARK: respiratoryMinuteVolume(at:for:consuming:with:using:)
 
     @Test
-    func testRespiratoryMinuteVolumeValidInput() throws {
+    func respiratoryMinuteVolumeValidInput() throws {
         // Given
         let depth: Depth = 40.0
         let minutes: Minutes = 15.0
@@ -31,7 +31,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
     }
 
     @Test(.tags(.error))
-    func testRespiratoryMinuteVolumeInvalidDepthInput() throws {
+    func respiratoryMinuteVolumeInvalidDepthInput() throws {
         // Given
         let depth: Depth = -40.0
         let minutes: Minutes = 15.0
@@ -55,7 +55,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
     }
 
     @Test(.tags(.error))
-    func testRespiratoryMinuteVolumeInvalidMinutesInput() throws {
+    func respiratoryMinuteVolumeInvalidMinutesInput() throws {
         // Given
         let depth: Depth = 40.0
         let minutes: Minutes = -15.0
@@ -79,7 +79,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
     }
 
     @Test(.tags(.error))
-    func testRespiratoryMinuteVolumeRejectsZeroMinutes() throws {
+    func respiratoryMinuteVolumeRejectsZeroMinutes() throws {
         // Given
         let depth: Depth = 40.0
         let minutes: Minutes = 0.0
@@ -103,7 +103,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
     }
 
     @Test(.tags(.error))
-    func testRespiratoryMinuteVolumeInvalidConsumedInput() throws {
+    func respiratoryMinuteVolumeInvalidConsumedInput() throws {
         // Given
         let depth: Depth = 40.0
         let minutes: Minutes = 15.0
@@ -127,7 +127,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
     }
 
     @Test(.tags(.error))
-    func testRespiratoryMinuteVolumeInvalidTankVolumeInput() throws {
+    func respiratoryMinuteVolumeInvalidTankVolumeInput() throws {
         // Given
         let depth: Depth = 40.0
         let minutes: Minutes = 15.0
@@ -151,7 +151,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
     }
 
     @Test(.tags(.error))
-    func testRespiratoryMinuteVolumeInvalidTankRatedPressureInput() throws {
+    func respiratoryMinuteVolumeInvalidTankRatedPressureInput() throws {
         // Given
         let depth: Depth = 40.0
         let minutes: Minutes = 15.0

@@ -6,7 +6,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
     // MARK: maximumOperatingDepth(for:in:)
 
     @Test
-    func testMaximumOperatingDepthForEAN28AtOnePointFour() throws {
+    func maximumOperatingDepthForEAN28AtOnePointFour() throws {
         // Given
         let partialPressure: PartialPressure<Oxygen> = 1.4
         let blend = try Blend<Blended>.enrichedAir(0.28)
@@ -22,7 +22,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
     }
 
     @Test
-    func testMaximumOperatingDepthForEAN30AtOnePointFour() throws {
+    func maximumOperatingDepthForEAN30AtOnePointFour() throws {
         // Given
         let partialPressure: PartialPressure<Oxygen> = 1.4
         let blend = try Blend<Blended>.enrichedAir(0.30)
@@ -38,7 +38,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
     }
 
     @Test
-    func testMaximumOperatingDepthForEAN32AtOnePointFour() throws {
+    func maximumOperatingDepthForEAN32AtOnePointFour() throws {
         // Given
         let partialPressure: PartialPressure<Oxygen> = 1.4
         let blend = try Blend<Blended>.enrichedAir(0.32)
@@ -54,7 +54,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
     }
 
     @Test
-    func testMaximumOperatingDepthForEAN34AtOnePointFour() throws {
+    func maximumOperatingDepthForEAN34AtOnePointFour() throws {
         // Given
         let partialPressure: PartialPressure<Oxygen> = 1.4
         let blend = try Blend<Blended>.enrichedAir(0.34)
@@ -70,7 +70,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
     }
 
     @Test
-    func testMaximumOperatingDepthForEAN36AtOnePointFour() throws {
+    func maximumOperatingDepthForEAN36AtOnePointFour() throws {
         // Given
         let partialPressure: PartialPressure<Oxygen> = 1.4
         let blend = try Blend<Blended>.enrichedAir(0.36)
@@ -86,7 +86,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
     }
 
     @Test
-    func testMaximumOperatingDepthForEAN40AtOnePointFour() throws {
+    func maximumOperatingDepthForEAN40AtOnePointFour() throws {
         // Given
         let partialPressure: PartialPressure<Oxygen> = 1.4
         let blend = try Blend<Blended>.enrichedAir(0.40)
@@ -102,7 +102,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
     }
 
     @Test
-    func testMaximumOperatingDepthForEAN28AtOnePointSix() throws {
+    func maximumOperatingDepthForEAN28AtOnePointSix() throws {
         // Given
         let partialPressure: PartialPressure<Oxygen> = 1.6
         let blend = try Blend<Blended>.enrichedAir(0.28)
@@ -118,7 +118,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
     }
 
     @Test
-    func testMaximumOperatingDepthForEAN30AtOnePointSix() throws {
+    func maximumOperatingDepthForEAN30AtOnePointSix() throws {
         // Given
         let partialPressure: PartialPressure<Oxygen> = 1.6
         let blend = try Blend<Blended>.enrichedAir(0.30)
@@ -134,7 +134,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
     }
 
     @Test
-    func testMaximumOperatingDepthForEAN32AtOnePointSix() throws {
+    func maximumOperatingDepthForEAN32AtOnePointSix() throws {
         // Given
         let partialPressure: PartialPressure<Oxygen> = 1.6
         let blend = try Blend<Blended>.enrichedAir(0.32)
@@ -150,7 +150,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
     }
 
     @Test
-    func testMaximumOperatingDepthForEAN34AtOnePointSix() throws {
+    func maximumOperatingDepthForEAN34AtOnePointSix() throws {
         // Given
         let partialPressure: PartialPressure<Oxygen> = 1.6
         let blend = try Blend<Blended>.enrichedAir(0.34)
@@ -166,7 +166,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
     }
 
     @Test
-    func testMaximumOperatingDepthForEAN36AtOnePointSix() throws {
+    func maximumOperatingDepthForEAN36AtOnePointSix() throws {
         // Given
         let partialPressure: PartialPressure<Oxygen> = 1.6
         let blend = try Blend<Blended>.enrichedAir(0.36)
@@ -182,7 +182,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
     }
 
     @Test
-    func testMaximumOperatingDepthForEAN40AtOnePointSix() throws {
+    func maximumOperatingDepthForEAN40AtOnePointSix() throws {
         // Given
         let partialPressure: PartialPressure<Oxygen> = 1.6
         let blend = try Blend<Blended>.enrichedAir(0.40)
@@ -198,7 +198,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
     }
 
     @Test
-    func testMaximumOperatingDepthForAirAtOnePointFour() throws {
+    func maximumOperatingDepthForAirAtOnePointFour() throws {
         // Given
         let partialPressure: PartialPressure<Oxygen> = 1.4
         let blend = Blend<Blended>.air
@@ -214,7 +214,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
     }
 
     @Test
-    func testMaximumOperatingDepthForAirAtOnePointSix() throws {
+    func maximumOperatingDepthForAirAtOnePointSix() throws {
         // Given
         let partialPressure: PartialPressure<Oxygen> = 1.6
         let blend = Blend<Blended>.air
@@ -230,7 +230,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
     }
 
     @Test(.tags(.error))
-    func testMaximumOperatingDepthRejectsNegativeOxygenPartialPressure() throws {
+    func maximumOperatingDepthRejectsNegativeOxygenPartialPressure() throws {
         let partialPressure: PartialPressure<Oxygen> = -1.4
         let blend = try Blend<Blended>.enrichedAir(0.32)
         expectedError = .negative(partialPressure, "GasCalculator.maximumOperatingDepth(for:in:)")
@@ -244,7 +244,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
     }
 
     @Test(.tags(.error))
-    func testMaximumOperatingDepthRejectsBlendWithZeroOxygen() throws {
+    func maximumOperatingDepthRejectsBlendWithZeroOxygen() throws {
         // Given
         let partialPressure: PartialPressure<Oxygen> = 1.4
 
@@ -266,7 +266,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
     }
 
     @Test(.tags(.error))
-    func testMaximumOperatingDepthRejectsZeroOxygenPartialPressure() throws {
+    func maximumOperatingDepthRejectsZeroOxygenPartialPressure() throws {
         // Given
         let partialPressure: PartialPressure<Oxygen> = 0
         let blend = try Blend<Blended>.enrichedAir(0.32)

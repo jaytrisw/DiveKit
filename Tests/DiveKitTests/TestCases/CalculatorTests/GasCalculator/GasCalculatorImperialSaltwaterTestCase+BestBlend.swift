@@ -6,7 +6,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
     // MARK: bestBlend(for:partialPressure:using:)
 
     @Test
-    func testBestBlendValidInput() throws {
+    func bestBlendValidInput() throws {
         // Given
         let depth: Depth = 111.0
         let partialPressure: PartialPressure<Oxygen> = 1.4
@@ -22,7 +22,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
     }
 
     @Test(.tags(.error))
-    func testBestBlendInvalidDepthInput() throws {
+    func bestBlendInvalidDepthInput() throws {
         // Given
         let depth: Depth = -111.0
         let partialPressure: PartialPressure<Oxygen> = 1.4
@@ -37,7 +37,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
     }
 
     @Test(.tags(.error))
-    func testBestBlendInvalidOxygenPartialPressureInput() throws {
+    func bestBlendInvalidOxygenPartialPressureInput() throws {
         // Given
         let depth: Depth = 111.0
         let partialPressure: PartialPressure<Oxygen> = -1.4
@@ -52,7 +52,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
     }
 
     @Test(.tags(.error))
-    func testBestBlendRejectsZeroOxygenPartialPressure() throws {
+    func bestBlendRejectsZeroOxygenPartialPressure() throws {
         // Given
         let depth: Depth = 111.0
         let partialPressure: PartialPressure<Oxygen> = 0

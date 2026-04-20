@@ -4,7 +4,7 @@ import Testing
 struct FractionalPressureTestCase {
 
     @Test
-    func testInitializationStoresValidFractionalPressure() throws {
+    func initializationStoresValidFractionalPressure() throws {
         // Given
         let gas = Oxygen()
 
@@ -17,7 +17,7 @@ struct FractionalPressureTestCase {
     }
 
     @Test(.tags(.error))
-    func testInitializationRejectsNegativeFractionalPressure() throws {
+    func initializationRejectsNegativeFractionalPressure() throws {
         // Given
         let gas = Oxygen()
         let fractionalPressure = -0.01
@@ -34,7 +34,7 @@ struct FractionalPressureTestCase {
     }
 
     @Test(.tags(.error))
-    func testInitializationRejectsFractionalPressureGreaterThanOne() throws {
+    func initializationRejectsFractionalPressureGreaterThanOne() throws {
         // Given
         let gas = Oxygen()
         let fractionalPressure = 1.01
@@ -51,7 +51,7 @@ struct FractionalPressureTestCase {
     }
 
     @Test(.tags(.error))
-    func testNegativeErrorMapsUnsafeFractionalPressureToFractionalPressureInput() throws {
+    func negativeErrorMapsUnsafeFractionalPressureToFractionalPressureInput() throws {
         // Given
         let fractionalPressure = -0.01
         let expectedError = Error.negative(

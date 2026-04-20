@@ -6,7 +6,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
     // MARK: surfaceAirConsumption(at:for:consuming:using:)
 
     @Test
-    func testSurfaceAirConsumptionConsumingValidInput() throws {
+    func surfaceAirConsumptionConsumingValidInput() throws {
         // Given
         let depth: Depth = 90.0
         let minutes: Minutes = 10.0
@@ -27,7 +27,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
     }
 
     @Test(.tags(.error))
-    func testSurfaceAirConsumptionConsumingInvalidDepthInput() throws {
+    func surfaceAirConsumptionConsumingInvalidDepthInput() throws {
         // Given
         let depth: Depth = -90.0
         let minutes: Minutes = 10.0
@@ -47,7 +47,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
     }
 
     @Test(.tags(.error))
-    func testSurfaceAirConsumptionConsumingInvalidMinutesInput() throws {
+    func surfaceAirConsumptionConsumingInvalidMinutesInput() throws {
         // Given
         let depth: Depth = 90.0
         let minutes: Minutes = -10.0
@@ -67,7 +67,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
     }
 
     @Test(.tags(.error))
-    func testSurfaceAirConsumptionConsumingRejectsZeroMinutes() throws {
+    func surfaceAirConsumptionConsumingRejectsZeroMinutes() throws {
         // Given
         let depth: Depth = 90.0
         let minutes: Minutes = 0.0
@@ -87,7 +87,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
     }
 
     @Test(.tags(.error))
-    func testSurfaceAirConsumptionConsumingInvalidConsumingInput() throws {
+    func surfaceAirConsumptionConsumingInvalidConsumingInput() throws {
         // Given
         let depth: Depth = 90.0
         let minutes: Minutes = 10.0
@@ -110,7 +110,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
     // MARK: surfaceAirConsumption(at:for:start:end:using:)
 
     @Test
-    func testSurfaceAirConsumptionStartEndValidInput() throws {
+    func surfaceAirConsumptionStartEndValidInput() throws {
         // Given
         let depth: Depth = 90.0
         let minutes: Minutes = 10.0
@@ -133,7 +133,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
     }
 
     @Test(.tags(.error))
-    func testSurfaceAirConsumptionStartEndInvalidDepthInput() throws {
+    func surfaceAirConsumptionStartEndInvalidDepthInput() throws {
         // Given
         let depth: Depth = -90.0
         let minutes: Minutes = 10.0
@@ -155,7 +155,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
     }
 
     @Test(.tags(.error))
-    func testSurfaceAirConsumptionStartEndInvalidTimeInput() throws {
+    func surfaceAirConsumptionStartEndInvalidTimeInput() throws {
         // Given
         let depth: Depth = 90.0
         let minutes: Minutes = -10.0
@@ -177,7 +177,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
     }
 
     @Test(.tags(.error))
-    func testSurfaceAirConsumptionStartEndInvalidStartPressureInput() throws {
+    func surfaceAirConsumptionStartEndInvalidStartPressureInput() throws {
         // Given
         let depth: Depth = 90.0
         let minutes: Minutes = 10.0
@@ -199,7 +199,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
     }
 
     @Test(.tags(.error))
-    func testSurfaceAirConsumptionStartEndInvalidEndPressureInput() throws {
+    func surfaceAirConsumptionStartEndInvalidEndPressureInput() throws {
         // Given
         let depth: Depth = 90.0
         let minutes: Minutes = 10.0
@@ -221,7 +221,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
     }
 
     @Test(.tags(.error))
-    func testSurfaceAirConsumptionStartEndInvalidCalculatedConsumingPressureInput() throws {
+    func surfaceAirConsumptionStartEndInvalidCalculatedConsumingPressureInput() throws {
         // Given
         let depth: Depth = 90.0
         let minutes: Minutes = 10.0
