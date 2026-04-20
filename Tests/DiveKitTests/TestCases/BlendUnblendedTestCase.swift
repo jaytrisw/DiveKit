@@ -1,33 +1,26 @@
 import Testing
 @testable @_spi(unsafe) import DiveKit
 
-final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
-
-    var expectedError: Error!
-
+@Suite("Blend Unblended", .tags(.blend))
+struct BlendUnblendedTestCase {
     @Test
-    func testAddWithValidInput() throws {
-        // Given
+    func addWithValidInput() throws {
+        var sut = Blend<Unblended>()
         let oxygenFraction = 0.8
         let fractionalPressure = try FractionalPressure(of: .oxygen, fractionalPressure: oxygenFraction)
 
-        // When
         try sut.add(fractionalPressure)
 
-        // Then
         #expect(sut.components().count == 1)
-        let result = sut.fractionalPressure(of: .oxygen)
-        #expect(result == oxygenFraction)
+        #expect(sut.fractionalPressure(of: .oxygen) == oxygenFraction)
     }
 
-    @Test
-    func testAddWithInvalidLowerBound_consumingUnsafeAPI() throws {
-        // Given
-        let oxygenFraction = -0.8
+    @Test(arguments: [-0.8, 1.01])
+    func addWithInvalidInput_consumingUnsafeAPI(oxygenFraction: Double) throws {
+        var sut = Blend<Unblended>()
         let fractionalPressure = FractionalPressure(.oxygen, fractionalPressure: oxygenFraction)
-        expectedError = .blend(.pressureRange(oxygenFraction, sut), "Blend<Unblended>.add(_:pressure:)")
+        let expectedError = Error.blend(.pressureRange(oxygenFraction, sut), "Blend<Unblended>.add(_:pressure:)")
 
-        // When
         try expectThrowsError(
             when: sut.add(fractionalPressure),
             then: expectedError) {
@@ -36,75 +29,50 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
     }
 
     @Test
-    func testAddWithInvalidUpperBound_consumingUnsafeAPI() throws {
-        // Given
-        let oxygenFraction = 1.01
-        let fractionalPressure = FractionalPressure(.oxygen, fractionalPressure: oxygenFraction)
-        expectedError = .blend(.pressureRange(oxygenFraction, sut), "Blend<Unblended>.add(_:pressure:)")
-
-        // When
-        try expectThrowsError(
-            when: sut.add(fractionalPressure),
-            then: expectedError) {
-                #expect($0.localizationKey == "dive.kit.error.blend.pressure.range")
-            }
-    }
-
-    @Test
-    func testAddingWithValidInput() throws {
-        // Given
+    func addingWithValidInput() throws {
+        let sut = Blend<Unblended>()
         let oxygenFraction = 0.8
         let fractionalPressure = try FractionalPressure(of: .oxygen, fractionalPressure: oxygenFraction)
 
-        // When
         let result = try sut.adding(fractionalPressure)
 
-        // Then
         #expect(result.components().count == 1)
-        let oxygen = result.fractionalPressure(of: .oxygen)
-        #expect(oxygen == oxygenFraction)
+        #expect(result.fractionalPressure(of: .oxygen) == oxygenFraction)
     }
 
     @Test
-    func testUpdateWithValidInput() throws {
-        // Given
+    func updateWithValidInput() throws {
+        var sut = Blend<Unblended>()
         let initialOxygenFraction = 0.8
         let updatedOxygenFraction = 0.4
         try sut.add(.oxygen, pressure: initialOxygenFraction)
 
-        // When
         try sut.update(.oxygen, pressure: updatedOxygenFraction)
 
-        // Then
         #expect(sut.components().count == 1)
-        let result = sut.fractionalPressure(of: .oxygen)
-        #expect(result == updatedOxygenFraction)
+        #expect(sut.fractionalPressure(of: .oxygen) == updatedOxygenFraction)
     }
 
     @Test
-    func testUpdateWithFractionalPressure() throws {
-        // Given
+    func updateWithFractionalPressure() throws {
+        var sut = Blend<Unblended>()
         let initialOxygenFraction = 0.8
         let updatedOxygenFraction = 0.4
         let fractionalPressure = try FractionalPressure(of: .oxygen, fractionalPressure: updatedOxygenFraction)
         try sut.add(.oxygen, pressure: initialOxygenFraction)
 
-        // When
         try sut.update(fractionalPressure)
 
-        // Then
         #expect(sut.components().count == 1)
-        let result = sut.fractionalPressure(of: .oxygen)
-        #expect(result == updatedOxygenFraction)
+        #expect(sut.fractionalPressure(of: .oxygen) == updatedOxygenFraction)
     }
 
     @Test
-    func testUpdateWithInvalidInput() throws {
-        // Given
+    func updateWithInvalidInput() throws {
+        var sut = Blend<Unblended>()
         let oxygenFraction = 1.01
-        expectedError = .blend(.pressureRange(oxygenFraction, sut), "Blend<Unblended>.update(_:pressure:)")
+        let expectedError = Error.blend(.pressureRange(oxygenFraction, sut), "Blend<Unblended>.update(_:pressure:)")
 
-        // When
         try expectThrowsError(
             when: sut.update(.oxygen, pressure: oxygenFraction),
             then: expectedError) {
@@ -113,95 +81,73 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
     }
 
     @Test
-    func testUpdatingWithValidInput() throws {
-        // Given
+    func updatingWithValidInput() throws {
+        var sut = Blend<Unblended>()
         let initialOxygenFraction = 0.8
         let updatedOxygenFraction = 0.4
         try sut.add(.oxygen, pressure: initialOxygenFraction)
 
-        // When
         let result = try sut.updating(.oxygen, pressure: updatedOxygenFraction)
 
-        // Then
-        let initialOxygen = sut.fractionalPressure(of: .oxygen)
-        #expect(initialOxygen == initialOxygenFraction)
+        #expect(sut.fractionalPressure(of: .oxygen) == initialOxygenFraction)
         #expect(result.components().count == 1)
-        let updatedOxygen = result.fractionalPressure(of: .oxygen)
-        #expect(updatedOxygen == updatedOxygenFraction)
+        #expect(result.fractionalPressure(of: .oxygen) == updatedOxygenFraction)
     }
 
     @Test
-    func testUpdatingWithFractionalPressure() throws {
-        // Given
+    func updatingWithFractionalPressure() throws {
+        var sut = Blend<Unblended>()
         let initialOxygenFraction = 0.8
         let updatedOxygenFraction = 0.4
         let fractionalPressure = try FractionalPressure(of: .oxygen, fractionalPressure: updatedOxygenFraction)
         try sut.add(.oxygen, pressure: initialOxygenFraction)
 
-        // When
         let result = try sut.updating(fractionalPressure)
 
-        // Then
-        let initialOxygen = sut.fractionalPressure(of: .oxygen)
-        #expect(initialOxygen == initialOxygenFraction)
+        #expect(sut.fractionalPressure(of: .oxygen) == initialOxygenFraction)
         #expect(result.components().count == 1)
-        let updatedOxygen = result.fractionalPressure(of: .oxygen)
-        #expect(updatedOxygen == updatedOxygenFraction)
+        #expect(result.fractionalPressure(of: .oxygen) == updatedOxygenFraction)
     }
 
     @Test
-    func testFillWithValidInput() throws {
-        // Given
-        let oxygen = Oxygen()
+    func fillWithValidInput() throws {
+        var sut = Blend<Unblended>()
 
-        // When
-        try sut.fill(with: oxygen)
+        try sut.fill(with: Oxygen())
 
-        // Then
         #expect(sut.components().count == 1)
-        let result = sut.fractionalPressure(of: .oxygen)
-        #expect(result == 1)
+        #expect(sut.fractionalPressure(of: .oxygen) == 1)
     }
 
     @Test
-    func testFillingWithValidInput() throws {
-        // Given
-        let oxygen = Oxygen()
+    func fillingWithValidInput() throws {
+        let sut = Blend<Unblended>()
 
-        // When
-        let result = try sut.filling(with: oxygen)
+        let result = try sut.filling(with: Oxygen())
 
-        // Then
         #expect(result.components().count == 1)
-        let oxygenFraction = result.fractionalPressure(of: .oxygen)
-        #expect(oxygenFraction == 1)
+        #expect(result.fractionalPressure(of: .oxygen) == 1)
         #expect(result.components().first.forceUnwrap().isEqual(to: .oxygen))
     }
 
     @Test
-    func testBlendWithValidInput() throws {
-        // Given
-        let oxygen = Oxygen()
-        try sut.fill(with: oxygen)
+    func blendWithValidInput() throws {
+        var sut = Blend<Unblended>()
+        try sut.fill(with: Oxygen())
 
-        // When
         let result = try sut.blend()
 
-        // Then
         #expect(result.components().count == 1)
-        let oxygenFraction = try result.fractionalPressure(of: .oxygen)
-        #expect(oxygenFraction.value == 1)
+        #expect(try result.fractionalPressure(of: .oxygen).value == 1)
     }
 
     @Test
-    func testBlendWithInvalidInput() throws {
-        // Given
-        let oxygen = Oxygen()
+    func blendWithInvalidInput() throws {
+        var sut = Blend<Unblended>()
         let oxygenFraction = 0.1
-        try sut.add(oxygen, pressure: oxygenFraction)
-        expectedError = .blend(.totalPressure(oxygenFraction, sut), "Blend<Unblended>.blend()")
+        try sut.add(.oxygen, pressure: oxygenFraction)
+        let expectedError = Error.blend(.totalPressure(oxygenFraction, sut), "Blend<Unblended>.blend()")
 
-        // When
         try expectThrowsError(
             when: sut.blend(),
             then: expectedError) {
@@ -210,57 +156,43 @@ final class BlendUnblendedTestCase: SystemUnderTestCase<Blend<Unblended>> {
     }
 
     @Test
-    func testInitializeWithFractionalPressures() throws {
-        // Given
+    func initializeWithFractionalPressures() throws {
         let oxygen = try FractionalPressure(of: .oxygen, fractionalPressure: 0.40)
         let nitrogen = try FractionalPressure(of: .nitrogen, fractionalPressure: 0.60)
-        sut = .init(oxygen, nitrogen)
+        let sut = Blend<Unblended>(oxygen, nitrogen)
 
-        // When
         let result = try sut.blend()
 
-        // Then
-        let resultOxygen = try result.fractionalPressure(of: .oxygen)
-        let resultNitrogen = try result.fractionalPressure(of: .nitrogen)
-        #expect(resultOxygen == oxygen)
-        #expect(resultNitrogen == nitrogen)
+        #expect(try result.fractionalPressure(of: .oxygen) == oxygen)
+        #expect(try result.fractionalPressure(of: .nitrogen) == nitrogen)
         #expect(result.totalPressure == 1.0)
         #expect(result.components().count == 2)
     }
 
     @Test
-    func testInitializeWithResultBuilder() throws {
-        // When
-        sut = try .init { () throws(DiveKit.Error) in
+    func initializeWithResultBuilder() throws {
+        let sut = try Blend<Unblended> { () throws(DiveKit.Error) in
             try FractionalPressure(of: .oxygen, fractionalPressure: 0.40)
 
             try FractionalPressure(of: .nitrogen, fractionalPressure: 0.60)
         }
 
-        // Then
         #expect(sut.totalPressure == 1.0)
         #expect(sut.components().count == 2)
     }
 
     @Test
-    func testInitializeWithResultBuilder_consumingUnsafeAPI() throws {
-        // Given
+    func initializeWithResultBuilder_consumingUnsafeAPI() {
         let oxygen = FractionalPressure(.oxygen, fractionalPressure: 0.40)
         let nitrogen = FractionalPressure(.nitrogen, fractionalPressure: 0.60)
 
-        // When
-        sut = .init {
+        let sut = Blend<Unblended> {
             oxygen
 
             nitrogen
         }
 
-        // Then
         #expect(sut.totalPressure == 1.0)
         #expect(sut.components().count == 2)
-    }
-
-    override func createSUT() {
-        sut = .init()
     }
 }

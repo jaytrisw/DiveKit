@@ -1,164 +1,35 @@
 import Testing
 @testable import DiveKit
 
-final class VolumeLocalizationTestCase: SystemUnderTestCase<Volume.Unit> {
-    @Test
-    func testLocalizedTitleDImperial() {
-        // Given
-        sut = .cubicFeet
-
-        // When
-        let result = sut.localizedTitle
-
-        // Then
-        #expect(result == "Volume")
+@Suite("Volume Localization", .tags(.localization))
+struct VolumeLocalizationTestCase {
+    @Test(arguments: [
+        (unit: Volume.Unit.cubicFeet, title: "Volume"),
+        (.liters, "Volume")
+    ])
+    func localizedTitle(unit: Volume.Unit, title: String) {
+        #expect(unit.localizedTitle == title)
     }
 
-    @Test
-    func testLocalizedTitleMetric() {
-        // Given
-        sut = .liters
-
-        // When
-        let result = sut.localizedTitle
-
-        // Then
-        #expect(result == "Volume")
+    @Test(arguments: [
+        (unit: Volume.Unit.cubicFeet, style: LocalizationStyle.short, description: "cu ft"),
+        (.liters, .short, "l"),
+        (.cubicFeet, .full, "cubic feet"),
+        (.liters, .full, "liters")
+    ])
+    func localizedDescription(unit: Volume.Unit, style: LocalizationStyle, description: String) {
+        #expect(unit.localizedDescription(for: style) == description)
     }
 
-    @Test
-    func testDescriptionShortImperial() {
-        // Given
-        let style: LocalizationStyle = .short
-        sut = .cubicFeet
-
-        // When
-        let result = sut.localizedDescription(for: style)
-
-        // Then
-        #expect(result == "cu ft")
-    }
-
-    @Test
-    func testDescriptionShortMetric() {
-        // Given
-        let style: LocalizationStyle = .short
-        sut = .liters
-
-        // When
-        let result = sut.localizedDescription(for: style)
-
-        // Then
-        #expect(result == "l")
-    }
-
-    @Test
-    func testDescriptionFullImperial() {
-        // Given
-        let style: LocalizationStyle = .full
-        sut = .cubicFeet
-
-        // When
-        let result = sut.localizedDescription(for: style)
-
-        // Then
-        #expect(result == "cubic feet")
-    }
-
-    @Test
-    func testDescriptionFullMetric() {
-        // Given
-        let style: LocalizationStyle = .full
-        sut = .liters
-
-        // When
-        let result = sut.localizedDescription(for: style)
-
-        // Then
-        #expect(result == "liters")
-    }
-
-    @Test
-    func testQuantityShortImperial() {
-        // Given
-        let quantity: Double = .zero
-        let style: LocalizationStyle = .short
-        sut = .cubicFeet
-
-        // When
-        let result = sut.localization(for: .quantity(quantity, style))
-
-        // Then
-        #expect(result == "0 cu ft")
-    }
-
-    @Test
-    func testQuantityShortMetric() {
-        // Given
-        let quantity: Double = .zero
-        let style: LocalizationStyle = .short
-        sut = .liters
-
-        // When
-        let result = sut.localization(for: .quantity(quantity, style))
-
-        // Then
-        #expect(result == "0 l")
-    }
-
-    @Test
-    func testQuantityFullImperial() {
-        // Given
-        let quantity: Double = .zero
-        let style: LocalizationStyle = .full
-        sut = .cubicFeet
-
-        // When
-        let result = sut.localization(for: .quantity(quantity, style))
-
-        // Then
-        #expect(result == "0 cubic feet")
-    }
-
-    @Test
-    func testQuantityFullMetric() {
-        // Given
-        let quantity: Double = .zero
-        let style: LocalizationStyle = .full
-        sut = .liters
-
-        // When
-        let result = sut.localization(for: .quantity(quantity, style))
-
-        // Then
-        #expect(result == "0 liters")
-    }
-
-    @Test
-    func testOneQuantityFullImperial() {
-        // Given
-        let quantity: Double = 1
-        let style: LocalizationStyle = .full
-        sut = .cubicFeet
-
-        // When
-        let result = sut.localization(for: .quantity(quantity, style))
-
-        // Then
-        #expect(result == "1 cubic foot")
-    }
-
-    @Test
-    func testOneQuantityFullMetric() {
-        // Given
-        let quantity: Double = 1
-        let style: LocalizationStyle = .full
-        sut = .liters
-
-        // When
-        let result = sut.localization(for: .quantity(quantity, style))
-
-        // Then
-        #expect(result == "1 liter")
+    @Test(arguments: [
+        (unit: Volume.Unit.cubicFeet, quantity: 0.0, style: LocalizationStyle.short, output: "0 cu ft"),
+        (.liters, 0, .short, "0 l"),
+        (.cubicFeet, 0, .full, "0 cubic feet"),
+        (.liters, 0, .full, "0 liters"),
+        (.cubicFeet, 1, .full, "1 cubic foot"),
+        (.liters, 1, .full, "1 liter")
+    ])
+    func quantity(unit: Volume.Unit, quantity: Double, style: LocalizationStyle, output: String) {
+        #expect(unit.localization(for: .quantity(quantity, style)) == output)
     }
 }

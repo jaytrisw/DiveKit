@@ -15,3 +15,17 @@ public func expectThrowsError<T>(
             Issue.record("Unexpected error type: \(error)")
         }
     }
+
+public func expectThrowsError<S, T>(
+    given: () throws(Error) -> S,
+    when: (S) throws -> T,
+    then errorHandler: ((_ error: Error) -> Void)? = .none) throws {
+        let given: S = try given()
+
+        do {
+            _ = try when(given)
+            Issue.record("Expected an error to be thrown.")
+        } catch let error as Error {
+            errorHandler?(error)
+        }
+    }

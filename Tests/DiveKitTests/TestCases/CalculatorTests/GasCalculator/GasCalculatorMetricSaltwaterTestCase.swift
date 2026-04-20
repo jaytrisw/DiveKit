@@ -1,30 +1,23 @@
 import Testing
 @testable import DiveKit
 
-final class GasCalculatorMetricSaltwaterTestCase: SystemUnderTestCase<GasCalculator> {
+@Suite("Gas Calculator", .tags(.gasCalculator))
+struct GasCalculatorMetricSaltwaterTestCase {
 
-    private var physicsCalculator: PhysicsCalculator!
-
-    @Test
-    func test() throws {
-        // Given
-
-        // When
-        try expectCalculation(
-            sut.surfaceAirConsumption(
+    @Test(.tags(.saltWater, .metric))
+    func metricSaltwaterSurfaceAirConsumption() async throws {
+        try await given {
+            GasCalculator(.metric, water: .salt)
+        } when: { sut in
+            try sut.surfaceAirConsumption(
                 at: 15,
                 for: 10,
                 consuming: 40,
-                using: physicsCalculator)) { result, configuration in
-                    // Then
-                    #expect(result.value == 1.6)
-                    #expect(result.unit == .perMinute(.bar))
-                    #expect(configuration == sut.configuration)
-                }
-    }
-
-    override func createSUT() {
-        sut = .init(.metric, water: .salt)
-        physicsCalculator = .init(.metric, water: .salt)
+                using: PhysicsCalculator(.metric, water: .salt))
+        } then: { sut, calculation in
+            #expect(calculation.result.value.isApproximately(1.6))
+            #expect(calculation.result.unit == .perMinute(.bar))
+            #expect(calculation.configuration == sut.configuration)
+        }
     }
 }

@@ -1,164 +1,35 @@
 import Testing
 @testable import DiveKit
 
-final class MassLocalizationTestCase: SystemUnderTestCase<Mass.Unit> {
-    @Test
-    func testLocalizedTitleDImperial() {
-        // Given
-        sut = .pounds
-
-        // When
-        let result = sut.localizedTitle
-
-        // Then
-        #expect(result == "Mass")
+@Suite("Mass Localization", .tags(.localization))
+struct MassLocalizationTestCase {
+    @Test(arguments: [
+        (unit: Mass.Unit.pounds, title: "Mass"),
+        (.kilograms, "Mass")
+    ])
+    func localizedTitle(unit: Mass.Unit, title: String) {
+        #expect(unit.localizedTitle == title)
     }
 
-    @Test
-    func testLocalizedTitleMetric() {
-        // Given
-        sut = .kilograms
-
-        // When
-        let result = sut.localizedTitle
-
-        // Then
-        #expect(result == "Mass")
+    @Test(arguments: [
+        (unit: Mass.Unit.pounds, style: LocalizationStyle.short, description: "lbs"),
+        (.kilograms, .short, "kg"),
+        (.pounds, .full, "pounds"),
+        (.kilograms, .full, "kilograms")
+    ])
+    func localizedDescription(unit: Mass.Unit, style: LocalizationStyle, description: String) {
+        #expect(unit.localizedDescription(for: style) == description)
     }
 
-    @Test
-    func testDescriptionShortImperial() {
-        // Given
-        let style: LocalizationStyle = .short
-        sut = .pounds
-
-        // When
-        let result = sut.localizedDescription(for: style)
-
-        // Then
-        #expect(result == "lbs")
-    }
-
-    @Test
-    func testDescriptionShortMetric() {
-        // Given
-        let style: LocalizationStyle = .short
-        sut = .kilograms
-
-        // When
-        let result = sut.localizedDescription(for: style)
-
-        // Then
-        #expect(result == "kg")
-    }
-
-    @Test
-    func testDescriptionFullImperial() {
-        // Given
-        let style: LocalizationStyle = .full
-        sut = .pounds
-
-        // When
-        let result = sut.localizedDescription(for: style)
-
-        // Then
-        #expect(result == "pounds")
-    }
-
-    @Test
-    func testDescriptionFullMetric() {
-        // Given
-        let style: LocalizationStyle = .full
-        sut = .kilograms
-
-        // When
-        let result = sut.localizedDescription(for: style)
-
-        // Then
-        #expect(result == "kilograms")
-    }
-
-    @Test
-    func testQuantityShortImperial() {
-        // Given
-        let quantity: Double = .zero
-        let style: LocalizationStyle = .short
-        sut = .pounds
-
-        // When
-        let result = sut.localization(for: .quantity(quantity, style))
-
-        // Then
-        #expect(result == "0 lbs")
-    }
-
-    @Test
-    func testQuantityShortMetric() {
-        // Given
-        let quantity: Double = .zero
-        let style: LocalizationStyle = .short
-        sut = .kilograms
-
-        // When
-        let result = sut.localization(for: .quantity(quantity, style))
-
-        // Then
-        #expect(result == "0 kg")
-    }
-
-    @Test
-    func testQuantityFullImperial() {
-        // Given
-        let quantity: Double = .zero
-        let style: LocalizationStyle = .full
-        sut = .pounds
-
-        // When
-        let result = sut.localization(for: .quantity(quantity, style))
-
-        // Then
-        #expect(result == "0 pounds")
-    }
-
-    @Test
-    func testQuantityFullMetric() {
-        // Given
-        let quantity: Double = .zero
-        let style: LocalizationStyle = .full
-        sut = .kilograms
-
-        // When
-        let result = sut.localization(for: .quantity(quantity, style))
-
-        // Then
-        #expect(result == "0 kilograms")
-    }
-
-    @Test
-    func testOneQuantityFullImperial() {
-        // Given
-        let quantity: Double = 1
-        let style: LocalizationStyle = .full
-        sut = .pounds
-
-        // When
-        let result = sut.localization(for: .quantity(quantity, style))
-
-        // Then
-        #expect(result == "1 pound")
-    }
-
-    @Test
-    func testOneQuantityFullMetric() {
-        // Given
-        let quantity: Double = 1
-        let style: LocalizationStyle = .full
-        sut = .kilograms
-
-        // When
-        let result = sut.localization(for: .quantity(quantity, style))
-
-        // Then
-        #expect(result == "1 kilogram")
+    @Test(arguments: [
+        (unit: Mass.Unit.pounds, quantity: 0.0, style: LocalizationStyle.short, output: "0 lbs"),
+        (.kilograms, 0, .short, "0 kg"),
+        (.pounds, 0, .full, "0 pounds"),
+        (.kilograms, 0, .full, "0 kilograms"),
+        (.pounds, 1, .full, "1 pound"),
+        (.kilograms, 1, .full, "1 kilogram")
+    ])
+    func quantity(unit: Mass.Unit, quantity: Double, style: LocalizationStyle, output: String) {
+        #expect(unit.localization(for: .quantity(quantity, style)) == output)
     }
 }

@@ -1,16 +1,14 @@
 import Testing
 @testable import DiveKit
 
-final class VolumeFormatStyleTestCase: SystemUnderTestCase<Volume> {
+@Suite("Volume Format Style", .tags(.localization))
+struct VolumeFormatStyleTestCase {
     @Test
-    func testFormatStyle() {
-        // Given
-        sut = 15
+    func formatStyle() {
+        let sut = Volume(15)
 
-        // When
         let result = sut.formatted(.volume(.cubicFeet, style: .full))
 
-        // Then
         #expect(result == "15 cubic feet")
     }
 }

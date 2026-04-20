@@ -1,57 +1,45 @@
 import Testing
 @testable import DiveKit
 
-final class PhysicsCalculatorMetricSaltwaterTestCase: SystemUnderTestCase<PhysicsCalculator> {
+@Suite("Physics Calculator", .tags(.physicsCalculator))
+struct PhysicsCalculatorMetricSaltwaterTestCase {
 
-    @Test
-    func testPressureChangeReturnsAtmospheresDelta() throws {
-        // Given
-        let fromDepth: Depth = 10
-        let toDepth: Depth = 20
-
-        // When
-        try expectCalculation(
-            sut.pressureChange(from: fromDepth, to: toDepth)) { result, configuration in
-                // Then
-                #expect(result.value == 1)
-                #expect(result.unit == .atmospheres)
-                #expect(configuration == sut.configuration)
-            }
+    @Test(.tags(.saltWater, .metric))
+    func metricSaltwaterPressureChangeReturnsAtmospheresDelta() async throws {
+        try await given {
+            PhysicsCalculator(.metric, water: .salt)
+        } when: { sut in
+            try sut.pressureChange(from: Depth(10), to: Depth(20))
+        } then: { sut, calculation in
+            #expect(calculation.result.value.isApproximately(1))
+            #expect(calculation.result.unit == .atmospheres)
+            #expect(calculation.configuration == sut.configuration)
+        }
     }
 
-    @Test
-    func testAirVolumeFromSurfaceReturnsVolumeUnit() throws {
-        // Given
-        let depth: Depth = 20
-        let volume: Volume = 6
-
-        // When
-        try expectCalculation(
-            sut.airVolumeFromSurface(to: depth, with: volume)) { result, configuration in
-                // Then
-                #expect(result.value == 2)
-                #expect(result.unit == .liters)
-                #expect(configuration == sut.configuration)
-            }
+    @Test(.tags(.saltWater, .metric))
+    func metricSaltwaterAirVolumeFromSurfaceReturnsVolumeUnit() async throws {
+        try await given {
+            PhysicsCalculator(.metric, water: .salt)
+        } when: { sut in
+            try sut.airVolumeFromSurface(to: Depth(20), with: Volume(6))
+        } then: { sut, calculation in
+            #expect(calculation.result.value.isApproximately(2))
+            #expect(calculation.result.unit == .liters)
+            #expect(calculation.configuration == sut.configuration)
+        }
     }
 
-    @Test
-    func testAirVolumeToSurfaceReturnsVolumeUnit() throws {
-        // Given
-        let depth: Depth = 20
-        let volume: Volume = 6
-
-        // When
-        try expectCalculation(
-            sut.airVolumeToSurface(from: depth, with: volume)) { result, configuration in
-                // Then
-                #expect(result.value == 18)
-                #expect(result.unit == .liters)
-                #expect(configuration == sut.configuration)
-            }
-    }
-
-    override func createSUT() {
-        sut = .init(.metric, water: .salt)
+    @Test(.tags(.saltWater, .metric))
+    func metricSaltwaterAirVolumeToSurfaceReturnsVolumeUnit() async throws {
+        try await given {
+            PhysicsCalculator(.metric, water: .salt)
+        } when: { sut in
+            try sut.airVolumeToSurface(from: Depth(20), with: Volume(6))
+        } then: { sut, calculation in
+            #expect(calculation.result.value.isApproximately(18))
+            #expect(calculation.result.unit == .liters)
+            #expect(calculation.configuration == sut.configuration)
+        }
     }
 }

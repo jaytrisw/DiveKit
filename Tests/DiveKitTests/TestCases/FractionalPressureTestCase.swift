@@ -1,7 +1,7 @@
 import Testing
 @testable import DiveKit
 
-final class FractionalPressureTestCase {
+struct FractionalPressureTestCase {
 
     @Test
     func testInitializationStoresValidFractionalPressure() throws {

@@ -1,62 +1,28 @@
 import Testing
 @testable import DiveKit
 
-final class FreshWaterConstantsTestCase: SystemUnderTestCase<Water> {
-    @Test
-    func testImperialWeightConstants() {
-        // Given
-        let units = Units.imperial
+@Suite("Fresh Water Constants", .tags(.constants, .freshWater))
+struct FreshWaterConstantsTestCase {
+    @Test(.tags(.freshWater), arguments: [
+        (units: Units.imperial, value: 62.4, unit: Mass.Unit.pounds, volume: Volume.Unit.cubicFeet),
+        (.metric, 1, .kilograms, .liters)
+    ])
+    func weightConstants(units: Units, value: Double, unit: Mass.Unit, volume: Volume.Unit) {
+        let result = Water.fresh.weight(units)
 
-        // When
-        let result = sut.weight(units)
-
-        // Then
-        #expect(result.value == 62.4)
-        #expect(result.unit == .pounds)
-        #expect(result.volume == .cubicFeet)
+        #expect(result.value.isApproximately(value))
+        #expect(result.unit == unit)
+        #expect(result.volume == volume)
     }
 
-    @Test
-    func testImperialPressureIncreaseConstants() {
-        // Given
-        let units = Units.imperial
+    @Test(.tags(.freshWater), arguments: [
+        (units: Units.imperial, value: 34.0, unit: Depth.Unit.feet),
+        (.metric, 10.3, .meters)
+    ])
+    func pressureIncreaseConstants(units: Units, value: Double, unit: Depth.Unit) {
+        let result = Water.fresh.pressure(units)
 
-        // When
-        let result = sut.pressure(units)
-
-        // Then
-        #expect(result.increase.value == 34)
-        #expect(result.increase.unit == .feet)
-    }
-
-    @Test
-    func testMetricWeightConstants() {
-        // Given
-        let units = Units.metric
-
-        // When
-        let result = sut.weight(units)
-
-        // Then
-        #expect(result.value == 1)
-        #expect(result.unit == .kilograms)
-        #expect(result.volume == .liters)
-    }
-
-    @Test
-    func testMetricPressureIncreaseConstants() {
-        // Given
-        let units = Units.metric
-
-        // When
-        let result = sut.pressure(units)
-
-        // Then
-        #expect(result.increase.value == 10.3)
-        #expect(result.increase.unit == .meters)
-    }
-
-    override func createSUT() {
-        sut = .fresh
+        #expect(result.increase.value.isApproximately(value))
+        #expect(result.increase.unit == unit)
     }
 }

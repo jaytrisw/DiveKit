@@ -1,18 +1,16 @@
 import Testing
 @testable import DiveKit
 
-final class BlendStaticMembersTestCase: SystemUnderTestCase<Blend<Blended>> {
+@Suite("Blend Static Members", .tags(.blend))
+struct BlendStaticMembersTestCase {
     @Test
-    func testAir() throws {
-        // Given
-        sut = .air
+    func air() throws {
+        let sut = Blend<Blended>.air
 
-        // When
         let oxygen = try sut.fractionalPressure(of: .oxygen)
         let nitrogen = try sut.fractionalPressure(of: .nitrogen)
         let trace = try sut.fractionalPressure(of: .trace)
 
-        // Then
         #expect(oxygen.value == 0.209)
         #expect(oxygen.gas == .oxygen)
         #expect(nitrogen.value == 0.79)
@@ -24,16 +22,13 @@ final class BlendStaticMembersTestCase: SystemUnderTestCase<Blend<Blended>> {
     }
 
     @Test
-    func testEnrichedAir() throws {
-        // Given
+    func enrichedAir() throws {
         let oxygenFraction = 0.32
-        sut = try .enrichedAir(oxygenFraction)
+        let sut = try Blend<Blended>.enrichedAir(oxygenFraction)
 
-        // When
         let oxygen = try sut.fractionalPressure(of: .oxygen)
         let nitrogen = try sut.fractionalPressure(of: .nitrogen)
 
-        // Then
         #expect(oxygen.value == oxygenFraction)
         #expect(oxygen.gas == .oxygen)
         #expect(abs(nitrogen.value - 0.68) <= 0.1)
@@ -43,14 +38,12 @@ final class BlendStaticMembersTestCase: SystemUnderTestCase<Blend<Blended>> {
     }
 
     @Test
-    func testEnrichedAirRejectsNegativeFraction() throws {
-        // Given
+    func enrichedAirRejectsNegativeFraction() throws {
         let fractionalPressure = -0.01
         let expectedError: Error = .negative(
             .fractionalPressure(fractionalPressure),
             "FractionalPressure<Oxygen>.init(of:fractionalPressure:)")
 
-        // When / Then
         try expectThrowsError(
             when: try Blend.enrichedAir(fractionalPressure),
             then: expectedError) {
@@ -59,21 +52,19 @@ final class BlendStaticMembersTestCase: SystemUnderTestCase<Blend<Blended>> {
     }
 
     @Test
-    func testEnrichedAirRejectsFractionGreaterThanOne() throws {
-        // Given
+    func enrichedAirRejectsFractionGreaterThanOne() throws {
         let fractionalPressure = 1.01
         let expectedError: Error = .range(
             .upperBound(fractionalPressure, .one),
             "FractionalPressure<Oxygen>.init(of:fractionalPressure:)")
 
-        // When / Then
         try expectThrowsError(
             when: try Blend.enrichedAir(fractionalPressure),
             then: expectedError)
     }
 
     @Test
-    func testEnrichedAirAcceptsBoundaryValues() throws {
+    func enrichedAirAcceptsBoundaryValues() throws {
         _ = try Blend.enrichedAir(0.0)
         _ = try Blend.enrichedAir(1.0)
     }

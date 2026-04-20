@@ -1,83 +1,70 @@
 import Testing
 @testable @_spi(unsafe) import DiveKit
 
-final class BlendBlendedTestCase: SystemUnderTestCase<Blend<Blended>> {
+@Suite("Blend Blended", .tags(.blend))
+struct BlendBlendedTestCase {
 
     @Test
-    func testFraction() throws {
-        // Given
+    func fraction() throws {
         let gas = Oxygen()
-        sut = try Blend()
+        let sut = try Blend()
             .filling(with: gas)
             .blend()
 
-        // When
         let result = try sut.fractionalPressure(of: gas)
 
-        // Then
         #expect(result.value == 1.0)
         #expect(result.gas == gas)
     }
 
     @Test
-    func testFractionGasNotInBlend() throws {
-        // Given
+    func fractionGasNotInBlend() throws {
         let gas = Oxygen()
-        sut = try Blend()
+        let sut = try Blend()
             .filling(with: .nitrogen)
             .blend()
 
-        // When
         let result = try sut.fractionalPressure(of: gas)
 
-        // Then
         #expect(result.value == 0)
         #expect(result.gas == gas)
     }
 
     @Test
-    func testInitializationWithParameterPacks() throws {
-        // Given
+    func initializationWithParameterPacks() throws {
         let oxygen = Oxygen()
         let oxygenFraction = 1.0
 
-        // When
-        sut = try .init(.init(of: oxygen, fractionalPressure: oxygenFraction))
+        let sut = try Blend<Blended>(.init(of: oxygen, fractionalPressure: oxygenFraction))
 
-        // Then
         let result = try sut.fractionalPressure(of: oxygen)
         #expect(result.value == oxygenFraction)
         #expect(sut.components().count == 1)
     }
 
     @Test
-    func testInitializeWithResultBuilder() throws {
-        // When
-        sut = try .init { () throws(DiveKit.Error) in
+    func initializeWithResultBuilder() throws {
+        let sut = try Blend<Blended> { () throws(DiveKit.Error) in
             try FractionalPressure(of: .oxygen, fractionalPressure: 0.40)
 
             try FractionalPressure(of: .nitrogen, fractionalPressure: 0.60)
         }
 
-        // Then
         #expect(sut.totalPressure == 1.0)
         #expect(sut.components().count == 2)
     }
 
     @Test
-    func testInitializeWithResultBuilder_consumingUnsafeAPI() throws {
-        // Given
+    func initializeWithResultBuilder_consumingUnsafeAPI() throws {
         let oxygen = FractionalPressure(.oxygen, fractionalPressure: 0.40)
         let nitrogen = FractionalPressure(.nitrogen, fractionalPressure: 0.60)
 
-        // When
-        sut = .init {
+        let sut = Blend<Blended> {
             oxygen
 
             nitrogen
         }
 
-        // Then
         #expect(sut.totalPressure == 1.0)
         #expect(sut.components().count == 2)
     }

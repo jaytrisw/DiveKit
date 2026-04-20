@@ -1,7 +1,7 @@
 import Testing
 @testable import DiveKit
 
-final class LocalizedStringTestCase {
+struct LocalizedStringTestCase {
     @Test
     func testLocalizedStringFromMainBundle() {
         // Given

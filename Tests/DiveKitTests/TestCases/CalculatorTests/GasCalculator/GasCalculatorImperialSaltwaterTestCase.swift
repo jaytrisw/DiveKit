@@ -1,12 +1,14 @@
 import Testing
 @testable import DiveKit
 
-final class GasCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<GasCalculator> {
+@Suite("Gas Calculator", .tags(.gasCalculator))
+final class GasCalculatorImperialSaltwaterTestCase {
 
-    var physicsCalculator: PhysicsCalculator!
+    let sut: GasCalculator
+    let physicsCalculator: PhysicsCalculator
     var expectedError: Error!
 
-    override func createSUT() {
+    init() {
         sut = .init(.imperial, water: .salt)
         physicsCalculator = .init(.imperial, water: .salt)
     }

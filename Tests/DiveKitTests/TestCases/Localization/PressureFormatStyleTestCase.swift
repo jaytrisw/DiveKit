@@ -1,16 +1,14 @@
 import Testing
 @testable import DiveKit
 
-final class PressureFormatStyleTestCase: SystemUnderTestCase<Pressure> {
+@Suite("Pressure Format Style", .tags(.localization))
+struct PressureFormatStyleTestCase {
     @Test
-    func testFormatStyle() {
-        // Given
-        sut = 15
+    func formatStyle() {
+        let sut = Pressure(15)
 
-        // When
         let result = sut.formatted(.pressure(.atmospheres, style: .full))
 
-        // Then
         #expect(result == "15 atmospheres")
     }
 }

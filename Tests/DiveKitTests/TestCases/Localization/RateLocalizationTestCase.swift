@@ -1,7 +1,7 @@
 import Testing
 @testable import DiveKit
 
-final class RateLocalizationTestCase {
+struct RateLocalizationTestCase {
     @Test
     func testLocalizedTitle() {
         let sut = Rate<Pressure>.Unit.perMinute(.psi)

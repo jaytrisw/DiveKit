@@ -1,16 +1,14 @@
 import Testing
 @testable import DiveKit
 
-final class MassFormatStyleTestCase: SystemUnderTestCase<Mass> {
+@Suite("Mass Format Style", .tags(.localization))
+struct MassFormatStyleTestCase {
     @Test
-    func testFormatStyle() {
-        // Given
-        sut = 15
+    func formatStyle() {
+        let sut = Mass(15)
 
-        // When
         let result = sut.formatted(.mass(.pounds, style: .full))
 
-        // Then
         #expect(result == "15 pounds")
     }
 }

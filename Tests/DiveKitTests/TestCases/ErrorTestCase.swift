@@ -1,16 +1,14 @@
 import Testing
 @testable import DiveKit
 
-final class ErrorTestCase: SystemUnderTestCase<Error> {
+@Suite("Error", .tags(.error))
+struct ErrorTestCase {
     @Test
-    func testLocalizedDescriptionModuleBundle() {
-        // Given
-        sut = .negative(.depth(10), #function)
+    func localizedDescriptionUsesModuleBundle() {
+        let sut = Error.negative(.depth(10), #function)
 
-        // When
         let result = sut.localizedDescription
 
-        // Then
         #expect(result == "Depth input must not be a negative value")
     }
 }
