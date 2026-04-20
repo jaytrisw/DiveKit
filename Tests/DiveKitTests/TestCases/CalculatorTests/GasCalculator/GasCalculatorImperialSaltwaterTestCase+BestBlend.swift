@@ -21,7 +21,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
             }
     }
 
-    @Test
+    @Test(.tags(.error))
     func testBestBlendInvalidDepthInput() throws {
         // Given
         let depth: Depth = -111.0
@@ -36,7 +36,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
             }
     }
 
-    @Test
+    @Test(.tags(.error))
     func testBestBlendInvalidOxygenPartialPressureInput() throws {
         // Given
         let depth: Depth = 111.0
@@ -51,7 +51,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
             }
     }
 
-    @Test
+    @Test(.tags(.error))
     func testBestBlendRejectsZeroOxygenPartialPressure() throws {
         // Given
         let depth: Depth = 111.0

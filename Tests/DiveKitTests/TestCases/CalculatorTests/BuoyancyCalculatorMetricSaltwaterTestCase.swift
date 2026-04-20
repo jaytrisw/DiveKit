@@ -38,7 +38,7 @@ struct BuoyancyCalculatorMetricSaltwaterTestCase {
         }
     }
 
-    @Test(.tags(.saltWater, .metric))
+    @Test(.tags(.saltWater, .metric, .error))
     func metricSaltwaterBuoyancyInvalidWeightInput() throws {
         let weight: Mass = -209
         let volume: Volume = 200
@@ -53,7 +53,7 @@ struct BuoyancyCalculatorMetricSaltwaterTestCase {
             }
     }
 
-    @Test(.tags(.saltWater, .metric))
+    @Test(.tags(.saltWater, .metric, .error))
     func metricSaltwaterBuoyancyInvalidVolumeInput() throws {
         let weight: Mass = 209
         let volume: Volume = -200
@@ -85,7 +85,7 @@ struct BuoyancyCalculatorMetricSaltwaterTestCase {
         }
     }
 
-    @Test(.tags(.saltWater, .metric))
+    @Test(.tags(.saltWater, .metric, .error))
     func metricSaltwaterBuoyancyOfObjectInvalidWeightInput() throws {
         let weight: Mass = -51
         let volume: Volume = 50
@@ -99,7 +99,7 @@ struct BuoyancyCalculatorMetricSaltwaterTestCase {
             }
     }
 
-    @Test(.tags(.saltWater, .metric))
+    @Test(.tags(.saltWater, .metric, .error))
     func metricSaltwaterBuoyancyOfObjectInvalidVolumeInput() throws {
         let weight: Mass = 51
         let volume: Volume = -50
@@ -130,7 +130,7 @@ struct BuoyancyCalculatorMetricSaltwaterTestCase {
         }
     }
 
-    @Test(.tags(.saltWater, .metric))
+    @Test(.tags(.saltWater, .metric, .error))
     func metricSaltwaterVolumeOfObjectWithInvalidInput() throws {
         let weight: Mass = -75
         let buoyancy: Buoyancy = .negative(20)

@@ -3,7 +3,7 @@ import Testing
 
 @Suite("Error", .tags(.error))
 struct ErrorTestCase {
-    @Test
+    @Test(.tags(.error))
     func localizedDescriptionUsesModuleBundle() {
         let sut = Error.negative(.depth(10), #function)
 

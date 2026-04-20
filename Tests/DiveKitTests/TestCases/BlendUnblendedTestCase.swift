@@ -15,7 +15,7 @@ struct BlendUnblendedTestCase {
         #expect(sut.fractionalPressure(of: .oxygen) == oxygenFraction)
     }
 
-    @Test(arguments: [-0.8, 1.01])
+    @Test(.tags(.error), arguments: [-0.8, 1.01])
     func addWithInvalidInput_consumingUnsafeAPI(oxygenFraction: Double) throws {
         var sut = Blend<Unblended>()
         let fractionalPressure = FractionalPressure(.oxygen, fractionalPressure: oxygenFraction)
@@ -67,7 +67,7 @@ struct BlendUnblendedTestCase {
         #expect(sut.fractionalPressure(of: .oxygen) == updatedOxygenFraction)
     }
 
-    @Test
+    @Test(.tags(.error))
     func updateWithInvalidInput() throws {
         var sut = Blend<Unblended>()
         let oxygenFraction = 1.01
@@ -141,7 +141,7 @@ struct BlendUnblendedTestCase {
         #expect(try result.fractionalPressure(of: .oxygen).value == 1)
     }
 
-    @Test
+    @Test(.tags(.error))
     func blendWithInvalidInput() throws {
         var sut = Blend<Unblended>()
         let oxygenFraction = 0.1

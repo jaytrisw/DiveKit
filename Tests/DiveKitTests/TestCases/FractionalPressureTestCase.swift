@@ -16,7 +16,7 @@ struct FractionalPressureTestCase {
         #expect(sut.value == 0.21)
     }
 
-    @Test
+    @Test(.tags(.error))
     func testInitializationRejectsNegativeFractionalPressure() throws {
         // Given
         let gas = Oxygen()
@@ -33,7 +33,7 @@ struct FractionalPressureTestCase {
             }
     }
 
-    @Test
+    @Test(.tags(.error))
     func testInitializationRejectsFractionalPressureGreaterThanOne() throws {
         // Given
         let gas = Oxygen()
@@ -50,7 +50,7 @@ struct FractionalPressureTestCase {
             }
     }
 
-    @Test
+    @Test(.tags(.error))
     func testNegativeErrorMapsUnsafeFractionalPressureToFractionalPressureInput() throws {
         // Given
         let fractionalPressure = -0.01

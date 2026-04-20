@@ -37,7 +37,7 @@ struct BlendStaticMembersTestCase {
         #expect(sut.components().count == 2)
     }
 
-    @Test
+    @Test(.tags(.error))
     func enrichedAirRejectsNegativeFraction() throws {
         let fractionalPressure = -0.01
         let expectedError: Error = .negative(
@@ -51,7 +51,7 @@ struct BlendStaticMembersTestCase {
             }
     }
 
-    @Test
+    @Test(.tags(.error))
     func enrichedAirRejectsFractionGreaterThanOne() throws {
         let fractionalPressure = 1.01
         let expectedError: Error = .range(

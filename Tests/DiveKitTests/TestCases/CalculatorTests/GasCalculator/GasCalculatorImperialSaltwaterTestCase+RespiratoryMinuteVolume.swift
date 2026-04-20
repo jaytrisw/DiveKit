@@ -30,7 +30,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 }
     }
 
-    @Test
+    @Test(.tags(.error))
     func testRespiratoryMinuteVolumeInvalidDepthInput() throws {
         // Given
         let depth: Depth = -40.0
@@ -54,7 +54,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
             }
     }
 
-    @Test
+    @Test(.tags(.error))
     func testRespiratoryMinuteVolumeInvalidMinutesInput() throws {
         // Given
         let depth: Depth = 40.0
@@ -78,7 +78,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
             }
     }
 
-    @Test
+    @Test(.tags(.error))
     func testRespiratoryMinuteVolumeRejectsZeroMinutes() throws {
         // Given
         let depth: Depth = 40.0
@@ -102,7 +102,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
             }
     }
 
-    @Test
+    @Test(.tags(.error))
     func testRespiratoryMinuteVolumeInvalidConsumedInput() throws {
         // Given
         let depth: Depth = 40.0
@@ -126,7 +126,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
             }
     }
 
-    @Test
+    @Test(.tags(.error))
     func testRespiratoryMinuteVolumeInvalidTankVolumeInput() throws {
         // Given
         let depth: Depth = 40.0
@@ -150,7 +150,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
             }
     }
 
-    @Test
+    @Test(.tags(.error))
     func testRespiratoryMinuteVolumeInvalidTankRatedPressureInput() throws {
         // Given
         let depth: Depth = 40.0

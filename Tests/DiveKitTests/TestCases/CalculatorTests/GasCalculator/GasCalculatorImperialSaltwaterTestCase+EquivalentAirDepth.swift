@@ -39,7 +39,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
             }
     }
 
-    @Test
+    @Test(.tags(.error))
     func testEquivalentAirDepthInvalidDepthInput() throws {
         // Given
         let depth: Depth = -80.0
@@ -54,7 +54,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
             }
     }
 
-    @Test
+    @Test(.tags(.error))
     func testEquivalentAirDepthUnblendedInvalidBlendInput() throws {
         // Given
         let depth: Depth = 80.0

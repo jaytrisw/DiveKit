@@ -229,7 +229,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
             }
     }
 
-    @Test
+    @Test(.tags(.error))
     func testMaximumOperatingDepthRejectsNegativeOxygenPartialPressure() throws {
         let partialPressure: PartialPressure<Oxygen> = -1.4
         let blend = try Blend<Blended>.enrichedAir(0.32)
@@ -243,7 +243,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
             }
     }
 
-    @Test
+    @Test(.tags(.error))
     func testMaximumOperatingDepthRejectsBlendWithZeroOxygen() throws {
         // Given
         let partialPressure: PartialPressure<Oxygen> = 1.4
@@ -265,7 +265,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
             }
     }
 
-    @Test
+    @Test(.tags(.error))
     func testMaximumOperatingDepthRejectsZeroOxygenPartialPressure() throws {
         // Given
         let partialPressure: PartialPressure<Oxygen> = 0

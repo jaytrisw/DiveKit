@@ -24,7 +24,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
             }
     }
 
-    @Test
+    @Test(.tags(.error))
     func testPartialPressureInvalidInput() throws {
         // Given
         let fractionalPressure = try FractionalPressure(of: .oxygen, fractionalPressure: 0.21)
@@ -62,7 +62,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 }
     }
 
-    @Test
+    @Test(.tags(.error))
     func testPartialPressureBlendedInvalidInput() throws {
         // Given
         let gas = Oxygen()
@@ -103,7 +103,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 }
     }
 
-    @Test
+    @Test(.tags(.error))
     func testPartialPressureUnblendedInvalidBlendInput() throws {
         // Given
         let gas = Oxygen()
@@ -120,7 +120,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
             }
     }
 
-    @Test
+    @Test(.tags(.error))
     func testPartialPressureUnblendedInvalidInput() throws {
         // Given
         let gas = Oxygen()

@@ -15,7 +15,7 @@ struct TankTestCase {
         _ = try Tank(blend: blend, size: size)
     }
 
-    @Test
+    @Test(.tags(.error))
     func initializeWithUnblendedThrows() throws {
         let fractionalPressure = 0.5
         let blend = try Blend<Unblended>(.init(of: .oxygen, fractionalPressure: fractionalPressure))
