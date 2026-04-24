@@ -146,8 +146,29 @@ jobs:
       - name: Run iOS tests
         run: |
           set -euo pipefail
+
+          destination_id="$(
+            xcrun simctl list devices available --json | jq -r '
+              [
+                .devices
+                | to_entries[]
+                | select(.key | contains("iOS"))
+                | { runtime: .key, devices: .value }
+              ]
+              | sort_by(.runtime)
+              | reverse
+              | [ .[].devices[] | select(.isAvailable and (.name | startswith("iPhone"))) ][0].udid // empty
+            '
+          )"
+
+          if [[ -z "$destination_id" ]]; then
+            echo "No available iPhone simulator found."
+            xcrun simctl list devices available
+            exit 1
+          fi
+
           xcodebuild test \
             -skipPackagePluginValidation \
             -scheme DiveKit \
-            -destination 'platform=iOS Simulator,name=iPhone 16,OS=latest' \
+            -destination "platform=iOS Simulator,id=${destination_id}" \
             -testPlan DiveKit
