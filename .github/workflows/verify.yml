@@ -15,7 +15,7 @@ on:
 
 jobs:
   test:
-    runs-on: macos-15
+    runs-on: macos-26
     permissions:
       contents: read
 
@@ -25,9 +25,7 @@ jobs:
           ref: ${{ inputs.ref }}
 
       - name: Select Xcode
-        uses: maxim-lobanov/setup-xcode@v1
-        with:
-          xcode-version: "latest-stable"
+        uses: ./.github/actions/xcode-version
 
       - name: Get toolchain versions
         run: |
@@ -148,8 +146,29 @@ jobs:
       - name: Run iOS tests
         run: |
           set -euo pipefail
+
+          destination_id="$(
+            xcrun simctl list devices available --json | jq -r '
+              [
+                .devices
+                | to_entries[]
+                | select(.key | contains("iOS"))
+                | { runtime: .key, devices: .value }
+              ]
+              | sort_by(.runtime)
+              | reverse
+              | [ .[].devices[] | select(.isAvailable and (.name | startswith("iPhone"))) ][0].udid // empty
+            '
+          )"
+
+          if [[ -z "$destination_id" ]]; then
+            echo "No available iPhone simulator found."
+            xcrun simctl list devices available
+            exit 1
+          fi
+
           xcodebuild test \
             -skipPackagePluginValidation \
             -scheme DiveKit \
-            -destination 'platform=iOS Simulator,name=iPhone 16,OS=latest' \
+            -destination "platform=iOS Simulator,id=${destination_id}" \
             -testPlan DiveKit
