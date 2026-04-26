@@ -4,7 +4,7 @@ import Testing
 @Suite("Atmospheres Absolute", .tags(.atmospheresAbsolute))
 struct AtmospheresAbsoluteTests {
     @Test(.tags(.saltWater, .metric), arguments: [
-        (depth: 0.0, expectedAtmospheres: 1),
+        (depth: 0.0, expected: 1),
         (10, 2),
         (20, 3),
         (30, 4),
@@ -24,7 +24,7 @@ struct AtmospheresAbsoluteTests {
     }
 
     @Test(.tags(.freshWater, .metric), arguments: [
-        (depth: 0.0, expectedAtmospheres: 1),
+        (depth: 0.0, expected: 1),
         (10.3, 2),
         (20.6, 3),
         (30.9, 4),
@@ -44,7 +44,7 @@ struct AtmospheresAbsoluteTests {
     }
 
     @Test(.tags(.saltWater, .imperial), arguments: [
-        (depth: 0.0, expectedAtmospheres: 1),
+        (depth: 0.0, expected: 1),
         (33, 2),
         (66, 3),
         (99, 4),
@@ -64,7 +64,7 @@ struct AtmospheresAbsoluteTests {
     }
 
     @Test(.tags(.freshWater, .imperial), arguments: [
-        (depth: 0.0, expectedAtmospheres: 1),
+        (depth: 0.0, expected: 1),
         (34, 2),
         (68, 3),
         (102, 4),
