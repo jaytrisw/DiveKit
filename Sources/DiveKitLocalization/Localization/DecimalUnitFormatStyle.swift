@@ -19,15 +19,51 @@ public struct DecimalUnitFormatStyle<Decimal: DecimalUnitLocalizable>: Sendable 
     /// - Since: 1.0.0
     let style: LocalizationStyle
 
+    /// The locale used to format the numeric value.
+    ///
+    /// - Since: 1.0.0
+    let locale: Locale
+
+    /// The precision used to format the numeric value.
+    ///
+    /// - Since: 1.0.0
+    let precision: NumberFormatStyleConfiguration.Precision?
+
     /// Creates a decimal unit format style.
     ///
     /// - Parameters:
     ///   - unit: The unit used by the format style.
     ///   - style: The localization style used by the format style.
+    ///   - locale: The locale used to format the numeric value.
+    ///   - precision: The precision used to format the numeric value.
     /// - Since: 1.0.0
-    public init(_ unit: Decimal.Unit, style: LocalizationStyle) {
+    public init(
+        _ unit: Decimal.Unit,
+        style: LocalizationStyle,
+        locale: Locale = .autoupdatingCurrent,
+        precision: NumberFormatStyleConfiguration.Precision? = nil) {
         self.unit = unit
         self.style = style
+        self.locale = locale
+        self.precision = precision
+    }
+
+    /// Returns a copy of this style using the specified locale.
+    ///
+    /// - Parameter locale: The locale used to format the numeric value.
+    /// - Returns: A format style with the specified locale.
+    /// - Since: 1.0.0
+    public func locale(_ locale: Locale) -> Self {
+        .init(unit, style: style, locale: locale, precision: precision)
+    }
+
+    /// Returns a copy of this style using the specified precision.
+    ///
+    /// - Parameter precision: The precision used to format the numeric value.
+    /// - Returns: A format style with the specified precision.
+    /// - Since: 1.0.0
+    public func precision(_ precision: NumberFormatStyleConfiguration.Precision) -> Self {
+        .init(unit, style: style, locale: locale, precision: precision)
     }
 }
 
@@ -41,6 +77,10 @@ extension DecimalUnitFormatStyle: FormatStyle {
     /// - Returns: A localized formatted string.
     /// - Since: 1.0.0
     public func format(_ value: Decimal) -> String {
-        value.localization(for: unit, style: style)
+        localizedQuantityString(
+            value.localization(for: unit, style: style),
+            quantity: value.value,
+            locale: locale,
+            precision: precision)
     }
 }

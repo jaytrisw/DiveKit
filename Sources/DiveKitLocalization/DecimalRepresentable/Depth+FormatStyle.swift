@@ -7,9 +7,15 @@ public extension FormatStyle where Self == DecimalUnitFormatStyle<Depth> {
     /// - Parameters:
     ///   - unit: The depth unit to use.
     ///   - style: The localization style to use.
+    ///   - locale: The locale used to format the numeric value.
+    ///   - precision: The precision used to format the numeric value.
     /// - Returns: A depth format style.
     /// - Since: 1.0.0
-    static func depth(_ unit: Depth.Unit, style: LocalizationStyle) -> Self {
-        .init(unit, style: style)
+    static func depth(
+        _ unit: Depth.Unit,
+        style: LocalizationStyle,
+        locale: Locale = .autoupdatingCurrent,
+        precision: NumberFormatStyleConfiguration.Precision? = nil) -> Self {
+        .init(unit, style: style, locale: locale, precision: precision)
     }
 }

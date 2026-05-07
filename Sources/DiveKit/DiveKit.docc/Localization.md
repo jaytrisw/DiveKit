@@ -11,6 +11,16 @@ let depth = Depth(30)
 let formattedDepth = depth.formatted(.depth(.meters, style: .short))
 ```
 
+Use a locale or precision when the caller needs a specific numeric presentation.
+
+```swift
+let pressureIncrease = Depth(33)
+let formattedPressureIncrease = pressureIncrease.formatted(
+    .depth(.feet, style: .short)
+        .precision(.fractionLength(1))
+        .locale(Locale(identifier: "en_US")))
+```
+
 ## Format Raw Values
 
 You can also format a raw `Double` when the format style supplies the domain type.
