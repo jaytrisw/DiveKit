@@ -13,7 +13,7 @@ extension Pressure.Unit: LocalizationProviding {
     public func localization(for component: LocalizationComponent) -> String {
         switch component {
             case .title:
-                localizedString(for: LocalizedKey.Unit.Pressure.title.stringValue, with: .init(describing: self))
+                localizedString(for: LocalizedKey.Unit.Pressure.title, with: .init(describing: self))
             case let .description(style):
                 localizedString(for: description(style), with: .init(describing: self))
             case let .quantity(value, style):
@@ -28,22 +28,20 @@ private extension Pressure.Unit {
     /// - Parameter style: The localization style to use.
     /// - Returns: A localization key.
     /// - Since: 1.0.0
-    func description(_ style: LocalizationStyle) -> String {
-        String {
-            switch (self, style) {
-                case (.psi, .short):
-                    LocalizedKey.Unit.Pressure.shortDescriptionImperial
-                case (.psi, .full):
-                    LocalizedKey.Unit.Pressure.fullDescriptionImperial
-                case (.bar, .short):
-                    LocalizedKey.Unit.Pressure.shortDescriptionMetric
-                case (.bar, .full):
-                    LocalizedKey.Unit.Pressure.fullDescriptionMetric
-                case (.atmospheres, .short):
-                    LocalizedKey.Unit.Pressure.shortDescriptionAtmospheres
-                case (.atmospheres, .full):
-                    LocalizedKey.Unit.Pressure.fullDescriptionAtmospheres
-            }
+    func description(_ style: LocalizationStyle) -> String.LocalizationValue {
+        switch (self, style) {
+            case (.psi, .short):
+                LocalizedKey.Unit.Pressure.shortDescriptionImperial
+            case (.psi, .full):
+                LocalizedKey.Unit.Pressure.fullDescriptionImperial
+            case (.bar, .short):
+                LocalizedKey.Unit.Pressure.shortDescriptionMetric
+            case (.bar, .full):
+                LocalizedKey.Unit.Pressure.fullDescriptionMetric
+            case (.atmospheres, .short):
+                LocalizedKey.Unit.Pressure.shortDescriptionAtmospheres
+            case (.atmospheres, .full):
+                LocalizedKey.Unit.Pressure.fullDescriptionAtmospheres
         }
     }
 
@@ -52,22 +50,20 @@ private extension Pressure.Unit {
     /// - Parameter style: The localization style to use.
     /// - Returns: A localization key.
     /// - Since: 1.0.0
-    func quantity(_ style: LocalizationStyle) -> String {
-        String {
-            switch (self, style) {
-                case (.psi, .short):
-                    LocalizedKey.Unit.Pressure.shortQuantityImperial
-                case (.psi, .full):
-                    LocalizedKey.Unit.Pressure.fullQuantityImperial
-                case (.bar, .short):
-                    LocalizedKey.Unit.Pressure.shortQuantityMetric
-                case (.bar, .full):
-                    LocalizedKey.Unit.Pressure.fullQuantityMetric
-                case (.atmospheres, .short):
-                    LocalizedKey.Unit.Pressure.shortQuantityAtmospheres
-                case (.atmospheres, .full):
-                    LocalizedKey.Unit.Pressure.fullQuantityAtmospheres
-            }
+    func quantity(_ style: LocalizationStyle) -> String.LocalizationValue {
+        switch (self, style) {
+            case (.psi, .short):
+                LocalizedKey.Unit.Pressure.shortQuantityImperial
+            case (.psi, .full):
+                LocalizedKey.Unit.Pressure.fullQuantityImperial
+            case (.bar, .short):
+                LocalizedKey.Unit.Pressure.shortQuantityMetric
+            case (.bar, .full):
+                LocalizedKey.Unit.Pressure.fullQuantityMetric
+            case (.atmospheres, .short):
+                LocalizedKey.Unit.Pressure.shortQuantityAtmospheres
+            case (.atmospheres, .full):
+                LocalizedKey.Unit.Pressure.fullQuantityAtmospheres
         }
     }
 }

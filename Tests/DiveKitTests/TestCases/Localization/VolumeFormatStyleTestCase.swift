@@ -1,7 +1,7 @@
 import XCTest
 @testable import DiveKit
 
-final class VolumeFormatStyleTestCase: SystemUnderTestCase<Volume> {
+final class VolumeFormatStyleTestCase: LocalizationSystemUnderTestCase<Volume> {
     func testFormatStyle() {
         // Given
         sut = 15

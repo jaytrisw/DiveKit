@@ -1,7 +1,7 @@
 import XCTest
 @testable import DiveKit
 
-final class VolumeLocalizationTestCase: SystemUnderTestCase<Volume.Unit> {
+final class VolumeLocalizationTestCase: LocalizationSystemUnderTestCase<Volume.Unit> {
     func testLocalizedTitleDImperial() {
         // Given
         sut = .cubicFeet

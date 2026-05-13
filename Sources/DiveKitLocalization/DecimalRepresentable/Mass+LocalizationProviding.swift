@@ -13,7 +13,7 @@ extension Mass.Unit: LocalizationProviding {
     public func localization(for component: LocalizationComponent) -> String {
         switch component {
             case .title:
-                localizedString(for: LocalizedKey.Unit.Mass.title.stringValue, with: .init(describing: self))
+                localizedString(for: LocalizedKey.Unit.Mass.title, with: .init(describing: self))
             case let .description(style):
                 localizedString(for: description(style), with: .init(describing: self))
             case let .quantity(value, style):
@@ -28,18 +28,16 @@ private extension Mass.Unit {
     /// - Parameter style: The localization style to use.
     /// - Returns: A localization key.
     /// - Since: 1.0.0
-    func description(_ style: LocalizationStyle) -> String {
-        String {
-            switch (self, style) {
-                case (.pounds, .short):
-                    LocalizedKey.Unit.Mass.shortDescriptionImperial
-                case (.pounds, .full):
-                    LocalizedKey.Unit.Mass.fullDescriptionImperial
-                case (.kilograms, .short):
-                    LocalizedKey.Unit.Mass.shortDescriptionMetric
-                case (.kilograms, .full):
-                    LocalizedKey.Unit.Mass.fullDescriptionMetric
-            }
+    func description(_ style: LocalizationStyle) -> String.LocalizationValue {
+        switch (self, style) {
+            case (.pounds, .short):
+                LocalizedKey.Unit.Mass.shortDescriptionImperial
+            case (.pounds, .full):
+                LocalizedKey.Unit.Mass.fullDescriptionImperial
+            case (.kilograms, .short):
+                LocalizedKey.Unit.Mass.shortDescriptionMetric
+            case (.kilograms, .full):
+                LocalizedKey.Unit.Mass.fullDescriptionMetric
         }
     }
 
@@ -48,18 +46,16 @@ private extension Mass.Unit {
     /// - Parameter style: The localization style to use.
     /// - Returns: A localization key.
     /// - Since: 1.0.0
-    func quantity(_ style: LocalizationStyle) -> String {
-        String {
-            switch (self, style) {
-                case (.pounds, .short):
-                    LocalizedKey.Unit.Mass.shortQuantityImperial
-                case (.pounds, .full):
-                    LocalizedKey.Unit.Mass.fullQuantityImperial
-                case (.kilograms, .short):
-                    LocalizedKey.Unit.Mass.shortQuantityMetric
-                case (.kilograms, .full):
-                    LocalizedKey.Unit.Mass.fullQuantityMetric
-            }
+    func quantity(_ style: LocalizationStyle) -> String.LocalizationValue {
+        switch (self, style) {
+            case (.pounds, .short):
+                LocalizedKey.Unit.Mass.shortQuantityImperial
+            case (.pounds, .full):
+                LocalizedKey.Unit.Mass.fullQuantityImperial
+            case (.kilograms, .short):
+                LocalizedKey.Unit.Mass.shortQuantityMetric
+            case (.kilograms, .full):
+                LocalizedKey.Unit.Mass.fullQuantityMetric
         }
     }
 }

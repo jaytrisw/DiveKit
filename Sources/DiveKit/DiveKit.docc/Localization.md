@@ -47,10 +47,49 @@ let localizedTitle = Pressure.Unit.bar.localizedTitle
 let localizedDescription = Pressure.Unit.bar.localizedDescription(for: .full)
 ```
 
+## Use a Custom Strings Catalog
+
+DiveKit resolves localized strings through `Localization.standard.resolver`.
+Install a resolver during app startup when an app or package provides DiveKit
+strings in a custom bundle or catalog. The bundle must expose the table through
+Foundation localization lookup.
+
+If the strings live in the app's default `Localizable` catalog, pass the app
+bundle.
+
+```swift
+Localization.standard.resolver = .catalog(in: .main)
+```
+
+If the strings live in a separate catalog, pass its table name.
+
+```swift
+Localization.standard.resolver = .catalog(
+    named: "DiveKit",
+    in: .main)
+```
+
+If the catalog lives in a Swift package, pass that package's resource bundle.
+
+```swift
+Localization.standard.resolver = .catalog(
+    named: "DiveKit",
+    in: Bundle.module)
+```
+
+All unit localization and formatting APIs use the active resolver.
+
+```swift
+let depth = Depth(33)
+let formattedDepth = depth.formatted(.depth(.feet, style: .full))
+```
+
 ## Additional API Names
 
 ### Localization Types
 
+- `Localization`
+- `LocalizationResolver`
 - `LocalizationStyle`
 - `LocalizationComponent`
 - `LocalizationProviding`

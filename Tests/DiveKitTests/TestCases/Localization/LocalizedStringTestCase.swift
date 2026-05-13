@@ -1,38 +1,31 @@
 import XCTest
+import Foundation
 @testable import DiveKit
 
 final class LocalizedStringTestCase: XCTestCase {
     func testLocalizedStringFromMainBundle() {
         // Given
-        let expectation = expectation(description: #function)
-        let key = "test.localization.key"
+        let key: String.LocalizationValue = "test.localization.key"
 
-        LocalizedKey.$mainBundle.withValue(.module) {
+        Localization.standard.withResolver(.diveKitTestCatalog) {
             // When
             let result = localizedString(for: key, with: .init())
 
             // Then
             XCTAssertEqual(result, "TEST LOCALIZED STRING")
-            expectation.fulfill()
         }
-
-        wait(for: [expectation])
     }
 
     func testLocalizedStringWithQuantityFromMainBundle() {
         // Given
-        let expectation = expectation(description: #function)
-        let key = "test.localization.key.quantity"
+        let key: String.LocalizationValue = "test.localization.key.quantity"
 
-        LocalizedKey.$mainBundle.withValue(.module) {
+        Localization.standard.withResolver(.diveKitTestCatalog) {
             // When
             let result = localizedString(for: key, quantity: 1, with: .init())
 
             // Then
             XCTAssertEqual(result, "1 TEST LOCALIZED STRING WITH QUANTITY")
-            expectation.fulfill()
         }
-
-        wait(for: [expectation])
     }
 }

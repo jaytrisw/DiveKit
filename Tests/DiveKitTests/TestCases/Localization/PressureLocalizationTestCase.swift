@@ -1,7 +1,7 @@
 import XCTest
 @testable import DiveKit
 
-final class PressureLocalizationTestCase: SystemUnderTestCase<Pressure.Unit> {
+final class PressureLocalizationTestCase: LocalizationSystemUnderTestCase<Pressure.Unit> {
     func testLocalizedTitleDImperial() {
         // Given
         sut = .psi

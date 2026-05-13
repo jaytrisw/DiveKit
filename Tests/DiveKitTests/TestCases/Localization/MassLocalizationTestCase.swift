@@ -1,7 +1,7 @@
 import XCTest
 @testable import DiveKit
 
-final class MassLocalizationTestCase: SystemUnderTestCase<Mass.Unit> {
+final class MassLocalizationTestCase: LocalizationSystemUnderTestCase<Mass.Unit> {
     func testLocalizedTitleDImperial() {
         // Given
         sut = .pounds

@@ -1,7 +1,7 @@
 import XCTest
 @testable import DiveKit
 
-final class RateTestCase: SystemUnderTestCase<Rate<Pressure>> {
+final class RateTestCase: LocalizationSystemUnderTestCase<Rate<Pressure>> {
     func testInit() {
         // Given
         let expected: Double = 15

@@ -1,7 +1,7 @@
 import XCTest
 @testable import DiveKit
 
-final class MassFormatStyleTestCase: SystemUnderTestCase<Mass> {
+final class MassFormatStyleTestCase: LocalizationSystemUnderTestCase<Mass> {
     func testFormatStyle() {
         // Given
         sut = 15

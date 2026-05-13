@@ -1,7 +1,7 @@
 import XCTest
 @testable import DiveKit
 
-final class ErrorTestCase: SystemUnderTestCase<Error> {
+final class ErrorTestCase: LocalizationSystemUnderTestCase<Error> {
     func testLocalizedDescriptionModuleBundle() {
         // Given
         sut = .negative(.depth(10), #function)

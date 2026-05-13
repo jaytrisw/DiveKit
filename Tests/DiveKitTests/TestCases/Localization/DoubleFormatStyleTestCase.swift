@@ -1,7 +1,7 @@
 import XCTest
 @testable import DiveKit
 
-final class DoubleFormatStyleTestCase: SystemUnderTestCase<Double> {
+final class DoubleFormatStyleTestCase: LocalizationSystemUnderTestCase<Double> {
     func testFormatStyleDepth() {
         // Given
         sut = 15

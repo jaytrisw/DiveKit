@@ -67,6 +67,19 @@ public struct DecimalUnitFormatStyle<Decimal: DecimalUnitLocalizable>: Sendable 
     }
 }
 
+/// Makes decimal unit format styles encodable and decodable.
+///
+/// - Since: 1.0.0
+extension DecimalUnitFormatStyle: Codable {}
+/// Makes decimal unit format styles usable in hashed collections.
+///
+/// - Since: 1.0.0
+extension DecimalUnitFormatStyle: Hashable {}
+/// Makes decimal unit format styles comparable.
+///
+/// - Since: 1.0.0
+extension DecimalUnitFormatStyle: Equatable {}
+
 /// Makes decimal unit format styles usable with Swift formatting APIs.
 ///
 /// - Since: 1.0.0

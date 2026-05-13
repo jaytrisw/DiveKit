@@ -1,7 +1,7 @@
 import XCTest
 @testable import DiveKit
 
-final class DepthLocalizationTestCase: SystemUnderTestCase<Depth.Unit> {
+final class DepthLocalizationTestCase: LocalizationSystemUnderTestCase<Depth.Unit> {
     func testLocalizedTitleDImperial() {
         // Given
         sut = .feet

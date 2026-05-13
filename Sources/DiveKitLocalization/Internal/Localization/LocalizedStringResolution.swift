@@ -1,23 +1,6 @@
-import SwiftUI
-import DiveKitCore
-import DiveKitInternal
+import Foundation
 
-package extension LocalizedStringResource {
-    /// The raw key stored in a localized string resource.
-    ///
-    /// - Warning: This uses reflection to extract the key and will raise an
-    ///   exception if SwiftUI changes the reflected storage shape.
-    /// - Since: 1.0.0
-    var stringValue: String {
-        Mirror(reflecting: self)
-            .children
-            .first(where: { $0.label == "key" })
-            .flatMap { $0.value as? String }
-            .forceUnwrap("Failed to extract the key from \(self)")
-    }
-}
-
-/// Looks up a localized string in the active bundle, falling back to the module bundle.
+/// Looks up a localized string with the active resolver.
 ///
 /// - Parameters:
 ///   - key: The localization key to resolve.
@@ -25,14 +8,9 @@ package extension LocalizedStringResource {
 /// - Returns: The localized string for `key`.
 /// - Since: 1.0.0
 package func localizedString(
-    for key: String,
+    for key: String.LocalizationValue,
     with comment: @autoclosure () -> String) -> String {
-        returning(with: key) {
-            guard let localizedString = NSLocalizedString($0, bundle: LocalizedKey.mainBundle, comment: comment()) else {
-                return NSLocalizedString($0, bundle: .module, comment: comment())
-            }
-            return localizedString
-        }
+        Localization.standard.activeResolver.resolve(key)
     }
 
 /// Looks up and formats a localized quantity string.
@@ -44,10 +22,10 @@ package func localizedString(
 /// - Returns: The localized string with `quantity` applied.
 /// - Since: 1.0.0
 package func localizedString(
-    for key: String,
+    for key: String.LocalizationValue,
     quantity: Double,
     with comment: @autoclosure () -> String) -> String {
-        localizedString(for: key, quantity: quantity, locale: .autoupdatingCurrent, precision: nil, with: comment())
+        localizedString(for: key, quantity: quantity, locale: .autoupdatingCurrent, precision: .none, with: comment())
     }
 
 /// Looks up and formats a localized quantity string.
@@ -61,12 +39,12 @@ package func localizedString(
 /// - Returns: The localized string with `quantity` applied.
 /// - Since: 1.0.0
 package func localizedString(
-    for key: String,
+    for key: String.LocalizationValue,
     quantity: Double,
     locale: Locale,
     precision: NumberFormatStyleConfiguration.Precision?,
     with comment: @autoclosure () -> String) -> String {
-        let localizedQuantity = localizedString(for: key, with: comment()).withQuantity(quantity)
+        let localizedQuantity = Localization.standard.activeResolver.resolve(key, [quantity])
 
         return localizedQuantityString(
             localizedQuantity,
@@ -75,17 +53,6 @@ package func localizedString(
             precision: precision,
             replacing: quantity.formattedForStringCatalog())
     }
-
-/// Invokes a closure with an input value and returns the closure result.
-///
-/// - Parameters:
-///   - input: The input value.
-///   - closure: The closure to execute with `input`.
-/// - Returns: The closure result.
-/// - Since: 1.0.0
-package func returning<T, R>(with input: T, closure: (T) -> R) -> R {
-    closure(input)
-}
 
 /// Replaces the default formatted number in a localized quantity string.
 ///
@@ -109,36 +76,7 @@ package func localizedQuantityString(
             replacing: quantity.localizedQuantityNumber())
     }
 
-/// Returns a localized string from a specific bundle when the key exists.
-///
-/// - Parameters:
-///   - key: The localization key to resolve.
-///   - tableName: The table name. Currently unused.
-///   - bundle: The bundle to search.
-///   - comment: A translator-facing comment for the key.
-/// - Returns: The localized string, or `nil` when the bundle has no value for `key`.
-/// - Since: 1.0.0
-package func NSLocalizedString(
-    _ key: String,
-    tableName: String? = nil,
-    bundle: Bundle,
-    comment: String) -> String? {
-        guard NSLocalizedString(key, bundle: bundle, value: "", comment: comment) != key else {
-            return nil
-        }
-        return NSLocalizedString(key, bundle: bundle, value: "", comment: comment)
-}
-
 package extension String {
-    /// Formats this localized format string with a quantity.
-    ///
-    /// - Parameter argument: The quantity to insert.
-    /// - Returns: A localized string with `argument` applied.
-    /// - Since: 1.0.0
-    func withQuantity(_ argument: Double) -> String {
-        .localizedStringWithFormat(self, argument)
-    }
-
     /// Formats this string with C varargs using the current locale.
     ///
     /// - Parameter arguments: The format arguments to apply.
@@ -155,7 +93,7 @@ private extension Double {
     /// - Returns: A locale-aware number string.
     /// - Since: 1.0.0
     func localizedQuantityNumber() -> String {
-        localizedQuantityNumber(locale: .autoupdatingCurrent, precision: nil)
+        localizedQuantityNumber(locale: .autoupdatingCurrent, precision: .none)
     }
 
     /// Formats this value for insertion into a localized quantity string.

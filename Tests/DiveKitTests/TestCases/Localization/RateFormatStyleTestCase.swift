@@ -1,7 +1,7 @@
 import XCTest
 @testable import DiveKit
 
-final class RateFormatStyleTestCase: SystemUnderTestCase<Rate<Pressure>> {
+final class RateFormatStyleTestCase: LocalizationSystemUnderTestCase<Rate<Pressure>> {
     func testFormatStyle() {
         // Given
         sut = 15

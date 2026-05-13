@@ -1,3 +1,4 @@
+import Foundation
 import DiveKitLocalization
 
 /// Package-internal alias for localization keys used by test support.
@@ -13,7 +14,7 @@ package typealias LocalizedKey = DiveKitLocalization.LocalizedKey
 /// - Returns: The localized string for `key`.
 /// - Since: 1.0.0
 package func localizedString(
-    for key: String,
+    for key: String.LocalizationValue,
     with comment: @autoclosure () -> String) -> String {
         DiveKitLocalization.localizedString(for: key, with: comment())
     }
@@ -27,7 +28,7 @@ package func localizedString(
 /// - Returns: The localized string for `key` and `quantity`.
 /// - Since: 1.0.0
 package func localizedString(
-    for key: String,
+    for key: String.LocalizationValue,
     quantity: Double,
     with comment: @autoclosure () -> String) -> String {
         DiveKitLocalization.localizedString(for: key, quantity: quantity, with: comment())

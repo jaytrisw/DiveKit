@@ -1,7 +1,7 @@
 import XCTest
 @testable import DiveKit
 
-final class DepthQuantityTestCase: ThrowingMethodUnderTestCase<Depth.Unit, Quantity, String> {
+final class DepthQuantityTestCase: LocalizationThrowingMethodUnderTestCase<Depth.Unit, Quantity, String> {
 
     func testImperial() throws {
         // Given

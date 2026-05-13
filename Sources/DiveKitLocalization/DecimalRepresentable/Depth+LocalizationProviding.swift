@@ -13,7 +13,7 @@ extension Depth.Unit: LocalizationProviding {
     public func localization(for component: LocalizationComponent) -> String {
         switch component {
             case .title:
-                localizedString(for: LocalizedKey.Unit.Depth.title.stringValue, with: .init(describing: self))
+                localizedString(for: LocalizedKey.Unit.Depth.title, with: .init(describing: self))
             case let .description(style):
                 localizedString(for: description(style), with: .init(describing: self))
             case let .quantity(value, style):
@@ -28,18 +28,16 @@ private extension Depth.Unit {
     /// - Parameter style: The localization style to use.
     /// - Returns: A localization key.
     /// - Since: 1.0.0
-    func description(_ style: LocalizationStyle) -> String {
-        String {
-            switch (self, style) {
-                case (.feet, .short):
-                    LocalizedKey.Unit.Depth.shortDescriptionImperial
-                case (.feet, .full):
-                    LocalizedKey.Unit.Depth.fullDescriptionImperial
-                case (.meters, .short):
-                    LocalizedKey.Unit.Depth.shortDescriptionMetric
-                case (.meters, .full):
-                    LocalizedKey.Unit.Depth.fullDescriptionMetric
-            }
+    func description(_ style: LocalizationStyle) -> String.LocalizationValue {
+        switch (self, style) {
+            case (.feet, .short):
+                LocalizedKey.Unit.Depth.shortDescriptionImperial
+            case (.feet, .full):
+                LocalizedKey.Unit.Depth.fullDescriptionImperial
+            case (.meters, .short):
+                LocalizedKey.Unit.Depth.shortDescriptionMetric
+            case (.meters, .full):
+                LocalizedKey.Unit.Depth.fullDescriptionMetric
         }
     }
 
@@ -48,18 +46,16 @@ private extension Depth.Unit {
     /// - Parameter style: The localization style to use.
     /// - Returns: A localization key.
     /// - Since: 1.0.0
-    func quantity(_ style: LocalizationStyle) -> String {
-        String {
-            switch (self, style) {
-                case (.feet, .short):
-                    LocalizedKey.Unit.Depth.shortQuantityImperial
-                case (.feet, .full):
-                    LocalizedKey.Unit.Depth.fullQuantityImperial
-                case (.meters, .short):
-                    LocalizedKey.Unit.Depth.shortQuantityMetric
-                case (.meters, .full):
-                    LocalizedKey.Unit.Depth.fullQuantityMetric
-            }
+    func quantity(_ style: LocalizationStyle) -> String.LocalizationValue {
+        switch (self, style) {
+            case (.feet, .short):
+                LocalizedKey.Unit.Depth.shortQuantityImperial
+            case (.feet, .full):
+                LocalizedKey.Unit.Depth.fullQuantityImperial
+            case (.meters, .short):
+                LocalizedKey.Unit.Depth.shortQuantityMetric
+            case (.meters, .full):
+                LocalizedKey.Unit.Depth.fullQuantityMetric
         }
     }
 }
