@@ -10,7 +10,7 @@ import Foundation
 package func localizedString(
     for key: String.LocalizationValue,
     with comment: @autoclosure () -> String) -> String {
-        Localization.standard.resolver.resolve(key)
+        Localization.standard.resolver.resolve(key, [], Localization.standard.locale)
     }
 
 /// Looks up and formats a localized quantity string.
@@ -25,7 +25,12 @@ package func localizedString(
     for key: String.LocalizationValue,
     quantity: Double,
     with comment: @autoclosure () -> String) -> String {
-        localizedString(for: key, quantity: quantity, locale: .autoupdatingCurrent, precision: .none, with: comment())
+        localizedString(
+            for: key,
+            quantity: quantity,
+            locale: Localization.standard.locale,
+            precision: .none,
+            with: comment())
     }
 
 /// Looks up and formats a localized quantity string.
@@ -33,7 +38,7 @@ package func localizedString(
 /// - Parameters:
 ///   - key: The localization key to resolve.
 ///   - quantity: The quantity used for plural selection.
-///   - locale: The locale used to format the numeric value.
+///   - locale: The locale used to localize the string and format the numeric value.
 ///   - precision: The precision used to format the numeric value.
 ///   - comment: A translator-facing comment for the key.
 /// - Returns: The localized string with `quantity` applied.
@@ -44,14 +49,14 @@ package func localizedString(
     locale: Locale,
     precision: NumberFormatStyleConfiguration.Precision?,
     with comment: @autoclosure () -> String) -> String {
-        let localizedQuantity = Localization.standard.resolver.resolve(key, [quantity])
+        let localizedQuantity = Localization.standard.resolver.resolve(key, [quantity], locale)
 
         return localizedQuantityString(
             localizedQuantity,
             quantity: quantity,
             locale: locale,
             precision: precision,
-            replacing: quantity.formattedForStringCatalog())
+            replacing: quantity.formattedForStringCatalog(locale: locale))
     }
 
 /// Replaces the default formatted number in a localized quantity string.
@@ -59,7 +64,7 @@ package func localizedString(
 /// - Parameters:
 ///   - localizedQuantity: The localized quantity string.
 ///   - quantity: The numeric quantity to format.
-///   - locale: The locale used to format the numeric value.
+///   - locale: The locale used to localize the string and format the numeric value.
 ///   - precision: The precision used to format the numeric value.
 /// - Returns: The localized quantity string with the requested numeric formatting.
 /// - Since: 1.0.0
@@ -73,29 +78,21 @@ package func localizedQuantityString(
             quantity: quantity,
             locale: locale,
             precision: precision,
-            replacing: quantity.localizedQuantityNumber())
+            replacing: quantity.localizedQuantityNumber(locale: locale, precision: .none))
     }
 
 package extension String {
-    /// Formats this string with C varargs using the current locale.
+    /// Formats this string with C varargs using the active locale.
     ///
     /// - Parameter arguments: The format arguments to apply.
     /// - Returns: A formatted string.
     /// - Since: 1.0.0
     func withArguments(_ arguments: CVarArg...) -> String {
-        .init(format: self, locale: .current, arguments: arguments)
+        .init(format: self, locale: Localization.standard.locale, arguments: arguments)
     }
 }
 
 private extension Double {
-    /// Formats this value using DiveKit's default quantity precision.
-    ///
-    /// - Returns: A locale-aware number string.
-    /// - Since: 1.0.0
-    func localizedQuantityNumber() -> String {
-        localizedQuantityNumber(locale: .autoupdatingCurrent, precision: .none)
-    }
-
     /// Formats this value for insertion into a localized quantity string.
     ///
     /// - Parameters:
@@ -111,10 +108,11 @@ private extension Double {
 
     /// Formats this value the way the string catalog quantity entries do today.
     ///
+    /// - Parameter locale: The locale used to format the value.
     /// - Returns: The catalog-formatted number string.
     /// - Since: 1.0.0
-    func formattedForStringCatalog() -> String {
-        String.localizedStringWithFormat("%.3f", self)
+    func formattedForStringCatalog(locale: Locale) -> String {
+        String(format: "%.3f", locale: locale, arguments: [self])
     }
 }
 

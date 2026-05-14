@@ -11,7 +11,9 @@ let depth = Depth(30)
 let formattedDepth = depth.formatted(.depth(.meters, style: .short))
 ```
 
-Use a locale or precision when the caller needs a specific numeric presentation.
+Use a locale or precision when the caller needs a specific localization or
+numeric presentation. Format-style locale controls string-catalog lookup,
+plural selection, and numeric formatting for that formatting operation.
 
 ```swift
 let pressureIncrease = Depth(33)
@@ -82,14 +84,18 @@ Localization.standard.set(
 For custom lookup behavior, install a resolver closure directly.
 
 ```swift
-Localization.standard.set { key, arguments in
-    let localized = String(localized: key, table: "DiveKit", bundle: .main)
+Localization.standard.set { key, arguments, locale in
+    let localized = String(
+        localized: key,
+        table: "DiveKit",
+        bundle: .main,
+        locale: locale)
 
     guard !arguments.isEmpty else {
         return localized
     }
 
-    return String(format: localized, locale: .current, arguments: arguments)
+    return String(format: localized, locale: locale, arguments: arguments)
 }
 ```
 
@@ -98,6 +104,16 @@ All unit localization and formatting APIs use the active resolver.
 ```swift
 let depth = Depth(33)
 let formattedDepth = depth.formatted(.depth(.feet, style: .full))
+```
+
+Use `Localization.standard.set(_:)` to change the shared default locale for
+direct localization calls, or `withLocale(_:operation:)` to scope a locale to a
+single task hierarchy.
+
+```swift
+Localization.standard.withLocale(Locale(identifier: "en_US")) {
+    let localizedTitle = Depth.Unit.feet.localizedTitle
+}
 ```
 
 ## Additional API Names

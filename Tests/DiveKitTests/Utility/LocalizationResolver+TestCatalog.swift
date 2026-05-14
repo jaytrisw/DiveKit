@@ -2,11 +2,11 @@ import Foundation
 @testable import DiveKit
 
 extension LocalizationResolver {
-    static let diveKitTestCatalog: Self = .init { key, arguments in
-        let key = String(localized: key, table: "Localizable", bundle: .module)
+    static let diveKitTestCatalog: Self = .init { key, arguments, locale in
+        let key = String(localized: key, table: "Localizable", bundle: .module, locale: locale)
         let localizedString = DiveKitTestLocalization.localizedString(for: key, arguments: arguments) ?? key
 
-        return localizedString.applyingTestLocalizationArguments(arguments)
+        return localizedString.applyingTestLocalizationArguments(arguments, locale: locale)
     }
 }
 
@@ -91,11 +91,11 @@ private enum DiveKitTestLocalization {
 }
 
 private extension String {
-    func applyingTestLocalizationArguments(_ arguments: [CVarArg]) -> String {
+    func applyingTestLocalizationArguments(_ arguments: [CVarArg], locale: Locale) -> String {
         guard !arguments.isEmpty else {
             return self
         }
 
-        return .init(format: self, locale: Locale.current, arguments: arguments)
+        return .init(format: self, locale: locale, arguments: arguments)
     }
 }

@@ -19,7 +19,7 @@ public struct DecimalUnitFormatStyle<Decimal: DecimalUnitLocalizable>: Sendable 
     /// - Since: 1.0.0
     let style: LocalizationStyle
 
-    /// The locale used to format the numeric value.
+    /// The locale used to localize the unit and format the numeric value.
     ///
     /// - Since: 1.0.0
     let locale: Locale
@@ -34,7 +34,7 @@ public struct DecimalUnitFormatStyle<Decimal: DecimalUnitLocalizable>: Sendable 
     /// - Parameters:
     ///   - unit: The unit used by the format style.
     ///   - style: The localization style used by the format style.
-    ///   - locale: The locale used to format the numeric value.
+    ///   - locale: The locale used to localize the unit and format the numeric value.
     ///   - precision: The precision used to format the numeric value.
     /// - Since: 1.0.0
     public init(
@@ -50,7 +50,7 @@ public struct DecimalUnitFormatStyle<Decimal: DecimalUnitLocalizable>: Sendable 
 
     /// Returns a copy of this style using the specified locale.
     ///
-    /// - Parameter locale: The locale used to format the numeric value.
+    /// - Parameter locale: The locale used to localize the unit and format the numeric value.
     /// - Returns: A format style with the specified locale.
     /// - Since: 1.0.0
     public func locale(_ locale: Locale) -> Self {
@@ -90,10 +90,12 @@ extension DecimalUnitFormatStyle: FormatStyle {
     /// - Returns: A localized formatted string.
     /// - Since: 1.0.0
     public func format(_ value: Decimal) -> String {
-        localizedQuantityString(
-            value.localization(for: unit, style: style),
-            quantity: value.value,
-            locale: locale,
-            precision: precision)
+        Localization.standard.withLocale(locale) {
+            localizedQuantityString(
+                value.localization(for: unit, style: style),
+                quantity: value.value,
+                locale: locale,
+                precision: precision)
+        }
     }
 }
