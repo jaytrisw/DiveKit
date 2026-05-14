@@ -2,15 +2,15 @@ import Foundation
 @testable import DiveKit
 
 extension LocalizationResolver {
-    static let diveKitTestCatalog: Self = .init { key, arguments, locale in
+    static let test: Self = .init { key, arguments, locale in
         let key = String(localized: key, table: "Localizable", bundle: .module, locale: locale)
-        let localizedString = DiveKitTestLocalization.localizedString(for: key, arguments: arguments) ?? key
+        let localizedString = TestLocalizations.localizedString(for: key, arguments: arguments) ?? key
 
         return localizedString.applyingTestLocalizationArguments(arguments, locale: locale)
     }
 }
 
-private enum DiveKitTestLocalization {
+private enum TestLocalizations {
     private static let strings: [String: String] = [
         "dive.kit.error.blend.pressure.range": "Blend pressure should be a decimal between 0.0 and 1.0",
         "dive.kit.error.blend.total.pressure": "Blend pressure should be equal on 1.0",
