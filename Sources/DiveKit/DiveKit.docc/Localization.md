@@ -58,23 +58,39 @@ If the strings live in the app's default `Localizable` catalog, pass the app
 bundle.
 
 ```swift
-Localization.standard.resolver = .catalog(in: .main)
+Localization.standard.set(.catalog(in: .main))
 ```
 
 If the strings live in a separate catalog, pass its table name.
 
 ```swift
-Localization.standard.resolver = .catalog(
-    named: "DiveKit",
-    in: .main)
+Localization.standard.set(
+    .catalog(
+        named: "DiveKit",
+        in: .main))
 ```
 
 If the catalog lives in a Swift package, pass that package's resource bundle.
 
 ```swift
-Localization.standard.resolver = .catalog(
-    named: "DiveKit",
-    in: Bundle.module)
+Localization.standard.set(
+    .catalog(
+        named: "DiveKit",
+        in: Bundle.module))
+```
+
+For custom lookup behavior, install a resolver closure directly.
+
+```swift
+Localization.standard.set { key, arguments in
+    let localized = String(localized: key, table: "DiveKit", bundle: .main)
+
+    guard !arguments.isEmpty else {
+        return localized
+    }
+
+    return String(format: localized, locale: .current, arguments: arguments)
+}
 ```
 
 All unit localization and formatting APIs use the active resolver.

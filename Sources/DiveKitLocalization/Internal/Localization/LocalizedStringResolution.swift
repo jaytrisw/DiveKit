@@ -10,7 +10,7 @@ import Foundation
 package func localizedString(
     for key: String.LocalizationValue,
     with comment: @autoclosure () -> String) -> String {
-        Localization.standard.activeResolver.resolve(key)
+        Localization.standard.resolver.resolve(key)
     }
 
 /// Looks up and formats a localized quantity string.
@@ -44,7 +44,7 @@ package func localizedString(
     locale: Locale,
     precision: NumberFormatStyleConfiguration.Precision?,
     with comment: @autoclosure () -> String) -> String {
-        let localizedQuantity = Localization.standard.activeResolver.resolve(key, [quantity])
+        let localizedQuantity = Localization.standard.resolver.resolve(key, [quantity])
 
         return localizedQuantityString(
             localizedQuantity,

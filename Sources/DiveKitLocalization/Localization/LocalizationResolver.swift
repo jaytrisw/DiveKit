@@ -12,15 +12,20 @@ public struct LocalizationResolver: Sendable {
     /// Resolves a localization key and optional format arguments.
     ///
     /// - Since: 1.0.0
-    public let resolve: @Sendable (_ key: String.LocalizationValue, _ arguments: [CVarArg]) -> String
+    public let resolve: Resolve
 
     /// Creates a localization resolver.
     ///
     /// - Parameter resolve: The closure used to resolve localization keys.
     /// - Since: 1.0.0
-    public init(resolve: @escaping @Sendable (_ key: String.LocalizationValue, _ arguments: [CVarArg]) -> String) {
+    public init(resolve: @escaping Resolve) {
         self.resolve = resolve
     }
+
+    /// A closure that resolves a localization key and optional format arguments.
+    ///
+    /// - Since: 1.0.0
+    public typealias Resolve = @Sendable (String.LocalizationValue, [CVarArg]) -> String
 }
 
 public extension LocalizationResolver {

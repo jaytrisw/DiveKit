@@ -5,8 +5,8 @@ import Foundation
 final class LocalizationResolverTestCase: XCTestCase {
     func testScopedResolverDoesNotMutateGlobalResolver() {
         let resolver = Localization.standard.resolver
-        Localization.standard.resolver = .init { _, _ in "Global" }
-        defer { Localization.standard.resolver = resolver }
+        Localization.standard.set { _, _ in "Global" }
+        defer { Localization.standard.set(resolver) }
 
         Localization.standard.withResolver(.init { _, _ in "Scoped" }) {
             XCTAssertEqual(Depth.Unit.feet.localizedTitle, "Scoped")
@@ -52,6 +52,13 @@ final class LocalizationResolverTestCase: XCTestCase {
     func testCatalogResolverMissingKeyResolvesToRawKey() {
         Localization.standard.withResolver(.catalog(named: "Missing", in: .module)) {
             XCTAssertEqual(Volume.Unit.liters.localizedTitle, "dive.kit.unit.volume.title")
+        }
+    }
+
+    func testCatalogResolverResolvesPluralQuantityFromStringsCatalog() throws {
+        Localization.standard.withResolver(.default) {
+            XCTAssertEqual(Depth(1).formatted(.depth(.feet, style: .full)), "1 foot")
+            XCTAssertEqual(Depth(33).formatted(.depth(.feet, style: .full)), "33 feet")
         }
     }
 

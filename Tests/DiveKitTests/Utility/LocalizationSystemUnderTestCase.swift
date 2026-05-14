@@ -5,7 +5,7 @@ open class LocalizationSystemUnderTestCase<SUT>: SystemUnderTestCase<SUT> {
 
     override open func setUp() {
         resolver = Localization.standard.resolver
-        Localization.standard.resolver = .diveKitTestCatalog
+        Localization.standard.set(.diveKitTestCatalog)
 
         super.setUp()
     }
@@ -13,7 +13,7 @@ open class LocalizationSystemUnderTestCase<SUT>: SystemUnderTestCase<SUT> {
     override open func tearDown() {
         super.tearDown()
 
-        Localization.standard.resolver = resolver
+        Localization.standard.set(resolver)
         resolver = .none
     }
 }
@@ -24,7 +24,7 @@ open class LocalizationThrowingMethodUnderTestCase<SUT, Input: Equatable, Output
 
     override open func setUp() {
         resolver = Localization.standard.resolver
-        Localization.standard.resolver = .diveKitTestCatalog
+        Localization.standard.set(.diveKitTestCatalog)
 
         super.setUp()
     }
@@ -32,7 +32,7 @@ open class LocalizationThrowingMethodUnderTestCase<SUT, Input: Equatable, Output
     override open func tearDown() {
         super.tearDown()
 
-        Localization.standard.resolver = resolver
+        Localization.standard.set(resolver)
         resolver = .none
     }
 }
