@@ -7,7 +7,7 @@ public extension FormatStyle where Self == DecimalUnitFormatStyle<Volume> {
     /// - Parameters:
     ///   - unit: The volume unit to use.
     ///   - style: The localization style to use.
-    ///   - locale: The locale used to format the numeric value.
+    ///   - locale: The locale used to localize the unit and format the numeric value.
     ///   - precision: The precision used to format the numeric value.
     /// - Returns: A volume format style.
     /// - Since: 1.0.0
