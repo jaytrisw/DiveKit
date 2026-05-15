@@ -48,7 +48,7 @@ final class BuoyancyCalculatorMetricSaltwaterTestCase: SystemUnderTestCase<Buoya
         try XCTAssertThrowsError(
             when: sut.buoyancy(of: object),
             then: expectedError) {
-                XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.weight")
+                XCTAssertEqual($0.localizationValue, "dive.kit.error.negative.weight")
             }
     }
 
@@ -63,7 +63,7 @@ final class BuoyancyCalculatorMetricSaltwaterTestCase: SystemUnderTestCase<Buoya
         try XCTAssertThrowsError(
             when: sut.buoyancy(of: object),
             then: expectedError) {
-                XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.volume")
+                XCTAssertEqual($0.localizationValue, "dive.kit.error.negative.volume")
             }
     }
 
@@ -95,7 +95,7 @@ final class BuoyancyCalculatorMetricSaltwaterTestCase: SystemUnderTestCase<Buoya
         try XCTAssertThrowsError(
             when: sut.buoyancyOfObject(weighing: weight, andDisplacing: volume),
             then: expectedError) {
-                XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.weight")
+                XCTAssertEqual($0.localizationValue, "dive.kit.error.negative.weight")
             }
     }
 
@@ -109,7 +109,7 @@ final class BuoyancyCalculatorMetricSaltwaterTestCase: SystemUnderTestCase<Buoya
         try XCTAssertThrowsError(
             when: sut.buoyancyOfObject(weighing: weight, andDisplacing: volume),
             then: expectedError) {
-                XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.volume")
+                XCTAssertEqual($0.localizationValue, "dive.kit.error.negative.volume")
             }
     }
 
@@ -141,7 +141,7 @@ final class BuoyancyCalculatorMetricSaltwaterTestCase: SystemUnderTestCase<Buoya
         try XCTAssertThrowsError(
             when: sut.volumeOfObject(weighing: weight, with: buoyancy),
             then: expectedError) {
-                XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.weight")
+                XCTAssertEqual($0.localizationValue, "dive.kit.error.negative.weight")
             }
     }
 

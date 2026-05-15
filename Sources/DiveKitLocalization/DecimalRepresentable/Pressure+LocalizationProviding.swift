@@ -13,11 +13,11 @@ extension Pressure.Unit: LocalizationProviding {
     public func localization(for component: LocalizationComponent) -> String {
         switch component {
             case .title:
-                localizedString(for: LocalizedKey.Unit.Pressure.title, with: .init(describing: self))
+                localizedString(for: LocalizedKey.Unit.Pressure.title)
             case let .description(style):
-                localizedString(for: description(style), with: .init(describing: self))
+                localizedString(for: description(style))
             case let .quantity(value, style):
-                localizedString(for: quantity(style), quantity: value, with: .init(describing: self))
+                localizedString(for: quantity(style), quantity: value)
         }
     }
 }

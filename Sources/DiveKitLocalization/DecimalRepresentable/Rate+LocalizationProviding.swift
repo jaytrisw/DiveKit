@@ -17,13 +17,13 @@ extension RateUnit: LocalizedTitleProviding, LocalizedDescriptionProviding, Loca
     public func localization(for component: LocalizationComponent) -> String {
         switch component {
             case .title:
-                localizedString(for: LocalizedKey.Unit.Rate.title, with: .init(describing: self))
+                localizedString(for: LocalizedKey.Unit.Rate.title)
                     .withArguments(baseUnit.localizedTitle)
             case let .description(style):
-                localizedString(for: description(style), with: .init(describing: self))
+                localizedString(for: description(style))
                     .withArguments(baseUnit.localizedDescription(for: style))
             case let .quantity(value, style):
-                localizedString(for: quantity(style), with: .init(describing: self))
+                localizedString(for: quantity(style))
                     .withArguments(baseUnit.localization(for: .quantity(value, style)))
         }
     }

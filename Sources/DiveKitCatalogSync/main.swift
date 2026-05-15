@@ -4,8 +4,8 @@ import Foundation
 
 struct DiveKitCatalogSync: ParsableCommand {
     static let configuration = CommandConfiguration(
-        commandName: "divekit-catalog-sync",
-        abstract: "Synchronize missing DiveKit string catalog keys into a host app catalog."
+        commandName: "catalog-sync",
+        abstract: "Copy missing DiveKit string catalog keys into a host app catalog."
     )
 
     @Option(
@@ -16,7 +16,7 @@ struct DiveKitCatalogSync: ParsableCommand {
 
     @Option(
         name: .shortAndLong,
-        help: "The host app .xcstrings catalog to update."
+        help: "The host app .xcstrings catalog to add missing keys to."
     )
     var target: String
 
@@ -44,7 +44,7 @@ struct DiveKitCatalogSync: ParsableCommand {
             case .merged:
                 "Added \(result.addedKeys.count) missing keys into \(target):\n\(formattedAddedKeys(result.addedKeys))"
             case .unchanged:
-                "Catalog already in sync. \(target) has all \(result.sourceKeyCount) DiveKit keys."
+                "No missing DiveKit keys found in \(target). Existing keys were not changed."
             case .wouldCopy:
                 "Would copy \(result.sourceKeyCount) keys into \(target)."
             case .wouldMerge:

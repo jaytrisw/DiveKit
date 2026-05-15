@@ -40,7 +40,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 consuming: consuming,
                 using: physicsCalculator),
             then: expectedError) {
-                XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.depth")
+                XCTAssertEqual($0.localizationValue, "dive.kit.error.negative.depth")
             }
     }
 
@@ -59,7 +59,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 consuming: consuming,
                 using: physicsCalculator),
             then: expectedError) {
-                XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.minutes")
+                XCTAssertEqual($0.localizationValue, "dive.kit.error.negative.minutes")
             }
     }
 
@@ -78,7 +78,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 consuming: consuming,
                 using: physicsCalculator),
             then: expectedError) {
-                XCTAssertEqual($0.localizationKey, "dive.kit.error.range.lower.bound")
+                XCTAssertEqual($0.localizationValue, "dive.kit.error.range.lower.bound")
             }
     }
 
@@ -98,7 +98,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
                     consuming: consuming,
                     using: physicsCalculator),
             then: expectedError) {
-                XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.pressure")
+                XCTAssertEqual($0.localizationValue, "dive.kit.error.negative.pressure")
             }
     }
 
@@ -143,7 +143,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 end: endPressure,
                 using: physicsCalculator),
             then: expectedError) {
-                XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.depth")
+                XCTAssertEqual($0.localizationValue, "dive.kit.error.negative.depth")
             }
     }
 
@@ -164,7 +164,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 end: endPressure,
                 using: physicsCalculator),
             then: expectedError) {
-                XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.minutes")
+                XCTAssertEqual($0.localizationValue, "dive.kit.error.negative.minutes")
             }
     }
 
@@ -185,7 +185,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 end: endPressure,
                 using: physicsCalculator),
             then: expectedError) {
-                XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.pressure")
+                XCTAssertEqual($0.localizationValue, "dive.kit.error.negative.pressure")
             }
     }
 
@@ -206,7 +206,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 end: endPressure,
                 using: physicsCalculator),
             then: expectedError) {
-                XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.pressure")
+                XCTAssertEqual($0.localizationValue, "dive.kit.error.negative.pressure")
             }
     }
 
@@ -228,7 +228,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 end: endPressure,
                 using: physicsCalculator),
             then: expectedError) {
-                XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.pressure")
+                XCTAssertEqual($0.localizationValue, "dive.kit.error.negative.pressure")
             }
     }
 

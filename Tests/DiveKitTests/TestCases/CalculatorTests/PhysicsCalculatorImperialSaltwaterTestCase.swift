@@ -30,7 +30,7 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
         try XCTAssertThrowsError(
             when: sut.gaugePressure(at: depth),
             then: expectedError) {
-                XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.depth")
+                XCTAssertEqual($0.localizationValue, "dive.kit.error.negative.depth")
             }
     }
 
@@ -59,7 +59,7 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
         try XCTAssertThrowsError(
             when: sut.atmospheresAbsolute(at: depth),
             then: expectedError) {
-                XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.depth")
+                XCTAssertEqual($0.localizationValue, "dive.kit.error.negative.depth")
             }
     }
 
@@ -90,7 +90,7 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
         try XCTAssertThrowsError(
             when: sut.pressureChange(from: fromDepth, to: toDepth),
             then: expectedError) {
-                XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.depth")
+                XCTAssertEqual($0.localizationValue, "dive.kit.error.negative.depth")
             }
     }
 
@@ -104,7 +104,7 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
         try XCTAssertThrowsError(
             when: sut.pressureChange(from: fromDepth, to: toDepth),
             then: expectedError) {
-                XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.depth")
+                XCTAssertEqual($0.localizationValue, "dive.kit.error.negative.depth")
             }
     }
 
@@ -135,7 +135,7 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
         try XCTAssertThrowsError(
             when: sut.airVolumeFromSurface(to: depth, with: volume),
             then: expectedError) {
-                XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.depth")
+                XCTAssertEqual($0.localizationValue, "dive.kit.error.negative.depth")
             }
     }
 
@@ -149,7 +149,7 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
         try XCTAssertThrowsError(
             when: sut.airVolumeFromSurface(to: depth, with: volume),
             then: expectedError) {
-                XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.volume")
+                XCTAssertEqual($0.localizationValue, "dive.kit.error.negative.volume")
             }
     }
 
@@ -180,7 +180,7 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
         try XCTAssertThrowsError(
             when: sut.airVolumeToSurface(from: depth, with: volume),
             then: expectedError) {
-                XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.depth")
+                XCTAssertEqual($0.localizationValue, "dive.kit.error.negative.depth")
             }
     }
 
@@ -194,7 +194,7 @@ final class PhysicsCalculatorImperialSaltwaterTestCase: SystemUnderTestCase<Phys
         try XCTAssertThrowsError(
             when: sut.airVolumeToSurface(from: depth, with: volume),
             then: expectedError) {
-                XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.volume")
+                XCTAssertEqual($0.localizationValue, "dive.kit.error.negative.volume")
             }
     }
 

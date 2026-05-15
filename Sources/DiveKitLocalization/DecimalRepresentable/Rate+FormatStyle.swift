@@ -15,7 +15,7 @@ public extension FormatStyle {
         _ unit: Rate<Value>.Unit,
         style: LocalizationStyle,
         locale: Locale = .autoupdatingCurrent,
-        precision: NumberFormatStyleConfiguration.Precision? = nil) -> Self
+        precision: NumberFormatStyleConfiguration.Precision? = .none) -> Self
         where
         Self == DecimalUnitFormatStyle<Rate<Value>>,
         Value: DecimalUnitLocalizable,

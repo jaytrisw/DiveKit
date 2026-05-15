@@ -41,7 +41,7 @@ public struct DecimalUnitFormatStyle<Decimal: DecimalUnitLocalizable>: Sendable 
         _ unit: Decimal.Unit,
         style: LocalizationStyle,
         locale: Locale = .autoupdatingCurrent,
-        precision: NumberFormatStyleConfiguration.Precision? = nil) {
+        precision: NumberFormatStyleConfiguration.Precision? = .none) {
         self.unit = unit
         self.style = style
         self.locale = locale

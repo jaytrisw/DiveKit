@@ -2,36 +2,29 @@ import Foundation
 
 /// Looks up a localized string with the active resolver.
 ///
-/// - Parameters:
-///   - key: The localization key to resolve.
-///   - comment: A translator-facing comment for the key.
+/// - Parameter key: The localization key to resolve.
 /// - Returns: The localized string for `key`.
 /// - Since: 1.0.0
-package func localizedString(
-    for key: String.LocalizationValue,
-    with comment: @autoclosure () -> String) -> String {
-        Localization.standard.resolver.resolve(key, [], Localization.standard.locale)
-    }
+package func localizedString(for key: String.LocalizationValue) -> String {
+    Localization.standard.resolver.resolve(key, [], Localization.standard.locale)
+}
 
 /// Looks up and formats a localized quantity string.
 ///
 /// - Parameters:
 ///   - key: The localization key to resolve.
 ///   - quantity: The quantity used for localized string formatting.
-///   - comment: A translator-facing comment for the key.
 /// - Returns: The localized string with `quantity` applied.
 /// - Since: 1.0.0
 package func localizedString(
     for key: String.LocalizationValue,
-    quantity: Double,
-    with comment: @autoclosure () -> String) -> String {
-        localizedString(
-            for: key,
-            quantity: quantity,
-            locale: Localization.standard.locale,
-            precision: .none,
-            with: comment())
-    }
+    quantity: Double) -> String {
+    localizedString(
+        for: key,
+        quantity: quantity,
+        locale: Localization.standard.locale,
+        precision: .none)
+}
 
 /// Looks up and formats a localized quantity string.
 ///
@@ -40,24 +33,22 @@ package func localizedString(
 ///   - quantity: The quantity used for plural selection.
 ///   - locale: The locale used to localize the string and format the numeric value.
 ///   - precision: The precision used to format the numeric value.
-///   - comment: A translator-facing comment for the key.
 /// - Returns: The localized string with `quantity` applied.
 /// - Since: 1.0.0
 package func localizedString(
     for key: String.LocalizationValue,
     quantity: Double,
     locale: Locale,
-    precision: NumberFormatStyleConfiguration.Precision?,
-    with comment: @autoclosure () -> String) -> String {
-        let localizedQuantity = Localization.standard.resolver.resolve(key, [quantity], locale)
+    precision: NumberFormatStyleConfiguration.Precision?) -> String {
+    let localizedQuantity = Localization.standard.resolver.resolve(key, [quantity], locale)
 
-        return localizedQuantityString(
-            localizedQuantity,
-            quantity: quantity,
-            locale: locale,
-            precision: precision,
-            replacing: quantity.formattedForStringCatalog(locale: locale))
-    }
+    return localizedQuantityString(
+        localizedQuantity,
+        quantity: quantity,
+        locale: locale,
+        precision: precision,
+        replacing: quantity.formattedForStringCatalog(locale: locale))
+}
 
 /// Replaces the default formatted number in a localized quantity string.
 ///

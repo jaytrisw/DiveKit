@@ -10,7 +10,7 @@ struct LocalizedStringTests {
             let key: String.LocalizationValue = "test.localization.key"
 
             // When
-            let result = localizedString(for: key, with: .init())
+            let result = localizedString(for: key)
 
             // Then
             #expect(result == "TEST LOCALIZED STRING")
@@ -23,7 +23,7 @@ struct LocalizedStringTests {
             let key: String.LocalizationValue = "test.localization.key.quantity"
 
             // When
-            let result = localizedString(for: key, quantity: 1, with: .init())
+            let result = localizedString(for: key, quantity: 1)
 
             // Then
             #expect(result == "1 TEST LOCALIZED STRING WITH QUANTITY")

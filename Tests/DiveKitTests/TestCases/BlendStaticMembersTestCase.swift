@@ -51,7 +51,7 @@ final class BlendStaticMembersTestCase: SystemUnderTestCase<Blend<Blended>> {
         try XCTAssertThrowsError(
             when: try Blend.enrichedAir(fractionalPressure),
             then: expectedError) {
-                XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.fractional.pressure")
+                XCTAssertEqual($0.localizationValue, "dive.kit.error.negative.fractional.pressure")
             }
     }
 

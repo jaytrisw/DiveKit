@@ -15,7 +15,7 @@ public extension FormatStyle where Self == DecimalUnitFormatStyle<Pressure> {
         _ unit: Pressure.Unit,
         style: LocalizationStyle,
         locale: Locale = .autoupdatingCurrent,
-        precision: NumberFormatStyleConfiguration.Precision? = nil) -> Self {
+        precision: NumberFormatStyleConfiguration.Precision? = .none) -> Self {
         .init(unit, style: style, locale: locale, precision: precision)
     }
 }
