@@ -199,6 +199,23 @@ struct LocalizationResolverTests {
         #expect(result.plural == "33 feet")
     }
 
+    @Test func defaultCatalogResolverResolvesUnitPluralQuantityFromStringsCatalog() {
+        // Given
+        let locale = Locale.english
+        let sut = Depth.Unit.feet
+
+        // When
+        let result = Localization.standard.withResolver(.default) {
+            Localization.standard.withLocale(locale) {
+                (singular: sut.localization(for: .quantity(1, .full)), plural: sut.localization(for: .quantity(33, .full)))
+            }
+        }
+
+        // Then
+        #expect(result.singular == "1 foot")
+        #expect(result.plural == "33 feet")
+    }
+
     @Test func formatStyleLocaleIsPassedToResolver() {
         withTestLocalization(.test) {
             // Given
