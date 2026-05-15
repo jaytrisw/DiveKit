@@ -29,4 +29,21 @@ struct LocalizedStringTests {
             #expect(result == "1 TEST LOCALIZED STRING WITH QUANTITY")
         }
     }
+
+    @Test func localizedQuantityStringReturnsOriginalStringWhenNumberIsMissing() {
+        // Given
+        let key: String.LocalizationValue = "test.localization.key.quantity"
+        let localizedQuantity = "quantity unavailable"
+        let resolver = LocalizationResolver { _, _, _ in
+            localizedQuantity
+        }
+
+        // When
+        let result = withTestLocalization(resolver) {
+            localizedString(for: key, quantity: 1)
+        }
+
+        // Then
+        #expect(result == localizedQuantity)
+    }
 }

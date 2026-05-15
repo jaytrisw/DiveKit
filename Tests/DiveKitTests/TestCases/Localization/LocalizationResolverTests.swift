@@ -134,6 +134,38 @@ struct LocalizationResolverTests {
         }
     }
 
+    @Test func setUpdatesSharedLocalizationConfiguration() {
+        // Given
+        let originalResolver = Localization.standard.resolver
+        let originalLocale = Localization.standard.locale
+        defer {
+            Localization.standard.set(originalResolver)
+            Localization.standard.set(originalLocale)
+        }
+
+        let resolverExpectedString = UUID().uuidString
+        let resolver = LocalizationResolver { _, _, _ in resolverExpectedString }
+        let locale = Locale(identifier: "de_DE")
+        let closureExpectedString = UUID().uuidString
+
+        // When
+        Localization.standard.set(resolver)
+        let resolverResult = Localization.standard.resolver.resolve("test", [], .english)
+
+        Localization.standard.set(locale)
+        let localeResult = Localization.standard.locale.identifier
+
+        Localization.standard.set { _, _, _ in
+            closureExpectedString
+        }
+        let closureResult = Localization.standard.resolver.resolve("test", [], .english)
+
+        // Then
+        #expect(resolverResult == resolverExpectedString)
+        #expect(localeResult == locale.identifier)
+        #expect(closureResult == closureExpectedString)
+    }
+
     @Test func customResolverOverridesUnitTitle() {
         withTestLocalization(.test) {
             // Given
