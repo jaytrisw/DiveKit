@@ -43,6 +43,11 @@ jobs:
           set -euo pipefail
           swift build -v
 
+      - name: Run catalog sync tests
+        run: |
+          set -euo pipefail
+          swift test --filter DiveKitCatalogSyncTests
+
       - name: Run tests
         env:
           COLLECT_COVERAGE: ${{ inputs.collect_coverage }}
