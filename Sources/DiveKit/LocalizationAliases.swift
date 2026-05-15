@@ -1,6 +1,10 @@
 import DiveKitLocalization
 
 @_documentation(visibility: private)
+public typealias Localization = DiveKitLocalization.Localization
+@_documentation(visibility: private)
+public typealias LocalizationResolver = DiveKitLocalization.LocalizationResolver
+@_documentation(visibility: private)
 public typealias DecimalUnitFormatStyle = DiveKitLocalization.DecimalUnitFormatStyle
 @_documentation(visibility: private)
 public typealias DecimalUnitLocalizable = DiveKitLocalization.DecimalUnitLocalizable

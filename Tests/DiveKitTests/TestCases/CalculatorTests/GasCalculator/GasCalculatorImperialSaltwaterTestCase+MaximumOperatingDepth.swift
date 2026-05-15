@@ -224,7 +224,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
         try XCTAssertThrowsError(
             when: sut.maximumOperatingDepth(for: partialPressure, in: blend),
             then: expectedError) {
-                XCTAssertEqual($0.localizationKey, "dive.kit.error.negative.partial.pressure")
+                XCTAssertEqual($0.localizationValue, "dive.kit.error.negative.partial.pressure")
             }
     }
 
@@ -245,7 +245,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
         try XCTAssertThrowsError(
             when: sut.maximumOperatingDepth(for: partialPressure, in: blend),
             then: expectedError) {
-                XCTAssertEqual($0.localizationKey, "dive.kit.error.range.lower.bound")
+                XCTAssertEqual($0.localizationValue, "dive.kit.error.range.lower.bound")
             }
     }
 
@@ -262,7 +262,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
         try XCTAssertThrowsError(
             when: sut.maximumOperatingDepth(for: partialPressure, in: blend),
             then: expectedError) {
-                XCTAssertEqual($0.localizationKey, "dive.kit.error.range.lower.bound")
+                XCTAssertEqual($0.localizationValue, "dive.kit.error.range.lower.bound")
             }
     }
 }

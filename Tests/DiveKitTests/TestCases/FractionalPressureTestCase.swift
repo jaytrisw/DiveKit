@@ -27,7 +27,7 @@ final class FractionalPressureTestCase: XCTestCase {
         try XCTAssertThrowsError(
             when: try FractionalPressure(of: gas, fractionalPressure: fractionalPressure),
             then: expectedError) { error in
-                XCTAssertEqual(error.localizationKey, "dive.kit.error.negative.fractional.pressure")
+                XCTAssertEqual(error.localizationValue, "dive.kit.error.negative.fractional.pressure")
             }
     }
 
@@ -43,7 +43,7 @@ final class FractionalPressureTestCase: XCTestCase {
         try XCTAssertThrowsError(
             when: try FractionalPressure(of: gas, fractionalPressure: fractionalPressure),
             then: expectedError) { error in
-                XCTAssertEqual(error.localizationKey, "dive.kit.error.range.upper.bound")
+                XCTAssertEqual(error.localizationValue, "dive.kit.error.range.upper.bound")
             }
     }
 
@@ -58,7 +58,7 @@ final class FractionalPressureTestCase: XCTestCase {
         try XCTAssertThrowsError(
             when: try FractionalPressure(of: .oxygen, fractionalPressure: fractionalPressure),
             then: expectedError) { error in
-                XCTAssertEqual(error.localizationKey, "dive.kit.error.negative.fractional.pressure")
+                XCTAssertEqual(error.localizationValue, "dive.kit.error.negative.fractional.pressure")
 
             }
     }
