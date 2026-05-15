@@ -35,29 +35,66 @@ xcodebuild test \
 
 ## String Catalog Sync
 
-DiveKit includes a small CLI for copying missing library localization keys into a host app string catalog:
+DiveKit includes a command plugin for copying missing library localization keys into a host app string catalog:
 
 ```sh
-swift run catalog-sync \
-  --target /path/to/HostApp/Localizable.xcstrings
+swift package plugin \
+  --package divekit \
+  --allow-writing-to-package-directory \
+  catalog-sync \
+  --target Sources/App/Resources/Localizable.xcstrings
+```
+
+In Xcode, run the plugin from the host project or target, then add the host app catalog path as an argument. The Xcode wrapper accepts a bare `.xcstrings` path as the target catalog, so the argument can be just:
+
+```sh
+/path/to/HostApp/Localizable.xcstrings
 ```
 
 This is a missing-key sync, not a full catalog reconciliation. On first run, when the target catalog does not exist, the tool copies DiveKit's catalog to the target path. On later runs, it only adds keys that are missing from the host catalog. Existing host keys are left untouched so apps can override DiveKit's default strings or add their own translations.
 
 Because existing keys are preserved, the tool does not update host catalog entries when DiveKit changes a default translation, adds plural variants to an existing key, or adds a new localization to an existing key. Review those existing entries manually when adopting new DiveKit releases.
 
-When running the tool outside the DiveKit package root, pass the package catalog explicitly:
+When the target catalog is outside the package directory, allow writes to that directory explicitly:
 
 ```sh
-swift run catalog-sync \
-  --source /path/to/DiveKit/Sources/DiveKitLocalization/Resources/Localizable.xcstrings \
+swift package plugin \
+  --package divekit \
+  --allow-writing-to-package-directory \
+  --allow-writing-to-directory /path/to/HostApp \
+  catalog-sync \
   --target /path/to/HostApp/Localizable.xcstrings
 ```
 
 Preview changes without writing:
 
 ```sh
-swift run catalog-sync \
-  --target /path/to/HostApp/Localizable.xcstrings \
+swift package plugin \
+  --package divekit \
+  --allow-writing-to-package-directory \
+  catalog-sync \
+  --target Sources/App/Resources/Localizable.xcstrings \
   --dry-run
 ```
+
+`catalog-sync` locates DiveKit's package catalog automatically.
+
+For Xcode projects without a `Package.swift`, run the executable from Xcode's package checkout instead. Build the project or resolve packages first, then find the checkout:
+
+```sh
+find ~/Library/Developer/Xcode/DerivedData \
+  -type d \
+  -path '*/SourcePackages/checkouts/DiveKit' \
+  -print
+```
+
+Use the printed path as `DIVEKIT_CHECKOUT`:
+
+```sh
+DIVEKIT_CHECKOUT=/path/from/find/SourcePackages/checkouts/DiveKit
+
+swift run --package-path "$DIVEKIT_CHECKOUT" catalog-sync \
+  --target /path/to/HostApp/Localizable.xcstrings
+```
+
+When developing DiveKit itself, the underlying executable can also be run directly with `swift run catalog-sync`.

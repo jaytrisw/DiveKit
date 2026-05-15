@@ -10,15 +10,20 @@ struct DiveKitCatalogSync: ParsableCommand {
 
     @Option(
         name: .shortAndLong,
-        help: "The DiveKit .xcstrings catalog to copy missing keys from."
+        help: "The DiveKit .xcstrings catalog to copy missing keys from. Defaults to DiveKit's package catalog."
     )
-    var source = "Sources/DiveKitLocalization/Resources/Localizable.xcstrings"
+    var source: String?
 
     @Option(
         name: .shortAndLong,
         help: "The host app .xcstrings catalog to add missing keys to."
     )
-    var target: String
+    var target: String?
+
+    @Argument(
+        help: "The host app .xcstrings catalog to add missing keys to. This is a shorthand for --target."
+    )
+    var targetPath: String?
 
     @Flag(
         name: .long,
@@ -26,18 +31,39 @@ struct DiveKitCatalogSync: ParsableCommand {
     )
     var dryRun = false
 
+    mutating func validate() throws {
+        _ = try resolvedTarget()
+    }
+
     mutating func run() throws {
+        let target = try resolvedTarget()
         let synchronizer = CatalogSynchronizer()
         let result = try synchronizer.sync(
-            source: URL.expandingPath(source),
+            source: source.map(URL.expandingPath) ?? .diveKitSourceCatalog,
             target: URL.expandingPath(target),
             dryRun: dryRun
         )
 
-        print(summary(for: result))
+        print(summary(for: result, target: target))
     }
 
-    private func summary(for result: CatalogSyncResult) -> String {
+    private func resolvedTarget() throws -> String {
+        if let target, targetPath == nil {
+            return target
+        }
+
+        if let targetPath, target == nil {
+            return targetPath
+        }
+
+        if target != nil, targetPath != nil {
+            throw ValidationError("Specify the target catalog either with --target or as a positional path, not both.")
+        }
+
+        throw ValidationError("Missing target catalog. Provide --target <path> or a positional .xcstrings path.")
+    }
+
+    private func summary(for result: CatalogSyncResult, target: String) -> String {
         switch result.action {
             case .copied:
                 "Copied \(result.sourceKeyCount) keys into \(target)."
@@ -62,5 +88,18 @@ DiveKitCatalogSync.main()
 private extension URL {
     static func expandingPath(_ path: String) -> URL {
         URL(fileURLWithPath: (path as NSString).expandingTildeInPath)
+    }
+
+    static var diveKitSourceCatalog: URL {
+        let packageURL = URL(fileURLWithPath: #filePath)
+            .deletingLastPathComponent()
+            .deletingLastPathComponent()
+            .deletingLastPathComponent()
+
+        return packageURL
+            .appendingPathComponent("Sources", isDirectory: true)
+            .appendingPathComponent("DiveKitLocalization", isDirectory: true)
+            .appendingPathComponent("Resources", isDirectory: true)
+            .appendingPathComponent("Localizable.xcstrings")
     }
 }

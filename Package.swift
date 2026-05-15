@@ -17,7 +17,12 @@ let package = Package(
         .executable(
             name: "catalog-sync",
             targets: [
-                "DiveKitCatalogSync"
+                "catalog-sync"
+            ]),
+        .plugin(
+            name: "DiveKitCatalogSyncPlugin",
+            targets: [
+                "DiveKitCatalogSyncPlugin"
             ])
     ],
     dependencies: [
@@ -27,11 +32,12 @@ let package = Package(
     ],
     targets: [
         .executableTarget(
-            name: "DiveKitCatalogSync",
+            name: "catalog-sync",
             dependencies: [
                 "DiveKitCatalogSyncCore",
                 .product(name: "ArgumentParser", package: "swift-argument-parser")
             ],
+            path: "Sources/DiveKitCatalogSync",
             plugins: [
                 .plugin(name: "SwiftLintBuildToolPlugin", package: "SwiftLintPlugins")
             ]
@@ -40,6 +46,23 @@ let package = Package(
             name: "DiveKitCatalogSyncCore",
             plugins: [
                 .plugin(name: "SwiftLintBuildToolPlugin", package: "SwiftLintPlugins")
+            ]
+        ),
+        .plugin(
+            name: "DiveKitCatalogSyncPlugin",
+            capability: .command(
+                intent: .custom(
+                    verb: "catalog-sync",
+                    description: "Copy missing DiveKit string catalog keys into a host app catalog."
+                ),
+                permissions: [
+                    .writeToPackageDirectory(
+                        reason: "This command creates or updates host app string catalogs."
+                    )
+                ]
+            ),
+            dependencies: [
+                .target(name: "catalog-sync")
             ]
         ),
         .target(
