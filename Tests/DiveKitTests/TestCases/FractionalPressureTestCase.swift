@@ -1,6 +1,7 @@
 import Testing
 @testable import DiveKit
 
+@Suite(.tags(.blend))
 struct FractionalPressureTestCase {
 
     @Test

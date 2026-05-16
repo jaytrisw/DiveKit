@@ -2,7 +2,7 @@ import Foundation
 import Testing
 @testable import DiveKit
 
-@Suite
+@Suite(.tags(.localization, .rate))
 struct RateFormatStyleTests {
     @Test func formatStyle() {
         withTestLocalization(.test) {

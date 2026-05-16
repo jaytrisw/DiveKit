@@ -1,12 +1,12 @@
 import Testing
 @testable import DiveKit
 
-@Suite("Physics Calculator", .tags(.physicsCalculator))
+@Suite("Physics Calculator", .tags(.physicsCalculator, .saltWater, .imperial))
 struct PhysicsCalculatorImperialSaltwaterTestCase {
 
     // MARK: gaugePressure(at:)
 
-    @Test(.tags(.saltWater, .imperial))
+    @Test
     func imperialSaltwaterGaugePressureWithValidInput() async throws {
         try await given {
             PhysicsCalculator(.imperial, water: .salt)
@@ -19,7 +19,7 @@ struct PhysicsCalculatorImperialSaltwaterTestCase {
         }
     }
 
-    @Test(.tags(.saltWater, .imperial, .error))
+    @Test(.tags(.error))
     func imperialSaltwaterGaugePressureWithInvalidInput() throws {
         let depth: Depth = -33.0
         let expectedError = Error.negative(depth, "PhysicsCalculator.gaugePressure(at:)")
@@ -36,7 +36,7 @@ struct PhysicsCalculatorImperialSaltwaterTestCase {
 
     // MARK: atmospheresAbsolute(at:)
 
-    @Test(.tags(.saltWater, .imperial))
+    @Test
     func imperialSaltwaterAtmospheresAbsoluteWithValidInput() async throws {
         try await given {
             PhysicsCalculator(.imperial, water: .salt)
@@ -49,7 +49,7 @@ struct PhysicsCalculatorImperialSaltwaterTestCase {
         }
     }
 
-    @Test(.tags(.saltWater, .imperial, .error))
+    @Test(.tags(.error))
     func imperialSaltwaterAtmospheresAbsoluteWithInvalidInput() throws {
         let depth: Depth = -33.0
         let expectedError = Error.negative(depth, "PhysicsCalculator.atmospheresAbsolute(at:)")
@@ -66,7 +66,7 @@ struct PhysicsCalculatorImperialSaltwaterTestCase {
 
     // MARK: pressureChange(from:to:)
 
-    @Test(.tags(.saltWater, .imperial))
+    @Test
     func imperialSaltwaterPressureChangeWithValidInput() async throws {
         try await given {
             PhysicsCalculator(.imperial, water: .salt)
@@ -79,7 +79,7 @@ struct PhysicsCalculatorImperialSaltwaterTestCase {
         }
     }
 
-    @Test(.tags(.saltWater, .imperial, .error))
+    @Test(.tags(.error))
     func imperialSaltwaterPressureChangeWithInvalidFromDepthInput() throws {
         let fromDepth: Depth = -33.0
         let toDepth: Depth = 66.00
@@ -95,7 +95,7 @@ struct PhysicsCalculatorImperialSaltwaterTestCase {
         }
     }
 
-    @Test(.tags(.saltWater, .imperial, .error))
+    @Test(.tags(.error))
     func imperialSaltwaterPressureChangeWithInvalidToDepthInput() throws {
         let fromDepth: Depth = 33.0
         let toDepth: Depth = -66.00
@@ -113,7 +113,7 @@ struct PhysicsCalculatorImperialSaltwaterTestCase {
 
     // MARK: airVolumeFromSurface(to:with:)
 
-    @Test(.tags(.saltWater, .imperial))
+    @Test
     func imperialSaltwaterAirVolumeFromSurfaceWithValidInput() async throws {
         try await given {
             PhysicsCalculator(.imperial, water: .salt)
@@ -126,7 +126,7 @@ struct PhysicsCalculatorImperialSaltwaterTestCase {
         }
     }
 
-    @Test(.tags(.saltWater, .imperial, .error))
+    @Test(.tags(.error))
     func imperialSaltwaterAirVolumeFromSurfaceWithInvalidDepthInput() throws {
         let depth: Depth = -66
         let volume: Volume = 6
@@ -142,7 +142,7 @@ struct PhysicsCalculatorImperialSaltwaterTestCase {
         }
     }
 
-    @Test(.tags(.saltWater, .imperial, .error))
+    @Test(.tags(.error))
     func imperialSaltwaterAirVolumeFromSurfaceWithInvalidVolumeInput() throws {
         let depth: Depth = 66
         let volume: Volume = -6
@@ -160,7 +160,7 @@ struct PhysicsCalculatorImperialSaltwaterTestCase {
 
     // MARK: airVolumeToSurface(from:with:)
 
-    @Test(.tags(.saltWater, .imperial))
+    @Test
     func imperialSaltwaterAirVolumeToSurfaceWithValidInput() async throws {
         try await given {
             PhysicsCalculator(.imperial, water: .salt)
@@ -173,7 +173,7 @@ struct PhysicsCalculatorImperialSaltwaterTestCase {
         }
     }
 
-    @Test(.tags(.saltWater, .imperial, .error))
+    @Test(.tags(.error))
     func imperialSaltwaterAirVolumeToSurfaceWithInvalidDepthInput() throws {
         let depth: Depth = -66
         let volume: Volume = 6
@@ -189,7 +189,7 @@ struct PhysicsCalculatorImperialSaltwaterTestCase {
         }
     }
 
-    @Test(.tags(.saltWater, .imperial, .error))
+    @Test(.tags(.error))
     func imperialSaltwaterAirVolumeToSurfaceWithInvalidVolumeInput() throws {
         let depth: Depth = 66
         let volume: Volume = -6

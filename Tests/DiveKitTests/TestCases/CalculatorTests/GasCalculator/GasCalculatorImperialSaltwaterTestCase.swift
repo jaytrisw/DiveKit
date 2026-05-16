@@ -1,7 +1,7 @@
 import Testing
 @testable import DiveKit
 
-@Suite("Gas Calculator", .tags(.gasCalculator))
+@Suite("Gas Calculator", .tags(.gasCalculator, .saltWater, .imperial))
 final class GasCalculatorImperialSaltwaterTestCase {
 
     let sut: GasCalculator

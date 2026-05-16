@@ -1,7 +1,7 @@
 import Testing
 @testable import DiveKit
 
-@Suite
+@Suite(.tags(.rate))
 struct RateTests {
     @Test func initialization() {
         // Given

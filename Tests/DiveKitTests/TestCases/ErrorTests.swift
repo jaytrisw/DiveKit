@@ -1,7 +1,7 @@
 import Testing
 @testable import DiveKit
 
-@Suite
+@Suite(.tags(.error, .localization))
 struct ErrorTests {
     @Test func localizedDescriptionModuleBundle() {
         withTestLocalization(.test) {

@@ -1,10 +1,10 @@
 import Testing
 @testable import DiveKit
 
-@Suite("Physics Calculator", .tags(.physicsCalculator))
+@Suite("Physics Calculator", .tags(.physicsCalculator, .saltWater, .metric))
 struct PhysicsCalculatorMetricSaltwaterTestCase {
 
-    @Test(.tags(.saltWater, .metric))
+    @Test
     func metricSaltwaterPressureChangeReturnsAtmospheresDelta() async throws {
         try await given {
             PhysicsCalculator(.metric, water: .salt)
@@ -17,7 +17,7 @@ struct PhysicsCalculatorMetricSaltwaterTestCase {
         }
     }
 
-    @Test(.tags(.saltWater, .metric))
+    @Test
     func metricSaltwaterAirVolumeFromSurfaceReturnsVolumeUnit() async throws {
         try await given {
             PhysicsCalculator(.metric, water: .salt)
@@ -30,7 +30,7 @@ struct PhysicsCalculatorMetricSaltwaterTestCase {
         }
     }
 
-    @Test(.tags(.saltWater, .metric))
+    @Test
     func metricSaltwaterAirVolumeToSurfaceReturnsVolumeUnit() async throws {
         try await given {
             PhysicsCalculator(.metric, water: .salt)

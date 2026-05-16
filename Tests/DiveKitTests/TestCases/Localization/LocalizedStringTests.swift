@@ -2,7 +2,7 @@ import Foundation
 import Testing
 @testable import DiveKit
 
-@Suite
+@Suite(.tags(.localization))
 struct LocalizedStringTests {
     @Test func localizedStringFromMainBundle() {
         withTestLocalization(.test) {

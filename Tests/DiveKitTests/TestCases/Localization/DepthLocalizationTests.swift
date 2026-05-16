@@ -1,7 +1,7 @@
 import Testing
 @testable import DiveKit
 
-@Suite
+@Suite(.tags(.localization))
 struct DepthLocalizationTests {
     @Test func localizedTitleDImperial() {
         withTestLocalization(.test) {

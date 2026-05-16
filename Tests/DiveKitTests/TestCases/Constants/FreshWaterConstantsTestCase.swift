@@ -3,7 +3,7 @@ import Testing
 
 @Suite("Fresh Water Constants", .tags(.constants, .freshWater))
 struct FreshWaterConstantsTestCase {
-    @Test(.tags(.freshWater), arguments: [
+    @Test(arguments: [
         (units: Units.imperial, value: 62.4, unit: Mass.Unit.pounds, volume: Volume.Unit.cubicFeet),
         (.metric, 1, .kilograms, .liters)
     ])
@@ -15,7 +15,7 @@ struct FreshWaterConstantsTestCase {
         #expect(result.volume == volume)
     }
 
-    @Test(.tags(.freshWater), arguments: [
+    @Test(arguments: [
         (units: Units.imperial, value: 34.0, unit: Depth.Unit.feet),
         (.metric, 10.3, .meters)
     ])

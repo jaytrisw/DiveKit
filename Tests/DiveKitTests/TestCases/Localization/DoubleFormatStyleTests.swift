@@ -1,7 +1,7 @@
 import Testing
 @testable import DiveKit
 
-@Suite
+@Suite(.tags(.localization))
 struct DoubleFormatStyleTests {
     @Test func formatStyleDepth() {
         withTestLocalization(.test) {
