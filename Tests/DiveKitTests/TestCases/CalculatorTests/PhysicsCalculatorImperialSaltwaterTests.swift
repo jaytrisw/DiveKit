@@ -2,7 +2,7 @@ import Testing
 @testable import DiveKit
 
 @Suite("Physics Calculator", .tags(.physicsCalculator, .saltWater, .imperial))
-struct PhysicsCalculatorImperialSaltwaterTestCase {
+struct PhysicsCalculatorImperialSaltwaterTests {
 
     // MARK: gaugePressure(at:)
 

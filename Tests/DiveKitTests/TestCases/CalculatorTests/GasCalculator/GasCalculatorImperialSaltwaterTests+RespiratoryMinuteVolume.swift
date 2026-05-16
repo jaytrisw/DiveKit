@@ -1,7 +1,7 @@
 import Testing
 @testable import DiveKit
 
-extension GasCalculatorImperialSaltwaterTestCase {
+extension GasCalculatorImperialSaltwaterTests {
 
     // MARK: respiratoryMinuteVolume(at:for:consuming:with:using:)
 

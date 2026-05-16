@@ -2,7 +2,7 @@ import Testing
 @testable import DiveKit
 
 @Suite("Fresh Water Constants", .tags(.constants, .freshWater))
-struct FreshWaterConstantsTestCase {
+struct FreshWaterConstantsTests {
     @Test(arguments: [
         (units: Units.imperial, value: 62.4, unit: Mass.Unit.pounds, volume: Volume.Unit.cubicFeet),
         (.metric, 1, .kilograms, .liters)

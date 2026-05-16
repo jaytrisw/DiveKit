@@ -2,7 +2,7 @@ import Testing
 @testable import DiveKit
 
 @Suite(.tags(.blend))
-struct FractionalPressureTestCase {
+struct FractionalPressureTests {
 
     @Test
     func initializationStoresValidFractionalPressure() async throws {

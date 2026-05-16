@@ -2,7 +2,7 @@ import Testing
 @testable import DiveKit
 
 @Suite("Buoyancy", .tags(.buoyancy))
-struct BuoyancyTestCase {
+struct BuoyancyTests {
     @Test(arguments: [
         (value: 0.0, expected: Buoyancy.neutral),
         (42, .positive(42)),

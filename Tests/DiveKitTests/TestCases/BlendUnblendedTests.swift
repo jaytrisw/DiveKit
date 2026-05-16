@@ -1,8 +1,8 @@
 import Testing
-@testable @_spi(unsafe) import DiveKit
+@testable import DiveKit
 
 @Suite("Blend Unblended", .tags(.blend))
-struct BlendUnblendedTestCase {
+struct BlendUnblendedTests {
     @Test
     func addWithValidInput() throws {
         var sut = Blend<Unblended>()

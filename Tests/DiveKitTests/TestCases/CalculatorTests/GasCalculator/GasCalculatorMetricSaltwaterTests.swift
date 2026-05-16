@@ -2,7 +2,7 @@ import Testing
 @testable import DiveKit
 
 @Suite("Gas Calculator", .tags(.gasCalculator, .saltWater, .metric))
-struct GasCalculatorMetricSaltwaterTestCase {
+struct GasCalculatorMetricSaltwaterTests {
 
     @Test
     func metricSaltwaterSurfaceAirConsumption() async throws {

@@ -2,7 +2,7 @@ import Testing
 @testable import DiveKit
 
 @Suite("Tank", .tags(.tank))
-struct TankTestCase {
+struct TankTests {
 
     @Test
     func initializeWithUnblended() throws {

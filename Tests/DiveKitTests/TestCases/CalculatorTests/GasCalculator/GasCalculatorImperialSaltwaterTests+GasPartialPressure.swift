@@ -1,7 +1,7 @@
 import Testing
 @testable import DiveKit
 
-extension GasCalculatorImperialSaltwaterTestCase {
+extension GasCalculatorImperialSaltwaterTests {
 
     // MARK: partialPressure(of:at:using:)
 

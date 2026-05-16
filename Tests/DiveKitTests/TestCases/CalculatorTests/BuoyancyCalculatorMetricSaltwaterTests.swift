@@ -2,7 +2,7 @@ import Testing
 @testable import DiveKit
 
 @Suite("Buoyancy Calculator", .tags(.buoyancyCalculator, .saltWater, .metric))
-struct BuoyancyCalculatorMetricSaltwaterTestCase {
+struct BuoyancyCalculatorMetricSaltwaterTests {
 
     // MARK: buoyancy(of:)
 

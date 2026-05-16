@@ -1,8 +1,8 @@
 import Testing
-@testable @_spi(unsafe) import DiveKit
+@testable import DiveKit
 
 @Suite("Blend Blended", .tags(.blend))
-struct BlendBlendedTestCase {
+struct BlendBlendedTests {
 
     @Test
     func fraction() throws {

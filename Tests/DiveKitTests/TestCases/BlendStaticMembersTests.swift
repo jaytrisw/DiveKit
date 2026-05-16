@@ -2,7 +2,7 @@ import Testing
 @testable import DiveKit
 
 @Suite("Blend Static Members", .tags(.blend))
-struct BlendStaticMembersTestCase {
+struct BlendStaticMembersTests {
     @Test
     func air() throws {
         let sut = Blend<Blended>.air
