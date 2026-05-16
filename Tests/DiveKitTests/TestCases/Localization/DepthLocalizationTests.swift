@@ -1,161 +1,149 @@
 import Testing
 @testable import DiveKit
 
-@Suite
+@Suite(.tags(.localization))
 struct DepthLocalizationTests {
-    @Test func localizedTitleDImperial() {
-        withTestLocalization(.test) {
-            // Given
-            let sut = Depth.Unit.feet
-
-            // When
-            let result = sut.localizedTitle
-
-            // Then
-            #expect(result == "Depth")
+    @Test func localizedTitleDImperial() async {
+        await withTestLocalization(.test) {
+            await given {
+                Depth.Unit.feet
+            } when: { sut in
+                sut.localizedTitle
+            } then: { _, result in
+                #expect(result == "Depth")
+            }
         }
     }
 
-    @Test func localizedTitleMetric() {
-        withTestLocalization(.test) {
-            // Given
-            let sut = Depth.Unit.meters
-
-            // When
-            let result = sut.localizedTitle
-
-            // Then
-            #expect(result == "Depth")
+    @Test func localizedTitleMetric() async {
+        await withTestLocalization(.test) {
+            await given {
+                Depth.Unit.meters
+            } when: { sut in
+                sut.localizedTitle
+            } then: { _, result in
+                #expect(result == "Depth")
+            }
         }
     }
 
-    @Test func descriptionShortImperial() {
-        withTestLocalization(.test) {
-            // Given
-            let sut = Depth.Unit.feet
-
-            // When
-            let result = sut.localizedDescription(for: .short)
-
-            // Then
-            #expect(result == "ft")
+    @Test func descriptionShortImperial() async {
+        await withTestLocalization(.test) {
+            await given {
+                Depth.Unit.feet
+            } when: { sut in
+                sut.localizedDescription(for: .short)
+            } then: { _, result in
+                #expect(result == "ft")
+            }
         }
     }
 
-    @Test func descriptionShortMetric() {
-        withTestLocalization(.test) {
-            // Given
-            let sut = Depth.Unit.meters
-
-            // When
-            let result = sut.localizedDescription(for: .short)
-
-            // Then
-            #expect(result == "m")
+    @Test func descriptionShortMetric() async {
+        await withTestLocalization(.test) {
+            await given {
+                Depth.Unit.meters
+            } when: { sut in
+                sut.localizedDescription(for: .short)
+            } then: { _, result in
+                #expect(result == "m")
+            }
         }
     }
 
-    @Test func descriptionFullImperial() {
-        withTestLocalization(.test) {
-            // Given
-            let sut = Depth.Unit.feet
-
-            // When
-            let result = sut.localizedDescription(for: .full)
-
-            // Then
-            #expect(result == "feet")
+    @Test func descriptionFullImperial() async {
+        await withTestLocalization(.test) {
+            await given {
+                Depth.Unit.feet
+            } when: { sut in
+                sut.localizedDescription(for: .full)
+            } then: { _, result in
+                #expect(result == "feet")
+            }
         }
     }
 
-    @Test func descriptionFullMetric() {
-        withTestLocalization(.test) {
-            // Given
-            let sut = Depth.Unit.meters
-
-            // When
-            let result = sut.localizedDescription(for: .full)
-
-            // Then
-            #expect(result == "meters")
+    @Test func descriptionFullMetric() async {
+        await withTestLocalization(.test) {
+            await given {
+                Depth.Unit.meters
+            } when: { sut in
+                sut.localizedDescription(for: .full)
+            } then: { _, result in
+                #expect(result == "meters")
+            }
         }
     }
 
-    @Test func quantityShortImperial() {
-        withTestLocalization(.test) {
-            // Given
-            let sut = Depth.Unit.feet
-
-            // When
-            let result = sut.localization(for: .quantity(.zero, .short))
-
-            // Then
-            #expect(result == "0 ft")
+    @Test func quantityShortImperial() async {
+        await withTestLocalization(.test) {
+            await given {
+                Depth.Unit.feet
+            } when: { sut in
+                sut.localization(for: .quantity(.zero, .short))
+            } then: { _, result in
+                #expect(result == "0 ft")
+            }
         }
     }
 
-    @Test func quantityShortMetric() {
-        withTestLocalization(.test) {
-            // Given
-            let sut = Depth.Unit.meters
-
-            // When
-            let result = sut.localization(for: .quantity(.zero, .short))
-
-            // Then
-            #expect(result == "0 m")
+    @Test func quantityShortMetric() async {
+        await withTestLocalization(.test) {
+            await given {
+                Depth.Unit.meters
+            } when: { sut in
+                sut.localization(for: .quantity(.zero, .short))
+            } then: { _, result in
+                #expect(result == "0 m")
+            }
         }
     }
 
-    @Test func quantityFullImperial() {
-        withTestLocalization(.test) {
-            // Given
-            let sut = Depth.Unit.feet
-
-            // When
-            let result = sut.localization(for: .quantity(.zero, .full))
-
-            // Then
-            #expect(result == "0 feet")
+    @Test func quantityFullImperial() async {
+        await withTestLocalization(.test) {
+            await given {
+                Depth.Unit.feet
+            } when: { sut in
+                sut.localization(for: .quantity(.zero, .full))
+            } then: { _, result in
+                #expect(result == "0 feet")
+            }
         }
     }
 
-    @Test func quantityFullMetric() {
-        withTestLocalization(.test) {
-            // Given
-            let sut = Depth.Unit.meters
-
-            // When
-            let result = sut.localization(for: .quantity(.zero, .full))
-
-            // Then
-            #expect(result == "0 meters")
+    @Test func quantityFullMetric() async {
+        await withTestLocalization(.test) {
+            await given {
+                Depth.Unit.meters
+            } when: { sut in
+                sut.localization(for: .quantity(.zero, .full))
+            } then: { _, result in
+                #expect(result == "0 meters")
+            }
         }
     }
 
-    @Test func oneQuantityFullImperial() {
-        withTestLocalization(.test) {
-            // Given
-            let sut = Depth.Unit.feet
-
-            // When
-            let result = sut.localization(for: .quantity(1, .full))
-
-            // Then
-            #expect(result == "1 foot")
+    @Test func oneQuantityFullImperial() async {
+        await withTestLocalization(.test) {
+            await given {
+                Depth.Unit.feet
+            } when: { sut in
+                sut.localization(for: .quantity(1, .full))
+            } then: { _, result in
+                #expect(result == "1 foot")
+            }
         }
     }
 
-    @Test func oneQuantityFullMetric() {
-        withTestLocalization(.test) {
-            // Given
-            let sut = Depth.Unit.meters
-
-            // When
-            let result = sut.localization(for: .quantity(1, .full))
-
-            // Then
-            #expect(result == "1 meter")
+    @Test func oneQuantityFullMetric() async {
+        await withTestLocalization(.test) {
+            await given {
+                Depth.Unit.meters
+            } when: { sut in
+                sut.localization(for: .quantity(1, .full))
+            } then: { _, result in
+                #expect(result == "1 meter")
+            }
         }
     }
 }

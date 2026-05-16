@@ -1,22 +1,22 @@
-import XCTest
+import Testing
 @testable import DiveKit
 
-final class TankTestCase: SystemUnderTestCase<Tank> {
+@Suite("Tank", .tags(.tank))
+struct TankTests {
 
-    func testInitializeWithUnblended() throws {
-        // Given
+    @Test
+    func initializeWithUnblended() throws {
         let fractionalPressure = 1.0
         let blend = try Blend<Unblended>(.init(of: .oxygen, fractionalPressure: fractionalPressure))
         let volume: Volume = 40
         let pressure: Pressure = 3000
         let size = Tank.Size(volume: volume, ratedPressure: pressure, unit: .cubicFeet)
 
-        // When
-        XCTAssertNoThrow(try Tank(blend: blend, size: size))
+        _ = try Tank(blend: blend, size: size)
     }
 
-    func testInitializeWithUnblendedThrows() throws {
-        // Given
+    @Test(.tags(.error))
+    func initializeWithUnblendedThrows() throws {
         let fractionalPressure = 0.5
         let blend = try Blend<Unblended>(.init(of: .oxygen, fractionalPressure: fractionalPressure))
         let volume: Volume = 40
@@ -24,11 +24,10 @@ final class TankTestCase: SystemUnderTestCase<Tank> {
         let size = Tank.Size(volume: volume, ratedPressure: pressure, unit: .cubicFeet)
         let expectedError = Error.blend(.totalPressure(fractionalPressure, blend), "Tank.init(blend:size:)")
 
-        // When
-        try XCTAssertThrowsError(
+        try expectThrowsError(
             when: Tank(blend: blend, size: size),
             then: expectedError) {
-                XCTAssertEqual($0.localizationValue, "dive.kit.error.blend.total.pressure")
+                #expect($0.localizationValue == "dive.kit.error.blend.total.pressure")
             }
     }
 }

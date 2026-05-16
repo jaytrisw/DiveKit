@@ -1,57 +1,53 @@
 import Testing
 @testable import DiveKit
 
-@Suite
+@Suite(.tags(.localization, .rate))
 struct RateLocalizationTests {
-    @Test func localizedTitle() {
-        withTestLocalization(.test) {
-            // Given
-            let sut = Rate<Pressure>.Unit.perMinute(.psi)
-
-            // When
-            let result = sut.localizedTitle
-
-            // Then
-            #expect(result == "Pressure Rate")
+    @Test func localizedTitle() async {
+        await withTestLocalization(.test) {
+            await given {
+                Rate<Pressure>.Unit.perMinute(.psi)
+            } when: { sut in
+                sut.localizedTitle
+            } then: { _, result in
+                #expect(result == "Pressure Rate")
+            }
         }
     }
 
-    @Test func descriptionShort() {
-        withTestLocalization(.test) {
-            // Given
-            let sut = Rate<Pressure>.Unit.perMinute(.psi)
-
-            // When
-            let result = sut.localizedDescription(for: .short)
-
-            // Then
-            #expect(result == "psi/min")
+    @Test func descriptionShort() async {
+        await withTestLocalization(.test) {
+            await given {
+                Rate<Pressure>.Unit.perMinute(.psi)
+            } when: { sut in
+                sut.localizedDescription(for: .short)
+            } then: { _, result in
+                #expect(result == "psi/min")
+            }
         }
     }
 
-    @Test func descriptionFull() {
-        withTestLocalization(.test) {
-            // Given
-            let sut = Rate<Volume>.Unit.perMinute(.cubicFeet)
-
-            // When
-            let result = sut.localizedDescription(for: .full)
-
-            // Then
-            #expect(result == "cubic feet per minute")
+    @Test func descriptionFull() async {
+        await withTestLocalization(.test) {
+            await given {
+                Rate<Volume>.Unit.perMinute(.cubicFeet)
+            } when: { sut in
+                sut.localizedDescription(for: .full)
+            } then: { _, result in
+                #expect(result == "cubic feet per minute")
+            }
         }
     }
 
-    @Test func quantityFull() {
-        withTestLocalization(.test) {
-            // Given
-            let sut = Rate<Pressure>.Unit.perMinute(.psi)
-
-            // When
-            let result = sut.localization(for: .quantity(1, .full))
-
-            // Then
-            #expect(result == "1 pound per square inch per minute")
+    @Test func quantityFull() async {
+        await withTestLocalization(.test) {
+            await given {
+                Rate<Pressure>.Unit.perMinute(.psi)
+            } when: { sut in
+                sut.localization(for: .quantity(1, .full))
+            } then: { _, result in
+                #expect(result == "1 pound per square inch per minute")
+            }
         }
     }
 }
