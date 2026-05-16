@@ -6,241 +6,272 @@ extension GasCalculatorImperialSaltwaterTestCase {
     // MARK: surfaceAirConsumption(at:for:consuming:using:)
 
     @Test
-    func surfaceAirConsumptionConsumingValidInput() throws {
-        // Given
-        let depth: Depth = 90.0
-        let minutes: Minutes = 10.0
-        let consuming: Pressure = 600.0
-
-        // When
-        try expectCalculation(
-            sut.surfaceAirConsumption(
-                at: depth,
-                for: minutes,
-                consuming: consuming,
-                using: physicsCalculator)) { result, configuration in
-                    // Then
-                    #expect(result.value == 16.097560975609756)
-                    #expect(result.unit == .perMinute(.psi))
-                    #expect(configuration == sut.configuration)
-                }
+    func surfaceAirConsumptionConsumingValidInput() async throws {
+        try await given {
+            let depth: Depth = 90.0
+            let minutes: Minutes = 10.0
+            let consuming: Pressure = 600.0
+            return {
+                try expectCalculation(
+                    self.sut.surfaceAirConsumption(
+                        at: depth,
+                        for: minutes,
+                        consuming: consuming,
+                        using: self.physicsCalculator)) { result, configuration in
+                            #expect(result.value == 16.097560975609756)
+                            #expect(result.unit == .perMinute(.psi))
+                            #expect(configuration == self.sut.configuration)
+                        }
+            }
+        } when: { operation in
+            try operation()
+        }
     }
 
     @Test(.tags(.error))
-    func surfaceAirConsumptionConsumingInvalidDepthInput() throws {
-        // Given
-        let depth: Depth = -90.0
-        let minutes: Minutes = 10.0
-        let consuming: Pressure = 600.0
-        expectedError = .negative(depth, "GasCalculator.surfaceAirConsumption(at:for:consuming:using:)")
-
-        // When
-        try expectThrowsError(
-            when: sut.surfaceAirConsumption(
-                at: depth,
-                for: minutes,
-                consuming: consuming,
-                using: physicsCalculator),
-            then: expectedError) {
-                #expect($0.localizationValue == "dive.kit.error.negative.depth")
+    func surfaceAirConsumptionConsumingInvalidDepthInput() async throws {
+        try await given {
+            let depth: Depth = -90.0
+            let minutes: Minutes = 10.0
+            let consuming: Pressure = 600.0
+            self.expectedError = .negative(depth, "GasCalculator.surfaceAirConsumption(at:for:consuming:using:)")
+            return {
+                try expectThrowsError(
+                    when: self.sut.surfaceAirConsumption(
+                        at: depth,
+                        for: minutes,
+                        consuming: consuming,
+                        using: self.physicsCalculator),
+                    then: self.expectedError) {
+                        #expect($0.localizationValue == "dive.kit.error.negative.depth")
+                    }
             }
+        } when: { operation in
+            try operation()
+        }
     }
 
     @Test(.tags(.error))
-    func surfaceAirConsumptionConsumingInvalidMinutesInput() throws {
-        // Given
-        let depth: Depth = 90.0
-        let minutes: Minutes = -10.0
-        let consuming: Pressure = 600.0
-        expectedError = .negative(minutes, "GasCalculator.surfaceAirConsumption(at:for:consuming:using:)")
-
-        // When
-        try expectThrowsError(
-            when: sut.surfaceAirConsumption(
-                at: depth,
-                for: minutes,
-                consuming: consuming,
-                using: physicsCalculator),
-            then: expectedError) {
-                #expect($0.localizationValue == "dive.kit.error.negative.minutes")
+    func surfaceAirConsumptionConsumingInvalidMinutesInput() async throws {
+        try await given {
+            let depth: Depth = 90.0
+            let minutes: Minutes = -10.0
+            let consuming: Pressure = 600.0
+            self.expectedError = .negative(minutes, "GasCalculator.surfaceAirConsumption(at:for:consuming:using:)")
+            return {
+                try expectThrowsError(
+                    when: self.sut.surfaceAirConsumption(
+                        at: depth,
+                        for: minutes,
+                        consuming: consuming,
+                        using: self.physicsCalculator),
+                    then: self.expectedError) {
+                        #expect($0.localizationValue == "dive.kit.error.negative.minutes")
+                    }
             }
+        } when: { operation in
+            try operation()
+        }
     }
 
     @Test(.tags(.error))
-    func surfaceAirConsumptionConsumingRejectsZeroMinutes() throws {
-        // Given
-        let depth: Depth = 90.0
-        let minutes: Minutes = 0.0
-        let consuming: Pressure = 600.0
-        expectedError = .range(.lowerBound(0, 0), "GasCalculator.surfaceAirConsumption(at:for:consuming:using:)")
-
-        // When / Then
-        try expectThrowsError(
-            when: sut.surfaceAirConsumption(
-                at: depth,
-                for: minutes,
-                consuming: consuming,
-                using: physicsCalculator),
-            then: expectedError) {
-                #expect($0.localizationValue == "dive.kit.error.range.lower.bound")
+    func surfaceAirConsumptionConsumingRejectsZeroMinutes() async throws {
+        try await given {
+            let depth: Depth = 90.0
+            let minutes: Minutes = 0.0
+            let consuming: Pressure = 600.0
+            self.expectedError = .range(.lowerBound(0, 0), "GasCalculator.surfaceAirConsumption(at:for:consuming:using:)")
+            return {
+                try expectThrowsError(
+                    when: self.sut.surfaceAirConsumption(
+                        at: depth,
+                        for: minutes,
+                        consuming: consuming,
+                        using: self.physicsCalculator),
+                    then: self.expectedError) {
+                        #expect($0.localizationValue == "dive.kit.error.range.lower.bound")
+                    }
             }
+        } when: { operation in
+            try operation()
+        }
     }
 
     @Test(.tags(.error))
-    func surfaceAirConsumptionConsumingInvalidConsumingInput() throws {
-        // Given
-        let depth: Depth = 90.0
-        let minutes: Minutes = 10.0
-        let consuming: Pressure = -600.0
-        expectedError = .negative(consuming, "GasCalculator.surfaceAirConsumption(at:for:consuming:using:)")
-
-        // When
-        try expectThrowsError(
-            when:
-                sut.surfaceAirConsumption(
-                    at: depth,
-                    for: minutes,
-                    consuming: consuming,
-                    using: physicsCalculator),
-            then: expectedError) {
-                #expect($0.localizationValue == "dive.kit.error.negative.pressure")
+    func surfaceAirConsumptionConsumingInvalidConsumingInput() async throws {
+        try await given {
+            let depth: Depth = 90.0
+            let minutes: Minutes = 10.0
+            let consuming: Pressure = -600.0
+            self.expectedError = .negative(consuming, "GasCalculator.surfaceAirConsumption(at:for:consuming:using:)")
+            return {
+                try expectThrowsError(
+                    when:
+                        self.sut.surfaceAirConsumption(
+                            at: depth,
+                            for: minutes,
+                            consuming: consuming,
+                            using: self.physicsCalculator),
+                    then: self.expectedError) {
+                        #expect($0.localizationValue == "dive.kit.error.negative.pressure")
+                    }
             }
+        } when: { operation in
+            try operation()
+        }
     }
 
     // MARK: surfaceAirConsumption(at:for:start:end:using:)
 
     @Test
-    func surfaceAirConsumptionStartEndValidInput() throws {
-        // Given
-        let depth: Depth = 90.0
-        let minutes: Minutes = 10.0
-        let startPressure: Pressure = 3000.0
-        let endPressure: Pressure = 2400.0
-
-        // When
-        try expectCalculation(
-            sut.surfaceAirConsumption(
-                at: depth,
-                for: minutes,
-                start: startPressure,
-                end: endPressure,
-                using: physicsCalculator)) { result, configuration in
-                    // Then
-                    #expect(result.value == 16.097560975609756)
-                    #expect(result.unit == .perMinute(.psi))
-                    #expect(configuration == sut.configuration)
-                }
+    func surfaceAirConsumptionStartEndValidInput() async throws {
+        try await given {
+            let depth: Depth = 90.0
+            let minutes: Minutes = 10.0
+            let startPressure: Pressure = 3000.0
+            let endPressure: Pressure = 2400.0
+            return {
+                try expectCalculation(
+                    self.sut.surfaceAirConsumption(
+                        at: depth,
+                        for: minutes,
+                        start: startPressure,
+                        end: endPressure,
+                        using: self.physicsCalculator)) { result, configuration in
+                            #expect(result.value == 16.097560975609756)
+                            #expect(result.unit == .perMinute(.psi))
+                            #expect(configuration == self.sut.configuration)
+                        }
+            }
+        } when: { operation in
+            try operation()
+        }
     }
 
     @Test(.tags(.error))
-    func surfaceAirConsumptionStartEndInvalidDepthInput() throws {
-        // Given
-        let depth: Depth = -90.0
-        let minutes: Minutes = 10.0
-        let startPressure: Pressure = 3000.0
-        let endPressure: Pressure = 2400.0
-        expectedError = .negative(depth, "GasCalculator.surfaceAirConsumption(at:for:start:end:using:)")
-
-        // When
-        try expectThrowsError(
-            when: sut.surfaceAirConsumption(
-                at: depth,
-                for: minutes,
-                start: startPressure,
-                end: endPressure,
-                using: physicsCalculator),
-            then: expectedError) {
-                #expect($0.localizationValue == "dive.kit.error.negative.depth")
+    func surfaceAirConsumptionStartEndInvalidDepthInput() async throws {
+        try await given {
+            let depth: Depth = -90.0
+            let minutes: Minutes = 10.0
+            let startPressure: Pressure = 3000.0
+            let endPressure: Pressure = 2400.0
+            self.expectedError = .negative(depth, "GasCalculator.surfaceAirConsumption(at:for:start:end:using:)")
+            return {
+                try expectThrowsError(
+                    when: self.sut.surfaceAirConsumption(
+                        at: depth,
+                        for: minutes,
+                        start: startPressure,
+                        end: endPressure,
+                        using: self.physicsCalculator),
+                    then: self.expectedError) {
+                        #expect($0.localizationValue == "dive.kit.error.negative.depth")
+                    }
             }
+        } when: { operation in
+            try operation()
+        }
     }
 
     @Test(.tags(.error))
-    func surfaceAirConsumptionStartEndInvalidTimeInput() throws {
-        // Given
-        let depth: Depth = 90.0
-        let minutes: Minutes = -10.0
-        let startPressure: Pressure = 3000.0
-        let endPressure: Pressure = 2400.0
-        expectedError = .negative(minutes, "GasCalculator.surfaceAirConsumption(at:for:start:end:using:)")
-
-        // When
-        try expectThrowsError(
-            when: sut.surfaceAirConsumption(
-                at: depth,
-                for: minutes,
-                start: startPressure,
-                end: endPressure,
-                using: physicsCalculator),
-            then: expectedError) {
-                #expect($0.localizationValue == "dive.kit.error.negative.minutes")
+    func surfaceAirConsumptionStartEndInvalidTimeInput() async throws {
+        try await given {
+            let depth: Depth = 90.0
+            let minutes: Minutes = -10.0
+            let startPressure: Pressure = 3000.0
+            let endPressure: Pressure = 2400.0
+            self.expectedError = .negative(minutes, "GasCalculator.surfaceAirConsumption(at:for:start:end:using:)")
+            return {
+                try expectThrowsError(
+                    when: self.sut.surfaceAirConsumption(
+                        at: depth,
+                        for: minutes,
+                        start: startPressure,
+                        end: endPressure,
+                        using: self.physicsCalculator),
+                    then: self.expectedError) {
+                        #expect($0.localizationValue == "dive.kit.error.negative.minutes")
+                    }
             }
+        } when: { operation in
+            try operation()
+        }
     }
 
     @Test(.tags(.error))
-    func surfaceAirConsumptionStartEndInvalidStartPressureInput() throws {
-        // Given
-        let depth: Depth = 90.0
-        let minutes: Minutes = 10.0
-        let startPressure: Pressure = -3000.0
-        let endPressure: Pressure = 2400.0
-        expectedError = .negative(startPressure, "GasCalculator.surfaceAirConsumption(at:for:start:end:using:)")
-
-        // When
-        try expectThrowsError(
-            when: sut.surfaceAirConsumption(
-                at: depth,
-                for: minutes,
-                start: startPressure,
-                end: endPressure,
-                using: physicsCalculator),
-            then: expectedError) {
-                #expect($0.localizationValue == "dive.kit.error.negative.pressure")
+    func surfaceAirConsumptionStartEndInvalidStartPressureInput() async throws {
+        try await given {
+            let depth: Depth = 90.0
+            let minutes: Minutes = 10.0
+            let startPressure: Pressure = -3000.0
+            let endPressure: Pressure = 2400.0
+            self.expectedError = .negative(startPressure, "GasCalculator.surfaceAirConsumption(at:for:start:end:using:)")
+            return {
+                try expectThrowsError(
+                    when: self.sut.surfaceAirConsumption(
+                        at: depth,
+                        for: minutes,
+                        start: startPressure,
+                        end: endPressure,
+                        using: self.physicsCalculator),
+                    then: self.expectedError) {
+                        #expect($0.localizationValue == "dive.kit.error.negative.pressure")
+                    }
             }
+        } when: { operation in
+            try operation()
+        }
     }
 
     @Test(.tags(.error))
-    func surfaceAirConsumptionStartEndInvalidEndPressureInput() throws {
-        // Given
-        let depth: Depth = 90.0
-        let minutes: Minutes = 10.0
-        let startPressure: Pressure = 3000.0
-        let endPressure: Pressure = -2400.0
-        expectedError = .negative(endPressure, "GasCalculator.surfaceAirConsumption(at:for:start:end:using:)")
-
-        // When
-        try expectThrowsError(
-            when: sut.surfaceAirConsumption(
-                at: depth,
-                for: minutes,
-                start: startPressure,
-                end: endPressure,
-                using: physicsCalculator),
-            then: expectedError) {
-                #expect($0.localizationValue == "dive.kit.error.negative.pressure")
+    func surfaceAirConsumptionStartEndInvalidEndPressureInput() async throws {
+        try await given {
+            let depth: Depth = 90.0
+            let minutes: Minutes = 10.0
+            let startPressure: Pressure = 3000.0
+            let endPressure: Pressure = -2400.0
+            self.expectedError = .negative(endPressure, "GasCalculator.surfaceAirConsumption(at:for:start:end:using:)")
+            return {
+                try expectThrowsError(
+                    when: self.sut.surfaceAirConsumption(
+                        at: depth,
+                        for: minutes,
+                        start: startPressure,
+                        end: endPressure,
+                        using: self.physicsCalculator),
+                    then: self.expectedError) {
+                        #expect($0.localizationValue == "dive.kit.error.negative.pressure")
+                    }
             }
+        } when: { operation in
+            try operation()
+        }
     }
 
     @Test(.tags(.error))
-    func surfaceAirConsumptionStartEndInvalidCalculatedConsumingPressureInput() throws {
-        // Given
-        let depth: Depth = 90.0
-        let minutes: Minutes = 10.0
-        let startPressure: Pressure = 2400.0
-        let endPressure: Pressure = 3000.0
-        let consumed: Pressure = -600
-        expectedError = .negative(consumed, "GasCalculator.surfaceAirConsumption(at:for:start:end:using:)")
-
-        // When
-        try expectThrowsError(
-            when: sut.surfaceAirConsumption(
-                at: depth,
-                for: minutes,
-                start: startPressure,
-                end: endPressure,
-                using: physicsCalculator),
-            then: expectedError) {
-                #expect($0.localizationValue == "dive.kit.error.negative.pressure")
+    func surfaceAirConsumptionStartEndInvalidCalculatedConsumingPressureInput() async throws {
+        try await given {
+            let depth: Depth = 90.0
+            let minutes: Minutes = 10.0
+            let startPressure: Pressure = 2400.0
+            let endPressure: Pressure = 3000.0
+            let consumed: Pressure = -600
+            self.expectedError = .negative(consumed, "GasCalculator.surfaceAirConsumption(at:for:start:end:using:)")
+            return {
+                try expectThrowsError(
+                    when: self.sut.surfaceAirConsumption(
+                        at: depth,
+                        for: minutes,
+                        start: startPressure,
+                        end: endPressure,
+                        using: self.physicsCalculator),
+                    then: self.expectedError) {
+                        #expect($0.localizationValue == "dive.kit.error.negative.pressure")
+                    }
             }
+        } when: { operation in
+            try operation()
+        }
     }
 
 }

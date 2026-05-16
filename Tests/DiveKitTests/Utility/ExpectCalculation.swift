@@ -10,13 +10,23 @@ package func expectCalculation<Result: ResultRepresentable>(
     }
 
 package func given<S, Result>(
-    _ given: () throws -> S,
-    when: (_ sut: S) throws -> Result,
-    then: (_ sut: S, _ result: Result) throws -> Void) async rethrows {
+    _ given: () async throws -> S,
+    when: (_ sut: S) async throws -> Result,
+    then: (_ sut: S, _ result: Result) async throws -> Void) async rethrows {
         try await confirmation { confirmation in
-            let sut = try given()
-            let result = try when(sut)
-            try then(sut, result)
+            let sut = try await given()
+            let result = try await when(sut)
+            try await then(sut, result)
+            confirmation()
+        }
+    }
+
+package func given<S>(
+    _ given: () async throws -> S,
+    when: (_ sut: S) async throws -> Void) async rethrows {
+        try await confirmation { confirmation in
+            let sut = try await given()
+            try await when(sut)
             confirmation()
         }
     }

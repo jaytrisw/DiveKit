@@ -4,325 +4,344 @@ import Testing
 
 @Suite(.tags(.localization))
 struct LocalizationResolverTests {
-    @Test func scopedResolverDoesNotMutateOuterResolver() {
-        withTestLocalization(.test) {
-            // Given
-            let title = { Depth.Unit.feet.localizedTitle }
-            let expectedString = UUID().uuidString
-            let resolver = LocalizationResolver { _, _, _ in expectedString }
+    @Test func scopedResolverDoesNotMutateOuterResolver() async {
+        await withTestLocalization(.test) {
+            await given {
+                let title = { Depth.Unit.feet.localizedTitle }
+                let expectedString = UUID().uuidString
+                let resolver = LocalizationResolver { _, _, _ in expectedString }
 
-            // When
-            let scopedTitle = Localization.standard.withResolver(resolver) {
-                title()
+                return (title: title, expectedString: expectedString, resolver: resolver)
+            } when: { input in
+                Localization.standard.withResolver(input.resolver) {
+                    input.title()
+                }
+            } then: { input, scopedTitle in
+                #expect(input.title() != input.expectedString)
+                #expect(scopedTitle == input.expectedString)
             }
-
-            // Then
-            #expect(title() != expectedString)
-            #expect(scopedTitle == expectedString)
         }
     }
 
     @Test func scopedResolversAreTaskLocal() async {
         await withTestLocalization(.test) {
-            // Given
-            let title: @Sendable () -> String = { Depth.Unit.feet.localizedTitle }
-            let firstExpectedString = UUID().uuidString
-            let secondExpectedString = UUID().uuidString
-            let firstResolver = LocalizationResolver { _, _, _ in firstExpectedString }
-            let secondResolver = LocalizationResolver { _, _, _ in secondExpectedString }
+            await given {
+                let title: @Sendable () -> String = { Depth.Unit.feet.localizedTitle }
+                let firstExpectedString = UUID().uuidString
+                let secondExpectedString = UUID().uuidString
+                let firstResolver = LocalizationResolver { _, _, _ in firstExpectedString }
+                let secondResolver = LocalizationResolver { _, _, _ in secondExpectedString }
 
-            // When
-            async let firstTitle = Localization.standard.withResolver(firstResolver) { () async -> String in
-                title()
+                return (
+                    title: title,
+                    firstExpectedString: firstExpectedString,
+                    secondExpectedString: secondExpectedString,
+                    firstResolver: firstResolver,
+                    secondResolver: secondResolver)
+            } when: { input in
+                async let firstTitle = Localization.standard.withResolver(input.firstResolver) { () async -> String in
+                    input.title()
+                }
+                async let secondTitle = Localization.standard.withResolver(input.secondResolver) { () async -> String in
+                    input.title()
+                }
+
+                return await (firstTitle, secondTitle)
+            } then: { input, result in
+                #expect(input.title() != input.firstExpectedString)
+                #expect(input.title() != input.secondExpectedString)
+                #expect(result.0 == input.firstExpectedString)
+                #expect(result.1 == input.secondExpectedString)
             }
-            async let secondTitle = Localization.standard.withResolver(secondResolver) { () async -> String in
-                title()
-            }
-
-            let result = await (firstTitle, secondTitle)
-
-            // Then
-            #expect(title() != firstExpectedString)
-            #expect(title() != secondExpectedString)
-            #expect(result.0 == firstExpectedString)
-            #expect(result.1 == secondExpectedString)
         }
     }
 
-    @Test func scopedLocaleDoesNotMutateOuterLocale() {
-        withTestLocalization(.test) {
-            // Given
-            let identifier = { Localization.standard.locale.identifier }
-            let locale = Locale(identifier: "de_DE")
-
-            // When
-            let scopedIdentifier = Localization.standard.withLocale(locale) {
-                identifier()
+    @Test func scopedLocaleDoesNotMutateOuterLocale() async {
+        await withTestLocalization(.test) {
+            await given {
+                (
+                    identifier: { Localization.standard.locale.identifier },
+                    locale: Locale(identifier: "de_DE"))
+            } when: { input in
+                Localization.standard.withLocale(input.locale) {
+                    input.identifier()
+                }
+            } then: { input, scopedIdentifier in
+                #expect(scopedIdentifier == input.locale.identifier)
+                #expect(input.identifier() == Locale.english.identifier)
             }
-
-            // Then
-            #expect(scopedIdentifier == locale.identifier)
-            #expect(identifier() == Locale.english.identifier)
         }
     }
 
     @Test func scopedLocalesAreTaskLocal() async {
         await withTestLocalization(.test) {
-            // Given
-            let identifier: @Sendable () -> String = { Localization.standard.locale.identifier }
-            let first = Locale.english
-            let second = Locale(identifier: "de_DE")
+            await given {
+                let identifier: @Sendable () -> String = { Localization.standard.locale.identifier }
 
-            // When
-            async let firstLocale = Localization.standard.withLocale(
-                first) { () async -> String in
-                    identifier()
-                }
-            async let secondLocale = Localization.standard.withLocale(
-                second) { () async -> String in
-                    identifier()
-                }
+                return (
+                    identifier: identifier,
+                    first: Locale.english,
+                    second: Locale(identifier: "de_DE"))
+            } when: { input in
+                async let firstLocale = Localization.standard.withLocale(
+                    input.first) { () async -> String in
+                        input.identifier()
+                    }
+                async let secondLocale = Localization.standard.withLocale(
+                    input.second) { () async -> String in
+                        input.identifier()
+                    }
 
-            let result = await (firstLocale, secondLocale)
-
-            // Then
-            #expect(result.0 == first.identifier)
-            #expect(result.1 == second.identifier)
-            #expect(identifier() == Locale.english.identifier)
+                return await (firstLocale, secondLocale)
+            } then: { input, result in
+                #expect(result.0 == input.first.identifier)
+                #expect(result.1 == input.second.identifier)
+                #expect(input.identifier() == Locale.english.identifier)
+            }
         }
     }
 
-    @Test func customResolverReceivesActiveLocale() {
-        withTestLocalization(.test) {
-            // Given
-            let title = { Depth.Unit.feet.localizedTitle }
-            let resolver = LocalizationResolver { _, _, locale in
-                locale.identifier
-            }
-            let locale = Locale(identifier: "de_DE")
-
-            // When
-            let result = Localization.standard.withResolver(resolver) {
-                Localization.standard.withLocale(locale) {
-                    title()
+    @Test func customResolverReceivesActiveLocale() async {
+        await withTestLocalization(.test) {
+            await given {
+                let title = { Depth.Unit.feet.localizedTitle }
+                let resolver = LocalizationResolver { _, _, locale in
+                    locale.identifier
                 }
-            }
+                let locale = Locale(identifier: "de_DE")
 
-            // Then
-            #expect(result == locale.identifier)
+                return (title: title, resolver: resolver, locale: locale)
+            } when: { input in
+                Localization.standard.withResolver(input.resolver) {
+                    Localization.standard.withLocale(input.locale) {
+                        input.title()
+                    }
+                }
+            } then: { input, result in
+                #expect(result == input.locale.identifier)
+            }
         }
     }
 
-    @Test func scopedResolverPreservesOuterScopedLocale() {
-        withTestLocalization(.test) {
-            // Given
-            let title = { Depth.Unit.feet.localizedTitle }
-            let resolver = LocalizationResolver { _, _, locale in
-                locale.identifier
-            }
-            let locale = Locale(identifier: "de_DE")
+    @Test func scopedResolverPreservesOuterScopedLocale() async {
+        await withTestLocalization(.test) {
+            await given {
+                let title = { Depth.Unit.feet.localizedTitle }
+                let resolver = LocalizationResolver { _, _, locale in
+                    locale.identifier
+                }
+                let locale = Locale(identifier: "de_DE")
 
-            // When
-            let result = Localization.standard.withLocale(locale) {
+                return (title: title, resolver: resolver, locale: locale)
+            } when: { input in
+                Localization.standard.withLocale(input.locale) {
+                    Localization.standard.withResolver(input.resolver) {
+                        input.title()
+                    }
+                }
+            } then: { input, result in
+                #expect(result == input.locale.identifier)
+            }
+        }
+    }
+
+    @Test func setUpdatesSharedLocalizationConfiguration() async {
+        await given {
+            let originalResolver = Localization.standard.resolver
+            let originalLocale = Localization.standard.locale
+            let resolverExpectedString = UUID().uuidString
+            let resolver = LocalizationResolver { _, _, _ in resolverExpectedString }
+            let locale = Locale(identifier: "de_DE")
+            let closureExpectedString = UUID().uuidString
+
+            return (
+                originalResolver: originalResolver,
+                originalLocale: originalLocale,
+                resolverExpectedString: resolverExpectedString,
+                resolver: resolver,
+                locale: locale,
+                closureExpectedString: closureExpectedString)
+        } when: { input in
+            defer {
+                Localization.standard.set(input.originalResolver)
+                Localization.standard.set(input.originalLocale)
+            }
+
+            Localization.standard.set(input.resolver)
+            let resolverResult = Localization.standard.resolver.resolve("test", [], .english)
+
+            Localization.standard.set(input.locale)
+            let localeResult = Localization.standard.locale.identifier
+
+            Localization.standard.set { _, _, _ in
+                input.closureExpectedString
+            }
+            let closureResult = Localization.standard.resolver.resolve("test", [], .english)
+
+            return (
+                resolver: resolverResult,
+                locale: localeResult,
+                closure: closureResult)
+        } then: { input, result in
+            #expect(result.resolver == input.resolverExpectedString)
+            #expect(result.locale == input.locale.identifier)
+            #expect(result.closure == input.closureExpectedString)
+        }
+    }
+
+    @Test func customResolverOverridesUnitTitle() async {
+        await withTestLocalization(.test) {
+            await given {
+                let title = { Depth.Unit.feet.localizedTitle }
+                let expectedString = UUID().uuidString
+                let resolver = LocalizationResolver { _, _, _ in expectedString }
+
+                return (title: title, expectedString: expectedString, resolver: resolver)
+            } when: { input in
+                Localization.standard.withResolver(input.resolver) {
+                    input.title()
+                }
+            } then: { input, result in
+                #expect(input.title() != input.expectedString)
+                #expect(result == input.expectedString)
+            }
+        }
+    }
+
+    @Test func customResolverResolvesPluralQuantity() async {
+        await withTestLocalization(.test) {
+            await given {
+                LocalizationResolver.customDepthQuantity
+            } when: { resolver in
                 Localization.standard.withResolver(resolver) {
-                    title()
+                    (
+                        plural: Depth(33).formatted(.depth(.feet, style: .full)),
+                        singular: Depth(1).formatted(.depth(.feet, style: .full)))
                 }
+            } then: { _, result in
+                #expect(result.plural == "33 custom feet")
+                #expect(result.singular == "1 custom foot")
             }
-
-            // Then
-            #expect(result == locale.identifier)
         }
     }
 
-    @Test func setUpdatesSharedLocalizationConfiguration() {
-        // Given
-        let originalResolver = Localization.standard.resolver
-        let originalLocale = Localization.standard.locale
-        defer {
-            Localization.standard.set(originalResolver)
-            Localization.standard.set(originalLocale)
-        }
-
-        let resolverExpectedString = UUID().uuidString
-        let resolver = LocalizationResolver { _, _, _ in resolverExpectedString }
-        let locale = Locale(identifier: "de_DE")
-        let closureExpectedString = UUID().uuidString
-
-        // When
-        Localization.standard.set(resolver)
-        let resolverResult = Localization.standard.resolver.resolve("test", [], .english)
-
-        Localization.standard.set(locale)
-        let localeResult = Localization.standard.locale.identifier
-
-        Localization.standard.set { _, _, _ in
-            closureExpectedString
-        }
-        let closureResult = Localization.standard.resolver.resolve("test", [], .english)
-
-        // Then
-        #expect(resolverResult == resolverExpectedString)
-        #expect(localeResult == locale.identifier)
-        #expect(closureResult == closureExpectedString)
-    }
-
-    @Test func customResolverOverridesUnitTitle() {
-        withTestLocalization(.test) {
-            // Given
-            let title = { Depth.Unit.feet.localizedTitle }
-            let expectedString = UUID().uuidString
-            let resolver = LocalizationResolver { _, _, _ in expectedString }
-
-            // When
-            let result = Localization.standard.withResolver(resolver) {
-                title()
+    @Test func catalogResolverMissingKeyResolvesToRawKey() async {
+        await given {
+            LocalizationResolver.catalog(named: "Missing", in: .module)
+        } when: { resolver in
+            Localization.standard.withResolver(resolver) {
+                Volume.Unit.liters.localizedTitle
             }
-
-            // Then
-            #expect(title() != expectedString)
-            #expect(result == expectedString)
+        } then: { _, result in
+            #expect(result == "dive.kit.unit.volume.title")
         }
     }
 
-    @Test func customResolverResolvesPluralQuantity() {
-        withTestLocalization(.test) {
-            // Given
-            let resolver = LocalizationResolver.customDepthQuantity
-
-            // When
-            let result = Localization.standard.withResolver(resolver) {
+    @Test func formatStyleResolvesPluralQuantityWithActiveResolver() async {
+        await given {
+            Locale.english
+        } when: { locale in
+            withTestLocalization(.test, locale) {
                 (
-                    plural: Depth(33).formatted(.depth(.feet, style: .full)),
-                    singular: Depth(1).formatted(.depth(.feet, style: .full)))
+                    singular: Depth(1).formatted(.depth(.feet, style: .full).locale(locale)),
+                    plural: Depth(33).formatted(.depth(.feet, style: .full).locale(locale)))
             }
-
-            // Then
-            #expect(result.plural == "33 custom feet")
-            #expect(result.singular == "1 custom foot")
+        } then: { _, result in
+            #expect(result.singular == "1 foot")
+            #expect(result.plural == "33 feet")
         }
     }
 
-    @Test func catalogResolverMissingKeyResolvesToRawKey() {
-        // Given
-        let resolver = LocalizationResolver.catalog(named: "Missing", in: .module)
-
-        // When
-        let result = Localization.standard.withResolver(resolver) {
-            Volume.Unit.liters.localizedTitle
+    @Test func unitLocalizationResolvesPluralQuantityWithActiveResolver() async {
+        await given {
+            (locale: Locale.english, sut: Depth.Unit.feet)
+        } when: { input in
+            withTestLocalization(.test, input.locale) {
+                (
+                    singular: input.sut.localization(for: .quantity(1, .full)),
+                    plural: input.sut.localization(for: .quantity(33, .full)))
+            }
+        } then: { _, result in
+            #expect(result.singular == "1 foot")
+            #expect(result.plural == "33 feet")
         }
-
-        // Then
-        #expect(result == "dive.kit.unit.volume.title")
     }
 
-    @Test func formatStyleResolvesPluralQuantityWithActiveResolver() {
-        // Given
-        let locale = Locale.english
+    @Test func formatStyleLocaleIsPassedToResolver() async {
+        await withTestLocalization(.test) {
+            await given {
+                let resolver = LocalizationResolver { _, arguments, locale in
+                    guard !arguments.isEmpty else {
+                        return locale.identifier
+                    }
 
-        // When
-        let result = withTestLocalization(.test, locale) {
-            (
-                singular: Depth(1).formatted(.depth(.feet, style: .full).locale(locale)),
-                plural: Depth(33).formatted(.depth(.feet, style: .full).locale(locale)))
-        }
-
-        // Then
-        #expect(result.singular == "1 foot")
-        #expect(result.plural == "33 feet")
-    }
-
-    @Test func unitLocalizationResolvesPluralQuantityWithActiveResolver() {
-        // Given
-        let locale = Locale.english
-        let sut = Depth.Unit.feet
-
-        // When
-        let result = withTestLocalization(.test, locale) {
-            (
-                singular: sut.localization(for: .quantity(1, .full)),
-                plural: sut.localization(for: .quantity(33, .full)))
-        }
-
-        // Then
-        #expect(result.singular == "1 foot")
-        #expect(result.plural == "33 feet")
-    }
-
-    @Test func formatStyleLocaleIsPassedToResolver() {
-        withTestLocalization(.test) {
-            // Given
-            let resolver = LocalizationResolver { _, arguments, locale in
-                guard !arguments.isEmpty else {
-                    return locale.identifier
+                    return String(
+                        format: "%.3f \(locale.identifier)",
+                        locale: locale,
+                        arguments: arguments)
                 }
+                let locale = Locale(identifier: "de_DE")
 
-                return String(
-                    format: "%.3f \(locale.identifier)",
-                    locale: locale,
-                    arguments: arguments)
+                return (resolver: resolver, locale: locale)
+            } when: { input in
+                Localization.standard.withResolver(input.resolver) {
+                    Depth(1).formatted(.depth(.feet, style: .full).locale(input.locale))
+                }
+            } then: { input, result in
+                #expect(result == "1 \(input.locale.identifier)")
             }
-            let locale = Locale(identifier: "de_DE")
-
-            // When
-            let result = Localization.standard.withResolver(resolver) {
-                Depth(1).formatted(.depth(.feet, style: .full).locale(locale))
-            }
-
-            // Then
-            #expect(result == "1 \(locale.identifier)")
         }
     }
 
-    @Test func rateQuantityUsesCustomResolverForBaseUnitLookup() {
-        withTestLocalization(.test) {
-            // Given
-            let resolver = LocalizationResolver.customRateQuantity
-            let sut = Rate<Depth>(1)
-
-            // When
-            let result = Localization.standard.withResolver(resolver) {
-                sut.formatted(.rate(.perMinute(.feet), style: .full))
+    @Test func rateQuantityUsesCustomResolverForBaseUnitLookup() async {
+        await withTestLocalization(.test) {
+            await given {
+                (resolver: LocalizationResolver.customRateQuantity, sut: Rate<Depth>(1))
+            } when: { input in
+                Localization.standard.withResolver(input.resolver) {
+                    input.sut.formatted(.rate(.perMinute(.feet), style: .full))
+                }
+            } then: { _, result in
+                #expect(result == "1 custom foot each minute")
             }
-
-            // Then
-            #expect(result == "1 custom foot each minute")
         }
     }
 
-    @Test func errorDescriptionUsesCustomResolver() {
-        withTestLocalization(.test) {
-            // Given
-            let error = Error.negative(.depth(10), #function)
-            let description = { error.localizedDescription }
-            let expectedString = UUID().uuidString
-            let resolver = LocalizationResolver { _, _, _ in expectedString }
+    @Test func errorDescriptionUsesCustomResolver() async {
+        await withTestLocalization(.test) {
+            await given {
+                let error = Error.negative(.depth(10), #function)
+                let description = { error.localizedDescription }
+                let expectedString = UUID().uuidString
+                let resolver = LocalizationResolver { _, _, _ in expectedString }
 
-            // When
-            let result = Localization.standard.withResolver(resolver) {
-                description()
+                return (description: description, expectedString: expectedString, resolver: resolver)
+            } when: { input in
+                Localization.standard.withResolver(input.resolver) {
+                    input.description()
+                }
+            } then: { input, result in
+                #expect(input.description() != input.expectedString)
+                #expect(result == input.expectedString)
             }
-
-            // Then
-            #expect(description() != expectedString)
-            #expect(result == expectedString)
         }
     }
 
-    @Test func decodedFormatStyleUsesActiveResolver() throws {
-        // Given
-        let style = DecimalUnitFormatStyle<Depth>(.feet, style: .full)
-        let data = try JSONEncoder().encode(style)
-        let decodedStyle = try JSONDecoder().decode(DecimalUnitFormatStyle<Depth>.self, from: data)
+    @Test func decodedFormatStyleUsesActiveResolver() async throws {
+        try await given {
+            let style = DecimalUnitFormatStyle<Depth>(.feet, style: .full)
+            let data = try JSONEncoder().encode(style)
 
-        // When
-        let result = withTestLocalization(.test) {
-            Localization.standard.withResolver(.customDepthQuantity) {
-                Depth(1).formatted(decodedStyle)
+            return try JSONDecoder().decode(DecimalUnitFormatStyle<Depth>.self, from: data)
+        } when: { decodedStyle in
+            withTestLocalization(.test) {
+                Localization.standard.withResolver(.customDepthQuantity) {
+                    Depth(1).formatted(decodedStyle)
+                }
             }
+        } then: { _, result in
+            #expect(result == "1 custom foot")
         }
-
-        // Then
-        #expect(result == "1 custom foot")
     }
 }
 

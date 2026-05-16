@@ -3,237 +3,219 @@ import Testing
 
 @Suite(.tags(.localization))
 struct PressureLocalizationTests {
-    @Test func localizedTitleDImperial() {
-        withTestLocalization(.test) {
-            // Given
-            let sut = Pressure.Unit.psi
-
-            // When
-            let result = sut.localizedTitle
-
-            // Then
-            #expect(result == "Pressure")
+    @Test func localizedTitleDImperial() async {
+        await withTestLocalization(.test) {
+            await given {
+                Pressure.Unit.psi
+            } when: { sut in
+                sut.localizedTitle
+            } then: { _, result in
+                #expect(result == "Pressure")
+            }
         }
     }
 
-    @Test func localizedTitleMetric() {
-        withTestLocalization(.test) {
-            // Given
-            let sut = Pressure.Unit.bar
-
-            // When
-            let result = sut.localizedTitle
-
-            // Then
-            #expect(result == "Pressure")
+    @Test func localizedTitleMetric() async {
+        await withTestLocalization(.test) {
+            await given {
+                Pressure.Unit.bar
+            } when: { sut in
+                sut.localizedTitle
+            } then: { _, result in
+                #expect(result == "Pressure")
+            }
         }
     }
 
-    @Test func localizedTitleAtmospheres() {
-        withTestLocalization(.test) {
-            // Given
-            let sut = Pressure.Unit.atmospheres
-
-            // When
-            let result = sut.localizedTitle
-
-            // Then
-            #expect(result == "Pressure")
+    @Test func localizedTitleAtmospheres() async {
+        await withTestLocalization(.test) {
+            await given {
+                Pressure.Unit.atmospheres
+            } when: { sut in
+                sut.localizedTitle
+            } then: { _, result in
+                #expect(result == "Pressure")
+            }
         }
     }
 
-    @Test func descriptionShortImperial() {
-        withTestLocalization(.test) {
-            // Given
-            let sut = Pressure.Unit.psi
-
-            // When
-            let result = sut.localizedDescription(for: .short)
-
-            // Then
-            #expect(result == "psi")
+    @Test func descriptionShortImperial() async {
+        await withTestLocalization(.test) {
+            await given {
+                Pressure.Unit.psi
+            } when: { sut in
+                sut.localizedDescription(for: .short)
+            } then: { _, result in
+                #expect(result == "psi")
+            }
         }
     }
 
-    @Test func descriptionShortMetric() {
-        withTestLocalization(.test) {
-            // Given
-            let sut = Pressure.Unit.bar
-
-            // When
-            let result = sut.localizedDescription(for: .short)
-
-            // Then
-            #expect(result == "bar")
+    @Test func descriptionShortMetric() async {
+        await withTestLocalization(.test) {
+            await given {
+                Pressure.Unit.bar
+            } when: { sut in
+                sut.localizedDescription(for: .short)
+            } then: { _, result in
+                #expect(result == "bar")
+            }
         }
     }
 
-    @Test func descriptionShortAtmospheres() {
-        withTestLocalization(.test) {
-            // Given
-            let sut = Pressure.Unit.atmospheres
-
-            // When
-            let result = sut.localizedDescription(for: .short)
-
-            // Then
-            #expect(result == "atm")
+    @Test func descriptionShortAtmospheres() async {
+        await withTestLocalization(.test) {
+            await given {
+                Pressure.Unit.atmospheres
+            } when: { sut in
+                sut.localizedDescription(for: .short)
+            } then: { _, result in
+                #expect(result == "atm")
+            }
         }
     }
 
-    @Test func descriptionFullImperial() {
-        withTestLocalization(.test) {
-            // Given
-            let sut = Pressure.Unit.psi
-
-            // When
-            let result = sut.localizedDescription(for: .full)
-
-            // Then
-            #expect(result == "pounds per square inch")
+    @Test func descriptionFullImperial() async {
+        await withTestLocalization(.test) {
+            await given {
+                Pressure.Unit.psi
+            } when: { sut in
+                sut.localizedDescription(for: .full)
+            } then: { _, result in
+                #expect(result == "pounds per square inch")
+            }
         }
     }
 
-    @Test func descriptionFullMetric() {
-        withTestLocalization(.test) {
-            // Given
-            let sut = Pressure.Unit.bar
-
-            // When
-            let result = sut.localizedDescription(for: .full)
-
-            // Then
-            #expect(result == "bar")
+    @Test func descriptionFullMetric() async {
+        await withTestLocalization(.test) {
+            await given {
+                Pressure.Unit.bar
+            } when: { sut in
+                sut.localizedDescription(for: .full)
+            } then: { _, result in
+                #expect(result == "bar")
+            }
         }
     }
 
-    @Test func descriptionFullAtmospheres() {
-        withTestLocalization(.test) {
-            // Given
-            let sut = Pressure.Unit.atmospheres
-
-            // When
-            let result = sut.localizedDescription(for: .full)
-
-            // Then
-            #expect(result == "atmospheres")
+    @Test func descriptionFullAtmospheres() async {
+        await withTestLocalization(.test) {
+            await given {
+                Pressure.Unit.atmospheres
+            } when: { sut in
+                sut.localizedDescription(for: .full)
+            } then: { _, result in
+                #expect(result == "atmospheres")
+            }
         }
     }
 
-    @Test func quantityShortImperial() {
-        withTestLocalization(.test) {
-            // Given
-            let sut = Pressure.Unit.psi
-
-            // When
-            let result = sut.localization(for: .quantity(.zero, .short))
-
-            // Then
-            #expect(result == "0 psi")
+    @Test func quantityShortImperial() async {
+        await withTestLocalization(.test) {
+            await given {
+                Pressure.Unit.psi
+            } when: { sut in
+                sut.localization(for: .quantity(.zero, .short))
+            } then: { _, result in
+                #expect(result == "0 psi")
+            }
         }
     }
 
-    @Test func quantityShortMetric() {
-        withTestLocalization(.test) {
-            // Given
-            let sut = Pressure.Unit.bar
-
-            // When
-            let result = sut.localization(for: .quantity(.zero, .short))
-
-            // Then
-            #expect(result == "0 bar")
+    @Test func quantityShortMetric() async {
+        await withTestLocalization(.test) {
+            await given {
+                Pressure.Unit.bar
+            } when: { sut in
+                sut.localization(for: .quantity(.zero, .short))
+            } then: { _, result in
+                #expect(result == "0 bar")
+            }
         }
     }
 
-    @Test func quantityShortAtmospheres() {
-        withTestLocalization(.test) {
-            // Given
-            let sut = Pressure.Unit.atmospheres
-
-            // When
-            let result = sut.localization(for: .quantity(.zero, .short))
-
-            // Then
-            #expect(result == "0 atm")
+    @Test func quantityShortAtmospheres() async {
+        await withTestLocalization(.test) {
+            await given {
+                Pressure.Unit.atmospheres
+            } when: { sut in
+                sut.localization(for: .quantity(.zero, .short))
+            } then: { _, result in
+                #expect(result == "0 atm")
+            }
         }
     }
 
-    @Test func quantityFullImperial() {
-        withTestLocalization(.test) {
-            // Given
-            let sut = Pressure.Unit.psi
-
-            // When
-            let result = sut.localization(for: .quantity(.zero, .full))
-
-            // Then
-            #expect(result == "0 pounds per square inch")
+    @Test func quantityFullImperial() async {
+        await withTestLocalization(.test) {
+            await given {
+                Pressure.Unit.psi
+            } when: { sut in
+                sut.localization(for: .quantity(.zero, .full))
+            } then: { _, result in
+                #expect(result == "0 pounds per square inch")
+            }
         }
     }
 
-    @Test func quantityFullMetric() {
-        withTestLocalization(.test) {
-            // Given
-            let sut = Pressure.Unit.bar
-
-            // When
-            let result = sut.localization(for: .quantity(.zero, .full))
-
-            // Then
-            #expect(result == "0 bar")
+    @Test func quantityFullMetric() async {
+        await withTestLocalization(.test) {
+            await given {
+                Pressure.Unit.bar
+            } when: { sut in
+                sut.localization(for: .quantity(.zero, .full))
+            } then: { _, result in
+                #expect(result == "0 bar")
+            }
         }
     }
 
-    @Test func quantityFullAtmospheres() {
-        withTestLocalization(.test) {
-            // Given
-            let sut = Pressure.Unit.atmospheres
-
-            // When
-            let result = sut.localization(for: .quantity(.zero, .full))
-
-            // Then
-            #expect(result == "0 atmospheres")
+    @Test func quantityFullAtmospheres() async {
+        await withTestLocalization(.test) {
+            await given {
+                Pressure.Unit.atmospheres
+            } when: { sut in
+                sut.localization(for: .quantity(.zero, .full))
+            } then: { _, result in
+                #expect(result == "0 atmospheres")
+            }
         }
     }
 
-    @Test func oneQuantityFullImperial() {
-        withTestLocalization(.test) {
-            // Given
-            let sut = Pressure.Unit.psi
-
-            // When
-            let result = sut.localization(for: .quantity(1, .full))
-
-            // Then
-            #expect(result == "1 pound per square inch")
+    @Test func oneQuantityFullImperial() async {
+        await withTestLocalization(.test) {
+            await given {
+                Pressure.Unit.psi
+            } when: { sut in
+                sut.localization(for: .quantity(1, .full))
+            } then: { _, result in
+                #expect(result == "1 pound per square inch")
+            }
         }
     }
 
-    @Test func oneQuantityFullMetric() {
-        withTestLocalization(.test) {
-            // Given
-            let sut = Pressure.Unit.bar
-
-            // When
-            let result = sut.localization(for: .quantity(1, .full))
-
-            // Then
-            #expect(result == "1 bar")
+    @Test func oneQuantityFullMetric() async {
+        await withTestLocalization(.test) {
+            await given {
+                Pressure.Unit.bar
+            } when: { sut in
+                sut.localization(for: .quantity(1, .full))
+            } then: { _, result in
+                #expect(result == "1 bar")
+            }
         }
     }
 
-    @Test func oneQuantityFullAtmospheres() {
-        withTestLocalization(.test) {
-            // Given
-            let sut = Pressure.Unit.atmospheres
-
-            // When
-            let result = sut.localization(for: .quantity(1, .full))
-
-            // Then
-            #expect(result == "1 atmosphere")
+    @Test func oneQuantityFullAtmospheres() async {
+        await withTestLocalization(.test) {
+            await given {
+                Pressure.Unit.atmospheres
+            } when: { sut in
+                sut.localization(for: .quantity(1, .full))
+            } then: { _, result in
+                #expect(result == "1 atmosphere")
+            }
         }
     }
 }

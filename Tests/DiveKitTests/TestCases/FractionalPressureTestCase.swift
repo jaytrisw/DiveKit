@@ -5,66 +5,68 @@ import Testing
 struct FractionalPressureTestCase {
 
     @Test
-    func initializationStoresValidFractionalPressure() throws {
-        // Given
-        let gas = Oxygen()
-
-        // When
-        let sut = try FractionalPressure(of: gas, fractionalPressure: 0.21)
-
-        // Then
-        #expect(sut.gas == gas)
-        #expect(sut.value == 0.21)
+    func initializationStoresValidFractionalPressure() async throws {
+        try await given {
+            Oxygen()
+        } when: { gas in
+            try FractionalPressure(of: gas, fractionalPressure: 0.21)
+        } then: { gas, sut in
+            #expect(sut.gas == gas)
+            #expect(sut.value == 0.21)
+        }
     }
 
     @Test(.tags(.error))
-    func initializationRejectsNegativeFractionalPressure() throws {
-        // Given
-        let gas = Oxygen()
-        let fractionalPressure = -0.01
-        let expectedError: Error = .negative(
-            .fractionalPressure(fractionalPressure),
-            "FractionalPressure<Oxygen>.init(of:fractionalPressure:)")
+    func initializationRejectsNegativeFractionalPressure() async throws {
+        try await given {
+            let fractionalPressure = -0.01
+            let expectedError: Error = .negative(
+                .fractionalPressure(fractionalPressure),
+                "FractionalPressure<Oxygen>.init(of:fractionalPressure:)")
 
-        // When / Then
-        try expectThrowsError(
-            when: try FractionalPressure(of: gas, fractionalPressure: fractionalPressure),
-            then: expectedError) { error in
+            return (gas: Oxygen(), fractionalPressure: fractionalPressure, expectedError: expectedError)
+        } when: { input in
+            try expectThrowsError(
+                when: try FractionalPressure(of: input.gas, fractionalPressure: input.fractionalPressure),
+                then: input.expectedError) { error in
                 #expect(error.localizationValue == "dive.kit.error.negative.fractional.pressure")
             }
+        }
     }
 
     @Test(.tags(.error))
-    func initializationRejectsFractionalPressureGreaterThanOne() throws {
-        // Given
-        let gas = Oxygen()
-        let fractionalPressure = 1.01
-        let expectedError: Error = .range(
-            .upperBound(fractionalPressure, 1),
-            "FractionalPressure<Oxygen>.init(of:fractionalPressure:)")
+    func initializationRejectsFractionalPressureGreaterThanOne() async throws {
+        try await given {
+            let fractionalPressure = 1.01
+            let expectedError: Error = .range(
+                .upperBound(fractionalPressure, 1),
+                "FractionalPressure<Oxygen>.init(of:fractionalPressure:)")
 
-        // When / Then
-        try expectThrowsError(
-            when: try FractionalPressure(of: gas, fractionalPressure: fractionalPressure),
-            then: expectedError) { error in
+            return (gas: Oxygen(), fractionalPressure: fractionalPressure, expectedError: expectedError)
+        } when: { input in
+            try expectThrowsError(
+                when: try FractionalPressure(of: input.gas, fractionalPressure: input.fractionalPressure),
+                then: input.expectedError) { error in
                 #expect(error.localizationValue == "dive.kit.error.range.upper.bound")
             }
+        }
     }
 
     @Test(.tags(.error))
-    func negativeErrorMapsUnsafeFractionalPressureToFractionalPressureInput() throws {
-        // Given
-        let fractionalPressure = -0.01
-        let expectedError = Error.negative(
-            .fractionalPressure(fractionalPressure),
-            "FractionalPressure<Oxygen>.init(of:fractionalPressure:)")
+    func negativeErrorMapsUnsafeFractionalPressureToFractionalPressureInput() async throws {
+        try await given {
+            let fractionalPressure = -0.01
+            let expectedError = Error.negative(
+                .fractionalPressure(fractionalPressure),
+                "FractionalPressure<Oxygen>.init(of:fractionalPressure:)")
 
-        // When / Then
-        try expectThrowsError(
-            when: try FractionalPressure(of: .oxygen, fractionalPressure: fractionalPressure),
-            then: expectedError) { error in
+            return (fractionalPressure: fractionalPressure, expectedError: expectedError)
+        } when: { input in
+            try expectThrowsError(
+                when: try FractionalPressure(of: .oxygen, fractionalPressure: input.fractionalPressure),
+                then: input.expectedError) { error in
                 #expect(error.localizationValue == "dive.kit.error.negative.fractional.pressure")
-
             }
+        }
     }
 }
