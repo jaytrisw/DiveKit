@@ -47,7 +47,7 @@ struct BlendStaticMembersTestCase {
         try expectThrowsError(
             when: try Blend.enrichedAir(fractionalPressure),
             then: expectedError) {
-                #expect($0.localizationKey == "dive.kit.error.negative.fractional.pressure")
+                #expect($0.localizationValue == "dive.kit.error.negative.fractional.pressure")
             }
     }
 

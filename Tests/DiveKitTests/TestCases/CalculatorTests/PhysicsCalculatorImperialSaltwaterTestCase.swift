@@ -30,7 +30,7 @@ struct PhysicsCalculatorImperialSaltwaterTestCase {
             Issue.record("Expected an error to be thrown.")
         } catch let error {
             #expect(error == expectedError)
-            #expect(error.localizationKey == "dive.kit.error.negative.depth")
+            #expect(error.localizationValue == "dive.kit.error.negative.depth")
         }
     }
 
@@ -60,7 +60,7 @@ struct PhysicsCalculatorImperialSaltwaterTestCase {
             Issue.record("Expected an error to be thrown.")
         } catch let error {
             #expect(error == expectedError)
-            #expect(error.localizationKey == "dive.kit.error.negative.depth")
+            #expect(error.localizationValue == "dive.kit.error.negative.depth")
         }
     }
 
@@ -91,7 +91,7 @@ struct PhysicsCalculatorImperialSaltwaterTestCase {
             Issue.record("Expected an error to be thrown.")
         } catch let error {
             #expect(error == expectedError)
-            #expect(error.localizationKey == "dive.kit.error.negative.depth")
+            #expect(error.localizationValue == "dive.kit.error.negative.depth")
         }
     }
 
@@ -107,7 +107,7 @@ struct PhysicsCalculatorImperialSaltwaterTestCase {
             Issue.record("Expected an error to be thrown.")
         } catch let error {
             #expect(error == expectedError)
-            #expect(error.localizationKey == "dive.kit.error.negative.depth")
+            #expect(error.localizationValue == "dive.kit.error.negative.depth")
         }
     }
 
@@ -138,7 +138,7 @@ struct PhysicsCalculatorImperialSaltwaterTestCase {
             Issue.record("Expected an error to be thrown.")
         } catch let error {
             #expect(error == expectedError)
-            #expect(error.localizationKey == "dive.kit.error.negative.depth")
+            #expect(error.localizationValue == "dive.kit.error.negative.depth")
         }
     }
 
@@ -154,7 +154,7 @@ struct PhysicsCalculatorImperialSaltwaterTestCase {
             Issue.record("Expected an error to be thrown.")
         } catch let error {
             #expect(error == expectedError)
-            #expect(error.localizationKey == "dive.kit.error.negative.volume")
+            #expect(error.localizationValue == "dive.kit.error.negative.volume")
         }
     }
 
@@ -185,7 +185,7 @@ struct PhysicsCalculatorImperialSaltwaterTestCase {
             Issue.record("Expected an error to be thrown.")
         } catch let error {
             #expect(error == expectedError)
-            #expect(error.localizationKey == "dive.kit.error.negative.depth")
+            #expect(error.localizationValue == "dive.kit.error.negative.depth")
         }
     }
 
@@ -201,7 +201,7 @@ struct PhysicsCalculatorImperialSaltwaterTestCase {
             Issue.record("Expected an error to be thrown.")
         } catch let error {
             #expect(error == expectedError)
-            #expect(error.localizationKey == "dive.kit.error.negative.volume")
+            #expect(error.localizationValue == "dive.kit.error.negative.volume")
         }
     }
 }

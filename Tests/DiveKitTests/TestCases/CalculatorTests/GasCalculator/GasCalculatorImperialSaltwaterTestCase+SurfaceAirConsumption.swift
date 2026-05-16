@@ -42,7 +42,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 consuming: consuming,
                 using: physicsCalculator),
             then: expectedError) {
-                #expect($0.localizationKey == "dive.kit.error.negative.depth")
+                #expect($0.localizationValue == "dive.kit.error.negative.depth")
             }
     }
 
@@ -62,7 +62,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 consuming: consuming,
                 using: physicsCalculator),
             then: expectedError) {
-                #expect($0.localizationKey == "dive.kit.error.negative.minutes")
+                #expect($0.localizationValue == "dive.kit.error.negative.minutes")
             }
     }
 
@@ -82,7 +82,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 consuming: consuming,
                 using: physicsCalculator),
             then: expectedError) {
-                #expect($0.localizationKey == "dive.kit.error.range.lower.bound")
+                #expect($0.localizationValue == "dive.kit.error.range.lower.bound")
             }
     }
 
@@ -103,7 +103,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
                     consuming: consuming,
                     using: physicsCalculator),
             then: expectedError) {
-                #expect($0.localizationKey == "dive.kit.error.negative.pressure")
+                #expect($0.localizationValue == "dive.kit.error.negative.pressure")
             }
     }
 
@@ -150,7 +150,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 end: endPressure,
                 using: physicsCalculator),
             then: expectedError) {
-                #expect($0.localizationKey == "dive.kit.error.negative.depth")
+                #expect($0.localizationValue == "dive.kit.error.negative.depth")
             }
     }
 
@@ -172,7 +172,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 end: endPressure,
                 using: physicsCalculator),
             then: expectedError) {
-                #expect($0.localizationKey == "dive.kit.error.negative.minutes")
+                #expect($0.localizationValue == "dive.kit.error.negative.minutes")
             }
     }
 
@@ -194,7 +194,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 end: endPressure,
                 using: physicsCalculator),
             then: expectedError) {
-                #expect($0.localizationKey == "dive.kit.error.negative.pressure")
+                #expect($0.localizationValue == "dive.kit.error.negative.pressure")
             }
     }
 
@@ -216,7 +216,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 end: endPressure,
                 using: physicsCalculator),
             then: expectedError) {
-                #expect($0.localizationKey == "dive.kit.error.negative.pressure")
+                #expect($0.localizationValue == "dive.kit.error.negative.pressure")
             }
     }
 
@@ -239,7 +239,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
                 end: endPressure,
                 using: physicsCalculator),
             then: expectedError) {
-                #expect($0.localizationKey == "dive.kit.error.negative.pressure")
+                #expect($0.localizationValue == "dive.kit.error.negative.pressure")
             }
     }
 

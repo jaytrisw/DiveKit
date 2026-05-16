@@ -9,6 +9,6 @@ extension Error: LocalizedError {
     ///
     /// - Since: 1.0.0
     public var errorDescription: String? {
-        localizedString(for: localizationKey, with: .init(describing: self))
+        localizedString(for: localizationValue)
     }
 }

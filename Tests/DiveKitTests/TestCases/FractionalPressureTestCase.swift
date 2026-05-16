@@ -29,7 +29,7 @@ struct FractionalPressureTestCase {
         try expectThrowsError(
             when: try FractionalPressure(of: gas, fractionalPressure: fractionalPressure),
             then: expectedError) { error in
-                #expect(error.localizationKey == "dive.kit.error.negative.fractional.pressure")
+                #expect(error.localizationValue == "dive.kit.error.negative.fractional.pressure")
             }
     }
 
@@ -46,7 +46,7 @@ struct FractionalPressureTestCase {
         try expectThrowsError(
             when: try FractionalPressure(of: gas, fractionalPressure: fractionalPressure),
             then: expectedError) { error in
-                #expect(error.localizationKey == "dive.kit.error.range.upper.bound")
+                #expect(error.localizationValue == "dive.kit.error.range.upper.bound")
             }
     }
 
@@ -62,7 +62,7 @@ struct FractionalPressureTestCase {
         try expectThrowsError(
             when: try FractionalPressure(of: .oxygen, fractionalPressure: fractionalPressure),
             then: expectedError) { error in
-                #expect(error.localizationKey == "dive.kit.error.negative.fractional.pressure")
+                #expect(error.localizationValue == "dive.kit.error.negative.fractional.pressure")
 
             }
     }

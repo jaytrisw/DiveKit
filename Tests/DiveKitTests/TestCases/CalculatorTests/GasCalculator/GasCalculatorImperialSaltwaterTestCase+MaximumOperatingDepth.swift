@@ -239,7 +239,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
         try expectThrowsError(
             when: sut.maximumOperatingDepth(for: partialPressure, in: blend),
             then: expectedError) {
-                #expect($0.localizationKey == "dive.kit.error.negative.partial.pressure")
+                #expect($0.localizationValue == "dive.kit.error.negative.partial.pressure")
             }
     }
 
@@ -261,7 +261,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
         try expectThrowsError(
             when: sut.maximumOperatingDepth(for: partialPressure, in: blend),
             then: expectedError) {
-                #expect($0.localizationKey == "dive.kit.error.range.lower.bound")
+                #expect($0.localizationValue == "dive.kit.error.range.lower.bound")
             }
     }
 
@@ -279,7 +279,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
         try expectThrowsError(
             when: sut.maximumOperatingDepth(for: partialPressure, in: blend),
             then: expectedError) {
-                #expect($0.localizationKey == "dive.kit.error.range.lower.bound")
+                #expect($0.localizationValue == "dive.kit.error.range.lower.bound")
             }
     }
 }

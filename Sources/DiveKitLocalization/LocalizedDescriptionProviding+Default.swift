@@ -8,6 +8,6 @@ public extension LocalizedDescriptionProviding where Self: LocalizationProviding
     /// - Returns: The localized description for `style`.
     /// - Since: 1.0.0
     func localizedDescription(for style: LocalizationStyle) -> String {
-        localizedString(for: localization(for: .description(style)), with: .init(describing: self))
+        localization(for: .description(style))
     }
 }

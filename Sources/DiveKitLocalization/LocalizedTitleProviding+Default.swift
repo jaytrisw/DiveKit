@@ -6,6 +6,6 @@ public extension LocalizedTitleProviding where Self: LocalizationProviding, Comp
     ///
     /// - Since: 1.0.0
     var localizedTitle: String {
-        localizedString(for: localization(for: .title), with: .init(describing: self))
+        localization(for: .title)
     }
 }

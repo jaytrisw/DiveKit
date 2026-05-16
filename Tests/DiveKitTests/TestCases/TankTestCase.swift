@@ -27,7 +27,7 @@ struct TankTestCase {
         try expectThrowsError(
             when: Tank(blend: blend, size: size),
             then: expectedError) {
-                #expect($0.localizationKey == "dive.kit.error.blend.total.pressure")
+                #expect($0.localizationValue == "dive.kit.error.blend.total.pressure")
             }
     }
 }

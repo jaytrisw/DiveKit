@@ -1,0 +1,29 @@
+name: Xcode Version
+description: Read .xcode-version from the repository root and select that Xcode version.
+
+outputs:
+  version:
+    description: Selected Xcode version from .xcode-version.
+    value: ${{ steps.read.outputs.version }}
+
+runs:
+  using: composite
+  steps:
+    - name: Read Xcode version
+      id: read
+      shell: bash
+      run: |
+        set -euo pipefail
+
+        VERSION="$(tr -d '[:space:]' < .xcode-version)"
+        if [[ -z "$VERSION" ]]; then
+          echo ".xcode-version must not be empty."
+          exit 1
+        fi
+
+        echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+    - name: Select Xcode
+      uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: ${{ steps.read.outputs.version }}

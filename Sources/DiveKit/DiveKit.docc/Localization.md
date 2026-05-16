@@ -11,6 +11,18 @@ let depth = Depth(30)
 let formattedDepth = depth.formatted(.depth(.meters, style: .short))
 ```
 
+Use a locale or precision when the caller needs a specific localization or
+numeric presentation. Format-style locale controls string-catalog lookup,
+plural selection, and numeric formatting for that formatting operation.
+
+```swift
+let pressureIncrease = Depth(33)
+let formattedPressureIncrease = pressureIncrease.formatted(
+    .depth(.feet, style: .short)
+        .precision(.fractionLength(1))
+        .locale(Locale(identifier: "en_US")))
+```
+
 ## Format Raw Values
 
 You can also format a raw `Double` when the format style supplies the domain type.
@@ -37,10 +49,79 @@ let localizedTitle = Pressure.Unit.bar.localizedTitle
 let localizedDescription = Pressure.Unit.bar.localizedDescription(for: .full)
 ```
 
+## Use a Custom Strings Catalog
+
+DiveKit resolves localized strings through `Localization.standard.resolver`.
+Install a resolver during app startup when an app or package provides DiveKit
+strings in a custom bundle or catalog. The bundle must expose the table through
+Foundation localization lookup.
+
+If the strings live in the app's default `Localizable` catalog, pass the app
+bundle.
+
+```swift
+Localization.standard.set(.catalog(in: .main))
+```
+
+If the strings live in a separate catalog, pass its table name.
+
+```swift
+Localization.standard.set(
+    .catalog(
+        named: "DiveKit",
+        in: .main))
+```
+
+If the catalog lives in a Swift package, pass that package's resource bundle.
+
+```swift
+Localization.standard.set(
+    .catalog(
+        named: "DiveKit",
+        in: Bundle.module))
+```
+
+For custom lookup behavior, install a resolver closure directly.
+
+```swift
+Localization.standard.set { key, arguments, locale in
+    let localized = String(
+        localized: key,
+        table: "DiveKit",
+        bundle: .main,
+        locale: locale)
+
+    guard !arguments.isEmpty else {
+        return localized
+    }
+
+    return String(format: localized, locale: locale, arguments: arguments)
+}
+```
+
+All unit localization and formatting APIs use the active resolver.
+
+```swift
+let depth = Depth(33)
+let formattedDepth = depth.formatted(.depth(.feet, style: .full))
+```
+
+Use `Localization.standard.set(_:)` to change the shared default locale for
+direct localization calls, or `withLocale(_:operation:)` to scope a locale to a
+single task hierarchy.
+
+```swift
+Localization.standard.withLocale(Locale(identifier: "en_US")) {
+    let localizedTitle = Depth.Unit.feet.localizedTitle
+}
+```
+
 ## Additional API Names
 
 ### Localization Types
 
+- `Localization`
+- `LocalizationResolver`
 - `LocalizationStyle`
 - `LocalizationComponent`
 - `LocalizationProviding`

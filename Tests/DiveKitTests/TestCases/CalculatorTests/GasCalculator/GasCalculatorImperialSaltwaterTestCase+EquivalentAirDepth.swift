@@ -50,7 +50,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
         try expectThrowsError(
             when: sut.equivalentAirDepth(for: depth, with: blend),
             then: expectedError) {
-                #expect($0.localizationKey == "dive.kit.error.negative.depth")
+                #expect($0.localizationValue == "dive.kit.error.negative.depth")
             }
     }
 
@@ -66,7 +66,7 @@ extension GasCalculatorImperialSaltwaterTestCase {
         try expectThrowsError(
             when: sut.equivalentAirDepth(for: depth, with: blend),
             then: expectedError) {
-                #expect($0.localizationKey == "dive.kit.error.blend.total.pressure")
+                #expect($0.localizationValue == "dive.kit.error.blend.total.pressure")
             }
     }
 }

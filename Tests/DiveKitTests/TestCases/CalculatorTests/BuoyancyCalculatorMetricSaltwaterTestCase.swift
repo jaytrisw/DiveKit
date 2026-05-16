@@ -49,7 +49,7 @@ struct BuoyancyCalculatorMetricSaltwaterTestCase {
         try expectThrowsError(
             when: sut.buoyancy(of: object),
             then: expectedError) {
-                #expect($0.localizationKey == "dive.kit.error.negative.weight")
+                #expect($0.localizationValue == "dive.kit.error.negative.weight")
             }
     }
 
@@ -64,7 +64,7 @@ struct BuoyancyCalculatorMetricSaltwaterTestCase {
         try expectThrowsError(
             when: sut.buoyancy(of: object),
             then: expectedError) {
-                #expect($0.localizationKey == "dive.kit.error.negative.volume")
+                #expect($0.localizationValue == "dive.kit.error.negative.volume")
             }
     }
 
@@ -95,7 +95,7 @@ struct BuoyancyCalculatorMetricSaltwaterTestCase {
         try expectThrowsError(
             when: sut.buoyancyOfObject(weighing: weight, andDisplacing: volume),
             then: expectedError) {
-                #expect($0.localizationKey == "dive.kit.error.negative.weight")
+                #expect($0.localizationValue == "dive.kit.error.negative.weight")
             }
     }
 
@@ -109,7 +109,7 @@ struct BuoyancyCalculatorMetricSaltwaterTestCase {
         try expectThrowsError(
             when: sut.buoyancyOfObject(weighing: weight, andDisplacing: volume),
             then: expectedError) {
-                #expect($0.localizationKey == "dive.kit.error.negative.volume")
+                #expect($0.localizationValue == "dive.kit.error.negative.volume")
             }
     }
 
@@ -140,7 +140,7 @@ struct BuoyancyCalculatorMetricSaltwaterTestCase {
         try expectThrowsError(
             when: sut.volumeOfObject(weighing: weight, with: buoyancy),
             then: expectedError) {
-                #expect($0.localizationKey == "dive.kit.error.negative.weight")
+                #expect($0.localizationValue == "dive.kit.error.negative.weight")
             }
     }
 

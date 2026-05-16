@@ -24,7 +24,7 @@ struct BlendUnblendedTestCase {
         try expectThrowsError(
             when: sut.add(fractionalPressure),
             then: expectedError) {
-                #expect($0.localizationKey == "dive.kit.error.blend.pressure.range")
+                #expect($0.localizationValue == "dive.kit.error.blend.pressure.range")
             }
     }
 
@@ -76,7 +76,7 @@ struct BlendUnblendedTestCase {
         try expectThrowsError(
             when: sut.update(.oxygen, pressure: oxygenFraction),
             then: expectedError) {
-                #expect($0.localizationKey == "dive.kit.error.blend.pressure.range")
+                #expect($0.localizationValue == "dive.kit.error.blend.pressure.range")
             }
     }
 
@@ -151,7 +151,7 @@ struct BlendUnblendedTestCase {
         try expectThrowsError(
             when: sut.blend(),
             then: expectedError) {
-                #expect($0.localizationKey == "dive.kit.error.blend.total.pressure")
+                #expect($0.localizationValue == "dive.kit.error.blend.total.pressure")
             }
     }
 
