@@ -59,6 +59,18 @@ struct DepthFormatStyleTests {
         }
     }
 
+    @Test func formatStyleUsesActiveLocaleWhenNoneIsSpecified() async {
+        await withTestLocalization(.test, Locale(identifier: "de_DE")) {
+            await given {
+                Depth(10.3)
+            } when: { sut in
+                sut.formatted(.depth(.meters, style: .short))
+            } then: { _, result in
+                #expect(result == "10,3 m")
+            }
+        }
+    }
+
     @Test func englishShortFormatStyleUsesExplicitPrecision() async {
         await withTestLocalization(.test) {
             await given {
