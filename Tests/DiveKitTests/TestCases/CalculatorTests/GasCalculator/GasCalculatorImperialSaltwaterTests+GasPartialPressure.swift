@@ -10,19 +10,18 @@ extension GasCalculatorImperialSaltwaterTests {
         try await given {
             let fractionalPressure = try FractionalPressure(of: .oxygen, fractionalPressure: 0.21)
             let depth: Depth = 33.0
-            return {
-                try expectCalculation(
-                    self.sut.partialPressure(
-                        of: fractionalPressure,
-                        at: depth,
-                        using: self.physicsCalculator)) { result, configuration in
-                            #expect(result.value == 0.42)
-                            #expect(result.unit == .atmospheres)
-                            #expect(configuration == self.sut.configuration)
-                    }
+            return (fractionalPressure: fractionalPressure, depth: depth)
+        } when: { input in
+            try self.sut.partialPressure(
+                of: input.fractionalPressure,
+                at: input.depth,
+                using: self.physicsCalculator)
+        } then: { _, calculation in
+            try expectCalculation(calculation) { result, configuration in
+                    #expect(result.value == 0.42)
+                    #expect(result.unit == .atmospheres)
+                    #expect(configuration == self.sut.configuration)
             }
-        } when: { operation in
-            try operation()
         }
     }
 
@@ -32,15 +31,13 @@ extension GasCalculatorImperialSaltwaterTests {
             let fractionalPressure = try FractionalPressure(of: .oxygen, fractionalPressure: 0.21)
             let depth: Depth = -33.0
             self.expectedError = .negative(depth, "GasCalculator.partialPressure(of:at:using:)")
-            return {
-                try expectThrowsError(
-                    when: self.sut.partialPressure(of: fractionalPressure, at: depth, using: self.physicsCalculator),
-                    then: self.expectedError) {
-                        #expect($0.localizationValue == "dive.kit.error.negative.depth")
-                    }
+            return (fractionalPressure: fractionalPressure, depth: depth)
+        } when: { input in
+            Result { try self.sut.partialPressure(of: input.fractionalPressure, at: input.depth, using: self.physicsCalculator) }
+        } then: { _, result in
+            try expectThrowsError(when: result.get(), then: self.expectedError) {
+                #expect($0.localizationValue == "dive.kit.error.negative.depth")
             }
-        } when: { operation in
-            try operation()
         }
     }
 
@@ -52,20 +49,19 @@ extension GasCalculatorImperialSaltwaterTests {
             let gas = Oxygen()
             let blend = Blend<Blended>.air
             let depth: Depth = 33.0
-            return {
-                try expectCalculation(
-                    self.sut.partialPressure(
-                        of: gas,
-                        in: blend,
-                        at: depth,
-                        using: self.physicsCalculator)) { result, configuration in
-                            #expect(result.value == 0.418)
-                            #expect(result.unit == .atmospheres)
-                            #expect(configuration == self.sut.configuration)
-                        }
+            return (gas: gas, blend: blend, depth: depth)
+        } when: { input in
+            try self.sut.partialPressure(
+                of: input.gas,
+                in: input.blend,
+                at: input.depth,
+                using: self.physicsCalculator)
+        } then: { _, calculation in
+            try expectCalculation(calculation) { result, configuration in
+                #expect(result.value == 0.418)
+                #expect(result.unit == .atmospheres)
+                #expect(configuration == self.sut.configuration)
             }
-        } when: { operation in
-            try operation()
         }
     }
 
@@ -76,15 +72,13 @@ extension GasCalculatorImperialSaltwaterTests {
             let blend = Blend<Blended>.air
             let depth: Depth = -33.0
             self.expectedError = .negative(depth, "GasCalculator.partialPressure(of:in:at:using:)")
-            return {
-                try expectThrowsError(
-                    when: self.sut.partialPressure(of: gas, in: blend, at: depth, using: self.physicsCalculator),
-                    then: self.expectedError) {
-                        #expect($0.localizationValue == "dive.kit.error.negative.depth")
-                    }
+            return (gas: gas, blend: blend, depth: depth)
+        } when: { input in
+            Result { try self.sut.partialPressure(of: input.gas, in: input.blend, at: input.depth, using: self.physicsCalculator) }
+        } then: { _, result in
+            try expectThrowsError(when: result.get(), then: self.expectedError) {
+                #expect($0.localizationValue == "dive.kit.error.negative.depth")
             }
-        } when: { operation in
-            try operation()
         }
     }
 
@@ -98,20 +92,19 @@ extension GasCalculatorImperialSaltwaterTests {
                 .adding(.oxygen, pressure: 0.21)
                 .filling(with: .nitrogen)
             let depth: Depth = 33.0
-            return {
-                try expectCalculation(
-                    self.sut.partialPressure(
-                        of: gas,
-                        blending: blend,
-                        at: depth,
-                        using: self.physicsCalculator)) { result, configuration in
-                            #expect(result.value == 0.42)
-                            #expect(result.unit == .atmospheres)
-                            #expect(configuration == self.sut.configuration)
-                        }
+            return (gas: gas, blend: blend, depth: depth)
+        } when: { input in
+            try self.sut.partialPressure(
+                of: input.gas,
+                blending: input.blend,
+                at: input.depth,
+                using: self.physicsCalculator)
+        } then: { _, calculation in
+            try expectCalculation(calculation) { result, configuration in
+                #expect(result.value == 0.42)
+                #expect(result.unit == .atmospheres)
+                #expect(configuration == self.sut.configuration)
             }
-        } when: { operation in
-            try operation()
         }
     }
 
@@ -123,15 +116,13 @@ extension GasCalculatorImperialSaltwaterTests {
             let blend = try Blend<Unblended>(.init(of: .oxygen, fractionalPressure: 0.21))
             let depth: Depth = 33.0
             self.expectedError = .blend(.totalPressure(oxygenFraction, blend), "GasCalculator.partialPressure(of:blending:at:using:)")
-            return {
-                try expectThrowsError(
-                    when: self.sut.partialPressure(of: gas, blending: blend, at: depth, using: self.physicsCalculator),
-                    then: self.expectedError) {
-                        #expect($0.localizationValue == "dive.kit.error.blend.total.pressure")
-                    }
+            return (gas: gas, blend: blend, depth: depth)
+        } when: { input in
+            Result { try self.sut.partialPressure(of: input.gas, blending: input.blend, at: input.depth, using: self.physicsCalculator) }
+        } then: { _, result in
+            try expectThrowsError(when: result.get(), then: self.expectedError) {
+                #expect($0.localizationValue == "dive.kit.error.blend.total.pressure")
             }
-        } when: { operation in
-            try operation()
         }
     }
 
@@ -144,15 +135,13 @@ extension GasCalculatorImperialSaltwaterTests {
                 .filling(with: .nitrogen)
             let depth: Depth = -33.0
             self.expectedError = .negative(depth, "GasCalculator.partialPressure(of:blending:at:using:)")
-            return {
-                try expectThrowsError(
-                    when: self.sut.partialPressure(of: gas, blending: blend, at: depth, using: self.physicsCalculator),
-                    then: self.expectedError) {
-                        #expect($0.localizationValue == "dive.kit.error.negative.depth")
-                    }
+            return (gas: gas, blend: blend, depth: depth)
+        } when: { input in
+            Result { try self.sut.partialPressure(of: input.gas, blending: input.blend, at: input.depth, using: self.physicsCalculator) }
+        } then: { _, result in
+            try expectThrowsError(when: result.get(), then: self.expectedError) {
+                #expect($0.localizationValue == "dive.kit.error.negative.depth")
             }
-        } when: { operation in
-            try operation()
         }
     }
 }
