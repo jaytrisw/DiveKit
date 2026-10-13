@@ -1,11 +1,10 @@
 import Testing
 @testable import DiveKit
 
-@Suite
+@Suite(.tags(.localization))
 struct DepthQuantityTests {
-    @Test func imperial() {
-        withTestLocalization(.test) {
-            // Given
+    @Test func imperial() async {
+        await withTestLocalization(.test) {
             let data: [(input: Quantity, output: String)] = [
                 (.init(value: -100, style: .full), "-100 feet"),
                 (.init(value: 0, style: .full), "0 feet"),
@@ -18,11 +17,13 @@ struct DepthQuantityTests {
             ]
 
             for datum in data {
-                // When
-                let result = quantity(datum.input)
-
-                // Then
-                #expect(result == datum.output)
+                await given {
+                    datum
+                } when: { datum in
+                    quantity(datum.input)
+                } then: { datum, result in
+                    #expect(result == datum.output)
+                }
             }
         }
     }

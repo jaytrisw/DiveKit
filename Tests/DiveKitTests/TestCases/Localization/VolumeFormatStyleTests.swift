@@ -2,72 +2,67 @@ import Foundation
 import Testing
 @testable import DiveKit
 
-@Suite
+@Suite(.tags(.localization))
 struct VolumeFormatStyleTests {
-    @Test func formatStyle() {
-        withTestLocalization(.test) {
-            // Given
-            let sut = Volume(15)
-
-            // When
-            let result = sut.formatted(.volume(.cubicFeet, style: .full))
-
-            // Then
-            #expect(result == "15 cubic feet")
+    @Test func formatStyle() async {
+        await withTestLocalization(.test) {
+            await given {
+                Volume(15)
+            } when: { sut in
+                sut.formatted(.volume(.cubicFeet, style: .full))
+            } then: { _, result in
+                #expect(result == "15 cubic feet")
+            }
         }
     }
 
-    @Test func germanShortFormatStyleUsesExplicitPrecision() {
-        withTestLocalization(.test) {
-            // Given
-            let sut = Volume(33)
-
-            // When
-            let result = sut.formatted(
+    @Test func germanShortFormatStyleUsesExplicitPrecision() async {
+        await withTestLocalization(.test) {
+            await given {
+                Volume(33)
+            } when: { sut in
+                sut.formatted(
                 .volume(.cubicFeet, style: .short)
                     .precision(.fractionLength(1))
                     .locale(Locale(identifier: "de_DE")))
-
-            // Then
-            #expect(result == "33,0 cu ft")
+            } then: { _, result in
+                #expect(result == "33,0 cu ft")
+            }
         }
     }
 
-    @Test func germanMetricShortFormatStylePreservesMeaningfulDecimalDigit() {
-        withTestLocalization(.test) {
-            // Given
-            let sut = Volume(10.3)
-
-            // When
-            let result = sut.formatted(
+    @Test func germanMetricShortFormatStylePreservesMeaningfulDecimalDigit() async {
+        await withTestLocalization(.test) {
+            await given {
+                Volume(10.3)
+            } when: { sut in
+                sut.formatted(
                 .volume(.liters, style: .short)
                     .precision(.fractionLength(1))
                     .locale(Locale(identifier: "de_DE")))
-
-            // Then
-            #expect(result == "10,3 l")
+            } then: { _, result in
+                #expect(result == "10,3 l")
+            }
         }
     }
 
-    @Test func englishShortFormatStyleUsesExplicitPrecision() {
-        withTestLocalization(.test) {
-            // Given
-            let sut = Volume(33)
-
-            // When
-            let result = sut.formatted(
+    @Test func englishShortFormatStyleUsesExplicitPrecision() async {
+        await withTestLocalization(.test) {
+            await given {
+                Volume(33)
+            } when: { sut in
+                sut.formatted(
                 .volume(.cubicFeet, style: .short)
                     .precision(.fractionLength(1))
                     .locale(Locale.english))
-
-            // Then
-            #expect(result == "33.0 cu ft")
+            } then: { _, result in
+                #expect(result == "33.0 cu ft")
+            }
         }
     }
 
-    @Test func fullFormatStylePreservesSingularAndPluralUnits() {
-        withTestLocalization(.test) {
-            // Given
+    @Test func fullFormatStylePreservesSingularAndPluralUnits() async {
+        await withTestLocalization(.test) {
             let locale = Locale.english
             let data: [VolumeFormatStyleExpectation] = [
                 .init(input: Volume(1), style: .volume(.cubicFeet, style: .full).locale(locale), output: "1 cubic foot"),
@@ -77,11 +72,13 @@ struct VolumeFormatStyleTests {
             ]
 
             for datum in data {
-                // When
-                let result = datum.input.formatted(datum.style)
-
-                // Then
-                #expect(result == datum.output)
+                await given {
+                    datum
+                } when: { datum in
+                    datum.input.formatted(datum.style)
+                } then: { datum, result in
+                    #expect(result == datum.output)
+                }
             }
         }
     }

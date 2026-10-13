@@ -19,10 +19,10 @@ public struct DecimalUnitFormatStyle<Decimal: DecimalUnitLocalizable>: Sendable 
     /// - Since: 1.0.0
     let style: LocalizationStyle
 
-    /// The locale used to localize the unit and format the numeric value.
+    /// The explicit locale, or `nil` to use the active DiveKit locale.
     ///
     /// - Since: 1.0.0
-    let locale: Locale
+    let locale: Locale?
 
     /// The precision used to format the numeric value.
     ///
@@ -34,13 +34,13 @@ public struct DecimalUnitFormatStyle<Decimal: DecimalUnitLocalizable>: Sendable 
     /// - Parameters:
     ///   - unit: The unit used by the format style.
     ///   - style: The localization style used by the format style.
-    ///   - locale: The locale used to localize the unit and format the numeric value.
+    ///   - locale: The locale to use, or `nil` to use the active DiveKit locale.
     ///   - precision: The precision used to format the numeric value.
     /// - Since: 1.0.0
     public init(
         _ unit: Decimal.Unit,
         style: LocalizationStyle,
-        locale: Locale = .autoupdatingCurrent,
+        locale: Locale? = nil,
         precision: NumberFormatStyleConfiguration.Precision? = .none) {
         self.unit = unit
         self.style = style
@@ -90,7 +90,9 @@ extension DecimalUnitFormatStyle: FormatStyle {
     /// - Returns: A localized formatted string.
     /// - Since: 1.0.0
     public func format(_ value: Decimal) -> String {
-        Localization.standard.withLocale(locale) {
+        let locale = locale ?? Localization.standard.locale
+
+        return Localization.standard.withLocale(locale) {
             localizedQuantityString(
                 value.localization(for: unit, style: style),
                 quantity: value.value,

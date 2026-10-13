@@ -2,72 +2,67 @@ import Foundation
 import Testing
 @testable import DiveKit
 
-@Suite
+@Suite(.tags(.localization))
 struct PressureFormatStyleTests {
-    @Test func formatStyle() {
-        withTestLocalization(.test) {
-            // Given
-            let sut = Pressure(15)
-
-            // When
-            let result = sut.formatted(.pressure(.atmospheres, style: .full))
-
-            // Then
-            #expect(result == "15 atmospheres")
+    @Test func formatStyle() async {
+        await withTestLocalization(.test) {
+            await given {
+                Pressure(15)
+            } when: { sut in
+                sut.formatted(.pressure(.atmospheres, style: .full))
+            } then: { _, result in
+                #expect(result == "15 atmospheres")
+            }
         }
     }
 
-    @Test func germanShortFormatStyleUsesExplicitPrecision() {
-        withTestLocalization(.test) {
-            // Given
-            let sut = Pressure(33)
-
-            // When
-            let result = sut.formatted(
+    @Test func germanShortFormatStyleUsesExplicitPrecision() async {
+        await withTestLocalization(.test) {
+            await given {
+                Pressure(33)
+            } when: { sut in
+                sut.formatted(
                 .pressure(.atmospheres, style: .short)
                     .precision(.fractionLength(1))
                     .locale(Locale(identifier: "de_DE")))
-
-            // Then
-            #expect(result == "33,0 atm")
+            } then: { _, result in
+                #expect(result == "33,0 atm")
+            }
         }
     }
 
-    @Test func germanMetricShortFormatStylePreservesMeaningfulDecimalDigit() {
-        withTestLocalization(.test) {
-            // Given
-            let sut = Pressure(10.3)
-
-            // When
-            let result = sut.formatted(
+    @Test func germanMetricShortFormatStylePreservesMeaningfulDecimalDigit() async {
+        await withTestLocalization(.test) {
+            await given {
+                Pressure(10.3)
+            } when: { sut in
+                sut.formatted(
                 .pressure(.bar, style: .short)
                     .precision(.fractionLength(1))
                     .locale(Locale(identifier: "de_DE")))
-
-            // Then
-            #expect(result == "10,3 bar")
+            } then: { _, result in
+                #expect(result == "10,3 bar")
+            }
         }
     }
 
-    @Test func englishShortFormatStyleUsesExplicitPrecision() {
-        withTestLocalization(.test) {
-            // Given
-            let sut = Pressure(33)
-
-            // When
-            let result = sut.formatted(
+    @Test func englishShortFormatStyleUsesExplicitPrecision() async {
+        await withTestLocalization(.test) {
+            await given {
+                Pressure(33)
+            } when: { sut in
+                sut.formatted(
                 .pressure(.atmospheres, style: .short)
                     .precision(.fractionLength(1))
                     .locale(Locale.english))
-
-            // Then
-            #expect(result == "33.0 atm")
+            } then: { _, result in
+                #expect(result == "33.0 atm")
+            }
         }
     }
 
-    @Test func fullFormatStylePreservesSingularAndPluralUnits() {
-        withTestLocalization(.test) {
-            // Given
+    @Test func fullFormatStylePreservesSingularAndPluralUnits() async {
+        await withTestLocalization(.test) {
             let locale = Locale.english
             let data: [PressureFormatStyleExpectation] = [
                 .init(input: Pressure(1), style: .pressure(.psi, style: .full).locale(locale), output: "1 pound per square inch"),
@@ -77,11 +72,13 @@ struct PressureFormatStyleTests {
             ]
 
             for datum in data {
-                // When
-                let result = datum.input.formatted(datum.style)
-
-                // Then
-                #expect(result == datum.output)
+                await given {
+                    datum
+                } when: { datum in
+                    datum.input.formatted(datum.style)
+                } then: { datum, result in
+                    #expect(result == datum.output)
+                }
             }
         }
     }

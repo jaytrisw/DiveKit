@@ -107,8 +107,9 @@ let formattedDepth = depth.formatted(.depth(.feet, style: .full))
 ```
 
 Use `Localization.standard.set(_:)` to change the shared default locale for
-direct localization calls, or `withLocale(_:operation:)` to scope a locale to a
-single task hierarchy.
+localization and formatting calls, or `withLocale(_:operation:)` to scope a
+locale to a single task hierarchy. Format styles with an explicit locale keep
+using that locale.
 
 ```swift
 Localization.standard.withLocale(Locale(identifier: "en_US")) {
