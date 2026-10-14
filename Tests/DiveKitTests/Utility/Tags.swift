@@ -17,4 +17,5 @@ extension Tag {
     @Tag static var rate: Self
     @Tag static var saltWater: Self
     @Tag static var tank: Self
+    @Tag static var technicalDiving: Self
 }
