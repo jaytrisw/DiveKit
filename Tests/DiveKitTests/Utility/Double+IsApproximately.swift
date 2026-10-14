@@ -1,10 +1,13 @@
 package enum Tolerance {
     case standard
+    case loose
 
     var value: Double {
         switch self {
         case .standard:
             1e-12
+        case .loose:
+            1e-6
         }
     }
 }

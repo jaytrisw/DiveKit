@@ -4,11 +4,11 @@ import DiveKitCore
 public extension Tank {
     /// Creates a tank defined by cubic feet capacity and rated pressure.
     ///
-    /// This convenience method constructs a `Tank` using a volume measured in
-    /// cubic feet, a rated pressure, and a blended gas mixture.
+    /// This convenience method constructs a `Tank` using rated surface gas
+    /// capacity in cubic feet, rated pressure in PSI, and a blended gas mixture.
     ///
     /// - Parameters:
-    ///   - volume: The internal volume of the tank.
+    ///   - volume: The rated surface gas capacity of the tank.
     ///   - ratedPressure: The rated pressure of the tank.
     ///   - blend: The gas blend contained in the tank.
     /// - Returns: A `Tank` configured with cubic feet units.

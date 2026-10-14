@@ -4,7 +4,9 @@ public extension Tank {
     /// The physical size and rated pressure of a tank.
     ///
     /// `Size` stores the tank volume, rated pressure, and the volume unit used
-    /// to interpret the size.
+    /// to interpret the size. Liter volumes describe the tank's internal water
+    /// capacity with rated pressure in bar. Cubic-foot volumes describe its
+    /// rated surface gas capacity with rated pressure in PSI.
     ///
     /// - Since: 1.0.0
     struct Size: Sendable {
