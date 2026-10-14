@@ -1,0 +1,41 @@
+name: macOS Runner
+
+on:
+  workflow_call:
+    inputs:
+      ref:
+        description: Git ref or SHA to read .runner from.
+        required: true
+        type: string
+    outputs:
+      label:
+        description: macOS runner label from .runner.
+        value: ${{ jobs.read.outputs.label }}
+
+jobs:
+  read:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      label: ${{ steps.read.outputs.label }}
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.ref }}
+          sparse-checkout: .runner
+          sparse-checkout-cone-mode: false
+
+      - name: Read macOS runner
+        id: read
+        run: |
+          set -euo pipefail
+
+          LABEL="$(tr -d '[:space:]' < .runner)"
+          if [[ -z "$LABEL" ]]; then
+            echo ".runner must not be empty."
+            exit 1
+          fi
+
+          echo "label=$LABEL" >> "$GITHUB_OUTPUT"

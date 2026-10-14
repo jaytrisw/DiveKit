@@ -14,8 +14,16 @@ on:
         default: false
 
 jobs:
+  runner:
+    uses: ./.github/workflows/macos-runner.yml
+    permissions:
+      contents: read
+    with:
+      ref: ${{ inputs.ref }}
+
   test:
-    runs-on: macos-26
+    needs: runner
+    runs-on: ${{ needs.runner.outputs.label }}
     permissions:
       contents: read
 
