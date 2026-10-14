@@ -64,7 +64,7 @@ struct VolumeFormatStyleTests {
     @Test func fullFormatStylePreservesSingularAndPluralUnits() async {
         await withTestLocalization(.test) {
             let locale = Locale.english
-            let data: [VolumeFormatStyleExpectation] = [
+            let data: [FormatStyleExpectation<Volume>] = [
                 .init(input: Volume(1), style: .volume(.cubicFeet, style: .full).locale(locale), output: "1 cubic foot"),
                 .init(input: Volume(2), style: .volume(.cubicFeet, style: .full).locale(locale), output: "2 cubic feet"),
                 .init(input: Volume(1), style: .volume(.liters, style: .full).locale(locale), output: "1 liter"),
@@ -82,10 +82,4 @@ struct VolumeFormatStyleTests {
             }
         }
     }
-}
-
-private struct VolumeFormatStyleExpectation {
-    let input: Volume
-    let style: DecimalUnitFormatStyle<Volume>
-    let output: String
 }
