@@ -64,7 +64,7 @@ struct PressureFormatStyleTests {
     @Test func fullFormatStylePreservesSingularAndPluralUnits() async {
         await withTestLocalization(.test) {
             let locale = Locale.english
-            let data: [PressureFormatStyleExpectation] = [
+            let data: [FormatStyleExpectation<Pressure>] = [
                 .init(input: Pressure(1), style: .pressure(.psi, style: .full).locale(locale), output: "1 pound per square inch"),
                 .init(input: Pressure(2), style: .pressure(.psi, style: .full).locale(locale), output: "2 pounds per square inch"),
                 .init(input: Pressure(1), style: .pressure(.atmospheres, style: .full).locale(locale), output: "1 atmosphere"),
@@ -82,10 +82,4 @@ struct PressureFormatStyleTests {
             }
         }
     }
-}
-
-private struct PressureFormatStyleExpectation {
-    let input: Pressure
-    let style: DecimalUnitFormatStyle<Pressure>
-    let output: String
 }

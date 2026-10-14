@@ -89,7 +89,7 @@ struct DepthFormatStyleTests {
     @Test func fullFormatStylePreservesSingularAndPluralUnits() async {
         await withTestLocalization(.test) {
             let locale = Locale.english
-            let data: [DepthFormatStyleExpectation] = [
+            let data: [FormatStyleExpectation<Depth>] = [
                 .init(input: Depth(1), style: .depth(.feet, style: .full).locale(locale), output: "1 foot"),
                 .init(input: Depth(2), style: .depth(.feet, style: .full).locale(locale), output: "2 feet"),
                 .init(input: Depth(1), style: .depth(.meters, style: .full).locale(locale), output: "1 meter"),
@@ -107,10 +107,4 @@ struct DepthFormatStyleTests {
             }
         }
     }
-}
-
-private struct DepthFormatStyleExpectation {
-    let input: Depth
-    let style: DecimalUnitFormatStyle<Depth>
-    let output: String
 }

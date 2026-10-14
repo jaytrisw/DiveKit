@@ -64,7 +64,7 @@ struct MassFormatStyleTests {
     @Test func fullFormatStylePreservesSingularAndPluralUnits() async {
         await withTestLocalization(.test) {
             let locale = Locale.english
-            let data: [MassFormatStyleExpectation] = [
+            let data: [FormatStyleExpectation<Mass>] = [
                 .init(input: Mass(1), style: .mass(.pounds, style: .full).locale(locale), output: "1 pound"),
                 .init(input: Mass(2), style: .mass(.pounds, style: .full).locale(locale), output: "2 pounds"),
                 .init(input: Mass(1), style: .mass(.kilograms, style: .full).locale(locale), output: "1 kilogram"),
@@ -82,10 +82,4 @@ struct MassFormatStyleTests {
             }
         }
     }
-}
-
-private struct MassFormatStyleExpectation {
-    let input: Mass
-    let style: DecimalUnitFormatStyle<Mass>
-    let output: String
 }
