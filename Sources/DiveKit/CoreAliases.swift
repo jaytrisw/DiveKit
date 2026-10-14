@@ -1,4 +1,4 @@
-import DiveKitCore
+@_spi(Experimental) import DiveKitCore
 
 @_documentation(visibility: private)
 public typealias Blend = DiveKitCore.Blend
@@ -32,6 +32,8 @@ public typealias FractionalPressure = DiveKitCore.FractionalPressure
 public typealias GasCalculating = DiveKitCore.GasCalculating
 @_documentation(visibility: private)
 public typealias GasRepresentable = DiveKitCore.GasRepresentable
+@_spi(Experimental) @_documentation(visibility: private)
+public typealias Helium = DiveKitCore.Helium
 @_documentation(visibility: private)
 public typealias Mass = DiveKitCore.Mass
 @_documentation(visibility: private)
