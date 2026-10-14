@@ -267,8 +267,8 @@ extension GasCalculator: GasCalculating {
     ///   - tank: The tank used.
     ///   - physicsCalculator: A physics calculator.
     /// - Returns: A calculation containing the RMV.
-    /// - Throws: `Error.tank` if the tank volume or rated pressure is
-    ///   negative, or a `Error` from surface air consumption validation.
+    /// - Throws: `Error.tank` if the tank volume is negative or its rated
+    ///   pressure is not positive, or a `Error` from surface air consumption validation.
     ///
     /// ```swift
     /// let rmv = try calculator.respiratoryMinuteVolume(
@@ -289,7 +289,7 @@ extension GasCalculator: GasCalculating {
         using physicsCalculator: PhysicsCalculating) throws(DiveKit.Error) -> Calculation<DecimalResult<Rate<Volume>>> {
             try tank.size.volume.validate(using: .nonNegative, orThrow: { .tank(.volume($0, tank), .from(self)) })
                 .map { (_: Volume) throws(DiveKit.Error) in
-                    try tank.size.ratedPressure.validate(using: .nonNegative, orThrow: { .tank(.ratedPressure($0, tank), .from(self)) })
+                    try tank.size.ratedPressure.validate(using: .greater(than: 0), orThrow: { .tank(.ratedPressure($0, tank), .from(self)) })
                 }
                 .map { (_: Pressure) throws(DiveKit.Error) in
                     try surfaceAirConsumption(
@@ -300,27 +300,39 @@ extension GasCalculator: GasCalculating {
                         with: configuration,
                         .from(self))
                 }
-                .map { $0.result.value * tank.size.conversionFactor }
+                .map { $0.result.value * tank.size.conversionFactor(for: configuration.units) }
                 .map { .decimal($0, unit: .perMinute(configuration.units.volume), configuration: configuration) }
         }
 }
 
 private extension Tank.Size {
-    /// A conversion factor used to translate pressure-based gas usage into volume.
+    /// A conversion factor that translates pressure-based gas usage into volume.
     ///
-    /// This value represents the ratio between the tank's internal volume and its
-    /// rated pressure, allowing conversion from pressure units to volume units.
+    /// Multiplying a pressure in `units.pressure` by this factor yields the
+    /// volume of gas in `units.volume`. Liter tanks contribute their water
+    /// capacity directly, so their rated pressure does not affect the factor.
+    /// Cubic-foot tanks contribute their rated surface capacity divided by
+    /// their rated pressure.
     ///
-    /// - Returns: The conversion factor as `volume ÷ rated pressure`.
-    ///
-    /// ```swift
-    /// let factor = tank.size.conversionFactor
-    /// ```
-    ///
-    /// - Note: This is commonly used when converting surface air consumption (SAC)
-    ///   into respiratory minute volume (RMV).
-    /// - Since: 1.0.0
-    var conversionFactor: Double {
-        volume.value / ratedPressure.value
+    /// - Parameter units: The unit system of the pressure input and volume result.
+    /// - Returns: The volume per unit of pressure, in `units`.
+    func conversionFactor(for units: Units) -> Double {
+        let (tankVolumeUnit, tankPressureUnit): (UnitVolume, UnitPressure) = switch unit {
+            case .liters: (.liters, .bars)
+            case .cubicFeet: (.cubicFeet, .poundsForcePerSquareInch)
+        }
+        let volumePerPressure = switch unit {
+            case .liters: volume.value
+            case .cubicFeet: volume.value / ratedPressure.value
+        }
+        let (resultVolumeUnit, sourcePressureUnit): (UnitVolume, UnitPressure) = switch units {
+            case .imperial: (.cubicFeet, .poundsForcePerSquareInch)
+            case .metric: (.liters, .bars)
+        }
+        let pressureFactor = Measurement(value: 1, unit: sourcePressureUnit)
+            .converted(to: tankPressureUnit).value
+
+        return Measurement(value: volumePerPressure * pressureFactor, unit: tankVolumeUnit)
+            .converted(to: resultVolumeUnit).value
     }
 }

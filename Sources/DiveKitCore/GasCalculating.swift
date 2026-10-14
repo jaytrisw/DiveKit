@@ -111,8 +111,8 @@ public protocol GasCalculating {
     ///   - tank: The tank used for the dive.
     ///   - physicsCalculator: The physics calculator used for absolute pressure.
     /// - Returns: A calculation containing respiratory minute volume.
-    /// - Throws: ``Error/tank(_:_:)`` if the tank volume or rated pressure is
-    ///   negative, ``Error/negative(_:_:)`` if `depth`, `minutes`, or
+    /// - Throws: ``Error/tank(_:_:)`` if the tank volume is negative or its
+    ///   rated pressure is not positive, ``Error/negative(_:_:)`` if `depth`, `minutes`, or
     ///   `gasConsumed` is negative, or ``Error/range(_:_:)`` if `minutes` is
     ///   zero.
     /// - Since: 1.0.0
