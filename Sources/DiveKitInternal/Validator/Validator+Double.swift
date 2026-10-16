@@ -87,6 +87,8 @@ package extension Validator where Value == Double {
 
     /// A validator that succeeds when the value is neither infinite nor NaN.
     ///
+    /// - Returns: A validator that returns `true` if the value is finite.
+    ///
     /// ```swift
     /// let isFinite = Validator<Double>.finite
     /// isFinite.validate(10)        // true
