@@ -43,8 +43,8 @@ public extension Tissue {
         public init(of gas: Gas, pressure: PartialPressure<Gas>) throws(Error) {
             let callSite: CallSite = .from(Self.self)
             let pressure = try pressure
-                .validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
                 .validate(using: .finite) { .range(.upperBound($0.value, .greatestFiniteMagnitude), callSite) }
+                .validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
             self.gas = gas
             self.start = pressure
             self.end = pressure
@@ -74,11 +74,11 @@ public extension Tissue {
                 let callSite: CallSite = .from(Self.self)
                 self.gas = gas
                 self.start = try start
-                    .validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
                     .validate(using: .finite) { .range(.upperBound($0.value, .greatestFiniteMagnitude), callSite) }
+                    .validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
                 self.end = try end
-                    .validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
                     .validate(using: .finite) { .range(.upperBound($0.value, .greatestFiniteMagnitude), callSite) }
+                    .validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
             }
     }
 }

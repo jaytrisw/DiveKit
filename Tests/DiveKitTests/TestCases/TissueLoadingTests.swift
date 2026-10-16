@@ -112,4 +112,25 @@ struct TissueLoadingTests {
             }
         }
     }
+
+    @Test(.tags(.error))
+    func loadingRejectsNaNModelResult() async throws {
+        try await given {
+            (
+                compartment: Tissue.Compartment(try .init(of: .nitrogen, halfTime: .init(10), tension: .init(0.7))),
+                model: Tissue.Loading { _, _, _, _ in .nan })
+        } when: { input in
+            let error = #expect(throws: Error.self) {
+                try input.compartment.loaded(
+                    for: .init(5),
+                    inspired: try .init(of: .nitrogen, pressure: .init(1)),
+                    using: input.model)
+            }
+            guard case let .range(.upperBound(provided, _), _) = error else {
+                Issue.record("Expected an upper-bound error, got \(String(describing: error)).")
+                return
+            }
+            #expect(provided.isNaN)
+        }
+    }
 }

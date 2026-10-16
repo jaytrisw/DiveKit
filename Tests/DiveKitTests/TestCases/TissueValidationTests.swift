@@ -60,8 +60,8 @@ struct TissueValidationTests {
             let error = #expect(throws: Error.self) {
                 try Tissue.Compartment.Component(of: .nitrogen, halfTime: halfTime, tension: .init(0.7))
             }
-            guard case let .range(.lowerBound(provided, _), _) = error else {
-                Issue.record("Expected a lower-bound error, got \(String(describing: error)).")
+            guard case let .range(.upperBound(provided, _), _) = error else {
+                Issue.record("Expected an upper-bound error, got \(String(describing: error)).")
                 return
             }
             #expect(provided.isNaN)
@@ -83,6 +83,22 @@ struct TissueValidationTests {
                 then: input.expectedError) { error in
                 #expect(error.localizationValue == "dive.kit.error.negative.partial.pressure")
             }
+        }
+    }
+
+    @Test
+    func componentRejectsNaNTension() async {
+        await given {
+            PartialPressure<Nitrogen>(.nan)
+        } when: { value in
+            let error = #expect(throws: Error.self) {
+                try Tissue.Compartment.Component(of: .nitrogen, halfTime: .init(10), tension: value)
+            }
+            guard case let .range(.upperBound(provided, _), _) = error else {
+                Issue.record("Expected an upper-bound error, got \(String(describing: error)).")
+                return
+            }
+            #expect(provided.isNaN)
         }
     }
 
@@ -116,6 +132,38 @@ struct TissueValidationTests {
                 then: input.expectedError) { error in
                 #expect(error.localizationValue == "dive.kit.error.negative.partial.pressure")
             }
+        }
+    }
+
+    @Test
+    func constantInspiredRejectsNaNPressure() async {
+        await given {
+            PartialPressure<Nitrogen>(.nan)
+        } when: { value in
+            let error = #expect(throws: Error.self) {
+                try Tissue.Inspired(of: .nitrogen, pressure: value)
+            }
+            guard case let .range(.upperBound(provided, _), _) = error else {
+                Issue.record("Expected an upper-bound error, got \(String(describing: error)).")
+                return
+            }
+            #expect(provided.isNaN)
+        }
+    }
+
+    @Test
+    func linearInspiredRejectsNaNPressure() async {
+        await given {
+            PartialPressure<Helium>(.nan)
+        } when: { value in
+            let error = #expect(throws: Error.self) {
+                try Tissue.Inspired(of: .helium, from: .init(0.2), to: value)
+            }
+            guard case let .range(.upperBound(provided, _), _) = error else {
+                Issue.record("Expected an upper-bound error, got \(String(describing: error)).")
+                return
+            }
+            #expect(provided.isNaN)
         }
     }
 }

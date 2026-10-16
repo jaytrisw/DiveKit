@@ -199,4 +199,20 @@ struct TissueCompartmentTests {
             }
         }
     }
+
+    @Test(.tags(.error))
+    func loadingRejectsNaNDuration() async throws {
+        try await given {
+            Tissue.Compartment(try .init(of: .nitrogen, halfTime: .init(10), tension: .init(0.7)))
+        } when: { input in
+            let error = #expect(throws: Error.self) {
+                try input.loaded(for: Minutes(.nan), inspired: try .init(of: .nitrogen, pressure: .init(1)))
+            }
+            guard case let .range(.upperBound(provided, _), _) = error else {
+                Issue.record("Expected an upper-bound error, got \(String(describing: error)).")
+                return
+            }
+            #expect(provided.isNaN)
+        }
+    }
 }

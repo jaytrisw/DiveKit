@@ -41,8 +41,8 @@ public extension Tissue.Compartment {
         using model: Tissue.Loading = .schreiner) throws(Error) -> Loaded {
             let callSite: CallSite = .from(Self.self)
             let duration = try duration
-                .validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
                 .validate(using: .finite) { .range(.upperBound($0.value, .greatestFiniteMagnitude), callSite) }
+                .validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
                 .value
             var pressures: [AnyGas: (from: Double, to: Double)] = [:]
             for gas in repeat each inspired {
@@ -55,10 +55,8 @@ public extension Tissue.Compartment {
                 for (gas, entry) in storage {
                     let tension = try model
                         .load(entry.tension, pressures[gas] ?? (.zero, .zero), entry.halfTime.value, duration)
+                        .validate(using: .finite) { .range(.upperBound($0, .greatestFiniteMagnitude), callSite) }
                         .validate(using: .greaterThanOrEqual(to: .zero)) { .negative(.partialPressure($0), callSite) }
-                        .validate(using: .lessThanOrEqual(to: .greatestFiniteMagnitude)) {
-                            .range(.upperBound($0, .greatestFiniteMagnitude), callSite)
-                        }
                     next[gas] = .init(halfTime: entry.halfTime, tension: tension)
                 }
             }

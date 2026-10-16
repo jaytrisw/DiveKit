@@ -84,6 +84,19 @@ package extension Validator where Value == Double {
     static func lessThanOrEqual(to bound: Value) -> Self {
         .less(than: bound).or(.equal(to: bound))
     }
+
+    /// A validator that succeeds when the value is neither infinite nor NaN.
+    ///
+    /// ```swift
+    /// let isFinite = Validator<Double>.finite
+    /// isFinite.validate(10)        // true
+    /// isFinite.validate(.nan)      // false
+    /// ```
+    ///
+    /// - Since: 1.0.0
+    static var finite: Self {
+        .init { $0.isFinite }
+    }
 }
 
 package extension Double {
