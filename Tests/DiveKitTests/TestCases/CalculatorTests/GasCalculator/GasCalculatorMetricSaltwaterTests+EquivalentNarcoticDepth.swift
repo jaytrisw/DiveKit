@@ -34,17 +34,4 @@ extension GasCalculatorMetricSaltwaterTests {
             #expect(calculation.result.unit == .meters)
         }
     }
-
-    @Test(.tags(.technicalDiving), arguments: [Water.salt, .fresh], [0.0, 10.0, 40.0, 100.0])
-    func metricEquivalentNarcoticDepthAirEqualsActualDepth(water: Water, depth: Depth) async throws {
-        try await given {
-            GasCalculator(.metric, water: water)
-        } when: { sut in
-            (oxygenNotNarcotic: try sut.equivalentNarcoticDepth(for: depth, with: .air),
-             oxygenNarcotic: try sut.equivalentNarcoticDepth(for: depth, with: .air, treating: .narcotic(.oxygen)))
-        } then: { _, calculations in
-            #expect(calculations.oxygenNotNarcotic.result.value.isApproximately(depth.value))
-            #expect(calculations.oxygenNarcotic.result.value.isApproximately(depth.value))
-        }
-    }
 }

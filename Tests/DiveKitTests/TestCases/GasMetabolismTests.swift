@@ -6,40 +6,30 @@ struct GasMetabolismTests {
     @Test
     func builtInGasesDeclareTheirMetabolism() async {
         await given {
-            (oxygen: Oxygen.oxygen, nitrogen: Nitrogen.nitrogen, helium: Helium.helium,
-             argon: Argon.argon, carbonDioxide: CarbonDioxide.carbonDioxide)
+            (oxygen: Oxygen.oxygen, nitrogen: Nitrogen.nitrogen, helium: Helium.helium)
         } when: { gases in
             (oxygen: metabolism(of: gases.oxygen),
              nitrogen: metabolism(of: gases.nitrogen),
-             helium: metabolism(of: gases.helium),
-             argon: metabolism(of: gases.argon),
-             carbonDioxide: metabolism(of: gases.carbonDioxide))
+             helium: metabolism(of: gases.helium))
         } then: { _, metabolism in
             #expect(metabolism.oxygen == .metabolic)
             #expect(metabolism.nitrogen == .inert)
             #expect(metabolism.helium == .inert)
-            #expect(metabolism.argon == .inert)
-            #expect(metabolism.carbonDioxide == .metabolic)
         }
     }
 
     @Test
     func builtInGasesDeclareTheirNarcoticPotency() async {
         await given {
-            (oxygen: Oxygen.oxygen, nitrogen: Nitrogen.nitrogen, helium: Helium.helium,
-             argon: Argon.argon, carbonDioxide: CarbonDioxide.carbonDioxide)
+            (oxygen: Oxygen.oxygen, nitrogen: Nitrogen.nitrogen, helium: Helium.helium)
         } when: { gases in
             (oxygen: narcoticPotency(of: gases.oxygen),
              nitrogen: narcoticPotency(of: gases.nitrogen),
-             helium: narcoticPotency(of: gases.helium),
-             argon: narcoticPotency(of: gases.argon),
-             carbonDioxide: narcoticPotency(of: gases.carbonDioxide))
+             helium: narcoticPotency(of: gases.helium))
         } then: { _, potency in
             #expect(potency.oxygen == .none)
             #expect(potency.nitrogen == .nitrogen)
             #expect(potency.helium == .none)
-            #expect(potency.argon == .relative(2.3))
-            #expect(potency.carbonDioxide == .relative(20))
         }
     }
 

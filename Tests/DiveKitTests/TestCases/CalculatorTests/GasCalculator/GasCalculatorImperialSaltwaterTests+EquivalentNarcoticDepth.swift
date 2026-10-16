@@ -278,7 +278,7 @@ extension GasCalculatorImperialSaltwaterTests {
     func equivalentNarcoticDepthOverflowingRatioInput() async throws {
         try await given {
             let depth: Depth = 165.0
-            let blend = Blend<Blended>((Oxygen(), 0.21), (Argon(), 0.79))
+            let blend = Blend<Blended>((Oxygen(), 0.21), (Neon(), 0.79))
             self.expectedError = .range(
                 .upperBound(.infinity, .greatestFiniteMagnitude),
                 "GasCalculator.equivalentNarcoticDepth(for:with:treating:)")

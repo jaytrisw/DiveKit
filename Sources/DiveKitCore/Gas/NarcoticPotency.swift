@@ -14,6 +14,9 @@ public enum NarcoticPotency: Sendable {
 
     /// The gas is narcotic with a potency relative to nitrogen, which is `1`.
     ///
+    /// The potency must be finite and non-negative. Calculations that use an
+    /// invalid potency throw `Error.range`.
+    ///
     /// - Since: 1.0.0
     case relative(_ potency: Double)
 }
