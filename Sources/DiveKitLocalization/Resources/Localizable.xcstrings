@@ -36,7 +36,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Gas half-time has no coefficients in the decompression table"
+            "value" : "Gas half-time has no matching row in the decompression table"
           }
         }
       }

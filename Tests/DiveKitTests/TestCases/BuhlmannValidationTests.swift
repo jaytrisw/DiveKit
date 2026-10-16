@@ -126,6 +126,31 @@ struct BuhlmannValidationTests {
             then: .gas(.unmodeled(Helium.helium), "Table.ceiling(of:gradientFactor:configuration:)"))
     }
 
+    @Test
+    func toleratedPressureRejectsOverflowingTensions() throws {
+        // Each tension is finite, but their sum and the tolerated pressure are not.
+        let compartment = Tissue.Compartment(
+            try .init(of: .nitrogen, halfTime: .init(5), tension: .init(.greatestFiniteMagnitude)),
+            try .init(of: .helium, halfTime: .init(1.88), tension: .init(.greatestFiniteMagnitude)))
+
+        try expectThrowsError(
+            when: try Buhlmann.Table.zhl16c.toleratedAmbientPressure(of: compartment),
+            then: .range(.upperBound(.infinity, .greatestFiniteMagnitude), "Table.toleratedAmbientPressure(of:gradientFactor:)")) { error in
+            #expect(error.localizationValue == "dive.kit.error.range.upper.bound")
+        }
+    }
+
+    @Test
+    func ceilingRejectsOverflowingDepth() throws {
+        // The tolerated pressure is finite, but converting it to depth is not.
+        let compartment = Tissue.Compartment(
+            try .init(of: .nitrogen, halfTime: .init(5), tension: .init(.greatestFiniteMagnitude)))
+
+        try expectThrowsError(
+            when: try Buhlmann.Table.zhl16c.ceiling(of: [compartment], configuration: .init(units: .metric, water: .salt)),
+            then: .range(.upperBound(.infinity, .greatestFiniteMagnitude), "Table.ceiling(of:gradientFactor:configuration:)"))
+    }
+
     @Test(.tags(.localization))
     func unmodeledGasErrorHasLocalizedDescription() async {
         await withTestLocalization(.test) {
@@ -134,7 +159,7 @@ struct BuhlmannValidationTests {
             } when: { sut in
                 sut.localizedDescription
             } then: { _, result in
-                #expect(result == "Gas half-time has no coefficients in the decompression table")
+                #expect(result == "Gas half-time has no matching row in the decompression table")
             }
         }
     }

@@ -8,7 +8,7 @@ public extension Buhlmann {
     /// Tables are plain values: use a built-in table such as ``zhl16c`` or
     /// create your own from rows. Compartment state is a plain
     /// ``Tissue/Compartment``; the table matches each compartment to the row
-    /// whose half-times its tracked gases share, so compartments can be loaded
+    /// whose half-times its tracked gases share exactly, so compartments can be loaded
     /// with ``Tissue/Compartment/loaded(for:inspired:using:)`` and checked against
     /// the table in any order.
     ///
@@ -190,9 +190,9 @@ extension Buhlmann.Table {
             self.halfTime = halfTime
         }
 
-        /// The gas's type name, used to check gases in a stable order.
-        var typeName: String {
-            String(describing: type(of: gas.value.base))
+        /// The gas's module-qualified type name, used to check gases in a stable order.
+        var qualifiedTypeName: String {
+            String(reflecting: type(of: gas.value.base))
         }
     }
 }

@@ -107,6 +107,18 @@ struct BuhlmannTests {
     }
 
     @Test
+    func largeFiniteTensionsKeepTensionWeighting() async throws {
+        // The sum overflows if computed directly; weighting by the largest tension keeps it finite.
+        try await given {
+            try Self.compartment(nitrogen: 1e308, helium: 1e308)
+        } when: { compartment in
+            try Self.table.toleratedAmbientPressure(of: compartment)
+        } then: { _, tolerated in
+            #expect((tolerated.value / 1e308).isApproximately((2 - 0.75e-308) * 0.7, with: .loose))
+        }
+    }
+
+    @Test
     func compartmentWithoutInertGasToleratesAnyPressure() async throws {
         try await given {
             try Self.compartment(nitrogen: 0, helium: 0)
