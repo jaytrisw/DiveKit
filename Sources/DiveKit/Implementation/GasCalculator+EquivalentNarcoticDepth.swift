@@ -21,8 +21,8 @@ public extension GasCalculator {
     ///   - overrides: Narcotic potencies that replace each gas's own potency.
     /// - Returns: A calculation containing the equivalent narcotic depth.
     /// - Throws: `Error.negative` if `depth` is negative, or `Error.range` if
-    ///   a potency is negative or not finite, or if air is not narcotic under
-    ///   the given treatments.
+    ///   a potency is negative or not finite, if air is not narcotic under the
+    ///   given treatments, or if the result is not finite.
     ///
     /// ```swift
     /// let end = try calculator.equivalentNarcoticDepth(
@@ -53,8 +53,8 @@ public extension GasCalculator {
     /// - Returns: A calculation containing the equivalent narcotic depth.
     /// - Throws: `Error.blend` if the blend cannot be normalized,
     ///   `Error.negative` if `depth` is negative, or `Error.range` if a potency
-    ///   is negative or not finite, or if air is not narcotic under the given
-    ///   treatments.
+    ///   is negative or not finite, if air is not narcotic under the given
+    ///   treatments, or if the result is not finite.
     ///
     /// ```swift
     /// let end = try calculator.equivalentNarcoticDepth(
@@ -95,6 +95,7 @@ private extension GasCalculator {
                     return try narcoticLoad(of: blend, potencies, callSite) / air
                 }
                 .map { $0.first * $0.second }
+                .validate(using: .finite) { .range(.upperBound($0, .greatestFiniteMagnitude), callSite) }
                 .map { $0 - configuration.water.pressure(configuration.units).increase.value }
                 .map { .decimal($0, unit: \.depth, from: configuration) }
         }

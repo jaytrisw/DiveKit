@@ -275,6 +275,29 @@ extension GasCalculatorImperialSaltwaterTests {
     }
 
     @Test(.tags(.error, .technicalDiving))
+    func equivalentNarcoticDepthOverflowingRatioInput() async throws {
+        try await given {
+            let depth: Depth = 165.0
+            let blend = Blend<Blended>((Oxygen(), 0.21), (Argon(), 0.79))
+            self.expectedError = .range(
+                .upperBound(.infinity, .greatestFiniteMagnitude),
+                "GasCalculator.equivalentNarcoticDepth(for:with:treating:)")
+            return (depth: depth, blend: blend)
+        } when: { input in
+            Result {
+                try self.sut.equivalentNarcoticDepth(
+                    for: input.depth,
+                    with: input.blend,
+                    treating: .narcotic(.nitrogen, potency: .relative(.leastNonzeroMagnitude)))
+            }
+        } then: { _, result in
+            try expectThrowsError(when: result.get(), then: self.expectedError) {
+                #expect($0.localizationValue == "dive.kit.error.range.upper.bound")
+            }
+        }
+    }
+
+    @Test(.tags(.error, .technicalDiving))
     func equivalentNarcoticDepthUnblendedInvalidBlendInput() async throws {
         try await given {
             let depth: Depth = 165.0
