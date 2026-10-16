@@ -14,6 +14,10 @@ public extension Tissue {
     /// half-time are greater than zero. It also validates the returned tension and
     /// throws `Error.negative` or `Error.range` if it is negative or not finite.
     ///
+    /// The built-in models are accurate to within rounding of their largest
+    /// input. A change much smaller than that, such as the uptake over a
+    /// vanishingly short segment, can lose relative precision or round away.
+    ///
     /// A witness updates one compartment at a time, so models whose compartments
     /// exchange gas with each other cannot be expressed.
     ///
