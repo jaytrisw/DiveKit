@@ -155,6 +155,20 @@ struct TissueCompartmentTests {
     }
 
     @Test
+    func laterInspiredPressureReplacesEarlierPressureForSameGas() async throws {
+        try await given {
+            Tissue.Compartment(try .init(of: .nitrogen, halfTime: .init(10), tension: .init(0.7)))
+        } when: { initial in
+            try initial.loaded(
+                for: .init(10),
+                inspired: try .init(of: .nitrogen, pressure: .init(5)), try .init(of: .nitrogen, pressure: .init(1.7)))
+        } then: { _, result in
+            let loaded = try #require(result.tracked)
+            #expect(loaded.tension(of: .nitrogen)?.isApproximately(1.2) == true)
+        }
+    }
+
+    @Test
     func extremeFiniteHalfTimeKeepsLoadingFinite() async throws {
         try await given {
             Tissue.Compartment(try .init(of: .nitrogen, halfTime: .init(.greatestFiniteMagnitude), tension: .init(0.7)))
