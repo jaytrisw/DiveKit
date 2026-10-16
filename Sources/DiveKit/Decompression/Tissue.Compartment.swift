@@ -71,3 +71,8 @@ extension Tissue.Compartment {
         let tension: Double
     }
 }
+
+/// Enables internal mapping helpers on tissue compartments.
+///
+/// - Since: 1.0.0
+extension Tissue.Compartment: Mappable {}

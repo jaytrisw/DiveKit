@@ -40,29 +40,44 @@ public extension Tissue.Compartment {
         inspired: repeat Tissue.Inspired<each Gas>,
         using model: Tissue.Loading = .schreiner) throws(Error) -> Loaded {
             let callSite: CallSite = .from(Self.self)
-            let duration = try duration
+            var pressures: [AnyGas: (from: Double, to: Double)] = [:]
+            repeat (each inspired).record(into: &pressures)
+            return try duration
                 .validate(using: .finite) { .range(.upperBound($0.value, .greatestFiniteMagnitude), callSite) }
                 .validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
                 .value
-            var pressures: [AnyGas: (from: Double, to: Double)] = [:]
-            for gas in repeat each inspired {
-                guard gas.gas.metabolism == .inert else { continue }
-                pressures[.init(gas.gas)] = (gas.start.value, gas.end.value)
-            }
-
-            var next = storage
-            if duration > 0 {
-                for (gas, entry) in storage {
-                    let tension = try model
-                        .load(entry.tension, pressures[gas] ?? (.zero, .zero), entry.halfTime.value, duration)
-                        .validate(using: .finite) { .range(.upperBound($0, .greatestFiniteMagnitude), callSite) }
-                        .validate(using: .greaterThanOrEqual(to: .zero)) { .negative(.partialPressure($0), callSite) }
-                    next[gas] = .init(halfTime: entry.halfTime, tension: tension)
+                .map { (duration: Double) throws(Error) in
+                    guard duration > 0 else { return self }
+                    return Self(Dictionary(uniqueKeysWithValues: try storage.map { (gas, entry) throws(Error) in
+                        (gas, try entry.loaded(for: duration, inspired: pressures[gas] ?? (.zero, .zero), using: model, callSite))
+                    }))
                 }
-            }
-
-            let compartment = Self(next)
-            let untracked = pressures.keys.filter { storage[$0] == nil }.compactMap(\.gas)
-            return untracked.isEmpty ? .tracked(compartment) : .untracked(compartment, gases: untracked)
+                .map { (compartment: Self) in
+                    let untracked = pressures.keys.filter { storage[$0] == nil }.compactMap(\.gas)
+                    return untracked.isEmpty ? .tracked(compartment) : .untracked(compartment, gases: untracked)
+                }
         }
+}
+
+extension Tissue.Compartment.Entry {
+    /// Returns this entry after a segment, validating the model's tension.
+    func loaded(
+        for duration: Double,
+        inspired: (from: Double, to: Double),
+        using model: Tissue.Loading,
+        _ callSite: CallSite) throws(Error) -> Self {
+            try model
+                .load(tension, inspired, halfTime.value, duration)
+                .validate(using: .finite) { .range(.upperBound($0, .greatestFiniteMagnitude), callSite) }
+                .validate(using: .greaterThanOrEqual(to: .zero)) { .negative(.partialPressure($0), callSite) }
+                .map { .init(halfTime: halfTime, tension: $0) }
+        }
+}
+
+extension Tissue.Inspired {
+    /// Records this gas's start and end pressures, skipping metabolic gases.
+    func record(into pressures: inout [AnyGas: (from: Double, to: Double)]) {
+        guard gas.metabolism == .inert else { return }
+        pressures[.init(gas)] = (start.value, end.value)
+    }
 }
