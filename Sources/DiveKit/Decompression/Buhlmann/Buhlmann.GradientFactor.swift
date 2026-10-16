@@ -22,8 +22,8 @@ public extension Buhlmann {
         /// Creates a gradient factor.
         ///
         /// - Parameter value: The gradient factor, greater than `0` and at most `1`.
-        /// - Throws: `Error.range` if `value` is not greater than `0` or is
-        ///   greater than `1`.
+        /// - Throws: `Error.range` if `value` is not finite, is not greater than
+        ///   `0`, or is greater than `1`.
         ///
         /// ```swift
         /// let gradientFactor = try Buhlmann.GradientFactor(0.85)
@@ -33,6 +33,7 @@ public extension Buhlmann {
         public init(_ value: Double) throws(Error) {
             let callSite: CallSite = .from(Self.self)
             self.value = try value
+                .validate(using: .finite) { .range(.upperBound($0, .greatestFiniteMagnitude), callSite) }
                 .validate(using: .greater(than: 0)) { .range(.lowerBound($0, 0), callSite) }
                 .validate(using: .lessThanOrEqual(to: .one)) { .range(.upperBound($0, .one), callSite) }
         }

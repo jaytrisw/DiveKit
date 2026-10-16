@@ -10,8 +10,8 @@ public extension Error {
         /// - Since: 1.0.0
         case metabolic(_ gas: any GasRepresentable)
 
-        /// A tracked gas's half-time matches no decompression table row, or no
-        /// row shared with the compartment's other tracked gases.
+        /// No decompression table row has coefficients for a tracked gas at its
+        /// half-time, or none shared with the compartment's other tracked gases.
         ///
         /// - Since: 1.0.0
         case unmodeled(_ gas: any GasRepresentable)

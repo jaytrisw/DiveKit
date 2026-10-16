@@ -24,25 +24,33 @@ struct BuhlmannTests {
             [498.0, 0.2480, 0.9602, 188.24, 0.5172, 0.9217],
             [635.0, 0.2327, 0.9653, 240.03, 0.5119, 0.9267]
         ]
-        let rows = Buhlmann.Table.zhl16c.rows
-
-        try #require(rows.count == published.count)
-        for (row, expected) in zip(rows, published) {
-            #expect(row.nitrogen.halfTime.value == expected[0])
-            #expect((row.nitrogen.coefficientA.value * 1.01325).isApproximately(expected[1]))
-            #expect(row.nitrogen.coefficientB == expected[2])
-            #expect(row.helium.halfTime.value == expected[3])
-            #expect((row.helium.coefficientA.value * 1.01325).isApproximately(expected[4]))
-            #expect(row.helium.coefficientB == expected[5])
+        try await given {
+            Buhlmann.Table.zhl16c
+        } when: { table in
+            table.rows
+        } then: { _, rows in
+            try #require(rows.count == published.count)
+            for (row, expected) in zip(rows, published) {
+                #expect(row.nitrogen.halfTime.value == expected[0])
+                #expect((row.nitrogen.coefficientA.value * 1.01325).isApproximately(expected[1]))
+                #expect(row.nitrogen.coefficientB == expected[2])
+                #expect(row.helium.halfTime.value == expected[3])
+                #expect((row.helium.coefficientA.value * 1.01325).isApproximately(expected[4]))
+                #expect(row.helium.coefficientB == expected[5])
+            }
         }
     }
 
     @Test
-    func publishedCoefficientsAreConvertedFromBarToAtmospheres() {
-        let first = Buhlmann.Table.zhl16c.rows[0]
-
-        #expect(first.nitrogen.coefficientA.value.isApproximately(1.1696 / 1.01325))
-        #expect(first.helium.coefficientA.value.isApproximately(1.6189 / 1.01325))
+    func publishedCoefficientsAreConvertedFromBarToAtmospheres() async throws {
+        try await given {
+            Buhlmann.Table.zhl16c
+        } when: { table in
+            table.rows[0]
+        } then: { _, first in
+            #expect(first.nitrogen.coefficientA.value.isApproximately(1.1696 / 1.01325))
+            #expect(first.helium.coefficientA.value.isApproximately(1.6189 / 1.01325))
+        }
     }
 
     @Test
@@ -218,7 +226,7 @@ struct BuhlmannTests {
                     gradientFactor: try .init(gradientFactor),
                     configuration: .init(units: .metric, water: .salt))
             } then: { _, ceiling in
-                #expect(ceiling.result.value.isApproximately(depth, with: .loose))
+                #expect(ceiling.result.value.isApproximately(depth))
             }
         }
 
@@ -258,7 +266,7 @@ struct BuhlmannTests {
 }
 
 private extension BuhlmannTests {
-        /// A one-row table: nitrogen at 5 minutes (a 0.5, b 0.8) and helium at 2 minutes (a 1, b 0.6).
+    /// A one-row table: nitrogen at 5 minutes (a 0.5, b 0.8) and helium at 2 minutes (a 1, b 0.6).
     static var table: Buhlmann.Table {
         get throws {
             .init([
