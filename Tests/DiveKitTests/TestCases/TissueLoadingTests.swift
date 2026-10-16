@@ -3,33 +3,63 @@ import Testing
 
 @Suite("Tissue loading", .tags(.technicalDiving))
 struct TissueLoadingTests {
-    @Test
-    func haldaneMatchesSchreinerAtConstantPressure() async throws {
+    @Test(.tags(.schreiner))
+    func schreinerLoadsAtConstantPressure() async throws {
         try await given {
             Tissue.Compartment(
                 try .init(of: .nitrogen, halfTime: .init(10), tension: .init(0.7)),
                 try .init(of: .helium, halfTime: .init(5), tension: .init(0.2)))
         } when: { initial in
-            (
-                haldane: try initial.loaded(
-                    for: .init(10),
-                    inspired: try .init(of: .nitrogen, pressure: .init(1.7)), try .init(of: .helium, pressure: .init(0.6)),
-                    using: .haldane),
-                schreiner: try initial.loaded(
-                    for: .init(10),
-                    inspired: try .init(of: .nitrogen, pressure: .init(1.7)), try .init(of: .helium, pressure: .init(0.6)),
-                    using: .schreiner))
-        } then: { _, loaded in
-            let haldane = try #require(loaded.haldane.tracked)
-            let schreiner = try #require(loaded.schreiner.tracked)
-            let schreinerNitrogen = try #require(schreiner.tension(of: .nitrogen))
-            let schreinerHelium = try #require(schreiner.tension(of: .helium))
-            #expect(haldane.tension(of: .nitrogen)?.isApproximately(schreinerNitrogen) == true)
-            #expect(haldane.tension(of: .helium)?.isApproximately(schreinerHelium) == true)
+            try initial.loaded(
+                for: .init(10),
+                inspired: try .init(of: .nitrogen, pressure: .init(1.7)), try .init(of: .helium, pressure: .init(0.6)),
+                using: .schreiner)
+        } then: { _, result in
+            let loaded = try #require(result.tracked)
+            #expect(loaded.tension(of: .nitrogen)?.isApproximately(1.2) == true)
+            #expect(loaded.tension(of: .helium)?.isApproximately(0.5) == true)
         }
     }
 
-    @Test
+    @Test(.tags(.haldane))
+    func haldaneLoadsAtConstantPressure() async throws {
+        try await given {
+            Tissue.Compartment(
+                try .init(of: .nitrogen, halfTime: .init(10), tension: .init(0.7)),
+                try .init(of: .helium, halfTime: .init(5), tension: .init(0.2)))
+        } when: { initial in
+            try initial.loaded(
+                for: .init(10),
+                inspired: try .init(of: .nitrogen, pressure: .init(1.7)), try .init(of: .helium, pressure: .init(0.6)),
+                using: .haldane)
+        } then: { _, result in
+            let loaded = try #require(result.tracked)
+            #expect(loaded.tension(of: .nitrogen)?.isApproximately(1.2) == true)
+            #expect(loaded.tension(of: .helium)?.isApproximately(0.5) == true)
+        }
+    }
+
+    @Test(.tags(.schreiner))
+    func schreinerIsExactDuringLinearChange() async throws {
+        // Expected values were calculated separately with 50-digit decimal arithmetic.
+        try await given {
+            Tissue.Compartment(
+                try .init(of: .nitrogen, halfTime: .init(10), tension: .init(0.7)),
+                try .init(of: .helium, halfTime: .init(5), tension: .init(0.2)))
+        } when: { initial in
+            try initial.loaded(
+                for: .init(10),
+                inspired: try .init(of: .nitrogen, from: .init(1), to: .init(2)),
+                try .init(of: .helium, from: .init(0.4), to: .init(0.1)),
+                using: .schreiner)
+        } then: { _, result in
+            let loaded = try #require(result.tracked)
+            #expect(loaded.tension(of: .nitrogen)?.isApproximately(1.1286524795555183) == true)
+            #expect(loaded.tension(of: .helium)?.isApproximately(0.21230319210000838) == true)
+        }
+    }
+
+    @Test(.tags(.haldane))
     func haldaneUsesMeanInspiredPressureDuringLinearChange() async throws {
         try await given {
             Tissue.Compartment(
@@ -69,25 +99,33 @@ struct TissueLoadingTests {
         }
     }
 
-    @Test
-    func modelsHandleSmallestHalfTime() async throws {
+    @Test(.tags(.schreiner))
+    func schreinerHandlesSmallestHalfTime() async throws {
         try await given {
             Tissue.Compartment(try .init(of: .nitrogen, halfTime: .init(.leastNonzeroMagnitude), tension: .init(0)))
         } when: { initial in
-            (
-                schreiner: try initial.loaded(
-                    for: .init(.leastNonzeroMagnitude),
-                    inspired: try .init(of: .nitrogen, pressure: .init(1)),
-                    using: .schreiner),
-                haldane: try initial.loaded(
-                    for: .init(.leastNonzeroMagnitude),
-                    inspired: try .init(of: .nitrogen, pressure: .init(1)),
-                    using: .haldane))
-        } then: { _, loaded in
-            let schreiner = try #require(loaded.schreiner.tracked)
-            let haldane = try #require(loaded.haldane.tracked)
-            #expect(schreiner.tension(of: .nitrogen)?.isApproximately(0.5) == true)
-            #expect(haldane.tension(of: .nitrogen)?.isApproximately(0.5) == true)
+            try initial.loaded(
+                for: .init(.leastNonzeroMagnitude),
+                inspired: try .init(of: .nitrogen, pressure: .init(1)),
+                using: .schreiner)
+        } then: { _, result in
+            let loaded = try #require(result.tracked)
+            #expect(loaded.tension(of: .nitrogen)?.isApproximately(0.5) == true)
+        }
+    }
+
+    @Test(.tags(.haldane))
+    func haldaneHandlesSmallestHalfTime() async throws {
+        try await given {
+            Tissue.Compartment(try .init(of: .nitrogen, halfTime: .init(.leastNonzeroMagnitude), tension: .init(0)))
+        } when: { initial in
+            try initial.loaded(
+                for: .init(.leastNonzeroMagnitude),
+                inspired: try .init(of: .nitrogen, pressure: .init(1)),
+                using: .haldane)
+        } then: { _, result in
+            let loaded = try #require(result.tracked)
+            #expect(loaded.tension(of: .nitrogen)?.isApproximately(0.5) == true)
         }
     }
 
