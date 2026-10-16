@@ -69,6 +69,28 @@ struct TissueLoadingTests {
         }
     }
 
+    @Test
+    func modelsHandleSmallestHalfTime() async throws {
+        try await given {
+            Tissue.Compartment(try .init(of: .nitrogen, halfTime: .init(.leastNonzeroMagnitude), tension: .init(0)))
+        } when: { initial in
+            (
+                schreiner: try initial.loaded(
+                    for: .init(.leastNonzeroMagnitude),
+                    inspired: try .init(of: .nitrogen, pressure: .init(1)),
+                    using: .schreiner),
+                haldane: try initial.loaded(
+                    for: .init(.leastNonzeroMagnitude),
+                    inspired: try .init(of: .nitrogen, pressure: .init(1)),
+                    using: .haldane))
+        } then: { _, loaded in
+            let schreiner = try #require(loaded.schreiner.tracked)
+            let haldane = try #require(loaded.haldane.tracked)
+            #expect(schreiner.tension(of: .nitrogen)?.isApproximately(0.5) == true)
+            #expect(haldane.tension(of: .nitrogen)?.isApproximately(0.5) == true)
+        }
+    }
+
     @Test(.tags(.error))
     func loadingRejectsNegativeModelResult() async throws {
         try await given {

@@ -68,7 +68,7 @@ public extension Tissue.Loading {
             // Written as a convex combination of its three inputs so no intermediate
             // exceeds the largest of them, and long half-times avoid the cancellation
             // between 1/k terms in the textbook form.
-            let exponent = log(2.0) / halfTime * duration
+            let exponent = log(2.0) * (duration / halfTime)
             let remaining = exp(-exponent)
             let lag = exponent > 0 ? -expm1(-exponent) / exponent : 1
             return remaining * tension + (lag - remaining) * inspired.from + (1 - lag) * inspired.to
@@ -84,7 +84,7 @@ public extension Tissue.Loading {
     /// - Since: 1.0.0
     static var haldane: Self {
         .init { tension, inspired, halfTime, duration in
-            let remaining = exp(-log(2.0) / halfTime * duration)
+            let remaining = exp(-log(2.0) * (duration / halfTime))
             let inspiredMean = inspired.from / 2 + inspired.to / 2
             return remaining * tension + (1 - remaining) * inspiredMean
         }
