@@ -9,6 +9,11 @@ public extension Error {
         ///
         /// - Since: 1.0.0
         case metabolic(_ gas: any GasRepresentable)
+
+        /// A tracked gas's half-time has no coefficients in a decompression model.
+        ///
+        /// - Since: 1.0.0
+        case unmodeled(_ gas: any GasRepresentable)
     }
 }
 
@@ -19,6 +24,8 @@ extension Error.Gas: Equatable {
     public static func == (lhs: Self, rhs: Self) -> Bool {
         switch (lhs, rhs) {
             case let (.metabolic(lhs), .metabolic(rhs)): AnyGas(lhs) == AnyGas(rhs)
+            case let (.unmodeled(lhs), .unmodeled(rhs)): AnyGas(lhs) == AnyGas(rhs)
+            case (.metabolic, _), (.unmodeled, _): false
         }
     }
 }

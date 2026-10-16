@@ -27,7 +27,7 @@ func printGaugePressure(at depth: Depth, configuration: Configuration) {
 - `range` for lower-bound or upper-bound violations.
 - `blend` for gas blend validation failures.
 - `tank` for tank size validation failures.
-- `gas` for gases that are invalid for an operation, such as a metabolic gas in a tissue compartment.
+- `gas` for gases that are invalid for an operation, such as a metabolic gas in a tissue compartment, or a gas whose half-time a decompression table has no coefficients for.
 
 ## Localized Descriptions
 

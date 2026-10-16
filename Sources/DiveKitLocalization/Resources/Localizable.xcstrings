@@ -31,6 +31,16 @@
         }
       }
     },
+    "dive.kit.error.gas.unmodeled" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gas half-time has no coefficients in the decompression table"
+          }
+        }
+      }
+    },
     "dive.kit.error.negative.depth" : {
       "localizations" : {
         "en" : {

@@ -15,6 +15,7 @@ private enum TestLocalizations {
         "dive.kit.error.blend.pressure.range": "Blend pressure should be a decimal between 0.0 and 1.0",
         "dive.kit.error.blend.total.pressure": "Blend pressure should be equal on 1.0",
         "dive.kit.error.gas.metabolic": "Gas must be inert to be tracked by a tissue compartment",
+        "dive.kit.error.gas.unmodeled": "Gas half-time has no coefficients in the decompression table",
         "dive.kit.error.negative.depth": "Depth input must not be a negative value",
         "dive.kit.error.negative.fractional.pressure": "Fractional pressure input must not be a negative value",
         "dive.kit.error.negative.minutes": "Minutes input must not be a negative value",
