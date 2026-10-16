@@ -55,8 +55,8 @@ extension DecimalRepresentable {
     ///
     /// - Parameter value: The literal value.
     /// - Since: 1.0.0
-    public init(floatLiteral value: Float) {
-        self.init(.init(value))
+    public init(floatLiteral value: Double) {
+        self.init(value)
     }
 
     // MARK: ExpressibleByIntegerLiteral
