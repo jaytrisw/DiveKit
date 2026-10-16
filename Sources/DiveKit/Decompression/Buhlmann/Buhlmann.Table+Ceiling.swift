@@ -115,14 +115,16 @@ extension Buhlmann.Table {
                 return (sum.a + entry.limit.coefficientA * weight, sum.b + entry.limit.coefficientB * weight)
             }
             let factor = gradientFactor.value
-            // `b` is in (0, 1] and `factor` is in (0, 1], so the divisor is at least 1.
-            let divisor = factor / weighted.b - factor + 1
+            // Multiply by `b / (GF + (1 − GF)·b)` rather than divide by `GF / b − GF + 1`:
+            // the two are equal, but `GF / b` overflows for a tiny `b`. With `b` and
+            // `factor` in (0, 1], this ratio is in (0, 1].
+            let ratio = weighted.b / (factor + (1 - factor) * weighted.b)
             let total = largest * scaledTotal
             // Only rescale when the total itself overflows; dividing `a` by a tiny
             // `largest` would overflow instead.
             let tolerated = try (total.isFinite
-                ? (total - weighted.a * factor) / divisor
-                : largest * ((scaledTotal - weighted.a * factor / largest) / divisor))
+                ? (total - weighted.a * factor) * ratio
+                : largest * ((scaledTotal - weighted.a * factor / largest) * ratio))
                 .validate(using: .finite) { .range(.upperBound($0, .greatestFiniteMagnitude), callSite) }
             return .init(Swift.max(tolerated, .zero))
         }
