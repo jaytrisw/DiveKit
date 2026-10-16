@@ -47,6 +47,23 @@ struct BuhlmannNoDecompressionLimitTests {
     }
 
     @Test
+    func transientCounterDiffusionCeilingEndsLimit() async throws {
+        // Nitrogen off-gasses while helium on-gasses; the ceiling is above the surface
+        // from about 0.37 to 0.63 minutes, then clears, so whole-minute checks miss it.
+        try await given {
+            [try Buhlmann.Table.zhl16c.compartments(nitrogen: .init(2.937))[0]]
+        } when: { compartments in
+            try Buhlmann.Table.zhl16c.noDecompressionLimit(
+                of: compartments,
+                at: .init(10.75),
+                breathing: try .trimix(oxygen: 0.2, helium: 0.8),
+                configuration: Self.configuration)
+        } then: { _, limit in
+            #expect(limit == .minutes(.init(0)))
+        }
+    }
+
+    @Test
     func shallowDepthIsUnlimited() async throws {
         try await given {
             try Buhlmann.Table.zhl16c.compartments(nitrogen: .init(0.74))
@@ -118,6 +135,29 @@ struct BuhlmannNoDecompressionLimitTests {
                 configuration: Self.configuration))
         } then: { _, limit in
             #expect(limit.inOrder == limit.reversed)
+        }
+    }
+
+    @Test(arguments: [false, true])
+    func unmodeledGasThrowsEvenAfterAnExistingCeiling(reversed: Bool) async throws {
+        try await given {
+            let compartments = [
+                try Buhlmann.Table.zhl16c.compartments(nitrogen: .init(3))[0],
+                Tissue.Compartment(try .init(of: .helium, halfTime: .init(4), tension: .init(0.1)))
+            ]
+            return reversed ? compartments.reversed() : compartments
+        } when: { compartments in
+            try expectThrowsError(
+                when: try Buhlmann.Table.zhl16c.noDecompressionLimit(
+                    of: compartments,
+                    at: .init(3),
+                    breathing: .air,
+                    configuration: Self.configuration),
+                then: .gas(
+                    .unmodeled(Helium.helium),
+                    "Table.noDecompressionLimit(of:at:breathing:gradientFactor:waterVapour:configuration:using:)")) { error in
+                #expect(error.localizationValue == "dive.kit.error.gas.unmodeled")
+            }
         }
     }
 
