@@ -119,6 +119,21 @@ struct BuhlmannTests {
     }
 
     @Test
+    func subnormalTensionsTolerateAnyPressure() async throws {
+        // Dividing `a` by a subnormal tension would overflow; the result must still clamp to 0.
+        try await given {
+            try Self.compartment(nitrogen: 1e-320, helium: 1e-320)
+        } when: { compartment in
+            (single: try Buhlmann.Table.zhl16c.toleratedAmbientPressure(
+                of: Tissue.Compartment(try .init(of: .nitrogen, halfTime: .init(5), tension: .init(1e-320)))),
+             mixed: try Self.table.toleratedAmbientPressure(of: compartment))
+        } then: { _, tolerated in
+            #expect(tolerated.single.value == 0)
+            #expect(tolerated.mixed.value == 0)
+        }
+    }
+
+    @Test
     func compartmentWithoutInertGasToleratesAnyPressure() async throws {
         try await given {
             try Self.compartment(nitrogen: 0, helium: 0)

@@ -116,7 +116,13 @@ extension Buhlmann.Table {
             }
             let factor = gradientFactor.value
             // `b` is in (0, 1] and `factor` is in (0, 1], so the divisor is at least 1.
-            let tolerated = try (largest * ((scaledTotal - weighted.a * factor / largest) / (factor / weighted.b - factor + 1)))
+            let divisor = factor / weighted.b - factor + 1
+            let total = largest * scaledTotal
+            // Only rescale when the total itself overflows; dividing `a` by a tiny
+            // `largest` would overflow instead.
+            let tolerated = try (total.isFinite
+                ? (total - weighted.a * factor) / divisor
+                : largest * ((scaledTotal - weighted.a * factor / largest) / divisor))
                 .validate(using: .finite) { .range(.upperBound($0, .greatestFiniteMagnitude), callSite) }
             return .init(Swift.max(tolerated, .zero))
         }
