@@ -37,6 +37,8 @@ public typealias Helium = DiveKitCore.Helium
 @_documentation(visibility: private)
 public typealias Mass = DiveKitCore.Mass
 @_documentation(visibility: private)
+public typealias Metabolism = DiveKitCore.Metabolism
+@_documentation(visibility: private)
 public typealias Minutes = DiveKitCore.Minutes
 @_documentation(visibility: private)
 public typealias Nitrogen = DiveKitCore.Nitrogen

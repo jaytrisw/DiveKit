@@ -21,6 +21,16 @@
         }
       }
     },
+    "dive.kit.error.gas.metabolic" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gas must be inert to be tracked by a tissue compartment"
+          }
+        }
+      }
+    },
     "dive.kit.error.negative.depth" : {
       "localizations" : {
         "en" : {

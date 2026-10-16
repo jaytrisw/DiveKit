@@ -11,6 +11,14 @@ public struct Trace: GasRepresentable, Sendable {
     ///
     /// - Since: 1.0.0
     public init() {}
+
+    /// Trace gases are treated as inert, approximating argon, which makes up
+    /// most of air's trace fraction.
+    ///
+    /// - Since: 1.0.0
+    public var metabolism: Metabolism {
+        .inert
+    }
 }
 
 public extension GasRepresentable where Self == Trace {

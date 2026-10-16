@@ -61,6 +61,18 @@ package extension LocalizedKey.Error {
 }
 
 package extension LocalizedKey.Error {
+    /// Namespace for gas error localization keys.
+    ///
+    /// - Since: 1.0.0
+    enum Gas {
+        /// Localization key for metabolic-gas errors.
+        ///
+        /// - Since: 1.0.0
+        static let metabolic: String.LocalizationValue = "dive.kit.error.gas.metabolic"
+    }
+}
+
+package extension LocalizedKey.Error {
     /// Namespace for negative input error localization keys.
     ///
     /// - Since: 1.0.0
