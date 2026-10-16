@@ -1,8 +1,9 @@
 @_spi(Experimental) import DiveKit
 
-/// A gas DiveKit does not ship, used to exercise arbitrary-gas tracking.
+/// A gas DiveKit does not ship, used to exercise arbitrary gases.
 struct Neon: GasRepresentable {
     var metabolism: Metabolism { .inert }
+    var narcoticPotency: NarcoticPotency { .relative(0.3) }
 }
 
 extension Tissue.Compartment.Loaded {

@@ -1,6 +1,8 @@
 @_spi(Experimental) import DiveKitCore
 
 @_documentation(visibility: private)
+public typealias Argon = DiveKitCore.Argon
+@_documentation(visibility: private)
 public typealias Blend = DiveKitCore.Blend
 @_documentation(visibility: private)
 public typealias Blended = DiveKitCore.Blended
@@ -14,6 +16,8 @@ public typealias BuoyancyCalculating = DiveKitCore.BuoyancyCalculating
 public typealias Calculation = DiveKitCore.Calculation
 @_documentation(visibility: private)
 public typealias CallSite = DiveKitCore.CallSite
+@_documentation(visibility: private)
+public typealias CarbonDioxide = DiveKitCore.CarbonDioxide
 @_documentation(visibility: private)
 public typealias Configuration = DiveKitCore.Configuration
 @_documentation(visibility: private)
@@ -41,6 +45,8 @@ public typealias Metabolism = DiveKitCore.Metabolism
 @_documentation(visibility: private)
 public typealias Minutes = DiveKitCore.Minutes
 @_documentation(visibility: private)
+public typealias NarcoticPotency = DiveKitCore.NarcoticPotency
+@_documentation(visibility: private)
 public typealias Nitrogen = DiveKitCore.Nitrogen
 @_documentation(visibility: private)
 public typealias Object = DiveKitCore.Object
@@ -60,8 +66,6 @@ public typealias RateUnit = DiveKitCore.RateUnit
 public typealias ResultRepresentable = DiveKitCore.ResultRepresentable
 @_documentation(visibility: private)
 public typealias Tank = DiveKitCore.Tank
-@_documentation(visibility: private)
-public typealias Trace = DiveKitCore.Trace
 @_documentation(visibility: private)
 public typealias Unblended = DiveKitCore.Unblended
 @_documentation(visibility: private)

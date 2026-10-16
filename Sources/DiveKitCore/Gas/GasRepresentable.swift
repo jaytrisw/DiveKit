@@ -11,6 +11,13 @@ public protocol GasRepresentable: Hashable, Sendable {
     ///
     /// - Since: 1.0.0
     var metabolism: Metabolism { get }
+
+    /// How narcotic this gas is, relative to nitrogen.
+    ///
+    /// Potency drives the equivalent narcotic depth.
+    ///
+    /// - Since: 1.0.0
+    var narcoticPotency: NarcoticPotency { get }
 }
 
 public extension GasRepresentable {

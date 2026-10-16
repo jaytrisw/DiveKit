@@ -15,6 +15,13 @@ public struct Nitrogen: GasRepresentable, Sendable {
     public var metabolism: Metabolism {
         .inert
     }
+
+    /// Nitrogen is the reference gas for narcotic potency.
+    ///
+    /// - Since: 1.0.0
+    public var narcoticPotency: NarcoticPotency {
+        .nitrogen
+    }
 }
 
 public extension GasRepresentable where Self == Nitrogen {

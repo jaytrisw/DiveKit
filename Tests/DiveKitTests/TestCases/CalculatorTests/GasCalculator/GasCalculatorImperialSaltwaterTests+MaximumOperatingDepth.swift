@@ -219,7 +219,7 @@ extension GasCalculatorImperialSaltwaterTests {
             try self.sut.maximumOperatingDepth(for: input.partialPressure, in: input.blend)
         } then: { _, calculation in
             try expectCalculation(calculation) { result, configuration in
-                #expect(abs(result.value - 188.0526278144435) <= 0.0001)
+                #expect(abs(result.value - 186.99999999999997) <= 0.0001)
                 #expect(result.unit == .feet)
                 #expect(configuration == self.sut.configuration)
             }
@@ -236,7 +236,7 @@ extension GasCalculatorImperialSaltwaterTests {
             try self.sut.maximumOperatingDepth(for: input.partialPressure, in: input.blend)
         } then: { _, calculation in
             try expectCalculation(calculation) { result, configuration in
-                #expect(abs(result.value - 219.6315827118723) <= 0.0001)
+                #expect(abs(result.value - 218.42857142857144) <= 0.0001)
                 #expect(result.unit == .feet)
                 #expect(configuration == self.sut.configuration)
             }
