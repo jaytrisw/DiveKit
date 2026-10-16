@@ -115,9 +115,8 @@ extension Buhlmann.Table {
                 return (sum.a + entry.limit.coefficientA * weight, sum.b + entry.limit.coefficientB * weight)
             }
             let factor = gradientFactor.value
-            // Multiply by `b / (GF + (1 − GF)·b)` rather than divide by `GF / b − GF + 1`:
-            // the two are equal, but `GF / b` overflows for a tiny `b`. With `b` and
-            // `factor` in (0, 1], this ratio is in (0, 1].
+            // `b / (GF + (1 − GF)·b)` equals `1 / (GF / b − GF + 1)`. With `b` and
+            // `factor` in [0.01, 1], it is in [0.01, 1].
             let ratio = weighted.b / (factor + (1 - factor) * weighted.b)
             let total = largest * scaledTotal
             // Only rescale when the total itself overflows; dividing `a` by a tiny

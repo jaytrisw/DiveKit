@@ -56,7 +56,9 @@ struct BuhlmannValidationTests {
     }
 
     @Test(arguments: [
-        (coefficientB: 0.0, expected: Error.Range.lowerBound(0, 0), key: "dive.kit.error.range.lower.bound"),
+        (coefficientB: 0.0, expected: Error.Range.lowerBound(0, 0.01), key: "dive.kit.error.range.lower.bound"),
+        (coefficientB: 0.009, expected: Error.Range.lowerBound(0.009, 0.01), key: "dive.kit.error.range.lower.bound"),
+        (coefficientB: 5e-324, expected: Error.Range.lowerBound(5e-324, 0.01), key: "dive.kit.error.range.lower.bound"),
         (coefficientB: 1.5, expected: Error.Range.upperBound(1.5, 1), key: "dive.kit.error.range.upper.bound"),
         (
             coefficientB: .infinity,
@@ -92,8 +94,9 @@ struct BuhlmannValidationTests {
     }
 
     @Test(arguments: [
-        (value: 0.0, expected: Error.Range.lowerBound(0, 0), key: "dive.kit.error.range.lower.bound"),
-        (value: -0.2, expected: Error.Range.lowerBound(-0.2, 0), key: "dive.kit.error.range.lower.bound"),
+        (value: 0.0, expected: Error.Range.lowerBound(0, 0.01), key: "dive.kit.error.range.lower.bound"),
+        (value: -0.2, expected: Error.Range.lowerBound(-0.2, 0.01), key: "dive.kit.error.range.lower.bound"),
+        (value: 0.009, expected: Error.Range.lowerBound(0.009, 0.01), key: "dive.kit.error.range.lower.bound"),
         (value: 1.01, expected: Error.Range.upperBound(1.01, 1), key: "dive.kit.error.range.upper.bound"),
         (
             value: .infinity,
@@ -140,14 +143,40 @@ struct BuhlmannValidationTests {
     }
 
     @Test
+    func minimumBAndGradientFactorAreAccepted() async throws {
+        try await given {
+            0.01
+        } when: { minimum in
+            (coefficients: try Buhlmann.Coefficients(of: .nitrogen, halfTime: .init(5), a: .init(1), b: minimum),
+             gradientFactor: try Buhlmann.GradientFactor(minimum))
+        } then: { _, result in
+            #expect(result.coefficients.coefficientB == 0.01)
+            #expect(result.gradientFactor.value == 0.01)
+        }
+    }
+
+    @Test
     func tableRejectsInfiniteHeliumTension() async throws {
         try await given {
             PartialPressure<Helium>(.infinity)
         } when: { helium in
             try expectThrowsError(
                 when: try Buhlmann.Table.zhl16c.compartments(nitrogen: .init(0.74), helium: helium),
-                then: .range(.upperBound(.infinity, .greatestFiniteMagnitude), "Component<Helium>.init(of:halfTime:tension:)")) { error in
+                then: .range(.upperBound(.infinity, .greatestFiniteMagnitude), "Table.compartments(nitrogen:helium:)")) { error in
                 #expect(error.localizationValue == "dive.kit.error.range.upper.bound")
+            }
+        }
+    }
+
+    @Test
+    func emptyTableStillValidatesTensions() async throws {
+        try await given {
+            Buhlmann.Table([])
+        } when: { table in
+            try expectThrowsError(
+                when: try table.compartments(nitrogen: .init(-1)),
+                then: .negative(.partialPressure(-1), "Table.compartments(nitrogen:helium:)")) { error in
+                #expect(error.localizationValue == "dive.kit.error.negative.partial.pressure")
             }
         }
     }

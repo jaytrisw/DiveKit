@@ -14,16 +14,16 @@ public extension Buhlmann {
     ///
     /// - Since: 1.0.0
     struct GradientFactor: Sendable, Hashable {
-        /// The gradient factor, greater than `0` and at most `1`.
+        /// The gradient factor, at least `0.01` and at most `1`.
         ///
         /// - Since: 1.0.0
         public let value: Double
 
         /// Creates a gradient factor.
         ///
-        /// - Parameter value: The gradient factor, greater than `0` and at most `1`.
-        /// - Throws: `Error.range` if `value` is not finite, is not greater than
-        ///   `0`, or is greater than `1`.
+        /// - Parameter value: The gradient factor, at least `0.01` and at most `1`.
+        /// - Throws: `Error.range` if `value` is not finite, is less than `0.01`,
+        ///   or is greater than `1`.
         ///
         /// ```swift
         /// let gradientFactor = try Buhlmann.GradientFactor(0.85)
@@ -34,7 +34,7 @@ public extension Buhlmann {
             let callSite: CallSite = .from(Self.self)
             self.value = try value
                 .validate(using: .finite) { .range(.upperBound($0, .greatestFiniteMagnitude), callSite) }
-                .validate(using: .greater(than: 0)) { .range(.lowerBound($0, 0), callSite) }
+                .validate(using: .greaterThanOrEqual(to: Buhlmann.minimumFactor)) { .range(.lowerBound($0, Buhlmann.minimumFactor), callSite) }
                 .validate(using: .lessThanOrEqual(to: .one)) { .range(.upperBound($0, .one), callSite) }
         }
 

@@ -16,3 +16,11 @@ import Foundation
 /// - Since: 1.0.0
 @_spi(Experimental)
 public enum Buhlmann {}
+
+extension Buhlmann {
+    /// The smallest accepted `b` coefficient and gradient factor.
+    ///
+    /// Published tables use `b` of about 0.5 to 1. The floor keeps tension-weighted
+    /// `b` from rounding to zero and the tolerated-pressure ratio from overflowing.
+    static var minimumFactor: Double { 0.01 }
+}

@@ -1,5 +1,6 @@
 import Foundation
 @_spi(Experimental) import DiveKitCore
+import DiveKitInternal
 
 @_spi(Experimental)
 public extension Buhlmann {
@@ -102,7 +103,7 @@ public extension Buhlmann.Table {
     /// - Returns: The compartments, in row order, each tracking nitrogen and
     ///   helium with the row's half-times.
     /// - Throws: `Error.negative` if either tension is negative, or
-    ///   `Error.range` if either is not finite.
+    ///   `Error.range` if either is not finite, even when the table has no rows.
     ///
     /// ```swift
     /// let compartments = try Buhlmann.Table.zhl16c.compartments(nitrogen: .init(0.74))
@@ -114,6 +115,13 @@ public extension Buhlmann.Table {
     func compartments(
         nitrogen: PartialPressure<Nitrogen>,
         helium: PartialPressure<Helium> = .init(.zero)) throws(Error) -> [Tissue.Compartment] {
+            let callSite: CallSite = .from(Self.self)
+            let nitrogen = try nitrogen
+                .validate(using: .finite) { .range(.upperBound($0.value, .greatestFiniteMagnitude), callSite) }
+                .validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
+            let helium = try helium
+                .validate(using: .finite) { .range(.upperBound($0.value, .greatestFiniteMagnitude), callSite) }
+                .validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
             var compartments: [Tissue.Compartment] = []
             compartments.reserveCapacity(rows.count)
             for row in rows {

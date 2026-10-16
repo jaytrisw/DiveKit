@@ -30,7 +30,7 @@ public extension Buhlmann {
         public let coefficientA: PartialPressure<Gas>
 
         /// Bühlmann's `b`: the reciprocal of the tolerated tension's slope against
-        /// ambient pressure. Dimensionless, greater than `0` and at most `1`.
+        /// ambient pressure. Dimensionless, at least `0.01` and at most `1`.
         ///
         /// - Since: 1.0.0
         public let coefficientB: Double
@@ -46,8 +46,8 @@ public extension Buhlmann {
         /// - Throws: `Error.gas` if `gas` is metabolic, `Error.range` if
         ///   `halfTime` is not greater than `0` or is not finite, `Error.negative`
         ///   if `coefficientA` is negative, `Error.range` if `coefficientA` is not
-        ///   finite, or `Error.range` if `coefficientB` is not finite, is not
-        ///   greater than `0`, or is greater than `1`.
+        ///   finite, or `Error.range` if `coefficientB` is not finite, is less
+        ///   than `0.01`, or is greater than `1`.
         ///
         /// ```swift
         /// let nitrogen = try Buhlmann.Coefficients(
@@ -74,7 +74,7 @@ public extension Buhlmann {
                     .validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
                 self.coefficientB = try coefficientB
                     .validate(using: .finite) { .range(.upperBound($0, .greatestFiniteMagnitude), callSite) }
-                    .validate(using: .greater(than: 0)) { .range(.lowerBound($0, 0), callSite) }
+                    .validate(using: .greaterThanOrEqual(to: Buhlmann.minimumFactor)) { .range(.lowerBound($0, Buhlmann.minimumFactor), callSite) }
                     .validate(using: .lessThanOrEqual(to: .one)) { .range(.upperBound($0, .one), callSite) }
             }
 

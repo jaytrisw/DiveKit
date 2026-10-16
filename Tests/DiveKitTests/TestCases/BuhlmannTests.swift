@@ -127,26 +127,6 @@ struct BuhlmannTests {
     }
 
     @Test
-    func subnormalBKeepsToleratedPressure() async throws {
-        // `GF / b` overflows for b = 5e-309; at GF = 1 the result is (P − a)·b with a = 0: 1e308·5e-309 and 3e308·5e-309.
-        try await given {
-            (single: try Self.compartment(nitrogen: 1e308),
-             mixed: try Self.compartment(nitrogen: 1.5e308, helium: 1.5e308))
-        } when: { compartments in
-            (single: try Self.subnormalBTable.toleratedAmbientPressure(of: compartments.single),
-             mixed: try Self.subnormalBTable.toleratedAmbientPressure(of: compartments.mixed),
-             ceiling: try Self.subnormalBTable.ceiling(
-                of: [compartments.mixed],
-                configuration: .init(units: .metric, water: .salt)))
-        } then: { _, result in
-            #expect(result.single.value.isApproximately(0.5))
-            #expect(result.mixed.value.isApproximately(1.5))
-            // (1.5 − 1) atmospheres at 10 m per atmosphere.
-            #expect(result.ceiling.result.value.isApproximately(5))
-        }
-    }
-
-    @Test
     func subnormalTensionsTolerateAnyPressure() async throws {
         // Dividing `a` by a subnormal tension would overflow; the result must still clamp to 0.
         try await given {
@@ -293,17 +273,6 @@ private extension BuhlmannTests {
                 .init(
                     nitrogen: try .init(of: .nitrogen, halfTime: .init(5), a: .init(0.5), b: 0.8),
                     helium: try .init(of: .helium, halfTime: .init(2), a: .init(1), b: 0.6))
-            ])
-        }
-    }
-
-    /// A one-row table with `a` 0 and a subnormal `b` 5e-309, at the same half-times as ``table``.
-    static var subnormalBTable: Buhlmann.Table {
-        get throws {
-            .init([
-                .init(
-                    nitrogen: try .init(of: .nitrogen, halfTime: .init(5), a: .init(0), b: 5e-309),
-                    helium: try .init(of: .helium, halfTime: .init(2), a: .init(0), b: 5e-309))
             ])
         }
     }
