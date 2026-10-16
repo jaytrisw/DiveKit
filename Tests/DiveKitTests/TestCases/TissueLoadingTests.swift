@@ -114,6 +114,22 @@ struct TissueLoadingTests {
         }
     }
 
+    @Test(.tags(.schreiner))
+    func schreinerHandlesLargestPressures() async throws {
+        try await given {
+            Tissue.Compartment(try .init(of: .nitrogen, halfTime: .init(10), tension: .init(.greatestFiniteMagnitude)))
+        } when: { initial in
+            // Unclamped, the separately rounded terms sum past the largest finite value for this duration.
+            try initial.loaded(
+                for: .init(20.01),
+                inspired: try .init(of: .nitrogen, pressure: .init(.greatestFiniteMagnitude)),
+                using: .schreiner)
+        } then: { _, result in
+            let loaded = try #require(result.tracked)
+            #expect(loaded.tension(of: .nitrogen) == .greatestFiniteMagnitude)
+        }
+    }
+
     @Test(.tags(.haldane))
     func haldaneHandlesSmallestHalfTime() async throws {
         try await given {

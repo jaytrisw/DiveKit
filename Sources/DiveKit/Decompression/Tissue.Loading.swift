@@ -71,7 +71,8 @@ public extension Tissue.Loading {
             let exponent = log(2.0) * (duration / halfTime)
             let remaining = exp(-exponent)
             let lag = exponent > 0 ? -expm1(-exponent) / exponent : 1
-            return remaining * tension + (lag - remaining) * inspired.from + (1 - lag) * inspired.to
+            return (remaining * tension + (lag - remaining) * inspired.from + (1 - lag) * inspired.to)
+                .clamped(toRangeOf: tension, inspired.from, inspired.to)
         }
     }
 
@@ -86,7 +87,21 @@ public extension Tissue.Loading {
         .init { tension, inspired, halfTime, duration in
             let remaining = exp(-log(2.0) * (duration / halfTime))
             let inspiredMean = inspired.from / 2 + inspired.to / 2
-            return remaining * tension + (1 - remaining) * inspiredMean
+            return (remaining * tension + (1 - remaining) * inspiredMean)
+                .clamped(toRangeOf: tension, inspiredMean)
         }
+    }
+}
+
+private extension Double {
+    /// Clamps a weighted average to the range of the values it averages.
+    ///
+    /// Rounding each weighted term separately can push the sum just past its
+    /// largest input, which overflows when that input is near the largest finite
+    /// `Double`.
+    func clamped(toRangeOf first: Double, _ rest: Double...) -> Double {
+        let lower = rest.reduce(first, Swift.min)
+        let upper = rest.reduce(first, Swift.max)
+        return Swift.min(Swift.max(self, lower), upper)
     }
 }
