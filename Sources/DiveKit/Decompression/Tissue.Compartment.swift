@@ -34,9 +34,9 @@ public extension Tissue {
         /// - Since: 1.0.0
         public init<each Gas: GasRepresentable>(_ components: repeat Component<each Gas>) {
             var storage: [AnyGas: Entry] = [:]
-            for component in repeat each components {
-                storage[.init(component.gas)] = .init(halfTime: component.halfTime, tension: component.tension.value)
-            }
+            repeat storage[.init((each components).gas)] = .init(
+                halfTime: (each components).halfTime,
+                tension: (each components).tension.value)
             self.init(storage)
         }
 
