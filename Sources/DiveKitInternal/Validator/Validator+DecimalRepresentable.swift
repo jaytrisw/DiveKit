@@ -35,4 +35,19 @@ package extension Validator where Value: DecimalRepresentable {
     static func greater(than bound: Value) -> Self {
         .init { $0 > bound }
     }
+
+    /// A validator that succeeds when the value is neither infinite nor NaN.
+    ///
+    /// - Returns: A validator that returns `true` if the value is finite.
+    ///
+    /// ```swift
+    /// let isFinite = Validator<Minutes>.finite
+    /// isFinite.validate(10)        // true
+    /// isFinite.validate(.init(.infinity)) // false
+    /// ```
+    ///
+    /// - Since: 1.1.0
+    static var finite: Self {
+        .init { $0.value.isFinite }
+    }
 }

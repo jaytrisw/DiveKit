@@ -6,7 +6,7 @@ struct TissueCompartmentTests {
     @Test
     func constantPressureRespectsGasSpecificHalfTimes() async throws {
         try await given {
-            try TissueCompartment(
+            try Tissue.Compartment(
                 halfTimes: .init(nitrogen: .init(10), helium: .init(5)),
                 nitrogen: .init(0.7),
                 helium: .init(0.2))
@@ -28,7 +28,7 @@ struct TissueCompartmentTests {
     func linearDescentMatchesIndependentHighPrecisionCalculation() async throws {
         // Expected values were calculated separately with 50-digit decimal arithmetic.
         try await given {
-            try TissueCompartment(
+            try Tissue.Compartment(
                 halfTimes: .init(nitrogen: .init(10), helium: .init(5)),
                 nitrogen: .init(0.7),
                 helium: .init(0.2))
@@ -48,7 +48,7 @@ struct TissueCompartmentTests {
     @Test
     func linearAscentMatchesIndependentHighPrecisionCalculation() async throws {
         try await given {
-            try TissueCompartment(
+            try Tissue.Compartment(
                 halfTimes: .init(nitrogen: .init(10), helium: .init(5)),
                 nitrogen: .init(1.6),
                 helium: .init(0.8))
@@ -68,7 +68,7 @@ struct TissueCompartmentTests {
     @Test
     func zeroDurationKeepsLoading() async throws {
         try await given {
-            try TissueCompartment(
+            try Tissue.Compartment(
                 halfTimes: .init(nitrogen: .init(10), helium: .init(5)),
                 nitrogen: .init(0.7),
                 helium: .init(0.2))
@@ -87,7 +87,7 @@ struct TissueCompartmentTests {
     @Test
     func extremeFiniteHalfTimeKeepsLoadingFinite() async throws {
         try await given {
-            try TissueCompartment(
+            try Tissue.Compartment(
                 halfTimes: .init(nitrogen: .init(.greatestFiniteMagnitude), helium: .init(5)),
                 nitrogen: .init(0.7),
                 helium: .init(0.2))
@@ -106,7 +106,7 @@ struct TissueCompartmentTests {
     @Test
     func extremeFiniteTensionsKeepLoadingFinite() async throws {
         try await given {
-            try TissueCompartment(
+            try Tissue.Compartment(
                 halfTimes: .init(nitrogen: .init(10), helium: .init(5)),
                 nitrogen: .init(.greatestFiniteMagnitude),
                 helium: .init(0))
@@ -131,7 +131,7 @@ struct TissueCompartmentTests {
             return (halfTime: halfTime, expectedError: expectedError)
         } when: { input in
             try expectThrowsError(
-                when: try TissueCompartment.HalfTimes(nitrogen: input.halfTime, helium: .init(5)),
+                when: try Tissue.Compartment.HalfTimes(nitrogen: input.halfTime, helium: .init(5)),
                 then: input.expectedError) { error in
                 #expect(error.localizationValue == "dive.kit.error.range.lower.bound")
             }
@@ -149,7 +149,7 @@ struct TissueCompartmentTests {
             return (halfTime: halfTime, expectedError: expectedError)
         } when: { input in
             try expectThrowsError(
-                when: try TissueCompartment.HalfTimes(nitrogen: .init(10), helium: input.halfTime),
+                when: try Tissue.Compartment.HalfTimes(nitrogen: .init(10), helium: input.halfTime),
                 then: input.expectedError) { error in
                 #expect(error.localizationValue == "dive.kit.error.range.upper.bound")
             }
@@ -162,7 +162,7 @@ struct TissueCompartmentTests {
             Minutes(.nan)
         } when: { halfTime in
             let error = #expect(throws: Error.self) {
-                try TissueCompartment.HalfTimes(nitrogen: halfTime, helium: .init(5))
+                try Tissue.Compartment.HalfTimes(nitrogen: halfTime, helium: .init(5))
             }
             guard case let .range(.lowerBound(provided, _), _) = error else {
                 Issue.record("Expected a lower-bound error, got \(String(describing: error)).")
@@ -178,15 +178,15 @@ struct TissueCompartmentTests {
             let tension = -0.01
             let expectedError: Error = .negative(
                 .partialPressure(tension),
-                "TissueCompartment.init(halfTimes:nitrogen:helium:)")
+                "Compartment.init(halfTimes:nitrogen:helium:)")
 
             return (
-                halfTimes: try TissueCompartment.HalfTimes(nitrogen: .init(10), helium: .init(5)),
+                halfTimes: try Tissue.Compartment.HalfTimes(nitrogen: .init(10), helium: .init(5)),
                 tension: tension,
                 expectedError: expectedError)
         } when: { input in
             try expectThrowsError(
-                when: try TissueCompartment(halfTimes: input.halfTimes, nitrogen: .init(input.tension), helium: .init(0.2)),
+                when: try Tissue.Compartment(halfTimes: input.halfTimes, nitrogen: .init(input.tension), helium: .init(0.2)),
                 then: input.expectedError) { error in
                 #expect(error.localizationValue == "dive.kit.error.negative.partial.pressure")
             }
@@ -199,15 +199,15 @@ struct TissueCompartmentTests {
             let tension = -0.2
             let expectedError: Error = .negative(
                 .partialPressure(tension),
-                "TissueCompartment.init(halfTimes:nitrogen:helium:)")
+                "Compartment.init(halfTimes:nitrogen:helium:)")
 
             return (
-                halfTimes: try TissueCompartment.HalfTimes(nitrogen: .init(10), helium: .init(5)),
+                halfTimes: try Tissue.Compartment.HalfTimes(nitrogen: .init(10), helium: .init(5)),
                 tension: tension,
                 expectedError: expectedError)
         } when: { input in
             try expectThrowsError(
-                when: try TissueCompartment(halfTimes: input.halfTimes, nitrogen: .init(0.7), helium: .init(input.tension)),
+                when: try Tissue.Compartment(halfTimes: input.halfTimes, nitrogen: .init(0.7), helium: .init(input.tension)),
                 then: input.expectedError) { error in
                 #expect(error.localizationValue == "dive.kit.error.negative.partial.pressure")
             }
@@ -219,10 +219,10 @@ struct TissueCompartmentTests {
         try await given {
             let expectedError: Error = .range(
                 .upperBound(.infinity, .greatestFiniteMagnitude),
-                "TissueCompartment.loaded(for:inspiredNitrogen:inspiredHelium:)")
+                "Compartment.loaded(for:inspiredNitrogen:inspiredHelium:using:)")
 
             return (
-                compartment: try TissueCompartment(
+                compartment: try Tissue.Compartment(
                     halfTimes: .init(nitrogen: .init(10), helium: .init(5)),
                     nitrogen: .init(0.7),
                     helium: .init(0.2)),
@@ -246,10 +246,10 @@ struct TissueCompartmentTests {
             let pressure = -0.3
             let expectedError: Error = .negative(
                 .partialPressure(pressure),
-                "TissueCompartment.loaded(for:nitrogenFrom:nitrogenTo:heliumFrom:heliumTo:)")
+                "Compartment.loaded(for:nitrogenFrom:nitrogenTo:heliumFrom:heliumTo:using:)")
 
             return (
-                compartment: try TissueCompartment(
+                compartment: try Tissue.Compartment(
                     halfTimes: .init(nitrogen: .init(10), helium: .init(5)),
                     nitrogen: .init(0.7),
                     helium: .init(0.2)),
@@ -275,10 +275,10 @@ struct TissueCompartmentTests {
             let duration = Minutes(-1)
             let expectedError: Error = .negative(
                 .minutes(duration),
-                "TissueCompartment.loaded(for:inspiredNitrogen:inspiredHelium:)")
+                "Compartment.loaded(for:inspiredNitrogen:inspiredHelium:using:)")
 
             return (
-                compartment: try TissueCompartment(
+                compartment: try Tissue.Compartment(
                     halfTimes: .init(nitrogen: .init(10), helium: .init(5)),
                     nitrogen: .init(0.7),
                     helium: .init(0.2)),
