@@ -10,6 +10,8 @@ public extension Buhlmann {
     /// `a + P / b`. A smaller `b` and a larger `a` let the compartment hold more
     /// gas above ambient pressure.
     ///
+    /// - Warning: See ``Buhlmann`` before relying on this model.
+    ///
     /// - Since: 1.0.0
     struct Coefficients<Gas: GasRepresentable>: Sendable, Equatable {
         /// The gas these coefficients describe.

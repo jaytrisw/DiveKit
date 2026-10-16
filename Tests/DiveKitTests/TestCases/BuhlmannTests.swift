@@ -92,6 +92,21 @@ struct BuhlmannTests {
     }
 
     @Test
+    func singleGasCompartmentMatchesAnyRowWithItsHalfTime() async throws {
+        try await given {
+            (nitrogen: Tissue.Compartment(try .init(of: .nitrogen, halfTime: .init(8), tension: .init(2))),
+             helium: Tissue.Compartment(try .init(of: .helium, halfTime: .init(3.02), tension: .init(2))))
+        } when: { compartments in
+            (nitrogen: try Buhlmann.Table.zhl16c.toleratedAmbientPressure(of: compartments.nitrogen),
+             helium: try Buhlmann.Table.zhl16c.toleratedAmbientPressure(of: compartments.helium))
+        } then: { _, tolerated in
+            // Row 2: nitrogen a 1.0 bar, b 0.6514; helium a 1.383 bar, b 0.5747.
+            #expect(tolerated.nitrogen.value.isApproximately((2 - 1 / 1.01325) * 0.6514))
+            #expect(tolerated.helium.value.isApproximately((2 - 1.383 / 1.01325) * 0.5747))
+        }
+    }
+
+    @Test
     func compartmentWithoutInertGasToleratesAnyPressure() async throws {
         try await given {
             try Self.compartment(nitrogen: 0, helium: 0)

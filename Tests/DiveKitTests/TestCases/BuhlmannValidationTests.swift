@@ -103,6 +103,20 @@ struct BuhlmannValidationTests {
     }
 
     @Test
+    func toleratedPressureRejectsGasesFromDifferentRows() throws {
+        // 5-minute nitrogen is row 1 and 3.02-minute helium is row 2; ZH-L16C defines no such compartment.
+        let compartment = Tissue.Compartment(
+            try .init(of: .nitrogen, halfTime: .init(5), tension: .init(0.5)),
+            try .init(of: .helium, halfTime: .init(3.02), tension: .init(0.5)))
+
+        try expectThrowsError(
+            when: try Buhlmann.Table.zhl16c.toleratedAmbientPressure(of: compartment),
+            then: .gas(.unmodeled(Nitrogen()), "Table.toleratedAmbientPressure(of:gradientFactor:)")) { error in
+            #expect(error.localizationValue == "dive.kit.error.gas.unmodeled")
+        }
+    }
+
+    @Test
     func ceilingReportsGasWithoutCoefficients() throws {
         var compartments = try Buhlmann.Table.zhl16c.compartments(nitrogen: .init(0.74))
         compartments.append(Tissue.Compartment(try .init(of: .helium, halfTime: .init(4), tension: .init(0.1))))

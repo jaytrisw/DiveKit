@@ -6,8 +6,9 @@ import DiveKitInternal
 public extension Buhlmann.Table {
     /// Returns the lowest ambient pressure a compartment tolerates.
     ///
-    /// Each gas the compartment tracks is matched to this table's coefficients
-    /// for that gas and half-time. With several inert gases, `a` and `b` are
+    /// The compartment is matched to the first row whose coefficients cover every
+    /// gas it tracks at the gas's half-time; gases are never matched across rows.
+    /// With several inert gases, `a` and `b` are
     /// averaged, weighted by each gas's tension. The tolerated pressure with
     /// gradient factor `GF` is `(P − a·GF) / (GF / b − GF + 1)`, where `P` is the
     /// total inert-gas tension. At `GF = 1` this is Bühlmann's `(P − a) · b`.
@@ -18,8 +19,11 @@ public extension Buhlmann.Table {
     ///     ``Buhlmann/GradientFactor/full``.
     /// - Returns: The tolerated ambient pressure in atmospheres, or `0` if the
     ///   compartment holds no inert gas or tolerates any ambient pressure.
-    /// - Throws: `Error.gas` if a tracked gas's half-time has no coefficients in
-    ///   this table. If several gases have none, one of them is reported.
+    /// - Throws: `Error.gas` if no single row covers every tracked gas at its
+    ///   half-time. Gases are checked in order of their type name, and the first
+    ///   that matches no row shared with the gases before it is reported.
+    ///
+    /// - Warning: See ``Buhlmann`` before relying on this model.
     ///
     /// ```swift
     /// let tolerated = try Buhlmann.Table.zhl16c.toleratedAmbientPressure(
@@ -48,8 +52,10 @@ public extension Buhlmann.Table {
     ///   - configuration: The units and water used for the resulting depth.
     /// - Returns: A calculation containing the ceiling depth, or `0` if every
     ///   compartment tolerates the surface.
-    /// - Throws: `Error.gas` if a tracked gas's half-time has no coefficients in
-    ///   this table.
+    /// - Throws: `Error.gas` if no single row covers every gas a compartment
+    ///   tracks, as for ``toleratedAmbientPressure(of:gradientFactor:)``.
+    ///
+    /// - Warning: See ``Buhlmann`` before relying on this model.
     ///
     /// ```swift
     /// let ceiling = try Buhlmann.Table.zhl16c.ceiling(
@@ -83,11 +89,19 @@ extension Buhlmann.Table {
         of compartment: Tissue.Compartment,
         gradientFactor: Buhlmann.GradientFactor,
         _ callSite: CallSite) throws(Error) -> Pressure {
-            let entries = try compartment.storage.map { (gas, entry) throws(Error) in
-                guard let limit = limits[.init(gas: gas, halfTime: entry.halfTime)] else {
-                    throw .gas(.unmodeled(gas.gas.forceUnwrap("Tracked gases are always GasRepresentable.")), callSite)
+            let tracked = compartment.storage
+                .map { (key: LimitKey(gas: $0.key, halfTime: $0.value.halfTime), tension: $0.value.tension) }
+                .sorted { $0.key.typeName < $1.key.typeName }
+            var candidates = Array(rowLimits.indices)
+            for entry in tracked {
+                candidates = candidates.filter { rowLimits[$0][entry.key] != nil }
+                guard !candidates.isEmpty else {
+                    throw .gas(.unmodeled(entry.key.gas.gas.forceUnwrap("Tracked gases are always GasRepresentable.")), callSite)
                 }
-                return (limit: limit, tension: entry.tension)
+            }
+            guard let row = candidates.first else { return .init(.zero) }
+            let entries = tracked.map { entry in
+                (limit: rowLimits[row][entry.key].forceUnwrap("Every candidate row covers every tracked gas."), tension: entry.tension)
             }
             let total = entries.reduce(.zero) { $0 + $1.tension }
             guard total > 0 else { return .init(.zero) }

@@ -10,6 +10,8 @@ public extension Buhlmann {
     /// compartments further below it, which gives deeper, more conservative
     /// ceilings.
     ///
+    /// - Warning: See ``Buhlmann`` before relying on this model.
+    ///
     /// - Since: 1.0.0
     struct GradientFactor: Sendable, Hashable {
         /// The gradient factor, greater than `0` and at most `1`.

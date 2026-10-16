@@ -7,10 +7,12 @@ public extension Buhlmann {
     ///
     /// Tables are plain values: use a built-in table such as ``zhl16c`` or
     /// create your own from rows. Compartment state is a plain
-    /// ``Tissue/Compartment``; the table matches each tracked gas to its
-    /// coefficients by gas and half-time, so compartments can be loaded with
-    /// ``Tissue/Compartment/loaded(for:inspired:using:)`` and checked against the
-    /// table in any order.
+    /// ``Tissue/Compartment``; the table matches each compartment to the row
+    /// whose half-times its tracked gases share, so compartments can be loaded
+    /// with ``Tissue/Compartment/loaded(for:inspired:using:)`` and checked against
+    /// the table in any order.
+    ///
+    /// - Warning: See ``Buhlmann`` before relying on this model.
     ///
     /// - Since: 1.0.0
     struct Table: Sendable, Equatable {
@@ -19,24 +21,20 @@ public extension Buhlmann {
         /// - Since: 1.0.0
         public let rows: [Row]
 
-        /// Coefficients keyed by gas and half-time, derived from ``rows``.
-        let limits: [LimitKey: Limit]
+        /// Each row's coefficients keyed by gas and half-time, derived from ``rows``.
+        let rowLimits: [[LimitKey: Limit]]
 
         /// Creates a table from rows.
         ///
-        /// If a gas and half-time appear in more than one row, the last row's
-        /// coefficients are used.
+        /// If several rows match a compartment, the first is used.
         ///
         /// - Parameter rows: The table's rows, fastest compartment first.
         /// - Since: 1.0.0
         public init(_ rows: [Row]) {
             self.rows = rows
-            var limits: [LimitKey: Limit] = [:]
-            for row in rows {
-                limits[.init(row.nitrogen)] = .init(row.nitrogen)
-                limits[.init(row.helium)] = .init(row.helium)
+            rowLimits = rows.map { row in
+                [.init(row.nitrogen): .init(row.nitrogen), .init(row.helium): .init(row.helium)]
             }
-            self.limits = limits
         }
     }
 }
@@ -44,6 +42,8 @@ public extension Buhlmann {
 @_spi(Experimental)
 public extension Buhlmann.Table {
     /// One compartment's nitrogen and helium coefficients.
+    ///
+    /// - Warning: See ``Buhlmann`` before relying on this model.
     ///
     /// - Since: 1.0.0
     struct Row: Sendable, Equatable {
@@ -82,6 +82,8 @@ public extension Buhlmann.Table {
     /// ```swift
     /// let compartments = try Buhlmann.Table.zhl16c.compartments(nitrogen: .init(0.74))
     /// ```
+    ///
+    /// - Warning: See ``Buhlmann`` before relying on this model.
     ///
     /// - Since: 1.0.0
     func compartments(
@@ -186,6 +188,11 @@ extension Buhlmann.Table {
         init(gas: AnyGas, halfTime: Minutes) {
             self.gas = gas
             self.halfTime = halfTime
+        }
+
+        /// The gas's type name, used to check gases in a stable order.
+        var typeName: String {
+            String(describing: type(of: gas.value.base))
         }
     }
 }
