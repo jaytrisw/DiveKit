@@ -6,21 +6,19 @@ struct TissueCompartmentTests {
     @Test
     func constantPressureRespectsGasSpecificHalfTimes() async throws {
         try await given {
-            try Tissue.Compartment(
-                halfTimes: .init(nitrogen: .init(10), helium: .init(5)),
-                nitrogen: .init(0.7),
-                helium: .init(0.2))
+            Tissue.Compartment(
+                try .init(of: .nitrogen, halfTime: .init(10), tension: .init(0.7)),
+                try .init(of: .helium, halfTime: .init(5), tension: .init(0.2)))
         } when: { initial in
             try initial.loaded(
                 for: .init(10),
-                inspiredNitrogen: .init(1.7),
-                inspiredHelium: .init(0.6))
-        } then: { initial, loaded in
-            #expect(loaded.halfTimes == initial.halfTimes)
-            #expect(loaded.nitrogen.value.isApproximately(1.2))
-            #expect(loaded.helium.value.isApproximately(0.5))
-            #expect(initial.nitrogen.value == 0.7)
-            #expect(initial.helium.value == 0.2)
+                inspired: try .init(of: .nitrogen, pressure: .init(1.7)), try .init(of: .helium, pressure: .init(0.6)))
+        } then: { initial, result in
+            let loaded = try #require(result.tracked)
+            #expect(loaded.tension(of: .nitrogen)?.isApproximately(1.2) == true)
+            #expect(loaded.tension(of: .helium)?.isApproximately(0.5) == true)
+            #expect(initial.tension(of: .nitrogen) == 0.7)
+            #expect(initial.tension(of: .helium) == 0.2)
         }
     }
 
@@ -28,244 +26,158 @@ struct TissueCompartmentTests {
     func linearDescentMatchesIndependentHighPrecisionCalculation() async throws {
         // Expected values were calculated separately with 50-digit decimal arithmetic.
         try await given {
-            try Tissue.Compartment(
-                halfTimes: .init(nitrogen: .init(10), helium: .init(5)),
-                nitrogen: .init(0.7),
-                helium: .init(0.2))
+            Tissue.Compartment(
+                try .init(of: .nitrogen, halfTime: .init(10), tension: .init(0.7)),
+                try .init(of: .helium, halfTime: .init(5), tension: .init(0.2)))
         } when: { initial in
             try initial.loaded(
                 for: .init(10),
-                nitrogenFrom: .init(1),
-                nitrogenTo: .init(2),
-                heliumFrom: .init(0.4),
-                heliumTo: .init(0.1))
-        } then: { _, loaded in
-            #expect(loaded.nitrogen.value.isApproximately(1.1286524795555183))
-            #expect(loaded.helium.value.isApproximately(0.21230319210000838))
+                inspired: try .init(of: .nitrogen, from: .init(1), to: .init(2)),
+                try .init(of: .helium, from: .init(0.4), to: .init(0.1)))
+        } then: { _, result in
+            let loaded = try #require(result.tracked)
+            #expect(loaded.tension(of: .nitrogen)?.isApproximately(1.1286524795555183) == true)
+            #expect(loaded.tension(of: .helium)?.isApproximately(0.21230319210000838) == true)
         }
     }
 
     @Test
     func linearAscentMatchesIndependentHighPrecisionCalculation() async throws {
         try await given {
-            try Tissue.Compartment(
-                halfTimes: .init(nitrogen: .init(10), helium: .init(5)),
-                nitrogen: .init(1.6),
-                helium: .init(0.8))
+            Tissue.Compartment(
+                try .init(of: .nitrogen, halfTime: .init(10), tension: .init(1.6)),
+                try .init(of: .helium, halfTime: .init(5), tension: .init(0.8)))
         } when: { initial in
             try initial.loaded(
                 for: .init(10),
-                nitrogenFrom: .init(2),
-                nitrogenTo: .init(1),
-                heliumFrom: .init(1),
-                heliumTo: .init(0.2))
-        } then: { _, loaded in
-            #expect(loaded.nitrogen.value.isApproximately(1.5213475204444817))
-            #expect(loaded.helium.value.isApproximately(0.582808512266689))
+                inspired: try .init(of: .nitrogen, from: .init(2), to: .init(1)),
+                try .init(of: .helium, from: .init(1), to: .init(0.2)))
+        } then: { _, result in
+            let loaded = try #require(result.tracked)
+            #expect(loaded.tension(of: .nitrogen)?.isApproximately(1.5213475204444817) == true)
+            #expect(loaded.tension(of: .helium)?.isApproximately(0.582808512266689) == true)
         }
     }
 
     @Test
     func zeroDurationKeepsLoading() async throws {
         try await given {
-            try Tissue.Compartment(
-                halfTimes: .init(nitrogen: .init(10), helium: .init(5)),
-                nitrogen: .init(0.7),
-                helium: .init(0.2))
+            Tissue.Compartment(
+                try .init(of: .nitrogen, halfTime: .init(10), tension: .init(0.7)),
+                try .init(of: .helium, halfTime: .init(5), tension: .init(0.2)))
         } when: { initial in
             try initial.loaded(
                 for: .init(0),
-                nitrogenFrom: .init(1),
-                nitrogenTo: .init(2),
-                heliumFrom: .init(0.2),
-                heliumTo: .init(0.4))
-        } then: { initial, loaded in
-            #expect(loaded == initial)
+                inspired: try .init(of: .nitrogen, from: .init(1), to: .init(2)),
+                try .init(of: .helium, from: .init(0.2), to: .init(0.4)))
+        } then: { initial, result in
+            #expect(result.tracked == initial)
+        }
+    }
+
+    @Test
+    func unlistedTrackedGasOffGasses() async throws {
+        try await given {
+            Tissue.Compartment(
+                try .init(of: .nitrogen, halfTime: .init(10), tension: .init(0.7)),
+                try .init(of: .helium, halfTime: .init(5), tension: .init(0.2)))
+        } when: { initial in
+            try initial.loaded(for: .init(10), inspired: try .init(of: .nitrogen, pressure: .init(1.7)))
+        } then: { _, result in
+            let loaded = try #require(result.tracked)
+            #expect(loaded.tension(of: .nitrogen)?.isApproximately(1.2) == true)
+            #expect(loaded.tension(of: .helium)?.isApproximately(0.05) == true)
+        }
+    }
+
+    @Test
+    func untrackedInspiredGasIsReported() async throws {
+        try await given {
+            Tissue.Compartment(try .init(of: .nitrogen, halfTime: .init(10), tension: .init(0.7)))
+        } when: { initial in
+            try initial.loaded(
+                for: .init(10),
+                inspired: try .init(of: .nitrogen, pressure: .init(1.7)), try .init(of: Neon(), pressure: .init(0.4)))
+        } then: { _, result in
+            let untracked = try #require(result.untracked)
+            #expect(untracked.compartment.tension(of: .nitrogen)?.isApproximately(1.2) == true)
+            #expect(untracked.compartment.tracking(of: Neon()) == .untracked)
+            #expect(untracked.gases.count == 1)
+            #expect(untracked.gases.first?.isEqual(to: Neon()) == true)
+        }
+    }
+
+    @Test
+    func metabolicInspiredGasIsIgnoredWithoutBeingReported() async throws {
+        try await given {
+            Tissue.Compartment(try .init(of: .nitrogen, halfTime: .init(10), tension: .init(0.7)))
+        } when: { initial in
+            try initial.loaded(
+                for: .init(10),
+                inspired: try .init(of: .oxygen, pressure: .init(0.4)), try .init(of: .nitrogen, pressure: .init(1.7)))
+        } then: { _, result in
+            let loaded = try #require(result.tracked)
+            #expect(loaded.tension(of: .nitrogen)?.isApproximately(1.2) == true)
+            #expect(loaded.tracking(of: .oxygen) == .untracked)
+        }
+    }
+
+    @Test
+    func tracksArbitraryGases() async throws {
+        try await given {
+            Tissue.Compartment(
+                try .init(of: .nitrogen, halfTime: .init(10), tension: .init(0.7)),
+                try .init(of: Neon(), halfTime: .init(8), tension: .init(0)))
+        } when: { compartment in
+            (nitrogen: compartment.tracking(of: .nitrogen),
+             neon: compartment.tracking(of: Neon()),
+             helium: compartment.tracking(of: .helium),
+             gases: compartment.gases())
+        } then: { _, tracking in
+            #expect(tracking.nitrogen == .tracked(halfTime: .init(10), tension: .init(0.7)))
+            #expect(tracking.neon == .tracked(halfTime: .init(8), tension: .init(0)))
+            #expect(tracking.helium == .untracked)
+            #expect(tracking.gases.count == 2)
+        }
+    }
+
+    @Test
+    func laterComponentReplacesEarlierComponentForSameGas() async throws {
+        try await given {
+            Tissue.Compartment(
+                try .init(of: .nitrogen, halfTime: .init(10), tension: .init(0.7)),
+                try .init(of: .nitrogen, halfTime: .init(20), tension: .init(0.9)))
+        } when: { compartment in
+            compartment.tracking(of: .nitrogen)
+        } then: { _, tracking in
+            #expect(tracking == .tracked(halfTime: .init(20), tension: .init(0.9)))
         }
     }
 
     @Test
     func extremeFiniteHalfTimeKeepsLoadingFinite() async throws {
         try await given {
-            try Tissue.Compartment(
-                halfTimes: .init(nitrogen: .init(.greatestFiniteMagnitude), helium: .init(5)),
-                nitrogen: .init(0.7),
-                helium: .init(0.2))
+            Tissue.Compartment(try .init(of: .nitrogen, halfTime: .init(.greatestFiniteMagnitude), tension: .init(0.7)))
         } when: { initial in
-            try initial.loaded(
-                for: .init(10),
-                nitrogenFrom: .init(1),
-                nitrogenTo: .init(2),
-                heliumFrom: .init(0.2),
-                heliumTo: .init(0.2))
-        } then: { _, loaded in
-            #expect(loaded.nitrogen.value.isApproximately(0.7))
+            try initial.loaded(for: .init(10), inspired: try .init(of: .nitrogen, from: .init(1), to: .init(2)))
+        } then: { _, result in
+            let loaded = try #require(result.tracked)
+            #expect(loaded.tension(of: .nitrogen)?.isApproximately(0.7) == true)
         }
     }
 
     @Test
     func extremeFiniteTensionsKeepLoadingFinite() async throws {
         try await given {
-            try Tissue.Compartment(
-                halfTimes: .init(nitrogen: .init(10), helium: .init(5)),
-                nitrogen: .init(.greatestFiniteMagnitude),
-                helium: .init(0))
+            Tissue.Compartment(try .init(of: .nitrogen, halfTime: .init(10), tension: .init(.greatestFiniteMagnitude)))
         } when: { initial in
             try initial.loaded(
                 for: .init(10),
-                nitrogenFrom: .init(0),
-                nitrogenTo: .init(.greatestFiniteMagnitude),
-                heliumFrom: .init(0),
-                heliumTo: .init(0))
-        } then: { _, loaded in
-            #expect((loaded.nitrogen.value / .greatestFiniteMagnitude).isApproximately(0.7786524795555183))
-        }
-    }
-
-    @Test(.tags(.error))
-    func halfTimesRejectZeroHalfTime() async throws {
-        try await given {
-            let halfTime = Minutes(0)
-            let expectedError: Error = .range(.lowerBound(0, 0), "HalfTimes.init(nitrogen:helium:)")
-
-            return (halfTime: halfTime, expectedError: expectedError)
-        } when: { input in
-            try expectThrowsError(
-                when: try Tissue.Compartment.HalfTimes(nitrogen: input.halfTime, helium: .init(5)),
-                then: input.expectedError) { error in
-                #expect(error.localizationValue == "dive.kit.error.range.lower.bound")
-            }
-        }
-    }
-
-    @Test(.tags(.error))
-    func halfTimesRejectInfiniteHalfTime() async throws {
-        try await given {
-            let halfTime = Minutes(.infinity)
-            let expectedError: Error = .range(
-                .upperBound(.infinity, .greatestFiniteMagnitude),
-                "HalfTimes.init(nitrogen:helium:)")
-
-            return (halfTime: halfTime, expectedError: expectedError)
-        } when: { input in
-            try expectThrowsError(
-                when: try Tissue.Compartment.HalfTimes(nitrogen: .init(10), helium: input.halfTime),
-                then: input.expectedError) { error in
-                #expect(error.localizationValue == "dive.kit.error.range.upper.bound")
-            }
-        }
-    }
-
-    @Test(.tags(.error))
-    func halfTimesRejectNaNHalfTime() async {
-        await given {
-            Minutes(.nan)
-        } when: { halfTime in
-            let error = #expect(throws: Error.self) {
-                try Tissue.Compartment.HalfTimes(nitrogen: halfTime, helium: .init(5))
-            }
-            guard case let .range(.lowerBound(provided, _), _) = error else {
-                Issue.record("Expected a lower-bound error, got \(String(describing: error)).")
-                return
-            }
-            #expect(provided.isNaN)
-        }
-    }
-
-    @Test(.tags(.error))
-    func initializationRejectsNegativeNitrogenTension() async throws {
-        try await given {
-            let tension = -0.01
-            let expectedError: Error = .negative(
-                .partialPressure(tension),
-                "Compartment.init(halfTimes:nitrogen:helium:)")
-
-            return (
-                halfTimes: try Tissue.Compartment.HalfTimes(nitrogen: .init(10), helium: .init(5)),
-                tension: tension,
-                expectedError: expectedError)
-        } when: { input in
-            try expectThrowsError(
-                when: try Tissue.Compartment(halfTimes: input.halfTimes, nitrogen: .init(input.tension), helium: .init(0.2)),
-                then: input.expectedError) { error in
-                #expect(error.localizationValue == "dive.kit.error.negative.partial.pressure")
-            }
-        }
-    }
-
-    @Test(.tags(.error))
-    func initializationRejectsNegativeHeliumTension() async throws {
-        try await given {
-            let tension = -0.2
-            let expectedError: Error = .negative(
-                .partialPressure(tension),
-                "Compartment.init(halfTimes:nitrogen:helium:)")
-
-            return (
-                halfTimes: try Tissue.Compartment.HalfTimes(nitrogen: .init(10), helium: .init(5)),
-                tension: tension,
-                expectedError: expectedError)
-        } when: { input in
-            try expectThrowsError(
-                when: try Tissue.Compartment(halfTimes: input.halfTimes, nitrogen: .init(0.7), helium: .init(input.tension)),
-                then: input.expectedError) { error in
-                #expect(error.localizationValue == "dive.kit.error.negative.partial.pressure")
-            }
-        }
-    }
-
-    @Test(.tags(.error))
-    func constantLoadingRejectsInfiniteInspiredPressure() async throws {
-        try await given {
-            let expectedError: Error = .range(
-                .upperBound(.infinity, .greatestFiniteMagnitude),
-                "Compartment.loaded(for:inspiredNitrogen:inspiredHelium:using:)")
-
-            return (
-                compartment: try Tissue.Compartment(
-                    halfTimes: .init(nitrogen: .init(10), helium: .init(5)),
-                    nitrogen: .init(0.7),
-                    helium: .init(0.2)),
-                pressure: PartialPressure<Nitrogen>(.infinity),
-                expectedError: expectedError)
-        } when: { input in
-            try expectThrowsError(
-                when: try input.compartment.loaded(
-                    for: .init(5),
-                    inspiredNitrogen: input.pressure,
-                    inspiredHelium: .init(0.3)),
-                then: input.expectedError) { error in
-                #expect(error.localizationValue == "dive.kit.error.range.upper.bound")
-            }
-        }
-    }
-
-    @Test(.tags(.error))
-    func linearLoadingRejectsNegativeInspiredPressure() async throws {
-        try await given {
-            let pressure = -0.3
-            let expectedError: Error = .negative(
-                .partialPressure(pressure),
-                "Compartment.loaded(for:nitrogenFrom:nitrogenTo:heliumFrom:heliumTo:using:)")
-
-            return (
-                compartment: try Tissue.Compartment(
-                    halfTimes: .init(nitrogen: .init(10), helium: .init(5)),
-                    nitrogen: .init(0.7),
-                    helium: .init(0.2)),
-                pressure: pressure,
-                expectedError: expectedError)
-        } when: { input in
-            try expectThrowsError(
-                when: try input.compartment.loaded(
-                    for: .init(5),
-                    nitrogenFrom: .init(1),
-                    nitrogenTo: .init(1.5),
-                    heliumFrom: .init(0.2),
-                    heliumTo: .init(input.pressure)),
-                then: input.expectedError) { error in
-                #expect(error.localizationValue == "dive.kit.error.negative.partial.pressure")
-            }
+                inspired: try .init(of: .nitrogen, from: .init(0), to: .init(.greatestFiniteMagnitude)))
+        } then: { _, result in
+            let loaded = try #require(result.tracked)
+            let tension = try #require(loaded.tension(of: .nitrogen))
+            #expect((tension / .greatestFiniteMagnitude).isApproximately(0.7786524795555183))
         }
     }
 
@@ -273,23 +185,15 @@ struct TissueCompartmentTests {
     func loadingRejectsNegativeDuration() async throws {
         try await given {
             let duration = Minutes(-1)
-            let expectedError: Error = .negative(
-                .minutes(duration),
-                "Compartment.loaded(for:inspiredNitrogen:inspiredHelium:using:)")
+            let expectedError: Error = .negative(.minutes(duration), "Compartment.loaded(for:inspired:using:)")
 
             return (
-                compartment: try Tissue.Compartment(
-                    halfTimes: .init(nitrogen: .init(10), helium: .init(5)),
-                    nitrogen: .init(0.7),
-                    helium: .init(0.2)),
+                compartment: Tissue.Compartment(try .init(of: .nitrogen, halfTime: .init(10), tension: .init(0.7))),
                 duration: duration,
                 expectedError: expectedError)
         } when: { input in
             try expectThrowsError(
-                when: try input.compartment.loaded(
-                    for: input.duration,
-                    inspiredNitrogen: .init(1),
-                    inspiredHelium: .init(0.3)),
+                when: try input.compartment.loaded(for: input.duration, inspired: try .init(of: .nitrogen, pressure: .init(1))),
                 then: input.expectedError) { error in
                 #expect(error.localizationValue == "dive.kit.error.negative.minutes")
             }

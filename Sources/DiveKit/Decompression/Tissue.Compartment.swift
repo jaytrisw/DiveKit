@@ -1,73 +1,73 @@
 import Foundation
-@_spi(Experimental) import DiveKitCore
+import DiveKitCore
 import DiveKitInternal
 
 @_spi(Experimental)
 public extension Tissue {
-    /// Nitrogen and helium loading in one theoretical tissue compartment.
+    /// Inert-gas loading in one theoretical tissue compartment.
     ///
-    /// All partial pressures are in atmospheres and durations are in minutes.
-    /// Inspired pressures are supplied by the caller; this type does not derive
-    /// them from depth, breathing-gas fractions, or water vapour pressure.
-    /// The model tracks dissolved inert gas only. It does not compute ceilings,
-    /// no-decompression limits, or a safe ascent schedule.
+    /// A compartment tracks any number of gases, each with its own half-time and
+    /// dissolved tension. All partial pressures are in atmospheres and durations
+    /// are in minutes. Inspired pressures are supplied by the caller; this type
+    /// does not derive them from depth, breathing-gas fractions, or water vapour
+    /// pressure. The model tracks dissolved inert gas only. It does not compute
+    /// ceilings, no-decompression limits, or a safe ascent schedule.
     ///
-    /// - Since: 1.1.0
+    /// - Since: 1.0.0
     struct Compartment: Sendable, Equatable {
-        /// The gas-specific half-times for this compartment.
-        ///
-        /// - Since: 1.1.0
-        public let halfTimes: HalfTimes
+        /// Storage keyed by type-erased gas identity.
+        let storage: [AnyGas: Entry]
 
-        /// The dissolved nitrogen tension in atmospheres.
+        /// Creates a compartment that tracks the given gases.
         ///
-        /// - Since: 1.1.0
-        public let nitrogen: PartialPressure<Nitrogen>
-
-        /// The dissolved helium tension in atmospheres.
+        /// If a gas appears more than once, the last component is used.
         ///
-        /// - Since: 1.1.0
-        public let helium: PartialPressure<Helium>
-
-        /// Creates a compartment with gas-specific half-times and initial tensions.
-        ///
-        /// - Parameters:
-        ///   - halfTimes: The gas-specific half-times.
-        ///   - nitrogen: The initial dissolved nitrogen tension in atmospheres.
-        ///   - helium: The initial dissolved helium tension in atmospheres.
-        /// - Throws: `Error.negative` if either tension is negative, or
-        ///   `Error.range` if either tension is not finite.
+        /// - Parameter components: Each tracked gas with its half-time and
+        ///   initial dissolved tension.
         ///
         /// ```swift
-        /// let compartment = try Tissue.Compartment(
-        ///     halfTimes: halfTimes,
-        ///     nitrogen: 0.74,
-        ///     helium: 0)
+        /// let compartment = Tissue.Compartment(
+        ///     try .init(of: .nitrogen, halfTime: .init(5), tension: .init(0.74)),
+        ///     try .init(of: .helium, halfTime: .init(1.88), tension: .init(0)))
         /// ```
         ///
-        /// - Since: 1.1.0
-        public init(
-            halfTimes: HalfTimes,
-            nitrogen: PartialPressure<Nitrogen>,
-            helium: PartialPressure<Helium>) throws(Error) {
-                let callSite: CallSite = .from(Self.self)
-                self.init(
-                    halfTimes,
-                    try nitrogen
-                        .validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
-                        .validate(using: .finite) { .range(.upperBound($0.value, .greatestFiniteMagnitude), callSite) },
-                    try helium
-                        .validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
-                        .validate(using: .finite) { .range(.upperBound($0.value, .greatestFiniteMagnitude), callSite) })
+        /// - Since: 1.0.0
+        public init<each Gas: GasRepresentable>(_ components: repeat Component<each Gas>) {
+            var storage: [AnyGas: Entry] = [:]
+            for component in repeat each components {
+                storage[.init(component.gas)] = .init(halfTime: component.halfTime, tension: component.tension.value)
             }
+            self.init(storage)
+        }
 
-        init(
-            _ halfTimes: HalfTimes,
-            _ nitrogen: PartialPressure<Nitrogen>,
-            _ helium: PartialPressure<Helium>) {
-                self.halfTimes = halfTimes
-                self.nitrogen = nitrogen
-                self.helium = helium
-            }
+        init(_ storage: [AnyGas: Entry]) {
+            self.storage = storage
+        }
+
+        /// Returns whether a gas is tracked, with its half-time and tension.
+        ///
+        /// - Parameter gas: The gas to look up.
+        /// - Returns: `.tracked` with the gas's half-time and current tension, or
+        ///   `.untracked` if this compartment does not model the gas.
+        /// - Since: 1.0.0
+        public func tracking<Gas: GasRepresentable>(of gas: Gas) -> Tracking<Gas> {
+            guard let entry = storage[.init(gas)] else { return .untracked }
+            return .tracked(halfTime: entry.halfTime, tension: .init(entry.tension))
+        }
+
+        /// Returns the gases this compartment tracks.
+        ///
+        /// - Returns: The tracked gases, in no particular order.
+        /// - Since: 1.0.0
+        public func gases() -> [any GasRepresentable] {
+            storage.keys.compactMap(\.gas)
+        }
+    }
+}
+
+extension Tissue.Compartment {
+    struct Entry: Sendable, Equatable {
+        let halfTime: Minutes
+        let tension: Double
     }
 }

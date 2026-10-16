@@ -8,6 +8,13 @@ public struct Oxygen: GasRepresentable, Sendable {
     ///
     /// - Since: 1.0.0
     public init() {}
+
+    /// Oxygen is consumed by the body.
+    ///
+    /// - Since: 1.0.0
+    public var metabolism: Metabolism {
+        .metabolic
+    }
 }
 
 public extension GasRepresentable where Self == Oxygen {

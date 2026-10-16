@@ -46,7 +46,7 @@ package extension Validator where Value: DecimalRepresentable {
     /// isFinite.validate(.init(.infinity)) // false
     /// ```
     ///
-    /// - Since: 1.1.0
+    /// - Since: 1.0.0
     static var finite: Self {
         .init { $0.value.isFinite }
     }

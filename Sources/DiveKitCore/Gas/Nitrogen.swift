@@ -8,6 +8,13 @@ public struct Nitrogen: GasRepresentable, Sendable {
     ///
     /// - Since: 1.0.0
     public init() {}
+
+    /// Nitrogen dissolves in tissue and is eliminated unchanged.
+    ///
+    /// - Since: 1.0.0
+    public var metabolism: Metabolism {
+        .inert
+    }
 }
 
 public extension GasRepresentable where Self == Nitrogen {

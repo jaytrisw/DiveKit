@@ -6,7 +6,12 @@ import Foundation
 /// heterogeneous gas components to be stored in a single blend.
 ///
 /// - Since: 1.0.0
-public protocol GasRepresentable: Hashable, Sendable {}
+public protocol GasRepresentable: Hashable, Sendable {
+    /// How the body handles this gas.
+    ///
+    /// - Since: 1.0.0
+    var metabolism: Metabolism { get }
+}
 
 public extension GasRepresentable {
     /// Returns whether this gas represents the same gas as another value.

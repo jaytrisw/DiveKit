@@ -9,4 +9,11 @@ public struct Helium: GasRepresentable, Sendable {
     ///
     /// - Since: 1.0.0
     public init() {}
+
+    /// Helium dissolves in tissue and is eliminated unchanged.
+    ///
+    /// - Since: 1.0.0
+    public var metabolism: Metabolism {
+        .inert
+    }
 }

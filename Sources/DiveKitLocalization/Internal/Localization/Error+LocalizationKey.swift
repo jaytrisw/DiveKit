@@ -11,6 +11,15 @@ package extension Error {
             case let .tank(tank, _): tank.localizationValue
             case let .blend(blend, _): blend.localizationValue
             case let .range(range, _): range.localizationValue
+            case let .gas(gas, _): gas.localizationValue
+        }
+    }
+}
+
+package extension Error.Gas {
+    var localizationValue: String.LocalizationValue {
+        switch self {
+            case .metabolic: LocalizedKey.Error.Gas.metabolic
         }
     }
 }

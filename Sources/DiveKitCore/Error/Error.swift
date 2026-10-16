@@ -23,6 +23,10 @@ public enum Error: Swift.Error, Sendable {
     ///
     /// - Since: 1.0.0
     case range(_ range: Range, _ callSite: CallSite)
+    /// A gas was invalid for the operation.
+    ///
+    /// - Since: 1.0.0
+    case gas(_ gas: Gas, _ callSite: CallSite)
 }
 
 /// Allows domain errors to be compared.

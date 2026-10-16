@@ -23,7 +23,7 @@ public extension Tissue {
     /// }
     /// ```
     ///
-    /// - Since: 1.1.0
+    /// - Since: 1.0.0
     struct Loading: Sendable {
         /// Returns the tension after a segment.
         ///
@@ -34,7 +34,7 @@ public extension Tissue {
         ///   - halfTime: The gas half-time, in minutes.
         ///   - duration: The segment duration, in minutes.
         /// - Returns: The tension at the end of the segment, in atmospheres.
-        /// - Since: 1.1.0
+        /// - Since: 1.0.0
         public var load: @Sendable (
             _ tension: Double,
             _ inspired: (from: Double, to: Double),
@@ -44,7 +44,7 @@ public extension Tissue {
         /// Creates a loading model from a closure.
         ///
         /// - Parameter load: Returns the tension after a segment. See ``load``.
-        /// - Since: 1.1.0
+        /// - Since: 1.0.0
         public init(
             load: @escaping @Sendable (
                 _ tension: Double,
@@ -62,7 +62,7 @@ public extension Tissue.Loading {
     ///
     /// At constant inspired pressure this gives the same result as ``haldane``.
     ///
-    /// - Since: 1.1.0
+    /// - Since: 1.0.0
     static var schreiner: Self {
         .init { tension, inspired, halfTime, duration in
             // Written as a convex combination of its three inputs so no intermediate
@@ -81,7 +81,7 @@ public extension Tissue.Loading {
     /// the start and end pressures. Use it to match planners and dive computers
     /// that step through a dive at constant pressure.
     ///
-    /// - Since: 1.1.0
+    /// - Since: 1.0.0
     static var haldane: Self {
         .init { tension, inspired, halfTime, duration in
             let remaining = exp(-log(2.0) / halfTime * duration)
