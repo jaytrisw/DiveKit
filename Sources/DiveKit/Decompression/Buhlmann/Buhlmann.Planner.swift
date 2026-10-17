@@ -13,6 +13,8 @@ extension Buhlmann {
         let rate: Double
         let waterVapor: Pressure
         let configuration: Configuration
+        /// The configured depth per atmosphere, already validated.
+        let increase: Double
         let model: Tissue.Loading
         let callSite: CallSite
 
@@ -275,11 +277,11 @@ extension Buhlmann.Planner {
 
     /// Returns the ambient pressure at `depth`, in atmospheres, with the surface at one atmosphere.
     func pressure(at depth: Double) -> Double {
-        1 + depth / configuration.water.pressure(configuration.units).increase.value
+        1 + depth / increase
     }
 
     /// Returns the depth at an ambient pressure, negative above the surface.
     func depth(at pressure: Double) -> Double {
-        (pressure - 1) * configuration.water.pressure(configuration.units).increase.value
+        (pressure - 1) * increase
     }
 }

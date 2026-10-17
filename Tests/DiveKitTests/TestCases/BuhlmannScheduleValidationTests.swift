@@ -90,6 +90,32 @@ struct BuhlmannScheduleValidationTests {
         }
     }
 
+    @Test(arguments: [
+        (increase: 0.0, expected: Error.Range.lowerBound(0, 0), key: "dive.kit.error.range.lower.bound"),
+        (increase: -10, expected: Error.Range.lowerBound(-10, 0), key: "dive.kit.error.range.lower.bound"),
+        (increase: .infinity, expected: Error.Range.upperBound(.infinity, .greatestFiniteMagnitude), key: "dive.kit.error.range.upper.bound"),
+        (increase: -.infinity, expected: Error.Range.upperBound(-.infinity, .greatestFiniteMagnitude), key: "dive.kit.error.range.upper.bound")
+    ])
+    func scheduleRejectsInvalidDepthPerAtmosphere(increase: Double, expected: Error.Range, key: String) async throws {
+        try await given {
+            (compartments: try Buhlmann.Table.zhl16c.compartments(nitrogen: .init(0.74)),
+             configuration: Configuration(
+                units: .metric,
+                water: Water(weight: Water.salt.weight, pressure: { .init(increase: .init(increase, units: $0)) })))
+        } when: { input in
+            try expectThrowsError(
+                when: try Buhlmann.Table.zhl16c.schedule(
+                    of: input.compartments,
+                    from: .init(30),
+                    breathing: try .enrichedAir(0.21),
+                    ascent: try .init(rate: .init(9), stopInterval: .init(3), lastStop: .init(3)),
+                    configuration: input.configuration),
+                then: .range(expected, BuhlmannScheduleTests.callSite)) { error in
+                #expect(error.localizationValue == .init(key))
+            }
+        }
+    }
+
     @Test
     func scheduleRejectsNegativeWaterVapor() async throws {
         try await given {

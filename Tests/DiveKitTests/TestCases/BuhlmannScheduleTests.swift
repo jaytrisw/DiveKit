@@ -283,13 +283,15 @@ struct BuhlmannScheduleTests {
     }
 
     @Test
-    func untrackedTraceGasIsIgnored() async throws {
+    func untrackedBlendGasIsIgnored() async throws {
+        // Both blends are 44% nitrogen, and a nitrogen-only compartment ignores the trimix's helium.
         try await given {
-            try Self.compartments(breathing: .air, at: 40, for: 30)
+            [Tissue.Compartment(try .init(of: .nitrogen, halfTime: .init(54.3), tension: .init(2.5)))]
         } when: { compartments in
-            try Self.schedule(of: compartments, from: 40, breathing: .air)
-        } then: { _, schedule in
-            #expect(!Self.stops(of: schedule).isEmpty)
+            try [Blend.trimix(oxygen: 0.21, helium: 0.35), .enrichedAir(0.56)].map { Self.stops(of: try Self.schedule(of: compartments, from: 40, breathing: $0)) }
+        } then: { _, stops in
+            #expect(!stops[1].isEmpty)
+            #expect(stops[0] == stops[1])
         }
     }
 

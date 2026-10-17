@@ -56,8 +56,10 @@ public extension Buhlmann.Table {
     ///   `depth` is `0`.
     /// - Throws: `Error.negative` if `depth`, a switch depth, or `waterVapor` is
     ///   negative, or `Error.range` if any of them, or the ambient pressure at
-    ///   any of them, is not finite. Throws `Error.range` if the stops would
-    ///   take more than 999 minutes in total. Also throws `Error.gas` if no
+    ///   any of them, is not finite. Also throws `Error.range` if the configured
+    ///   water's depth per atmosphere is not finite or not greater than `0`.
+    ///   Throws `Error.range` if the stops would take more than 999 minutes in
+    ///   total. Also throws `Error.gas` if no
     ///   single row covers every gas a compartment tracks, as for
     ///   ``toleratedAmbientPressure(of:gradientFactor:)``, `Error.range` if a
     ///   tolerated pressure is not finite, and the errors of
@@ -90,6 +92,7 @@ public extension Buhlmann.Table {
         using model: Tissue.Loading = .schreiner) throws(Error) -> Calculation<Buhlmann.Schedule> {
             let callSite: CallSite = .from(Self.self)
             _ = try Tissue.breathedPressure(at: depth, waterVapor: waterVapor, configuration: configuration, callSite)
+            let increase = try configuration.pressureIncrease(callSite)
             let switchDepths = switches.keys.sorted { $0.value > $1.value }
             for switchDepth in switchDepths {
                 _ = try Tissue.breathedPressure(at: switchDepth, waterVapor: waterVapor, configuration: configuration, callSite)
@@ -112,6 +115,7 @@ public extension Buhlmann.Table {
                 rate: ascent.rate.value,
                 waterVapor: waterVapor,
                 configuration: configuration,
+                increase: increase,
                 model: model,
                 callSite: callSite)
             return .init(
