@@ -8,8 +8,9 @@ import Testing
 /// 20 m/min and 3 m stops. Its conventions are reproduced exactly: a surface of
 /// 1.01325 bar, 0.09985 bar per meter, 0.0627 bar water vapor, starting nitrogen
 /// of 0.7902 · (1.01325 − 0.0627) bar, and a table that uses compartment 1
-/// (4 minutes) rather than 1b. Every decision in these profiles was checked to
-/// clear its limit by at least 1e-4 bar, far beyond rounding differences.
+/// (4 minutes) rather than 1b. Every pressure comparison clears its limit by at
+/// least 1e-4 bar, and every rounded ceiling is at least 0.07 of a stop interval
+/// from a stop depth.
 @Suite("Bühlmann schedule reference", .tags(.technicalDiving, .buhlmann))
 struct BuhlmannScheduleReferenceTests {
     struct Reference: Sendable, CustomTestStringConvertible {
@@ -82,7 +83,10 @@ struct BuhlmannScheduleReferenceTests {
     ])
     func matchesDecotengu(_ reference: Reference) async throws {
         try await given {
-            try Self.compartments(after: reference)
+            try Self.compartments(
+                breathing: try .trimix(oxygen: reference.oxygen, helium: reference.helium),
+                at: reference.depth,
+                for: reference.runtime)
         } when: { compartments in
             try Self.table.schedule(
                 of: compartments,
@@ -127,20 +131,19 @@ extension BuhlmannScheduleReferenceTests {
         water: Water(weight: Water.salt.weight, pressure: { .init(increase: .init(1.01325 / 0.09985, units: $0)) }))
 
     /// Returns decotengu's compartments after its descent at 20 m/min and the rest of the bottom time.
-    static func compartments(after reference: Reference) throws -> [Tissue.Compartment] {
-        let blend = try Blend.trimix(oxygen: reference.oxygen, helium: reference.helium)
-        let descent = reference.depth / 20
+    static func compartments(breathing blend: Blend<Blended>, at depth: Double, for runtime: Double) throws -> [Tissue.Compartment] {
+        let descent = depth / 20
         return try table.compartments(nitrogen: .init(0.7902 * (1.01325 - 0.0627) / 1.01325)).map { compartment in
             let descended = try #require(try compartment.loaded(
                 for: .init(descent),
                 inspired: try Tissue.Inspired(
-                    of: .nitrogen, breathing: blend, from: .init(0), to: .init(reference.depth), configuration: configuration),
+                    of: .nitrogen, breathing: blend, from: .init(0), to: .init(depth), configuration: configuration),
                 try Tissue.Inspired(
-                    of: .helium, breathing: blend, from: .init(0), to: .init(reference.depth), configuration: configuration)).tracked)
+                    of: .helium, breathing: blend, from: .init(0), to: .init(depth), configuration: configuration)).tracked)
             return try #require(try descended.loaded(
-                for: .init(reference.runtime - descent),
-                inspired: try Tissue.Inspired(of: .nitrogen, breathing: blend, at: .init(reference.depth), configuration: configuration),
-                try Tissue.Inspired(of: .helium, breathing: blend, at: .init(reference.depth), configuration: configuration)).tracked)
+                for: .init(runtime - descent),
+                inspired: try Tissue.Inspired(of: .nitrogen, breathing: blend, at: .init(depth), configuration: configuration),
+                try Tissue.Inspired(of: .helium, breathing: blend, at: .init(depth), configuration: configuration)).tracked)
         }
     }
 }

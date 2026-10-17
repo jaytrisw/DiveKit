@@ -8,8 +8,8 @@ public extension Buhlmann {
     ///
     /// ``low`` applies at the first decompression stop and ``high`` at the
     /// surface, with the gradient factor changing linearly with depth between
-    /// them. A lower ``low`` gives a deeper first stop; a lower ``high`` gives
-    /// longer shallow stops.
+    /// them. A lower ``low`` gives a first stop at the same depth or deeper; a
+    /// lower ``high`` gives the same or longer shallow stops.
     ///
     /// - Warning: See ``Buhlmann`` before relying on this model.
     ///

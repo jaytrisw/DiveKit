@@ -5,7 +5,6 @@ import Testing
 struct BuhlmannNoDecompressionLimitTests {
     @Test(arguments: [
         // Expected values were calculated separately with 50-digit decimal arithmetic.
-        // Air's trace gases are untracked, so it is modeled as 79% nitrogen.
         (depth: 30.0, oxygen: 0.21, helium: 0.0, gradientFactor: 1.0, minutes: 16.0),
         (depth: 18.0, oxygen: 0.21, helium: 0.0, gradientFactor: 1.0, minutes: 58.0),
         (depth: 30.0, oxygen: 0.32, helium: 0.0, gradientFactor: 0.85, minutes: 18.0),
@@ -32,17 +31,24 @@ struct BuhlmannNoDecompressionLimitTests {
         }
 
     @Test
-    func untrackedTraceGasIsIgnored() async throws {
+    func untrackedBlendGasIsIgnored() async throws {
+        // Both blends are 44% nitrogen, and a nitrogen-only compartment ignores the trimix's helium.
         try await given {
-            try Buhlmann.Table.zhl16c.compartments(nitrogen: .init(0.74))
+            [Tissue.Compartment(try .init(of: .nitrogen, halfTime: .init(54.3), tension: .init(0.74)))]
         } when: { compartments in
-            try Buhlmann.Table.zhl16c.noDecompressionLimit(
-                of: compartments,
-                at: .init(30),
-                breathing: .air,
-                configuration: Self.configuration)
-        } then: { _, limit in
-            #expect(limit == .minutes(.init(16)))
+            try [Blend.trimix(oxygen: 0.21, helium: 0.35), .enrichedAir(0.56)].map {
+                try Buhlmann.Table.zhl16c.noDecompressionLimit(
+                    of: compartments,
+                    at: .init(40),
+                    breathing: $0,
+                    configuration: Self.configuration)
+            }
+        } then: { _, limits in
+            guard case .minutes = limits[1] else {
+                Issue.record("Expected a limit in minutes, got \(limits[1]).")
+                return
+            }
+            #expect(limits[0] == limits[1])
         }
     }
 
@@ -284,6 +290,33 @@ struct BuhlmannNoDecompressionLimitTests {
                     .depth(.init(-1)),
                     "Table.noDecompressionLimit(of:at:breathing:gradientFactor:waterVapor:configuration:using:)")) { error in
                 #expect(error.localizationValue == "dive.kit.error.negative.depth")
+            }
+        }
+    }
+
+    @Test(arguments: [
+        (increase: 0.0, expected: Error.Range.lowerBound(0, 0), key: "dive.kit.error.range.lower.bound"),
+        (increase: -10, expected: Error.Range.lowerBound(-10, 0), key: "dive.kit.error.range.lower.bound"),
+        (increase: .infinity, expected: Error.Range.upperBound(.infinity, .greatestFiniteMagnitude), key: "dive.kit.error.range.upper.bound"),
+        (increase: -.infinity, expected: Error.Range.upperBound(-.infinity, .greatestFiniteMagnitude), key: "dive.kit.error.range.upper.bound")
+    ])
+    func rejectsInvalidDepthPerAtmosphere(increase: Double, expected: Error.Range, key: String) async throws {
+        try await given {
+            (compartments: try Buhlmann.Table.zhl16c.compartments(nitrogen: .init(0.74)),
+             configuration: Configuration(
+                units: .metric,
+                water: Water(weight: Water.salt.weight, pressure: { .init(increase: .init(increase, units: $0)) })))
+        } when: { input in
+            try expectThrowsError(
+                when: try Buhlmann.Table.zhl16c.noDecompressionLimit(
+                    of: input.compartments,
+                    at: .init(30),
+                    breathing: .air,
+                    configuration: input.configuration),
+                then: .range(
+                    expected,
+                    "Table.noDecompressionLimit(of:at:breathing:gradientFactor:waterVapor:configuration:using:)")) { error in
+                #expect(error.localizationValue == .init(key))
             }
         }
     }
