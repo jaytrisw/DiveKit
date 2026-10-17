@@ -141,9 +141,7 @@ extension Tissue {
             let depth = try depth
                 .validate(using: .finite) { .range(.upperBound($0.value, .greatestFiniteMagnitude), callSite) }
                 .validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
-            let increase = try configuration.water.pressure(configuration.units).increase.value
-                .validate(using: .finite) { .range(.upperBound($0, .greatestFiniteMagnitude), callSite) }
-                .validate(using: .greater(than: 0)) { .range(.lowerBound($0, 0), callSite) }
+            let increase = try configuration.pressureIncrease(callSite)
             let ambient = try (1 + depth.value / increase)
                 .validate(using: .finite) { .range(.upperBound($0, .greatestFiniteMagnitude), callSite) }
             return Swift.max(ambient - waterVapor.value, .zero)
