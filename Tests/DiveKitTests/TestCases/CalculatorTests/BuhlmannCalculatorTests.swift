@@ -200,6 +200,26 @@ struct BuhlmannCalculatorTests {
     }
 
     @Test
+    func imperialOxygenIsNeverUsedWithALastStopDeeperThanItsMaximumOperatingDepth() async throws {
+        try await given { () throws -> (calculator: BuhlmannCalculator, tissues: BuhlmannCalculator.Tissues) in
+            var settings = BuhlmannCalculator.Settings.defaults(for: .imperial)
+            settings.ascent = try .init(rate: .init(30), stopInterval: .init(10), lastStop: .init(20))
+            let calculator = BuhlmannCalculator(configuration: .init(units: .imperial, water: .salt), settings: settings)
+            let profile = [
+                try DiveSegment(start: .init(0), end: .init(130), duration: .init(4), blend: .air),
+                try DiveSegment(start: .init(130), end: .init(130), duration: .init(30), blend: .air)
+            ]
+            return (calculator, try calculator.loaded(try calculator.surfaceTissues(), through: profile))
+        } when: { sut in
+            try sut.calculator.schedule(of: sut.tissues, from: .init(130), breathing: .air, switchingTo: [try .enrichedAir(1)]).result
+        } then: { _, schedule in
+            let stops = schedule.segments.filter { $0.start == $0.end }
+            #expect(stops.last?.start.value == 20)
+            #expect(schedule.segments.allSatisfy { $0.blend == .air })
+        }
+    }
+
+    @Test
     func duplicateSwitchDepthsUseTheFirstGas() async throws {
         try await given {
             try Self.tissues(breathing: .air, at: 40, for: 30)
