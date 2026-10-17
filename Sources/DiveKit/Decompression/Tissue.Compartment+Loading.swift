@@ -59,6 +59,27 @@ public extension Tissue.Compartment {
         }
 }
 
+extension Tissue.Compartment {
+    /// Returns this compartment after breathing gases at `fractions` while the breathed
+    /// pressure changes linearly from `start` to `end` atmospheres.
+    ///
+    /// Each tracked gas is loaded as for ``loaded(for:inspired:using:)`` with the blend
+    /// initializers of ``Tissue/Inspired``; gases the compartment does not track are ignored.
+    func loaded(
+        for duration: Double,
+        breathing fractions: [AnyGas: Double],
+        from start: Double,
+        to end: Double,
+        using model: Tissue.Loading,
+        _ callSite: CallSite) throws(Error) -> Self {
+            guard duration > 0 else { return self }
+            return Self(Dictionary(uniqueKeysWithValues: try storage.map { (gas, entry) throws(Error) in
+                let fraction = fractions[gas] ?? .zero
+                return (gas, try entry.loaded(for: duration, inspired: (start * fraction, end * fraction), using: model, callSite))
+            }))
+        }
+}
+
 extension Tissue.Compartment.Entry {
     /// Returns this entry after a segment, validating the model's tension.
     func loaded(

@@ -9,7 +9,7 @@ struct BuhlmannScheduleSwitchTests {
             try BuhlmannScheduleReferenceTests.compartments(
                 breathing: try .trimix(oxygen: 0.21, helium: 0),
                 at: 40,
-                for: 25)
+                runtime: 25)
         } when: { compartments in
             try BuhlmannScheduleReferenceTests.table.schedule(
                 of: compartments,
@@ -40,7 +40,7 @@ struct BuhlmannScheduleSwitchTests {
             try BuhlmannScheduleReferenceTests.compartments(
                 breathing: try .trimix(oxygen: 0.21, helium: 0),
                 at: 40,
-                for: 25)
+                runtime: 25)
         } when: { compartments in
             try BuhlmannScheduleReferenceTests.table.schedule(
                 of: compartments,

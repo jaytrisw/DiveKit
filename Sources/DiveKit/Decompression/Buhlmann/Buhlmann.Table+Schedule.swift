@@ -23,8 +23,8 @@ public extension Buhlmann.Table {
     ///    to the high value at the surface. From the first stop on, gases are
     ///    switched at the first stop at or above their switch depths.
     ///
-    /// Stops after the first are at ``Buhlmann/Ascent/lastStop`` and every
-    /// ``Buhlmann/Ascent/stopInterval`` below it; the free ascent never goes
+    /// Stops after the first are at ``Ascent/lastStop`` and every
+    /// ``Ascent/stopInterval`` below it; the free ascent never goes
     /// shallower than the last stop. A gas whose switch depth is at or deeper
     /// than `depth` is breathed from the start instead of `blend`; if there are
     /// several, the shallowest is used. A gas whose switch depth is shallower
@@ -47,7 +47,7 @@ public extension Buhlmann.Table {
     ///   - blend: The gas breathed at the start of the ascent.
     ///   - switches: Gases to switch to, keyed by switch depth in the configured units.
     ///   - gradientFactors: The gradient factors. Defaults to
-    ///     ``Buhlmann/GradientFactors/full``.
+    ///     ``GradientFactors/full``.
     ///   - ascent: The ascent rate and stop depths.
     ///   - waterVapor: The alveolar water vapor pressure in atmospheres.
     ///     Defaults to ``Tissue/alveolarWaterVapor``.
@@ -62,7 +62,7 @@ public extension Buhlmann.Table {
     ///   Throws `Error.range` if the stops would take more than 999 minutes in
     ///   total. Also throws `Error.gas` if no
     ///   single row covers every gas a compartment tracks, as for
-    ///   ``toleratedAmbientPressure(of:gradientFactor:)``, `Error.range` if a
+    ///   ``ceiling(of:gradientFactor:configuration:)``, `Error.range` if a
     ///   tolerated pressure is not finite, and the errors of
     ///   ``Tissue/Compartment/loaded(for:inspired:using:)`` if `model` returns an
     ///   invalid tension.
@@ -86,11 +86,11 @@ public extension Buhlmann.Table {
         from depth: Depth,
         breathing blend: Blend<Blended>,
         switches: [Depth: Blend<Blended>] = [:],
-        gradientFactors: Buhlmann.GradientFactors = .full,
-        ascent: Buhlmann.Ascent,
+        gradientFactors: GradientFactors = .full,
+        ascent: Ascent,
         waterVapor: Pressure = Tissue.alveolarWaterVapor,
         configuration: Configuration,
-        using model: Tissue.Loading = .schreiner) throws(Error) -> Calculation<Buhlmann.Schedule> {
+        using model: Tissue.Loading = .schreiner) throws(Error) -> Calculation<DecompressionSchedule> {
             let callSite: CallSite = .from(Self.self)
             _ = try Tissue.breathedPressure(at: depth, waterVapor: waterVapor, configuration: configuration, callSite)
             let increase = try configuration.pressureIncrease(callSite)

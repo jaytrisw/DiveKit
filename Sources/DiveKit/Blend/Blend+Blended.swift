@@ -22,6 +22,13 @@ public extension Blend where State == Blended {
     }
 }
 
+extension Blend where State == Blended {
+    /// The fraction of each gas in the blend, keyed by type-erased gas identity.
+    var fractions: [AnyGas: Double] {
+        Dictionary(components().map { (AnyGas($0), fractionalPressure(of: $0)) }) { $1 }
+    }
+}
+
 extension CallSite {
     /// Creates call-site context for diagnostics that originate from a blend.
     ///

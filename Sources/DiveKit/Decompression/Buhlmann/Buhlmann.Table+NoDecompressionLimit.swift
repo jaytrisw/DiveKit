@@ -28,7 +28,7 @@ public extension Buhlmann.Table {
     ///   - depth: The depth, in the configured units.
     ///   - blend: The breathing gas.
     ///   - gradientFactor: The gradient factor. Defaults to
-    ///     ``Buhlmann/GradientFactor/full``.
+    ///     ``GradientFactor/full``.
     ///   - waterVapor: The alveolar water vapor pressure in atmospheres.
     ///     Defaults to ``Tissue/alveolarWaterVapor``.
     ///   - configuration: The units and water used to convert depth to pressure.
@@ -42,7 +42,7 @@ public extension Buhlmann.Table {
     ///   than `0`, or if the ambient pressure at `depth` or a tolerated pressure
     ///   is not finite. Throws `Error.gas` if no single row covers every gas a
     ///   compartment tracks, as for
-    ///   ``toleratedAmbientPressure(of:gradientFactor:)``, and the errors of
+    ///   ``ceiling(of:gradientFactor:configuration:)``, and the errors of
     ///   ``Tissue/Compartment/loaded(for:inspired:using:)`` if `model` returns an
     ///   invalid tension.
     ///
@@ -63,17 +63,17 @@ public extension Buhlmann.Table {
         of compartments: [Tissue.Compartment],
         at depth: Depth,
         breathing blend: Blend<Blended>,
-        gradientFactor: Buhlmann.GradientFactor = .full,
+        gradientFactor: GradientFactor = .full,
         waterVapor: Pressure = Tissue.alveolarWaterVapor,
         configuration: Configuration,
-        using model: Tissue.Loading = .schreiner) throws(Error) -> Buhlmann.NoDecompressionLimit {
+        using model: Tissue.Loading = .schreiner) throws(Error) -> NoDecompressionLimit {
             let callSite: CallSite = .from(Self.self)
             let breathed = try Tissue.breathedPressure(
                 at: depth,
                 waterVapor: waterVapor,
                 configuration: configuration,
                 callSite)
-            let fractions = Dictionary(blend.components().map { (AnyGas($0), blend.fractionalPressure(of: $0)) }) { $1 }
+            let fractions = blend.fractions
 
             // Matching a compartment to its row is the costly part and doesn't depend on
             // tension, so match every compartment once.

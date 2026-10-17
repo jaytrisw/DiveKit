@@ -108,7 +108,7 @@ struct BuhlmannValidationTests {
             value
         } when: { value in
             try expectThrowsError(
-                when: try Buhlmann.GradientFactor(value),
+                when: try GradientFactor(value),
                 then: .range(expected, "GradientFactor.init(_:)")) { error in
                 #expect(error.localizationValue == .init(key))
             }
@@ -121,7 +121,7 @@ struct BuhlmannValidationTests {
             Double.nan
         } when: { value in
             let error = #expect(throws: Error.self) {
-                try Buhlmann.GradientFactor(value)
+                try GradientFactor(value)
             }
             guard case let .range(.upperBound(provided, _), _) = error else {
                 Issue.record("Expected an upper-bound error, got \(String(describing: error)).")
@@ -136,7 +136,7 @@ struct BuhlmannValidationTests {
         try await given {
             1.0
         } when: { value in
-            try Buhlmann.GradientFactor(value)
+            try GradientFactor(value)
         } then: { _, gradientFactor in
             #expect(gradientFactor == .full)
         }
@@ -148,7 +148,7 @@ struct BuhlmannValidationTests {
             0.01
         } when: { minimum in
             (coefficients: try Buhlmann.Coefficients(of: .nitrogen, halfTime: .init(5), a: .init(1), b: minimum),
-             gradientFactor: try Buhlmann.GradientFactor(minimum))
+             gradientFactor: try GradientFactor(minimum))
         } then: { _, result in
             #expect(result.coefficients.coefficientB == 0.01)
             #expect(result.gradientFactor.value == 0.01)

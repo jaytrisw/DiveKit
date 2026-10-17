@@ -86,7 +86,7 @@ struct BuhlmannScheduleReferenceTests {
             try Self.compartments(
                 breathing: try .trimix(oxygen: reference.oxygen, helium: reference.helium),
                 at: reference.depth,
-                for: reference.runtime)
+                runtime: reference.runtime)
         } when: { compartments in
             try Self.table.schedule(
                 of: compartments,
@@ -131,7 +131,7 @@ extension BuhlmannScheduleReferenceTests {
         water: Water(weight: Water.salt.weight, pressure: { .init(increase: .init(1.01325 / 0.09985, units: $0)) }))
 
     /// Returns decotengu's compartments after its descent at 20 m/min and the rest of the bottom time.
-    static func compartments(breathing blend: Blend<Blended>, at depth: Double, for runtime: Double) throws -> [Tissue.Compartment] {
+    static func compartments(breathing blend: Blend<Blended>, at depth: Double, runtime: Double) throws -> [Tissue.Compartment] {
         let descent = depth / 20
         return try table.compartments(nitrogen: .init(0.7902 * (1.01325 - 0.0627) / 1.01325)).map { compartment in
             let descended = try #require(try compartment.loaded(
