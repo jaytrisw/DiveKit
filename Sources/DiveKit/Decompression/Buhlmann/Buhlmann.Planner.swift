@@ -141,7 +141,7 @@ extension Buhlmann.Planner {
             diver = try ascendedToCeiling(diver, stoppingAt: target)
             guard diver.depth <= target, let next else { return diver }
             remaining.removeFirst()
-            guard let switched = try switched(diver, to: next) else { return diver }
+            guard let switched = try switched(diver, to: next, before: remaining.first) else { return diver }
             diver = switched
         }
     }
@@ -164,12 +164,19 @@ extension Buhlmann.Planner {
     /// ascending to the stop at or above it, or `nil` if the low-gradient-factor
     /// ceiling would then be deeper than the diver.
     ///
+    /// If `next` switches before that stop, the diver instead ascends only to its
+    /// switch depth, and the check is left to that switch.
+    ///
     /// Follows decotengu's `_ascent_switch_gas` and its check in `_free_staged_ascent`.
-    func switched(_ diver: Diver, to gas: Gas) throws(Error) -> Diver? {
+    func switched(_ diver: Diver, to gas: Gas, before next: Gas?) throws(Error) -> Diver? {
         let switchDepth = gas.switchDepth.forceUnwrap("Only switch gases are switched to.")
         var switched = try moved(diver, to: Swift.min(diver.depth, switchDepth))
         switched.gas = gas
-        switched = try moved(switched, to: Swift.min(switched.depth, grid.roundedDown(switchDepth)))
+        let stop = grid.roundedDown(switchDepth)
+        if let nextDepth = next?.switchDepth, nextDepth > stop {
+            return try moved(switched, to: Swift.min(switched.depth, nextDepth))
+        }
+        switched = try moved(switched, to: Swift.min(switched.depth, stop))
         let tolerated = try toleratedAmbientPressure(of: switched.compartments, gradientFactor: gradientFactors.low)
         return tolerated <= pressure(at: switched.depth) ? switched : nil
     }

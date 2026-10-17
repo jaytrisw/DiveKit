@@ -15,7 +15,8 @@ public extension Buhlmann.Table {
     ///    stops moving. That depth is the first stop. Gases are switched at their
     ///    exact switch depths on the way, unless, after ascending to the stop
     ///    depth at or above the switch, that stop would be above the ceiling at
-    ///    the low gradient factor.
+    ///    the low gradient factor. If another switch comes before that stop,
+    ///    the diver switches there first.
     /// 3. At each stop the diver waits whole minutes, at least one, until the
     ///    compartments tolerate the next stop at its gradient factor. The
     ///    gradient factor changes linearly from the low value at the first stop
