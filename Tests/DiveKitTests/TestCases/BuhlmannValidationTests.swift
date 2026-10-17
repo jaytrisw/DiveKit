@@ -267,6 +267,28 @@ struct BuhlmannValidationTests {
         }
     }
 
+    @Test(arguments: [
+        (increase: 0.0, expected: Error.Range.lowerBound(0, 0), key: "dive.kit.error.range.lower.bound"),
+        (increase: -10, expected: Error.Range.lowerBound(-10, 0), key: "dive.kit.error.range.lower.bound"),
+        (increase: .infinity, expected: Error.Range.upperBound(.infinity, .greatestFiniteMagnitude), key: "dive.kit.error.range.upper.bound"),
+        (increase: -.infinity, expected: Error.Range.upperBound(-.infinity, .greatestFiniteMagnitude), key: "dive.kit.error.range.upper.bound")
+    ])
+    func ceilingRejectsInvalidDepthPerAtmosphere(increase: Double, expected: Error.Range, key: String) async throws {
+        // The compartment tolerates the surface, so the water is rejected before any depth is derived from it.
+        try await given {
+            (compartment: Tissue.Compartment(try .init(of: .nitrogen, halfTime: .init(5), tension: .init(0.74))),
+             configuration: Configuration(
+                units: .metric,
+                water: Water(weight: Water.salt.weight, pressure: { .init(increase: .init(increase, units: $0)) })))
+        } when: { input in
+            try expectThrowsError(
+                when: try Buhlmann.Table.zhl16c.ceiling(of: [input.compartment], configuration: input.configuration),
+                then: .range(expected, "Table.ceiling(of:gradientFactor:configuration:)")) { error in
+                #expect(error.localizationValue == .init(key))
+            }
+        }
+    }
+
     @Test(.tags(.localization))
     func unmodeledGasErrorHasLocalizedDescription() async {
         await withTestLocalization(.test) {

@@ -57,7 +57,9 @@ public extension Buhlmann.Table {
     ///   compartment tolerates the surface.
     /// - Throws: `Error.gas` if no single row covers every gas a compartment
     ///   tracks, as for ``toleratedAmbientPressure(of:gradientFactor:)``, or
-    ///   `Error.range` if the tolerated pressure or the ceiling depth is not finite.
+    ///   `Error.range` if the tolerated pressure or the ceiling depth is not finite,
+    ///   or if the configured water's depth per atmosphere is not finite or not
+    ///   greater than `0`.
     ///
     /// - Warning: See ``Buhlmann`` before relying on this model.
     ///
@@ -74,13 +76,14 @@ public extension Buhlmann.Table {
         gradientFactor: Buhlmann.GradientFactor = .full,
         configuration: Configuration) throws(Error) -> Calculation<DecimalResult<Depth>> {
             let callSite: CallSite = .from(Self.self)
+            let increase = try configuration.pressureIncrease(callSite)
             let tolerated = try compartments
                 .map { (compartment: Tissue.Compartment) throws(Error) in
                     try toleratedAmbientPressure(of: compartment, gradientFactor: gradientFactor, callSite).value
                 }
                 .reduce(.zero, Swift.max)
             let gauge = Swift.max(tolerated - .one, .zero)
-            let depth = try (gauge * configuration.water.pressure(configuration.units).increase.value)
+            let depth = try (gauge * increase)
                 .validate(using: .finite) { .range(.upperBound($0, .greatestFiniteMagnitude), callSite) }
             return .decimal(depth, unit: \.depth, from: configuration)
         }
@@ -92,8 +95,20 @@ extension Buhlmann.Table {
         of compartment: Tissue.Compartment,
         gradientFactor: Buhlmann.GradientFactor,
         _ callSite: CallSite) throws(Error) -> Pressure {
+            try Self.toleratedAmbientPressure(
+                of: try matchedGases(of: compartment, callSite).map { (limit: $0.limit, tension: $0.entry.tension) },
+                gradientFactor: gradientFactor,
+                callSite)
+        }
+
+    /// Returns each tracked gas with its entry and the coefficients of the one row covering them all.
+    ///
+    /// The match depends only on gases and half-times, so it can be reused while tensions change.
+    func matchedGases(
+        of compartment: Tissue.Compartment,
+        _ callSite: CallSite) throws(Error) -> [MatchedGas] {
             let tracked = compartment.storage
-                .map { (key: LimitKey(gas: $0.key, halfTime: $0.value.halfTime), tension: $0.value.tension) }
+                .map { (key: LimitKey(gas: $0.key, halfTime: $0.value.halfTime), entry: $0.value) }
                 .sorted { $0.key.qualifiedTypeName < $1.key.qualifiedTypeName }
             var candidates = Array(rowLimits.indices)
             for entry in tracked {
@@ -102,10 +117,27 @@ extension Buhlmann.Table {
                     throw .gas(.unmodeled(entry.key.gas.gas.forceUnwrap("Tracked gases are always GasRepresentable.")), callSite)
                 }
             }
-            guard let row = candidates.first else { return .init(.zero) }
-            let entries = tracked.map { entry in
-                (limit: rowLimits[row][entry.key].forceUnwrap("Every candidate row covers every tracked gas."), tension: entry.tension)
+            guard let row = candidates.first else { return [] }
+            return tracked.map { entry in
+                .init(
+                    gas: entry.key.gas,
+                    entry: entry.entry,
+                    limit: rowLimits[row][entry.key].forceUnwrap("Every candidate row covers every tracked gas."))
             }
+        }
+
+    /// A tracked gas with its entry and matched coefficients.
+    struct MatchedGas {
+        let gas: AnyGas
+        let entry: Tissue.Compartment.Entry
+        let limit: Limit
+    }
+
+    /// Returns the tolerated ambient pressure for tensions paired with their coefficients.
+    static func toleratedAmbientPressure(
+        of entries: [(limit: Limit, tension: Double)],
+        gradientFactor: Buhlmann.GradientFactor,
+        _ callSite: CallSite) throws(Error) -> Pressure {
             // Scale by the largest tension so the sum and weights cannot overflow.
             let largest = entries.reduce(.zero) { Swift.max($0, $1.tension) }
             guard largest > 0 else { return .init(.zero) }
