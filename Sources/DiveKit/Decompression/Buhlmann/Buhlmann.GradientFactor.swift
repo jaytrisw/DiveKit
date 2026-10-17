@@ -38,7 +38,8 @@ public extension Buhlmann {
                 .validate(using: .lessThanOrEqual(to: .one)) { .range(.upperBound($0, .one), callSite) }
         }
 
-        private init(unchecked value: Double) {
+        /// Creates a gradient factor the caller has already kept within range.
+        init(unchecked value: Double) {
             self.value = value
         }
 
