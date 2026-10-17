@@ -110,7 +110,7 @@ let formattedDepth = depth.formatted(.depth(.meters, style: .short))
 - `GasRepresentable`
 - `Oxygen`
 - `Nitrogen`
-- `Trace`
+- `NarcoticPotency`
 
 ### Localization
 

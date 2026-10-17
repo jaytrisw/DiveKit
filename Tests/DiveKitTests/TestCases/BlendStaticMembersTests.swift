@@ -9,16 +9,13 @@ struct BlendStaticMembersTests {
 
         let oxygen = try sut.fractionalPressure(of: .oxygen)
         let nitrogen = try sut.fractionalPressure(of: .nitrogen)
-        let trace = try sut.fractionalPressure(of: .trace)
 
-        #expect(oxygen.value == 0.209)
+        #expect(oxygen.value == 0.21)
         #expect(oxygen.gas == .oxygen)
         #expect(nitrogen.value == 0.79)
         #expect(nitrogen.gas == .nitrogen)
-        #expect(trace.value == 0.001)
-        #expect(trace.gas == .trace)
-        #expect(sut.totalPressure == 1.0)
-        #expect(sut.components().count == 3)
+        #expect(sut.totalPressure.isApproximately(1))
+        #expect(sut.components().count == 2)
     }
 
     @Test

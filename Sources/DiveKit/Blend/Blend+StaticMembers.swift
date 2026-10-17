@@ -5,8 +5,10 @@ import DiveKitInternal
 public extension Blend where State == Blended {
     /// A standard air gas mixture.
     ///
-    /// This blend represents atmospheric air using typical fractional pressures
-    /// for oxygen, nitrogen, and trace gases.
+    /// This blend uses the diving convention of 21% oxygen and 79% nitrogen,
+    /// which counts argon and the other trace gases as nitrogen. Published
+    /// dive tables, and the equivalent air and narcotic depth formulas, assume
+    /// this composition.
     ///
     /// - Returns: A ``Blend`` in the `Blended` state representing air.
     ///
@@ -17,9 +19,8 @@ public extension Blend where State == Blended {
     /// - Since: 1.0.0
     static var air: Blend<Blended> {
         .init {
-            FractionalPressure(.oxygen, fractionalPressure: 0.209)
+            FractionalPressure(.oxygen, fractionalPressure: 0.21)
             FractionalPressure(.nitrogen, fractionalPressure: 0.79)
-            FractionalPressure(.trace, fractionalPressure: 0.001)
         }
     }
 

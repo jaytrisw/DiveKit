@@ -58,7 +58,7 @@ let ean32 = try Blend.enrichedAir(0.32)
 - `GasRepresentable`
 - `Oxygen`
 - `Nitrogen`
-- `Trace`
+- `NarcoticPotency`
 
 ### Fractional Pressure
 

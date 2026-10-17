@@ -114,7 +114,9 @@ extension GasCalculator: GasCalculating {
     ///   - depth: The actual depth.
     ///   - blend: The gas mixture.
     /// - Returns: A calculation containing the equivalent air depth.
-    /// - Throws: `Error.negative` if `depth` is negative.
+    /// - Throws: `Error.negative` if `depth` is negative,
+    ///   or `Error.range` if the water model's pressure increase is not
+    ///   finite or not greater than zero.
     ///
     /// ```swift
     /// let ead = try calculator.equivalentAirDepth(
@@ -129,13 +131,14 @@ extension GasCalculator: GasCalculating {
     public func equivalentAirDepth(
         for depth: Depth,
         with blend: Blend<Blended>) throws(DiveKit.Error) -> Calculation<DecimalResult<Depth>> {
-            try depth.validate(using: .nonNegative, orThrow: { .negative($0, .from(self)) })
-                .map { $0.value + configuration.water.pressure(configuration.units).increase.value }
+            let increase = try configuration.pressureIncrease(.from(self))
+            return try depth.validate(using: .nonNegative, orThrow: { .negative($0, .from(self)) })
+                .map { $0.value + increase }
                 .with { () throws(DiveKit.Error) in
                     try blend.fractionalPressure(of: .nitrogen).value / Blend.air.fractionalPressure(of: .nitrogen).value
                 }
                 .map { $0.first * $0.second }
-                .map { $0 - configuration.water.pressure(configuration.units).increase.value }
+                .map { $0 - increase }
                 .map { .decimal($0, unit: \.depth, from: configuration) }
         }
 
@@ -146,7 +149,9 @@ extension GasCalculator: GasCalculating {
     ///   - blend: The gas mixture.
     /// - Returns: A calculation containing the maximum operating depth.
     /// - Throws: `Error.negative` if `partialPressure` is negative, or
-    ///   `Error.range` if the oxygen fraction or `partialPressure` is zero.
+    ///   `Error.range` if the oxygen fraction or `partialPressure` is zero, or
+    ///   if the water model's pressure increase is not finite or not greater
+    ///   than zero.
     ///
     /// ```swift
     /// let mod = try calculator.maximumOperatingDepth(
@@ -159,7 +164,8 @@ extension GasCalculator: GasCalculating {
     public func maximumOperatingDepth(
         for partialPressure: PartialPressure<Oxygen>,
         in blend: Blend<Blended>) throws(DiveKit.Error) -> Calculation<DecimalResult<Depth>> {
-            try blend.fractionalPressure(of: .oxygen).value
+            let increase = try configuration.pressureIncrease(.from(self))
+            return try blend.fractionalPressure(of: .oxygen).value
                 .validate(using: .greater(than: 0)) {
                     .range(.lowerBound($0, 0), .from(self))
                 }
@@ -171,7 +177,7 @@ extension GasCalculator: GasCalculating {
                 }
                 .map { $0.second.value / $0.first }
                 .map { $0 - 1 }
-                .map { $0 * configuration.water.pressure(configuration.units).increase.value }
+                .map { $0 * increase }
                 .map { .decimal($0, unit: \.depth, from: configuration) }
         }
 
