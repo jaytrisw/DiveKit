@@ -48,7 +48,7 @@ extension Buhlmann.Planner {
         init(_ blend: Blend<Blended>, switchDepth: Double?) {
             self.blend = blend
             self.switchDepth = switchDepth
-            fractions = Dictionary(blend.components().map { (AnyGas($0), blend.fractionalPressure(of: $0)) }) { $1 }
+            fractions = blend.fractions
         }
     }
 

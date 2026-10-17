@@ -73,7 +73,7 @@ public extension Buhlmann.Table {
                 waterVapor: waterVapor,
                 configuration: configuration,
                 callSite)
-            let fractions = Dictionary(blend.components().map { (AnyGas($0), blend.fractionalPressure(of: $0)) }) { $1 }
+            let fractions = blend.fractions
 
             // Matching a compartment to its row is the costly part and doesn't depend on
             // tension, so match every compartment once.

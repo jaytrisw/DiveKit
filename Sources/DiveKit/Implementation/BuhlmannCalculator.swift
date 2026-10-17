@@ -37,7 +37,7 @@ import DiveKitInternal
 ///
 /// - Since: 1.0.0
 @_spi(Experimental)
-final public class BuhlmannCalculator: DecompressionCalculating {
+final public class BuhlmannCalculator: ConfigurationProviding {
 
     /// The configuration used for all calculations.
     ///
@@ -176,7 +176,7 @@ public extension BuhlmannCalculator {
 }
 
 @_spi(Experimental)
-extension BuhlmannCalculator {
+extension BuhlmannCalculator: DecompressionCalculating {
     /// Returns tissues saturated at the surface on air.
     ///
     /// Each compartment holds nitrogen at `(1 − P_wv) · f_N₂` atmospheres, where
@@ -239,7 +239,7 @@ extension BuhlmannCalculator {
         for segment in profile {
             let start = try Tissue.breathedPressure(at: segment.start, waterVapor: settings.waterVapor, configuration: configuration, callSite)
             let end = try Tissue.breathedPressure(at: segment.end, waterVapor: settings.waterVapor, configuration: configuration, callSite)
-            let fractions = Dictionary(segment.blend.components().map { (AnyGas($0), segment.blend.fractionalPressure(of: $0)) }) { $1 }
+            let fractions = segment.blend.fractions
             compartments = try compartments.map { (compartment: Tissue.Compartment) throws(DiveKit.Error) in
                 try compartment.loaded(for: segment.duration.value, breathing: fractions, from: start, to: end, using: .schreiner, callSite)
             }
