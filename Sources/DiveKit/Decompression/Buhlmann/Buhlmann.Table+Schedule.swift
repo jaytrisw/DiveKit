@@ -91,12 +91,39 @@ public extension Buhlmann.Table {
         waterVapor: Pressure = Tissue.alveolarWaterVapor,
         configuration: Configuration,
         using model: Tissue.Loading = .schreiner) throws(Error) -> Calculation<DecompressionSchedule> {
-            let callSite: CallSite = .from(Self.self)
-            _ = try Tissue.breathedPressure(at: depth, waterVapor: waterVapor, configuration: configuration, callSite)
+            try schedule(
+                of: compartments,
+                from: depth,
+                breathing: blend,
+                switches: switches,
+                gradientFactors: gradientFactors,
+                ascent: ascent,
+                waterVapor: waterVapor,
+                configuration: configuration,
+                using: model,
+                .from(Self.self))
+        }
+}
+
+extension Buhlmann.Table {
+    /// Returns an ascent from depth to the surface, reporting errors at `callSite`.
+    func schedule(
+        of compartments: [Tissue.Compartment],
+        from depth: Depth,
+        breathing blend: Blend<Blended>,
+        switches: [Depth: Blend<Blended>] = [:],
+        gradientFactors: GradientFactors = .full,
+        ascent: Ascent,
+        waterVapor: Pressure = Tissue.alveolarWaterVapor,
+        configuration: Configuration,
+        using model: Tissue.Loading = .schreiner,
+        _ callSite: CallSite) throws(Error) -> Calculation<DecompressionSchedule> {
+            let waterVapor = try Tissue.validatedWaterVapor(waterVapor, callSite)
             let increase = try configuration.pressureIncrease(callSite)
+            _ = try Tissue.breathedPressure(at: depth, waterVapor: waterVapor, increase: increase, callSite)
             let switchDepths = switches.keys.sorted { $0.value > $1.value }
             for switchDepth in switchDepths {
-                _ = try Tissue.breathedPressure(at: switchDepth, waterVapor: waterVapor, configuration: configuration, callSite)
+                _ = try Tissue.breathedPressure(at: switchDepth, waterVapor: waterVapor, increase: increase, callSite)
             }
             let matched = try compartments.map { (compartment: Tissue.Compartment) throws(Error) in
                 try matchedGases(of: compartment, callSite)
@@ -115,7 +142,6 @@ public extension Buhlmann.Table {
                 grid: .init(interval: ascent.stopInterval.value, last: ascent.lastStop.value),
                 rate: ascent.rate.value,
                 waterVapor: waterVapor,
-                configuration: configuration,
                 increase: increase,
                 model: model,
                 callSite: callSite)

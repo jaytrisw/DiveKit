@@ -17,8 +17,7 @@ package extension Double {
     ///         for: minutes,
     ///         consuming: gasConsumed,
     ///         with: configuration,
-    ///         callSite
-    ///     ).result.value
+    ///         callSite).result.value
     /// }
     /// ```
     ///

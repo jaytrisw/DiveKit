@@ -17,8 +17,7 @@ package extension Calculation {
     ///         for: minutes,
     ///         consuming: gasConsumed,
     ///         with: configuration,
-    ///         callSite
-    ///     )
+    ///         callSite)
     /// }
     /// ```
     ///

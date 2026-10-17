@@ -49,7 +49,21 @@ public extension Buhlmann.Table {
         of compartments: [Tissue.Compartment],
         gradientFactor: GradientFactor = .full,
         configuration: Configuration) throws(Error) -> Calculation<DecimalResult<Depth>> {
-            let callSite: CallSite = .from(Self.self)
+            try ceiling(
+                of: compartments,
+                gradientFactor: gradientFactor,
+                configuration: configuration,
+                .from(Self.self))
+        }
+}
+
+extension Buhlmann.Table {
+    /// Returns the shallowest depth every compartment tolerates, reporting errors at `callSite`.
+    func ceiling(
+        of compartments: [Tissue.Compartment],
+        gradientFactor: GradientFactor,
+        configuration: Configuration,
+        _ callSite: CallSite) throws(Error) -> Calculation<DecimalResult<Depth>> {
             let increase = try configuration.pressureIncrease(callSite)
             let tolerated = try compartments
                 .map { (compartment: Tissue.Compartment) throws(Error) in
@@ -61,9 +75,7 @@ public extension Buhlmann.Table {
                 .validate(using: .finite) { .range(.upperBound($0, .greatestFiniteMagnitude), callSite) }
             return .decimal(depth, unit: \.depth, from: configuration)
         }
-}
 
-extension Buhlmann.Table {
     /// Returns the lowest ambient pressure a compartment tolerates, as described for
     /// ``ceiling(of:gradientFactor:configuration:)``.
     func toleratedAmbientPressure(

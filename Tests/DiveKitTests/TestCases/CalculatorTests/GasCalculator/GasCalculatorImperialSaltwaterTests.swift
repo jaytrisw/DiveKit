@@ -6,7 +6,6 @@ final class GasCalculatorImperialSaltwaterTests {
 
     let sut: GasCalculator
     let physicsCalculator: PhysicsCalculator
-    var expectedError: Error!
 
     init() {
         sut = .init(.imperial, water: .salt)

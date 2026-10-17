@@ -10,8 +10,7 @@ import Foundation
 /// let end = try calculator.equivalentNarcoticDepth(
 ///     for: 60,
 ///     with: .trimix(oxygen: 0.18, helium: 0.45),
-///     treating: .narcotic(.oxygen)
-/// )
+///     treating: .narcotic(.oxygen))
 /// ```
 ///
 /// - Since: 1.0.0

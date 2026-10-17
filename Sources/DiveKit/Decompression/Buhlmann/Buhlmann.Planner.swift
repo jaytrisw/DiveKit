@@ -11,8 +11,8 @@ extension Buhlmann {
         let gradientFactors: GradientFactors
         let grid: Grid
         let rate: Double
-        let waterVapor: Pressure
-        let configuration: Configuration
+        /// The alveolar water vapor pressure in atmospheres, already validated.
+        let waterVapor: Double
         /// The configured depth per atmosphere, already validated.
         let increase: Double
         let model: Tissue.Loading
@@ -27,7 +27,10 @@ extension Buhlmann {
             from depth: Double,
             breathing start: Gas,
             switches: [Gas]) throws(Error) -> [DiveSegment] {
-                guard depth > 0 else { return [] }
+                guard depth > 0 else {
+                    _ = try toleratedAmbientPressure(of: compartments, gradientFactor: gradientFactors.high)
+                    return []
+                }
                 let diver = Diver(depth: depth, gas: start, compartments: compartments, segments: [])
                 if let surfaced = try directAscent(from: diver) {
                     return surfaced.segments
@@ -249,10 +252,10 @@ extension Buhlmann.Planner {
         to end: Double,
         for duration: Double,
         breathing gas: Gas) throws(Error) -> [[Buhlmann.Table.MatchedGas]] {
-            let startPressure = try Tissue.breathedPressure(at: .init(start), waterVapor: waterVapor, configuration: configuration, callSite)
+            let startPressure = try Tissue.breathedPressure(at: .init(start), waterVapor: waterVapor, increase: increase, callSite)
             let endPressure = end == start
                 ? startPressure
-                : try Tissue.breathedPressure(at: .init(end), waterVapor: waterVapor, configuration: configuration, callSite)
+                : try Tissue.breathedPressure(at: .init(end), waterVapor: waterVapor, increase: increase, callSite)
             return try compartments.map { (compartment: [Buhlmann.Table.MatchedGas]) throws(Error) in
                 try compartment.map { (matched: Buhlmann.Table.MatchedGas) throws(Error) in
                     let fraction = gas.fractions[matched.gas] ?? .zero

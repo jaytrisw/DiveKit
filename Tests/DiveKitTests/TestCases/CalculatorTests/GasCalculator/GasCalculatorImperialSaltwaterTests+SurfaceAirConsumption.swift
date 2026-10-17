@@ -33,8 +33,8 @@ extension GasCalculatorImperialSaltwaterTests {
             let depth: Depth = -90.0
             let minutes: Minutes = 10.0
             let consuming: Pressure = 600.0
-            self.expectedError = .negative(depth, "GasCalculator.surfaceAirConsumption(at:for:consuming:using:)")
-            return (depth: depth, minutes: minutes, consuming: consuming)
+            let expectedError: Error = .negative(depth, "GasCalculator.surfaceAirConsumption(at:for:consuming:using:)")
+            return (depth: depth, minutes: minutes, consuming: consuming, expectedError: expectedError)
         } when: { input in
             Result {
                 try self.sut.surfaceAirConsumption(
@@ -43,8 +43,8 @@ extension GasCalculatorImperialSaltwaterTests {
                     consuming: input.consuming,
                     using: self.physicsCalculator)
             }
-        } then: { _, result in
-            try expectThrowsError(when: result.get(), then: self.expectedError) {
+        } then: { input, result in
+            try expectThrowsError(when: result.get(), then: input.expectedError) {
                 #expect($0.localizationValue == "dive.kit.error.negative.depth")
             }
         }
@@ -56,8 +56,8 @@ extension GasCalculatorImperialSaltwaterTests {
             let depth: Depth = 90.0
             let minutes: Minutes = -10.0
             let consuming: Pressure = 600.0
-            self.expectedError = .negative(minutes, "GasCalculator.surfaceAirConsumption(at:for:consuming:using:)")
-            return (depth: depth, minutes: minutes, consuming: consuming)
+            let expectedError: Error = .negative(minutes, "GasCalculator.surfaceAirConsumption(at:for:consuming:using:)")
+            return (depth: depth, minutes: minutes, consuming: consuming, expectedError: expectedError)
         } when: { input in
             Result {
                 try self.sut.surfaceAirConsumption(
@@ -66,8 +66,8 @@ extension GasCalculatorImperialSaltwaterTests {
                     consuming: input.consuming,
                     using: self.physicsCalculator)
             }
-        } then: { _, result in
-            try expectThrowsError(when: result.get(), then: self.expectedError) {
+        } then: { input, result in
+            try expectThrowsError(when: result.get(), then: input.expectedError) {
                 #expect($0.localizationValue == "dive.kit.error.negative.minutes")
             }
         }
@@ -79,8 +79,8 @@ extension GasCalculatorImperialSaltwaterTests {
             let depth: Depth = 90.0
             let minutes: Minutes = 0.0
             let consuming: Pressure = 600.0
-            self.expectedError = .range(.lowerBound(0, 0), "GasCalculator.surfaceAirConsumption(at:for:consuming:using:)")
-            return (depth: depth, minutes: minutes, consuming: consuming)
+            let expectedError: Error = .range(.lowerBound(0, 0), "GasCalculator.surfaceAirConsumption(at:for:consuming:using:)")
+            return (depth: depth, minutes: minutes, consuming: consuming, expectedError: expectedError)
         } when: { input in
             Result {
                 try self.sut.surfaceAirConsumption(
@@ -89,8 +89,8 @@ extension GasCalculatorImperialSaltwaterTests {
                     consuming: input.consuming,
                     using: self.physicsCalculator)
             }
-        } then: { _, result in
-            try expectThrowsError(when: result.get(), then: self.expectedError) {
+        } then: { input, result in
+            try expectThrowsError(when: result.get(), then: input.expectedError) {
                 #expect($0.localizationValue == "dive.kit.error.range.lower.bound")
             }
         }
@@ -102,8 +102,8 @@ extension GasCalculatorImperialSaltwaterTests {
             let depth: Depth = 90.0
             let minutes: Minutes = 10.0
             let consuming: Pressure = -600.0
-            self.expectedError = .negative(consuming, "GasCalculator.surfaceAirConsumption(at:for:consuming:using:)")
-            return (depth: depth, minutes: minutes, consuming: consuming)
+            let expectedError: Error = .negative(consuming, "GasCalculator.surfaceAirConsumption(at:for:consuming:using:)")
+            return (depth: depth, minutes: minutes, consuming: consuming, expectedError: expectedError)
         } when: { input in
             Result {
                 try self.sut.surfaceAirConsumption(
@@ -112,8 +112,8 @@ extension GasCalculatorImperialSaltwaterTests {
                     consuming: input.consuming,
                     using: self.physicsCalculator)
             }
-        } then: { _, result in
-            try expectThrowsError(when: result.get(), then: self.expectedError) {
+        } then: { input, result in
+            try expectThrowsError(when: result.get(), then: input.expectedError) {
                 #expect($0.localizationValue == "dive.kit.error.negative.pressure")
             }
         }
@@ -152,8 +152,8 @@ extension GasCalculatorImperialSaltwaterTests {
             let minutes: Minutes = 10.0
             let startPressure: Pressure = 3000.0
             let endPressure: Pressure = 2400.0
-            self.expectedError = .negative(depth, "GasCalculator.surfaceAirConsumption(at:for:start:end:using:)")
-            return (depth: depth, minutes: minutes, startPressure: startPressure, endPressure: endPressure)
+            let expectedError: Error = .negative(depth, "GasCalculator.surfaceAirConsumption(at:for:start:end:using:)")
+            return (depth: depth, minutes: minutes, startPressure: startPressure, endPressure: endPressure, expectedError: expectedError)
         } when: { input in
             Result {
                 try self.sut.surfaceAirConsumption(
@@ -163,8 +163,8 @@ extension GasCalculatorImperialSaltwaterTests {
                     end: input.endPressure,
                     using: self.physicsCalculator)
             }
-        } then: { _, result in
-            try expectThrowsError(when: result.get(), then: self.expectedError) {
+        } then: { input, result in
+            try expectThrowsError(when: result.get(), then: input.expectedError) {
                 #expect($0.localizationValue == "dive.kit.error.negative.depth")
             }
         }
@@ -177,8 +177,8 @@ extension GasCalculatorImperialSaltwaterTests {
             let minutes: Minutes = -10.0
             let startPressure: Pressure = 3000.0
             let endPressure: Pressure = 2400.0
-            self.expectedError = .negative(minutes, "GasCalculator.surfaceAirConsumption(at:for:start:end:using:)")
-            return (depth: depth, minutes: minutes, startPressure: startPressure, endPressure: endPressure)
+            let expectedError: Error = .negative(minutes, "GasCalculator.surfaceAirConsumption(at:for:start:end:using:)")
+            return (depth: depth, minutes: minutes, startPressure: startPressure, endPressure: endPressure, expectedError: expectedError)
         } when: { input in
             Result {
                 try self.sut.surfaceAirConsumption(
@@ -188,8 +188,8 @@ extension GasCalculatorImperialSaltwaterTests {
                     end: input.endPressure,
                     using: self.physicsCalculator)
             }
-        } then: { _, result in
-            try expectThrowsError(when: result.get(), then: self.expectedError) {
+        } then: { input, result in
+            try expectThrowsError(when: result.get(), then: input.expectedError) {
                 #expect($0.localizationValue == "dive.kit.error.negative.minutes")
             }
         }
@@ -202,8 +202,8 @@ extension GasCalculatorImperialSaltwaterTests {
             let minutes: Minutes = 10.0
             let startPressure: Pressure = -3000.0
             let endPressure: Pressure = 2400.0
-            self.expectedError = .negative(startPressure, "GasCalculator.surfaceAirConsumption(at:for:start:end:using:)")
-            return (depth: depth, minutes: minutes, startPressure: startPressure, endPressure: endPressure)
+            let expectedError: Error = .negative(startPressure, "GasCalculator.surfaceAirConsumption(at:for:start:end:using:)")
+            return (depth: depth, minutes: minutes, startPressure: startPressure, endPressure: endPressure, expectedError: expectedError)
         } when: { input in
             Result {
                 try self.sut.surfaceAirConsumption(
@@ -213,8 +213,8 @@ extension GasCalculatorImperialSaltwaterTests {
                     end: input.endPressure,
                     using: self.physicsCalculator)
             }
-        } then: { _, result in
-            try expectThrowsError(when: result.get(), then: self.expectedError) {
+        } then: { input, result in
+            try expectThrowsError(when: result.get(), then: input.expectedError) {
                 #expect($0.localizationValue == "dive.kit.error.negative.pressure")
             }
         }
@@ -227,8 +227,8 @@ extension GasCalculatorImperialSaltwaterTests {
             let minutes: Minutes = 10.0
             let startPressure: Pressure = 3000.0
             let endPressure: Pressure = -2400.0
-            self.expectedError = .negative(endPressure, "GasCalculator.surfaceAirConsumption(at:for:start:end:using:)")
-            return (depth: depth, minutes: minutes, startPressure: startPressure, endPressure: endPressure)
+            let expectedError: Error = .negative(endPressure, "GasCalculator.surfaceAirConsumption(at:for:start:end:using:)")
+            return (depth: depth, minutes: minutes, startPressure: startPressure, endPressure: endPressure, expectedError: expectedError)
         } when: { input in
             Result {
                 try self.sut.surfaceAirConsumption(
@@ -238,8 +238,8 @@ extension GasCalculatorImperialSaltwaterTests {
                     end: input.endPressure,
                     using: self.physicsCalculator)
             }
-        } then: { _, result in
-            try expectThrowsError(when: result.get(), then: self.expectedError) {
+        } then: { input, result in
+            try expectThrowsError(when: result.get(), then: input.expectedError) {
                 #expect($0.localizationValue == "dive.kit.error.negative.pressure")
             }
         }
@@ -253,8 +253,8 @@ extension GasCalculatorImperialSaltwaterTests {
             let startPressure: Pressure = 2400.0
             let endPressure: Pressure = 3000.0
             let consumed: Pressure = -600
-            self.expectedError = .negative(consumed, "GasCalculator.surfaceAirConsumption(at:for:start:end:using:)")
-            return (depth: depth, minutes: minutes, startPressure: startPressure, endPressure: endPressure)
+            let expectedError: Error = .negative(consumed, "GasCalculator.surfaceAirConsumption(at:for:start:end:using:)")
+            return (depth: depth, minutes: minutes, startPressure: startPressure, endPressure: endPressure, expectedError: expectedError)
         } when: { input in
             Result {
                 try self.sut.surfaceAirConsumption(
@@ -264,8 +264,8 @@ extension GasCalculatorImperialSaltwaterTests {
                     end: input.endPressure,
                     using: self.physicsCalculator)
             }
-        } then: { _, result in
-            try expectThrowsError(when: result.get(), then: self.expectedError) {
+        } then: { input, result in
+            try expectThrowsError(when: result.get(), then: input.expectedError) {
                 #expect($0.localizationValue == "dive.kit.error.negative.pressure")
             }
         }

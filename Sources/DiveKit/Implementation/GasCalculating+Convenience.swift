@@ -22,8 +22,7 @@ public extension GasCalculating where Self: ConfigurationProviding {
     ///     of: Oxygen(),
     ///     blending: unblendedBlend,
     ///     at: 30,
-    ///     using: physicsCalculator
-    /// )
+    ///     using: physicsCalculator)
     /// ```
     ///
     /// - Since: 1.0.0
@@ -56,15 +55,15 @@ public extension GasCalculating where Self: ConfigurationProviding {
     ///   - physicsCalculator: A calculator used to determine absolute pressure at depth.
     /// - Returns: A calculation containing the surface air consumption rate.
     /// - Throws: `Error.negative` for negative `depth`, `minutes`, or
-    ///   `gasConsumed`, or `Error.range` when `minutes` is zero.
+    ///   `gasConsumed`, or `Error.range` when `depth`, `minutes`,
+    ///   `gasConsumed`, or the result is not finite, or when `minutes` is zero.
     ///
     /// ```swift
     /// let sac = try calculator.surfaceAirConsumption(
     ///     at: 30,
     ///     for: 20,
     ///     consuming: 50,
-    ///     using: physicsCalculator
-    /// )
+    ///     using: physicsCalculator)
     /// ```
     ///
     /// - Since: 1.0.0
@@ -91,14 +90,15 @@ public extension GasCalculating where Self: ConfigurationProviding {
     ///   - depth: The actual depth.
     ///   - blend: The unblended gas mixture.
     /// - Returns: A calculation containing the equivalent air depth.
-    /// - Throws: `Error.blend` if the blend cannot be normalized, or
-    ///   `Error.negative` if `depth` is negative.
+    /// - Throws: `Error.blend` if the blend cannot be normalized,
+    ///   `Error.negative` if `depth` is negative, or `Error.range` if `depth`
+    ///   or the result is not finite, or if the water model's pressure
+    ///   increase is not finite or not greater than zero.
     ///
     /// ```swift
     /// let ead = try calculator.equivalentAirDepth(
     ///     for: 30,
-    ///     with: blend
-    /// )
+    ///     with: blend)
     /// ```
     ///
     /// - Since: 1.0.0

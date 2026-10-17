@@ -23,8 +23,7 @@ package extension GasCalculating {
     ///     at: 30,
     ///     using: physicsCalculator,
     ///     with: configuration,
-    ///     callSite
-    /// )
+    ///     callSite)
     /// ```
     ///
     /// - Since: 1.0.0
@@ -63,8 +62,7 @@ package extension GasCalculating {
     ///     at: 30,
     ///     using: physicsCalculator,
     ///     with: configuration,
-    ///     callSite
-    /// )
+    ///     callSite)
     /// ```
     ///
     /// - Since: 1.0.0
@@ -98,15 +96,15 @@ package extension GasCalculating {
     ///   - callSite: The location where the calculation was requested.
     /// - Returns: A calculation containing the gas consumption rate at depth.
     /// - Throws: ``DiveKitCore/Error/negative(_:_:)`` if `minutes` or `gasConsumed` is
-    ///   negative, or ``DiveKitCore/Error/range(_:_:)`` if `minutes` is zero.
+    ///   negative, or ``DiveKitCore/Error/range(_:_:)`` if `minutes`, `gasConsumed`,
+    ///   or the result is not finite, or if `minutes` is zero.
     ///
     /// ```swift
     /// let result = try calculator.depthAirConsumption(
     ///     for: 20,
     ///     consuming: 50,
     ///     with: configuration,
-    ///     callSite
-    /// )
+    ///     callSite)
     /// ```
     ///
     /// - Important: `minutes` must be greater than zero.
@@ -116,14 +114,17 @@ package extension GasCalculating {
         consuming gasConsumed: Pressure,
         with configuration: Configuration,
         _ callSite: CallSite) throws(Error) -> Calculation<DecimalResult<Rate<Pressure>>> {
-            try minutes.validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
-                .map { (minutes: Minutes) throws(Error) in
-                    try minutes.validate(using: .greater(than: 0)) { .range(.lowerBound($0.value, 0), callSite) }
-                }
+            try minutes
+                .validate(using: .finite) { .range(.upperBound($0.value, .greatestFiniteMagnitude), callSite) }
+                .validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
+                .validate(using: .greater(than: 0)) { .range(.lowerBound($0.value, 0), callSite) }
                 .map { (_: Minutes) throws(Error) in
-                    try gasConsumed.validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
+                    try gasConsumed
+                        .validate(using: .finite) { .range(.upperBound($0.value, .greatestFiniteMagnitude), callSite) }
+                        .validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
                 }
                 .map { gasConsumed.value / minutes.value }
+                .validate(using: .finite) { .range(.upperBound($0, .greatestFiniteMagnitude), callSite) }
                 .map { .decimal($0, unit: .perMinute(configuration.units.pressure), configuration: configuration) }
         }
 
@@ -151,8 +152,7 @@ package extension GasCalculating {
     ///     consuming: 50,
     ///     using: physicsCalculator,
     ///     with: configuration,
-    ///     callSite
-    /// )
+    ///     callSite)
     /// ```
     ///
     /// - Since: 1.0.0

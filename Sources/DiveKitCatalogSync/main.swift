@@ -5,30 +5,25 @@ import Foundation
 struct DiveKitCatalogSync: ParsableCommand {
     static let configuration = CommandConfiguration(
         commandName: "catalog-sync",
-        abstract: "Copy missing DiveKit string catalog keys into a host app catalog."
-    )
+        abstract: "Copy missing DiveKit string catalog keys into a host app catalog.")
 
     @Option(
         name: .shortAndLong,
-        help: "The DiveKit .xcstrings catalog to copy missing keys from. Defaults to DiveKit's package catalog."
-    )
+        help: "The DiveKit .xcstrings catalog to copy missing keys from. Defaults to DiveKit's package catalog.")
     var source: String?
 
     @Option(
         name: .shortAndLong,
-        help: "The host app .xcstrings catalog to add missing keys to."
-    )
+        help: "The host app .xcstrings catalog to add missing keys to.")
     var target: String?
 
     @Argument(
-        help: "The host app .xcstrings catalog to add missing keys to. This is a shorthand for --target."
-    )
+        help: "The host app .xcstrings catalog to add missing keys to. This is a shorthand for --target.")
     var targetPath: String?
 
     @Flag(
         name: .long,
-        help: "Report what would change without writing to the target catalog."
-    )
+        help: "Report what would change without writing to the target catalog.")
     var dryRun = false
 
     mutating func validate() throws {
@@ -41,8 +36,7 @@ struct DiveKitCatalogSync: ParsableCommand {
         let result = try synchronizer.sync(
             source: source.map(URL.expandingPath) ?? .diveKitSourceCatalog,
             target: URL.expandingPath(target),
-            dryRun: dryRun
-        )
+            dryRun: dryRun)
 
         print(summary(for: result, target: target))
     }

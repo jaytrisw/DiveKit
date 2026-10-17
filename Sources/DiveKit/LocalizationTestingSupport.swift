@@ -25,5 +25,5 @@ package func localizedString(for key: String.LocalizationValue) -> String {
 package func localizedString(
     for key: String.LocalizationValue,
     quantity: Double) -> String {
-    DiveKitLocalization.localizedString(for: key, quantity: quantity)
-}
+        DiveKitLocalization.localizedString(for: key, quantity: quantity)
+    }

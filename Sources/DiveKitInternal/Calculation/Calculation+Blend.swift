@@ -15,8 +15,7 @@ package extension Calculation {
     /// ```swift
     /// let calculation = Calculation.blend(
     ///     blend,
-    ///     configuration: configuration
-    /// )
+    ///     configuration: configuration)
     /// ```
     ///
     /// - Note: This method does not perform validation. The `blend` is expected

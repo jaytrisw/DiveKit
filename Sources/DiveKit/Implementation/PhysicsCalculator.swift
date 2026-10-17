@@ -60,14 +60,14 @@ extension PhysicsCalculator: PhysicsCalculating {
     ///   - volume: The volume at the surface.
     /// - Returns: A calculation containing the compressed volume at depth.
     /// - Throws: `Error.negative` if `volume` or `depth` is negative,
-    ///   or `Error.range` if the water model's pressure increase is not
-    ///   finite or not greater than zero.
+    ///   or `Error.range` if `volume`, `depth`, or the result is not finite,
+    ///   or if the water model's pressure increase is not finite or not
+    ///   greater than zero.
     ///
     /// ```swift
     /// let volumeAtDepth = try calculator.airVolumeFromSurface(
     ///     to: 30,
-    ///     with: 12
-    /// )
+    ///     with: 12)
     /// ```
     ///
     /// - Note: Absolute pressure is calculated using the receiver's water and
@@ -76,11 +76,15 @@ extension PhysicsCalculator: PhysicsCalculating {
     public func airVolumeFromSurface(
         to depth: Depth,
         with volume: Volume) throws(DiveKit.Error) -> Calculation<DecimalResult<Volume>> {
-            try volume.validate(using: .nonNegative, orThrow: { .negative($0, .from(self)) })
+            let callSite: CallSite = .from(self)
+            return try volume
+                .validate(using: .finite) { .range(.upperBound($0.value, .greatestFiniteMagnitude), callSite) }
+                .validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
                 .map { (_: Volume) throws(DiveKit.Error) in
-                    try atmospheresAbsolute(at: depth, with: configuration, .from(self))
+                    try atmospheresAbsolute(at: depth, with: configuration, callSite)
                 }
                 .map { volume.value / $0.result.value }
+                .validate(using: .finite) { .range(.upperBound($0, .greatestFiniteMagnitude), callSite) }
                 .map { .decimal($0, unit: \.volume, from: configuration) }
         }
 
@@ -93,14 +97,14 @@ extension PhysicsCalculator: PhysicsCalculating {
     ///   - volume: The volume at depth.
     /// - Returns: A calculation containing the expanded surface volume.
     /// - Throws: `Error.negative` if `volume` or `depth` is negative,
-    ///   or `Error.range` if the water model's pressure increase is not
-    ///   finite or not greater than zero.
+    ///   or `Error.range` if `volume`, `depth`, or the result is not finite,
+    ///   or if the water model's pressure increase is not finite or not
+    ///   greater than zero.
     ///
     /// ```swift
     /// let surfaceVolume = try calculator.airVolumeToSurface(
     ///     from: 30,
-    ///     with: 6
-    /// )
+    ///     with: 6)
     /// ```
     ///
     /// - Note: Absolute pressure is calculated using the receiver's water and
@@ -109,11 +113,15 @@ extension PhysicsCalculator: PhysicsCalculating {
     public func airVolumeToSurface(
         from depth: Depth,
         with volume: Volume) throws(DiveKit.Error) -> Calculation<DecimalResult<Volume>> {
-            try volume.validate(using: .nonNegative, orThrow: { .negative($0, .from(self)) })
+            let callSite: CallSite = .from(self)
+            return try volume
+                .validate(using: .finite) { .range(.upperBound($0.value, .greatestFiniteMagnitude), callSite) }
+                .validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
                 .map { (_: Volume) throws(DiveKit.Error) in
-                    try atmospheresAbsolute(at: depth, with: configuration, .from(self))
+                    try atmospheresAbsolute(at: depth, with: configuration, callSite)
                 }
                 .map { volume.value * $0.result.value }
+                .validate(using: .finite) { .range(.upperBound($0, .greatestFiniteMagnitude), callSite) }
                 .map { .decimal($0, unit: \.volume, from: configuration) }
         }
 
@@ -152,8 +160,7 @@ extension PhysicsCalculator: PhysicsCalculating {
     /// ```swift
     /// let delta = try calculator.pressureChange(
     ///     from: 10,
-    ///     to: 30
-    /// )
+    ///     to: 30)
     /// ```
     ///
     /// - Note: The result is negative when `secondDepth` is shallower than

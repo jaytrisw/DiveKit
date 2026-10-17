@@ -60,11 +60,14 @@ struct TissueValidationTests {
             let error = #expect(throws: Error.self) {
                 try Tissue.Compartment.Component(of: .nitrogen, halfTime: halfTime, tension: .init(0.7))
             }
-            guard case let .range(.upperBound(provided, _), _) = error else {
+            guard case let .range(.upperBound(provided, upperBound), callSite) = error else {
                 Issue.record("Expected an upper-bound error, got \(String(describing: error)).")
                 return
             }
             #expect(provided.isNaN)
+            #expect(upperBound == .greatestFiniteMagnitude)
+            #expect(callSite == "Component<Nitrogen>.init(of:halfTime:tension:)")
+            #expect(error?.localizationValue == "dive.kit.error.range.upper.bound")
         }
     }
 
@@ -94,11 +97,14 @@ struct TissueValidationTests {
             let error = #expect(throws: Error.self) {
                 try Tissue.Compartment.Component(of: .nitrogen, halfTime: .init(10), tension: value)
             }
-            guard case let .range(.upperBound(provided, _), _) = error else {
+            guard case let .range(.upperBound(provided, upperBound), callSite) = error else {
                 Issue.record("Expected an upper-bound error, got \(String(describing: error)).")
                 return
             }
             #expect(provided.isNaN)
+            #expect(upperBound == .greatestFiniteMagnitude)
+            #expect(callSite == "Component<Nitrogen>.init(of:halfTime:tension:)")
+            #expect(error?.localizationValue == "dive.kit.error.range.upper.bound")
         }
     }
 
@@ -143,11 +149,14 @@ struct TissueValidationTests {
             let error = #expect(throws: Error.self) {
                 try Tissue.Inspired(of: .nitrogen, pressure: value)
             }
-            guard case let .range(.upperBound(provided, _), _) = error else {
+            guard case let .range(.upperBound(provided, upperBound), callSite) = error else {
                 Issue.record("Expected an upper-bound error, got \(String(describing: error)).")
                 return
             }
             #expect(provided.isNaN)
+            #expect(upperBound == .greatestFiniteMagnitude)
+            #expect(callSite == "Inspired<Nitrogen>.init(of:pressure:)")
+            #expect(error?.localizationValue == "dive.kit.error.range.upper.bound")
         }
     }
 
@@ -159,11 +168,14 @@ struct TissueValidationTests {
             let error = #expect(throws: Error.self) {
                 try Tissue.Inspired(of: .helium, from: .init(0.2), to: value)
             }
-            guard case let .range(.upperBound(provided, _), _) = error else {
+            guard case let .range(.upperBound(provided, upperBound), callSite) = error else {
                 Issue.record("Expected an upper-bound error, got \(String(describing: error)).")
                 return
             }
             #expect(provided.isNaN)
+            #expect(upperBound == .greatestFiniteMagnitude)
+            #expect(callSite == "Inspired<Helium>.init(of:from:to:)")
+            #expect(error?.localizationValue == "dive.kit.error.range.upper.bound")
         }
     }
 }

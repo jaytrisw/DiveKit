@@ -85,11 +85,14 @@ struct BuhlmannValidationTests {
             let error = #expect(throws: Error.self) {
                 try Buhlmann.Coefficients(of: .nitrogen, halfTime: .init(5), a: .init(1), b: coefficientB)
             }
-            guard case let .range(.upperBound(provided, _), _) = error else {
+            guard case let .range(.upperBound(provided, upperBound), callSite) = error else {
                 Issue.record("Expected an upper-bound error, got \(String(describing: error)).")
                 return
             }
             #expect(provided.isNaN)
+            #expect(upperBound == .greatestFiniteMagnitude)
+            #expect(callSite == "Coefficients<Nitrogen>.init(of:halfTime:a:b:)")
+            #expect(error?.localizationValue == "dive.kit.error.range.upper.bound")
         }
     }
 
@@ -123,11 +126,14 @@ struct BuhlmannValidationTests {
             let error = #expect(throws: Error.self) {
                 try GradientFactor(value)
             }
-            guard case let .range(.upperBound(provided, _), _) = error else {
+            guard case let .range(.upperBound(provided, upperBound), callSite) = error else {
                 Issue.record("Expected an upper-bound error, got \(String(describing: error)).")
                 return
             }
             #expect(provided.isNaN)
+            #expect(upperBound == .greatestFiniteMagnitude)
+            #expect(callSite == "GradientFactor.init(_:)")
+            #expect(error?.localizationValue == "dive.kit.error.range.upper.bound")
         }
     }
 

@@ -67,7 +67,29 @@ public extension Buhlmann.Table {
         waterVapor: Pressure = Tissue.alveolarWaterVapor,
         configuration: Configuration,
         using model: Tissue.Loading = .schreiner) throws(Error) -> NoDecompressionLimit {
-            let callSite: CallSite = .from(Self.self)
+            try noDecompressionLimit(
+                of: compartments,
+                at: depth,
+                breathing: blend,
+                gradientFactor: gradientFactor,
+                waterVapor: waterVapor,
+                configuration: configuration,
+                using: model,
+                .from(Self.self))
+        }
+}
+
+extension Buhlmann.Table {
+    /// Returns how long the compartments can stay at a constant depth before a ceiling forms, reporting errors at `callSite`.
+    func noDecompressionLimit(
+        of compartments: [Tissue.Compartment],
+        at depth: Depth,
+        breathing blend: Blend<Blended>,
+        gradientFactor: GradientFactor = .full,
+        waterVapor: Pressure = Tissue.alveolarWaterVapor,
+        configuration: Configuration,
+        using model: Tissue.Loading = .schreiner,
+        _ callSite: CallSite) throws(Error) -> NoDecompressionLimit {
             let breathed = try Tissue.breathedPressure(
                 at: depth,
                 waterVapor: waterVapor,

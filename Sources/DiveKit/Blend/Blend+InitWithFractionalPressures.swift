@@ -13,8 +13,7 @@ package extension Blend where State == Blended {
     /// ```swift
     /// let blend = Blend<Blended>(
     ///     FractionalPressure(.oxygen, fractionalPressure: 0.21),
-    ///     FractionalPressure(.nitrogen, fractionalPressure: 0.79)
-    /// )
+    ///     FractionalPressure(.nitrogen, fractionalPressure: 0.79))
     /// ```
     ///
     /// - Note: The provided values are assumed to already form a valid blended state.
@@ -35,8 +34,7 @@ public extension Blend where State == Unblended {
     /// ```swift
     /// let blend = Blend<Unblended>(
     ///     FractionalPressure(.oxygen, fractionalPressure: 0.32),
-    ///     FractionalPressure(.nitrogen, fractionalPressure: 0.68)
-    /// )
+    ///     FractionalPressure(.nitrogen, fractionalPressure: 0.68))
     /// ```
     ///
     /// - Note: The resulting blend requires validation using ``blend()``

@@ -202,11 +202,14 @@ struct TissueLoadingTests {
                     inspired: try .init(of: .nitrogen, pressure: .init(1)),
                     using: input.model)
             }
-            guard case let .range(.upperBound(provided, _), _) = error else {
+            guard case let .range(.upperBound(provided, upperBound), callSite) = error else {
                 Issue.record("Expected an upper-bound error, got \(String(describing: error)).")
                 return
             }
             #expect(provided.isNaN)
+            #expect(upperBound == .greatestFiniteMagnitude)
+            #expect(callSite == "Compartment.loaded(for:inspired:using:)")
+            #expect(error?.localizationValue == "dive.kit.error.range.upper.bound")
         }
     }
 }

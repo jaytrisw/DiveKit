@@ -21,4 +21,24 @@ package extension Configuration {
             .validate(using: .finite) { .range(.upperBound($0, .greatestFiniteMagnitude), callSite) }
             .validate(using: .greater(than: 0)) { .range(.lowerBound($0, 0), callSite) }
     }
+
+    /// Returns the water model's weight per unit volume, validated for use in
+    /// buoyancy and volume calculations.
+    ///
+    /// - Parameter callSite: The location where the calculation was requested.
+    /// - Returns: The weight of one unit of displaced water in the
+    ///   configuration's mass and volume units.
+    /// - Throws: ``DiveKitCore/Error/range(_:_:)`` with an upper bound if the
+    ///   weight is not finite, or with a lower bound if it is not greater than zero.
+    ///
+    /// ```swift
+    /// let weight = try configuration.waterWeight(callSite)
+    /// ```
+    ///
+    /// - Since: 1.0.0
+    func waterWeight(_ callSite: CallSite) throws(Error) -> Double {
+        try water.weight(units).value
+            .validate(using: .finite) { .range(.upperBound($0, .greatestFiniteMagnitude), callSite) }
+            .validate(using: .greater(than: 0)) { .range(.lowerBound($0, 0), callSite) }
+    }
 }

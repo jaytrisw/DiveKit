@@ -13,15 +13,15 @@ package extension PhysicsCalculating {
     ///   - callSite: The location where the calculation was requested.
     /// - Returns: A calculation containing the gauge pressure at `depth`.
     /// - Throws: ``DiveKitCore/Error/negative(_:_:)`` if `depth` is negative, or
-    ///   ``DiveKitCore/Error/range(_:_:)`` if the water model's pressure increase
-    ///   is not finite or not greater than zero.
+    ///   ``DiveKitCore/Error/range(_:_:)`` if `depth` or the result is not finite,
+    ///   or if the water model's pressure increase is not finite or not greater
+    ///   than zero.
     ///
     /// ```swift
     /// let result = try calculator.gaugePressure(
     ///     at: 20,
     ///     with: configuration,
-    ///     callSite
-    /// )
+    ///     callSite)
     /// ```
     ///
     /// - Note: This result excludes surface atmospheric pressure.
@@ -31,8 +31,11 @@ package extension PhysicsCalculating {
         with configuration: Configuration,
         _ callSite: CallSite) throws(Error) -> Calculation<DecimalResult<Pressure>> {
             let increase = try configuration.pressureIncrease(callSite)
-            return try depth.validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
+            return try depth
+                .validate(using: .finite) { .range(.upperBound($0.value, .greatestFiniteMagnitude), callSite) }
+                .validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
                 .map { $0.value / increase }
+                .validate(using: .finite) { .range(.upperBound($0, .greatestFiniteMagnitude), callSite) }
                 .map { .decimal($0, unit: .atmospheres, configuration: configuration) }
         }
 
@@ -47,16 +50,16 @@ package extension PhysicsCalculating {
     ///   - callSite: The location where the calculation was requested.
     /// - Returns: A calculation containing the absolute pressure at `depth`.
     /// - Throws: ``DiveKitCore/Error/negative(_:_:)`` if `depth` is negative, or
-    ///   ``DiveKitCore/Error/range(_:_:)`` if the water model's pressure increase
-    ///   is not finite or not greater than zero. This method only throws typed
+    ///   ``DiveKitCore/Error/range(_:_:)`` if `depth` or the result is not finite,
+    ///   or if the water model's pressure increase is not finite or not greater
+    ///   than zero. This method only throws typed
     ///   domain errors forwarded from ``gaugePressure(at:with:_:)``.
     ///
     /// ```swift
     /// let result = try calculator.atmospheresAbsolute(
     ///     at: 20,
     ///     with: configuration,
-    ///     callSite
-    /// )
+    ///     callSite)
     /// ```
     ///
     /// - Note: The added `1` represents surface atmospheric pressure.
@@ -66,6 +69,8 @@ package extension PhysicsCalculating {
         with configuration: Configuration,
         _ callSite: CallSite) throws(Error) -> Calculation<DecimalResult<Pressure>> {
             try gaugePressure(at: depth, with: configuration, callSite)
-                .map { .decimal($0.result.value + 1, unit: $0.result.unit, configuration: $0.configuration) }
+                .map { $0.result.value + 1 }
+                .validate(using: .finite) { .range(.upperBound($0, .greatestFiniteMagnitude), callSite) }
+                .map { .decimal($0, unit: .atmospheres, configuration: configuration) }
         }
 }

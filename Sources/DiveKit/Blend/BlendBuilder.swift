@@ -47,7 +47,7 @@ package extension Blend where State == Unblended {
     }
 }
 
-public extension Blend where State == Blended {
+package extension Blend where State == Blended {
     /// Creates a blended gas mixture using a throwing result builder.
     ///
     /// This initializer allows declarative construction of a `Blend` in the `Blended` state
@@ -70,7 +70,7 @@ public extension Blend where State == Blended {
     }
 }
 
-public extension Blend where State == Unblended {
+package extension Blend where State == Unblended {
     /// Creates an unblended gas mixture using a throwing result builder.
     ///
     /// This initializer allows declarative construction of a ``Blend`` in the `Unblended` state

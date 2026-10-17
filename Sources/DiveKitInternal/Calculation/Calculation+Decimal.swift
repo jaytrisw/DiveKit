@@ -17,8 +17,7 @@ package extension Calculation {
     /// let calculation: Calculation<DecimalResult<Depth>> = .decimal(
     ///     30,
     ///     unit: \.depth,
-    ///     from: configuration
-    /// )
+    ///     from: configuration)
     /// ```
     ///
     /// - Since: 1.0.0
@@ -46,8 +45,7 @@ package extension Calculation {
     /// let calculation: Calculation<DecimalResult<Rate<Pressure>>> = .decimal(
     ///     18,
     ///     unit: .perMinute(configuration.units.pressure),
-    ///     configuration: configuration
-    /// )
+    ///     configuration: configuration)
     /// ```
     ///
     /// - Since: 1.0.0

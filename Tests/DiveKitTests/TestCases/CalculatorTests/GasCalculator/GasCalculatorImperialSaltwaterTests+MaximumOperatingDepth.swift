@@ -248,13 +248,13 @@ extension GasCalculatorImperialSaltwaterTests {
         try await given {
             let partialPressure: PartialPressure<Oxygen> = -1.4
             let blend = try Blend<Blended>.enrichedAir(0.32)
-            self.expectedError = .negative(partialPressure, "GasCalculator.maximumOperatingDepth(for:in:)")
+            let expectedError: Error = .negative(partialPressure, "GasCalculator.maximumOperatingDepth(for:in:)")
 
-            return (partialPressure: partialPressure, blend: blend)
+            return (partialPressure: partialPressure, blend: blend, expectedError: expectedError)
         } when: { input in
             Result { try self.sut.maximumOperatingDepth(for: input.partialPressure, in: input.blend) }
-        } then: { _, result in
-            try expectThrowsError(when: result.get(), then: self.expectedError) {
+        } then: { input, result in
+            try expectThrowsError(when: result.get(), then: input.expectedError) {
                 #expect($0.localizationValue == "dive.kit.error.negative.partial.pressure")
             }
         }
@@ -270,14 +270,14 @@ extension GasCalculatorImperialSaltwaterTests {
                 try FractionalPressure(of: .nitrogen, fractionalPressure: 1.0)
             }
 
-            self.expectedError = .range(
+            let expectedError: Error = .range(
                 .lowerBound(0, 0),
                 "GasCalculator.maximumOperatingDepth(for:in:)")
-            return (partialPressure: partialPressure, blend: blend)
+            return (partialPressure: partialPressure, blend: blend, expectedError: expectedError)
         } when: { input in
             Result { try self.sut.maximumOperatingDepth(for: input.partialPressure, in: input.blend) }
-        } then: { _, result in
-            try expectThrowsError(when: result.get(), then: self.expectedError) {
+        } then: { input, result in
+            try expectThrowsError(when: result.get(), then: input.expectedError) {
                 #expect($0.localizationValue == "dive.kit.error.range.lower.bound")
             }
         }
@@ -289,14 +289,14 @@ extension GasCalculatorImperialSaltwaterTests {
             let partialPressure: PartialPressure<Oxygen> = 0
             let blend = try Blend<Blended>.enrichedAir(0.32)
 
-            self.expectedError = .range(
+            let expectedError: Error = .range(
                 .lowerBound(0, 0),
                 "GasCalculator.maximumOperatingDepth(for:in:)")
-            return (partialPressure: partialPressure, blend: blend)
+            return (partialPressure: partialPressure, blend: blend, expectedError: expectedError)
         } when: { input in
             Result { try self.sut.maximumOperatingDepth(for: input.partialPressure, in: input.blend) }
-        } then: { _, result in
-            try expectThrowsError(when: result.get(), then: self.expectedError) {
+        } then: { input, result in
+            try expectThrowsError(when: result.get(), then: input.expectedError) {
                 #expect($0.localizationValue == "dive.kit.error.range.lower.bound")
             }
         }

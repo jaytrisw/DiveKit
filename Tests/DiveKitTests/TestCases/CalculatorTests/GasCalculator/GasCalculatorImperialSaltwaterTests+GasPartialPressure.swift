@@ -30,12 +30,12 @@ extension GasCalculatorImperialSaltwaterTests {
         try await given {
             let fractionalPressure = try FractionalPressure(of: .oxygen, fractionalPressure: 0.21)
             let depth: Depth = -33.0
-            self.expectedError = .negative(depth, "GasCalculator.partialPressure(of:at:using:)")
-            return (fractionalPressure: fractionalPressure, depth: depth)
+            let expectedError: Error = .negative(depth, "GasCalculator.partialPressure(of:at:using:)")
+            return (fractionalPressure: fractionalPressure, depth: depth, expectedError: expectedError)
         } when: { input in
             Result { try self.sut.partialPressure(of: input.fractionalPressure, at: input.depth, using: self.physicsCalculator) }
-        } then: { _, result in
-            try expectThrowsError(when: result.get(), then: self.expectedError) {
+        } then: { input, result in
+            try expectThrowsError(when: result.get(), then: input.expectedError) {
                 #expect($0.localizationValue == "dive.kit.error.negative.depth")
             }
         }
@@ -71,12 +71,12 @@ extension GasCalculatorImperialSaltwaterTests {
             let gas = Oxygen()
             let blend = Blend<Blended>.air
             let depth: Depth = -33.0
-            self.expectedError = .negative(depth, "GasCalculator.partialPressure(of:in:at:using:)")
-            return (gas: gas, blend: blend, depth: depth)
+            let expectedError: Error = .negative(depth, "GasCalculator.partialPressure(of:in:at:using:)")
+            return (gas: gas, blend: blend, depth: depth, expectedError: expectedError)
         } when: { input in
             Result { try self.sut.partialPressure(of: input.gas, in: input.blend, at: input.depth, using: self.physicsCalculator) }
-        } then: { _, result in
-            try expectThrowsError(when: result.get(), then: self.expectedError) {
+        } then: { input, result in
+            try expectThrowsError(when: result.get(), then: input.expectedError) {
                 #expect($0.localizationValue == "dive.kit.error.negative.depth")
             }
         }
@@ -115,12 +115,12 @@ extension GasCalculatorImperialSaltwaterTests {
             let oxygenFraction = 0.21
             let blend = try Blend<Unblended>(.init(of: .oxygen, fractionalPressure: 0.21))
             let depth: Depth = 33.0
-            self.expectedError = .blend(.totalPressure(oxygenFraction, blend), "GasCalculator.partialPressure(of:blending:at:using:)")
-            return (gas: gas, blend: blend, depth: depth)
+            let expectedError: Error = .blend(.totalPressure(oxygenFraction, blend), "GasCalculator.partialPressure(of:blending:at:using:)")
+            return (gas: gas, blend: blend, depth: depth, expectedError: expectedError)
         } when: { input in
             Result { try self.sut.partialPressure(of: input.gas, blending: input.blend, at: input.depth, using: self.physicsCalculator) }
-        } then: { _, result in
-            try expectThrowsError(when: result.get(), then: self.expectedError) {
+        } then: { input, result in
+            try expectThrowsError(when: result.get(), then: input.expectedError) {
                 #expect($0.localizationValue == "dive.kit.error.blend.total.pressure")
             }
         }
@@ -134,12 +134,12 @@ extension GasCalculatorImperialSaltwaterTests {
                 .adding(.oxygen, pressure: 0.21)
                 .filling(with: .nitrogen)
             let depth: Depth = -33.0
-            self.expectedError = .negative(depth, "GasCalculator.partialPressure(of:blending:at:using:)")
-            return (gas: gas, blend: blend, depth: depth)
+            let expectedError: Error = .negative(depth, "GasCalculator.partialPressure(of:blending:at:using:)")
+            return (gas: gas, blend: blend, depth: depth, expectedError: expectedError)
         } when: { input in
             Result { try self.sut.partialPressure(of: input.gas, blending: input.blend, at: input.depth, using: self.physicsCalculator) }
-        } then: { _, result in
-            try expectThrowsError(when: result.get(), then: self.expectedError) {
+        } then: { input, result in
+            try expectThrowsError(when: result.get(), then: input.expectedError) {
                 #expect($0.localizationValue == "dive.kit.error.negative.depth")
             }
         }

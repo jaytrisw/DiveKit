@@ -42,11 +42,11 @@ public struct DecimalUnitFormatStyle<Decimal: DecimalUnitLocalizable>: Sendable 
         style: LocalizationStyle,
         locale: Locale? = nil,
         precision: NumberFormatStyleConfiguration.Precision? = .none) {
-        self.unit = unit
-        self.style = style
-        self.locale = locale
-        self.precision = precision
-    }
+            self.unit = unit
+            self.style = style
+            self.locale = locale
+            self.precision = precision
+        }
 
     /// Returns a copy of this style using the specified locale.
     ///

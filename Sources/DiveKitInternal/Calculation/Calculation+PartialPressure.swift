@@ -16,8 +16,7 @@ package extension Calculation {
     /// ```swift
     /// let calculation: Calculation<PartialPressure<Oxygen>> = .partialPressure(
     ///     1.28,
-    ///     configuration: configuration
-    /// )
+    ///     configuration: configuration)
     /// ```
     ///
     /// - Since: 1.0.0

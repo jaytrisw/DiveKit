@@ -1,12 +1,41 @@
 import Foundation
 
+/// Synchronizes missing DiveKit string catalog keys into a host `.xcstrings` catalog.
+///
+/// - Since: 1.0.0
 public struct CatalogSynchronizer {
     private let fileManager: FileManager
 
+    /// Creates a catalog synchronizer using the given file manager.
+    ///
+    /// - Parameter fileManager: The file manager used to inspect and write catalog files.
+    ///
+    /// ```swift
+    /// let synchronizer = CatalogSynchronizer()
+    /// ```
+    ///
+    /// - Since: 1.0.0
     public init(fileManager: FileManager = .default) {
         self.fileManager = fileManager
     }
 
+    /// Copies or merges missing keys from a source `.xcstrings` catalog into a target `.xcstrings` catalog.
+    ///
+    /// - Parameters:
+    ///   - sourceURL: The file URL of the source `.xcstrings` catalog.
+    ///   - targetURL: The file URL of the target `.xcstrings` catalog.
+    ///   - dryRun: When `true`, reports the changes that would be made without modifying `targetURL`.
+    /// - Returns: A ``CatalogSyncResult`` describing the keys added or planned.
+    /// - Throws: ``CatalogSyncError`` if the source or target path is invalid or if either catalog cannot be parsed, or any file-system error thrown while reading or writing.
+    ///
+    /// ```swift
+    /// let result = try CatalogSynchronizer().sync(
+    ///     source: URL(filePath: "DiveKit/Localizable.xcstrings"),
+    ///     target: URL(filePath: "App/Localizable.xcstrings"),
+    ///     dryRun: true)
+    /// ```
+    ///
+    /// - Since: 1.0.0
     public func sync(source sourceURL: URL, target targetURL: URL, dryRun: Bool = false) throws -> CatalogSyncResult {
         try validateSourceCatalog(at: sourceURL)
         try validateTargetLocation(at: targetURL)
@@ -30,8 +59,7 @@ public struct CatalogSynchronizer {
                 sourceKeyCount: sourceStrings.count,
                 targetKeyCountBeforeSync: targetKeyCountBeforeSync,
                 targetKeyCountAfterSync: targetKeyCountBeforeSync,
-                addedKeys: []
-            )
+                addedKeys: [])
         }
 
         for key in addedKeys {
@@ -44,8 +72,7 @@ public struct CatalogSynchronizer {
                 sourceKeyCount: sourceStrings.count,
                 targetKeyCountBeforeSync: targetKeyCountBeforeSync,
                 targetKeyCountAfterSync: targetKeyCountBeforeSync + addedKeys.count,
-                addedKeys: addedKeys
-            )
+                addedKeys: addedKeys)
         }
 
         targetCatalog["strings"] = targetStrings
@@ -56,8 +83,7 @@ public struct CatalogSynchronizer {
             sourceKeyCount: sourceStrings.count,
             targetKeyCountBeforeSync: targetKeyCountBeforeSync,
             targetKeyCountAfterSync: targetKeyCountBeforeSync + addedKeys.count,
-            addedKeys: addedKeys
-        )
+            addedKeys: addedKeys)
     }
 
     private func copyCatalog(source sourceURL: URL, target targetURL: URL, dryRun: Bool) throws -> CatalogSyncResult {
@@ -71,8 +97,7 @@ public struct CatalogSynchronizer {
                 sourceKeyCount: keys.count,
                 targetKeyCountBeforeSync: 0,
                 targetKeyCountAfterSync: keys.count,
-                addedKeys: keys
-            )
+                addedKeys: keys)
         }
 
         try fileManager.copyItem(at: sourceURL, to: targetURL)
@@ -82,8 +107,7 @@ public struct CatalogSynchronizer {
             sourceKeyCount: keys.count,
             targetKeyCountBeforeSync: 0,
             targetKeyCountAfterSync: keys.count,
-            addedKeys: keys
-        )
+            addedKeys: keys)
     }
 
     private func validateSourceCatalog(at url: URL) throws {
@@ -142,8 +166,7 @@ public struct CatalogSynchronizer {
                 .prettyPrinted,
                 .sortedKeys,
                 .withoutEscapingSlashes
-            ]
-        )
+            ])
         data.append(0x0A)
         try data.write(to: url, options: .atomic)
     }

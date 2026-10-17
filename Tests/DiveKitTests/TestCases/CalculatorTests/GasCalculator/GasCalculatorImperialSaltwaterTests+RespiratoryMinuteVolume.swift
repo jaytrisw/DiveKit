@@ -66,8 +66,8 @@ extension GasCalculatorImperialSaltwaterTests {
             let volume: Volume = 142
             let ratedPressure: Pressure = 2475
             let tank = Tank.cubicFeet(volume, ratedPressure: ratedPressure, with: .air)
-            self.expectedError = .negative(depth, "GasCalculator.respiratoryMinuteVolume(at:for:consuming:with:using:)")
-            return (depth: depth, minutes: minutes, consuming: consuming, tank: tank)
+            let expectedError: Error = .negative(depth, "GasCalculator.respiratoryMinuteVolume(at:for:consuming:with:using:)")
+            return (depth: depth, minutes: minutes, consuming: consuming, tank: tank, expectedError: expectedError)
         } when: { input in
             Result {
                 try self.sut.respiratoryMinuteVolume(
@@ -77,8 +77,8 @@ extension GasCalculatorImperialSaltwaterTests {
                     with: input.tank,
                     using: self.physicsCalculator)
             }
-        } then: { _, result in
-            try expectThrowsError(when: result.get(), then: self.expectedError) {
+        } then: { input, result in
+            try expectThrowsError(when: result.get(), then: input.expectedError) {
                 #expect($0.localizationValue == "dive.kit.error.negative.depth")
             }
         }
@@ -93,8 +93,8 @@ extension GasCalculatorImperialSaltwaterTests {
             let volume: Volume = 142
             let ratedPressure: Pressure = 2475
             let tank = Tank.cubicFeet(volume, ratedPressure: ratedPressure, with: .air)
-            self.expectedError = .negative(minutes, "GasCalculator.respiratoryMinuteVolume(at:for:consuming:with:using:)")
-            return (depth: depth, minutes: minutes, consuming: consuming, tank: tank)
+            let expectedError: Error = .negative(minutes, "GasCalculator.respiratoryMinuteVolume(at:for:consuming:with:using:)")
+            return (depth: depth, minutes: minutes, consuming: consuming, tank: tank, expectedError: expectedError)
         } when: { input in
             Result {
                 try self.sut.respiratoryMinuteVolume(
@@ -104,8 +104,8 @@ extension GasCalculatorImperialSaltwaterTests {
                     with: input.tank,
                     using: self.physicsCalculator)
             }
-        } then: { _, result in
-            try expectThrowsError(when: result.get(), then: self.expectedError) {
+        } then: { input, result in
+            try expectThrowsError(when: result.get(), then: input.expectedError) {
                 #expect($0.localizationValue == "dive.kit.error.negative.minutes")
             }
         }
@@ -120,8 +120,8 @@ extension GasCalculatorImperialSaltwaterTests {
             let volume: Volume = 142
             let ratedPressure: Pressure = 2475
             let tank = Tank.cubicFeet(volume, ratedPressure: ratedPressure, with: .air)
-            self.expectedError = .range(.lowerBound(0, 0), "GasCalculator.respiratoryMinuteVolume(at:for:consuming:with:using:)")
-            return (depth: depth, minutes: minutes, consuming: consuming, tank: tank)
+            let expectedError: Error = .range(.lowerBound(0, 0), "GasCalculator.respiratoryMinuteVolume(at:for:consuming:with:using:)")
+            return (depth: depth, minutes: minutes, consuming: consuming, tank: tank, expectedError: expectedError)
         } when: { input in
             Result {
                 try self.sut.respiratoryMinuteVolume(
@@ -131,8 +131,8 @@ extension GasCalculatorImperialSaltwaterTests {
                     with: input.tank,
                     using: self.physicsCalculator)
             }
-        } then: { _, result in
-            try expectThrowsError(when: result.get(), then: self.expectedError) {
+        } then: { input, result in
+            try expectThrowsError(when: result.get(), then: input.expectedError) {
                 #expect($0.localizationValue == "dive.kit.error.range.lower.bound")
             }
         }
@@ -147,8 +147,8 @@ extension GasCalculatorImperialSaltwaterTests {
             let volume: Volume = 142
             let ratedPressure: Pressure = 2475
             let tank = Tank.cubicFeet(volume, ratedPressure: ratedPressure, with: .air)
-            self.expectedError = .negative(consuming, "GasCalculator.respiratoryMinuteVolume(at:for:consuming:with:using:)")
-            return (depth: depth, minutes: minutes, consuming: consuming, tank: tank)
+            let expectedError: Error = .negative(consuming, "GasCalculator.respiratoryMinuteVolume(at:for:consuming:with:using:)")
+            return (depth: depth, minutes: minutes, consuming: consuming, tank: tank, expectedError: expectedError)
         } when: { input in
             Result {
                 try self.sut.respiratoryMinuteVolume(
@@ -158,8 +158,8 @@ extension GasCalculatorImperialSaltwaterTests {
                     with: input.tank,
                     using: self.physicsCalculator)
             }
-        } then: { _, result in
-            try expectThrowsError(when: result.get(), then: self.expectedError) {
+        } then: { input, result in
+            try expectThrowsError(when: result.get(), then: input.expectedError) {
                 #expect($0.localizationValue == "dive.kit.error.negative.pressure")
             }
         }
@@ -174,8 +174,8 @@ extension GasCalculatorImperialSaltwaterTests {
             let volume: Volume = -142
             let ratedPressure: Pressure = 2475
             let tank = Tank.cubicFeet(volume, ratedPressure: ratedPressure, with: .air)
-            self.expectedError = .tank(.volume(volume, tank), "GasCalculator.respiratoryMinuteVolume(at:for:consuming:with:using:)")
-            return (depth: depth, minutes: minutes, consuming: consuming, tank: tank)
+            let expectedError: Error = .tank(.volume(volume, tank), "GasCalculator.respiratoryMinuteVolume(at:for:consuming:with:using:)")
+            return (depth: depth, minutes: minutes, consuming: consuming, tank: tank, expectedError: expectedError)
         } when: { input in
             Result {
                 try self.sut.respiratoryMinuteVolume(
@@ -185,8 +185,8 @@ extension GasCalculatorImperialSaltwaterTests {
                     with: input.tank,
                     using: self.physicsCalculator)
             }
-        } then: { _, result in
-            try expectThrowsError(when: result.get(), then: self.expectedError) {
+        } then: { input, result in
+            try expectThrowsError(when: result.get(), then: input.expectedError) {
                 #expect($0.localizationValue == "dive.kit.error.tank.size.volume")
             }
         }
@@ -201,8 +201,8 @@ extension GasCalculatorImperialSaltwaterTests {
             let volume: Volume = 142
             let ratedPressure: Pressure = -2475
             let tank = Tank.cubicFeet(volume, ratedPressure: ratedPressure, with: .air)
-            self.expectedError = .tank(.ratedPressure(ratedPressure, tank), "GasCalculator.respiratoryMinuteVolume(at:for:consuming:with:using:)")
-            return (depth: depth, minutes: minutes, consuming: consuming, tank: tank)
+            let expectedError: Error = .tank(.ratedPressure(ratedPressure, tank), "GasCalculator.respiratoryMinuteVolume(at:for:consuming:with:using:)")
+            return (depth: depth, minutes: minutes, consuming: consuming, tank: tank, expectedError: expectedError)
         } when: { input in
             Result {
                 try self.sut.respiratoryMinuteVolume(
@@ -212,8 +212,8 @@ extension GasCalculatorImperialSaltwaterTests {
                     with: input.tank,
                     using: self.physicsCalculator)
             }
-        } then: { _, result in
-            try expectThrowsError(when: result.get(), then: self.expectedError) {
+        } then: { input, result in
+            try expectThrowsError(when: result.get(), then: input.expectedError) {
                 #expect($0.localizationValue == "dive.kit.error.tank.size.rated.pressure")
             }
         }
@@ -228,8 +228,8 @@ extension GasCalculatorImperialSaltwaterTests {
             let volume: Volume = 142
             let ratedPressure: Pressure = 0
             let tank = Tank.cubicFeet(volume, ratedPressure: ratedPressure, with: .air)
-            self.expectedError = .tank(.ratedPressure(ratedPressure, tank), "GasCalculator.respiratoryMinuteVolume(at:for:consuming:with:using:)")
-            return (depth: depth, minutes: minutes, consuming: consuming, tank: tank)
+            let expectedError: Error = .tank(.ratedPressure(ratedPressure, tank), "GasCalculator.respiratoryMinuteVolume(at:for:consuming:with:using:)")
+            return (depth: depth, minutes: minutes, consuming: consuming, tank: tank, expectedError: expectedError)
         } when: { input in
             Result {
                 try self.sut.respiratoryMinuteVolume(
@@ -239,8 +239,8 @@ extension GasCalculatorImperialSaltwaterTests {
                     with: input.tank,
                     using: self.physicsCalculator)
             }
-        } then: { _, result in
-            try expectThrowsError(when: result.get(), then: self.expectedError) {
+        } then: { input, result in
+            try expectThrowsError(when: result.get(), then: input.expectedError) {
                 #expect($0.localizationValue == "dive.kit.error.tank.size.rated.pressure")
             }
         }

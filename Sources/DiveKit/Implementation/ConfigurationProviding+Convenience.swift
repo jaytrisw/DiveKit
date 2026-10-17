@@ -14,8 +14,7 @@ public extension ConfigurationProviding {
     /// ```swift
     /// let calculator = BuoyancyCalculator(
     ///     .metric,
-    ///     water: .salt
-    /// )
+    ///     water: .salt)
     /// ```
     ///
     /// - Note: This initializer is available for all types conforming to

@@ -13,7 +13,7 @@ extension LocalizationResolver {
 private enum TestLocalizations {
     private static let strings: [String: String] = [
         "dive.kit.error.blend.pressure.range": "Blend pressure should be a decimal between 0.0 and 1.0",
-        "dive.kit.error.blend.total.pressure": "Blend pressure should be equal on 1.0",
+        "dive.kit.error.blend.total.pressure": "Blend pressure should be equal to 1.0",
         "dive.kit.error.gas.metabolic": "Gas must be inert to be tracked by a tissue compartment",
         "dive.kit.error.gas.unmodeled": "No decompression table row has coefficients for this gas at its half-time",
         "dive.kit.error.negative.depth": "Depth input must not be a negative value",
@@ -25,7 +25,7 @@ private enum TestLocalizations {
         "dive.kit.error.negative.weight": "Weight input must not be a negative value",
         "dive.kit.error.range.lower.bound": "Input must be greater than the allowed lower bound",
         "dive.kit.error.range.upper.bound": "Input must not exceed the allowed upper bound",
-        "dive.kit.error.tank.size.rated.pressure": "Tank rated pressure must not be a negative value",
+        "dive.kit.error.tank.size.rated.pressure": "Tank rated pressure must be greater than zero",
         "dive.kit.error.tank.size.volume": "Tank volume must not be a negative value",
         "dive.kit.unit.depth.imperial.description.full": "feet",
         "dive.kit.unit.depth.imperial.description.short": "ft",

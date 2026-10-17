@@ -69,4 +69,40 @@ struct FractionalPressureTests {
             }
         }
     }
+
+    @Test(.tags(.error), arguments: [Double.infinity, -.infinity])
+    func initializationRejectsInfiniteFractionalPressure(fractionalPressure: Double) async throws {
+        try await given {
+            let expectedError: Error = .range(
+                .upperBound(fractionalPressure, .greatestFiniteMagnitude),
+                "FractionalPressure<Oxygen>.init(of:fractionalPressure:)")
+
+            return (gas: Oxygen(), fractionalPressure: fractionalPressure, expectedError: expectedError)
+        } when: { input in
+            try expectThrowsError(
+                when: try FractionalPressure(of: input.gas, fractionalPressure: input.fractionalPressure),
+                then: input.expectedError) { error in
+                #expect(error.localizationValue == "dive.kit.error.range.upper.bound")
+            }
+        }
+    }
+
+    @Test(.tags(.error))
+    func initializationRejectsNaNFractionalPressure() async {
+        await given {
+            Oxygen()
+        } when: { gas in
+            let error = #expect(throws: Error.self) {
+                try FractionalPressure(of: gas, fractionalPressure: .nan)
+            }
+            guard case let .range(.upperBound(provided, upperBound), callSite) = error else {
+                Issue.record("Expected an upper-bound error, got \(String(describing: error)).")
+                return
+            }
+            #expect(provided.isNaN)
+            #expect(upperBound == .greatestFiniteMagnitude)
+            #expect(callSite == "FractionalPressure<Oxygen>.init(of:fractionalPressure:)")
+            #expect(error?.localizationValue == "dive.kit.error.range.upper.bound")
+        }
+    }
 }

@@ -295,11 +295,41 @@ struct BuhlmannCalculatorTests {
         } when: { sut in
             try expectThrowsError(
                 when: try sut.calculator.schedule(of: sut.tissues, from: .init(40), breathing: .air, switchingTo: [try .enrichedAir(1)]),
-                then: .negative(.depth(.init((0.9 - 1) * 10)), BuhlmannScheduleTests.callSite)) { error in
+                then: .negative(.depth(.init((0.9 - 1) * 10)), "BuhlmannCalculator.schedule(of:from:breathing:switchingTo:)")) { error in
                 #expect(error.localizationValue == "dive.kit.error.negative.depth")
             }
         }
     }
+
+    @Test(arguments: [
+        (partialPressure: -0.1,
+         expected: Error.negative(.partialPressure(.init(-0.1)), "BuhlmannCalculator.schedule(of:from:breathing:switchingTo:)"),
+         key: "dive.kit.error.negative.partial.pressure"),
+        (partialPressure: 0.0,
+         expected: .range(.lowerBound(0, 0), "BuhlmannCalculator.schedule(of:from:breathing:switchingTo:)"),
+         key: "dive.kit.error.range.lower.bound"),
+        (partialPressure: .infinity,
+         expected: .range(.upperBound(.infinity, .greatestFiniteMagnitude), "BuhlmannCalculator.schedule(of:from:breathing:switchingTo:)"),
+         key: "dive.kit.error.range.upper.bound")
+    ])
+    func scheduleRejectsInvalidSwitchPartialPressureWithoutSwitches(
+        partialPressure: Double,
+        expected: Error,
+        key: String) async throws {
+            try await given { () throws -> (calculator: BuhlmannCalculator, tissues: BuhlmannCalculator.Tissues) in
+                var settings = try Self.calculator.settings
+                settings.switchPartialPressure = .init(partialPressure)
+                return (
+                    calculator: BuhlmannCalculator(configuration: Self.configuration, settings: settings),
+                    tissues: try Self.calculator.surfaceTissues())
+            } when: { sut in
+                try expectThrowsError(
+                    when: try sut.calculator.schedule(of: sut.tissues, from: .init(0), breathing: .air, switchingTo: []),
+                    then: expected) { error in
+                    #expect(error.localizationValue == .init(key))
+                }
+            }
+        }
 
     @Test(arguments: [
         (start: -1.0, end: 0.0, duration: 1.0, expected: Error.negative(.depth(.init(-1)), Self.segmentCallSite), key: "dive.kit.error.negative.depth"),

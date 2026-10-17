@@ -20,17 +20,18 @@ struct PhysicsCalculatorImperialSaltwaterTests {
     }
 
     @Test(.tags(.error))
-    func imperialSaltwaterGaugePressureWithInvalidInput() throws {
-        let depth: Depth = -33.0
-        let expectedError = Error.negative(depth, "PhysicsCalculator.gaugePressure(at:)")
-        let sut = PhysicsCalculator(.imperial, water: .salt)
-
-        do {
-            _ = try sut.gaugePressure(at: depth)
-            Issue.record("Expected an error to be thrown.")
-        } catch let error {
-            #expect(error == expectedError)
-            #expect(error.localizationValue == "dive.kit.error.negative.depth")
+    func imperialSaltwaterGaugePressureWithInvalidInput() async throws {
+        try await given {
+            let depth: Depth = -33.0
+            let expectedError = Error.negative(depth, "PhysicsCalculator.gaugePressure(at:)")
+            let sut = PhysicsCalculator(.imperial, water: .salt)
+            return (sut: sut, depth: depth, expectedError: expectedError)
+        } when: { input in
+            Result { try input.sut.gaugePressure(at: input.depth) }
+        } then: { input, result in
+            try expectThrowsError(when: result.get(), then: input.expectedError) {
+                #expect($0.localizationValue == "dive.kit.error.negative.depth")
+            }
         }
     }
 
@@ -50,17 +51,18 @@ struct PhysicsCalculatorImperialSaltwaterTests {
     }
 
     @Test(.tags(.error))
-    func imperialSaltwaterAtmospheresAbsoluteWithInvalidInput() throws {
-        let depth: Depth = -33.0
-        let expectedError = Error.negative(depth, "PhysicsCalculator.atmospheresAbsolute(at:)")
-        let sut = PhysicsCalculator(.imperial, water: .salt)
-
-        do {
-            _ = try sut.atmospheresAbsolute(at: depth)
-            Issue.record("Expected an error to be thrown.")
-        } catch let error {
-            #expect(error == expectedError)
-            #expect(error.localizationValue == "dive.kit.error.negative.depth")
+    func imperialSaltwaterAtmospheresAbsoluteWithInvalidInput() async throws {
+        try await given {
+            let depth: Depth = -33.0
+            let expectedError = Error.negative(depth, "PhysicsCalculator.atmospheresAbsolute(at:)")
+            let sut = PhysicsCalculator(.imperial, water: .salt)
+            return (sut: sut, depth: depth, expectedError: expectedError)
+        } when: { input in
+            Result { try input.sut.atmospheresAbsolute(at: input.depth) }
+        } then: { input, result in
+            try expectThrowsError(when: result.get(), then: input.expectedError) {
+                #expect($0.localizationValue == "dive.kit.error.negative.depth")
+            }
         }
     }
 
@@ -80,34 +82,36 @@ struct PhysicsCalculatorImperialSaltwaterTests {
     }
 
     @Test(.tags(.error))
-    func imperialSaltwaterPressureChangeWithInvalidFromDepthInput() throws {
-        let fromDepth: Depth = -33.0
-        let toDepth: Depth = 66.00
-        let expectedError = Error.negative(fromDepth, "PhysicsCalculator.pressureChange(from:to:)")
-        let sut = PhysicsCalculator(.imperial, water: .salt)
-
-        do {
-            _ = try sut.pressureChange(from: fromDepth, to: toDepth)
-            Issue.record("Expected an error to be thrown.")
-        } catch let error {
-            #expect(error == expectedError)
-            #expect(error.localizationValue == "dive.kit.error.negative.depth")
+    func imperialSaltwaterPressureChangeWithInvalidFromDepthInput() async throws {
+        try await given {
+            let fromDepth: Depth = -33.0
+            let toDepth: Depth = 66.00
+            let expectedError = Error.negative(fromDepth, "PhysicsCalculator.pressureChange(from:to:)")
+            let sut = PhysicsCalculator(.imperial, water: .salt)
+            return (sut: sut, fromDepth: fromDepth, toDepth: toDepth, expectedError: expectedError)
+        } when: { input in
+            Result { try input.sut.pressureChange(from: input.fromDepth, to: input.toDepth) }
+        } then: { input, result in
+            try expectThrowsError(when: result.get(), then: input.expectedError) {
+                #expect($0.localizationValue == "dive.kit.error.negative.depth")
+            }
         }
     }
 
     @Test(.tags(.error))
-    func imperialSaltwaterPressureChangeWithInvalidToDepthInput() throws {
-        let fromDepth: Depth = 33.0
-        let toDepth: Depth = -66.00
-        let expectedError = Error.negative(toDepth, "PhysicsCalculator.pressureChange(from:to:)")
-        let sut = PhysicsCalculator(.imperial, water: .salt)
-
-        do {
-            _ = try sut.pressureChange(from: fromDepth, to: toDepth)
-            Issue.record("Expected an error to be thrown.")
-        } catch let error {
-            #expect(error == expectedError)
-            #expect(error.localizationValue == "dive.kit.error.negative.depth")
+    func imperialSaltwaterPressureChangeWithInvalidToDepthInput() async throws {
+        try await given {
+            let fromDepth: Depth = 33.0
+            let toDepth: Depth = -66.00
+            let expectedError = Error.negative(toDepth, "PhysicsCalculator.pressureChange(from:to:)")
+            let sut = PhysicsCalculator(.imperial, water: .salt)
+            return (sut: sut, fromDepth: fromDepth, toDepth: toDepth, expectedError: expectedError)
+        } when: { input in
+            Result { try input.sut.pressureChange(from: input.fromDepth, to: input.toDepth) }
+        } then: { input, result in
+            try expectThrowsError(when: result.get(), then: input.expectedError) {
+                #expect($0.localizationValue == "dive.kit.error.negative.depth")
+            }
         }
     }
 
@@ -127,34 +131,36 @@ struct PhysicsCalculatorImperialSaltwaterTests {
     }
 
     @Test(.tags(.error))
-    func imperialSaltwaterAirVolumeFromSurfaceWithInvalidDepthInput() throws {
-        let depth: Depth = -66
-        let volume: Volume = 6
-        let expectedError = Error.negative(depth, "PhysicsCalculator.airVolumeFromSurface(to:with:)")
-        let sut = PhysicsCalculator(.imperial, water: .salt)
-
-        do {
-            _ = try sut.airVolumeFromSurface(to: depth, with: volume)
-            Issue.record("Expected an error to be thrown.")
-        } catch let error {
-            #expect(error == expectedError)
-            #expect(error.localizationValue == "dive.kit.error.negative.depth")
+    func imperialSaltwaterAirVolumeFromSurfaceWithInvalidDepthInput() async throws {
+        try await given {
+            let depth: Depth = -66
+            let volume: Volume = 6
+            let expectedError = Error.negative(depth, "PhysicsCalculator.airVolumeFromSurface(to:with:)")
+            let sut = PhysicsCalculator(.imperial, water: .salt)
+            return (sut: sut, depth: depth, volume: volume, expectedError: expectedError)
+        } when: { input in
+            Result { try input.sut.airVolumeFromSurface(to: input.depth, with: input.volume) }
+        } then: { input, result in
+            try expectThrowsError(when: result.get(), then: input.expectedError) {
+                #expect($0.localizationValue == "dive.kit.error.negative.depth")
+            }
         }
     }
 
     @Test(.tags(.error))
-    func imperialSaltwaterAirVolumeFromSurfaceWithInvalidVolumeInput() throws {
-        let depth: Depth = 66
-        let volume: Volume = -6
-        let expectedError = Error.negative(volume, "PhysicsCalculator.airVolumeFromSurface(to:with:)")
-        let sut = PhysicsCalculator(.imperial, water: .salt)
-
-        do {
-            _ = try sut.airVolumeFromSurface(to: depth, with: volume)
-            Issue.record("Expected an error to be thrown.")
-        } catch let error {
-            #expect(error == expectedError)
-            #expect(error.localizationValue == "dive.kit.error.negative.volume")
+    func imperialSaltwaterAirVolumeFromSurfaceWithInvalidVolumeInput() async throws {
+        try await given {
+            let depth: Depth = 66
+            let volume: Volume = -6
+            let expectedError = Error.negative(volume, "PhysicsCalculator.airVolumeFromSurface(to:with:)")
+            let sut = PhysicsCalculator(.imperial, water: .salt)
+            return (sut: sut, depth: depth, volume: volume, expectedError: expectedError)
+        } when: { input in
+            Result { try input.sut.airVolumeFromSurface(to: input.depth, with: input.volume) }
+        } then: { input, result in
+            try expectThrowsError(when: result.get(), then: input.expectedError) {
+                #expect($0.localizationValue == "dive.kit.error.negative.volume")
+            }
         }
     }
 
@@ -174,34 +180,125 @@ struct PhysicsCalculatorImperialSaltwaterTests {
     }
 
     @Test(.tags(.error))
-    func imperialSaltwaterAirVolumeToSurfaceWithInvalidDepthInput() throws {
-        let depth: Depth = -66
-        let volume: Volume = 6
-        let expectedError = Error.negative(depth, "PhysicsCalculator.airVolumeToSurface(from:with:)")
-        let sut = PhysicsCalculator(.imperial, water: .salt)
-
-        do {
-            _ = try sut.airVolumeToSurface(from: depth, with: volume)
-            Issue.record("Expected an error to be thrown.")
-        } catch let error {
-            #expect(error == expectedError)
-            #expect(error.localizationValue == "dive.kit.error.negative.depth")
+    func imperialSaltwaterAirVolumeToSurfaceWithInvalidDepthInput() async throws {
+        try await given {
+            let depth: Depth = -66
+            let volume: Volume = 6
+            let expectedError = Error.negative(depth, "PhysicsCalculator.airVolumeToSurface(from:with:)")
+            let sut = PhysicsCalculator(.imperial, water: .salt)
+            return (sut: sut, depth: depth, volume: volume, expectedError: expectedError)
+        } when: { input in
+            Result { try input.sut.airVolumeToSurface(from: input.depth, with: input.volume) }
+        } then: { input, result in
+            try expectThrowsError(when: result.get(), then: input.expectedError) {
+                #expect($0.localizationValue == "dive.kit.error.negative.depth")
+            }
         }
     }
 
     @Test(.tags(.error))
-    func imperialSaltwaterAirVolumeToSurfaceWithInvalidVolumeInput() throws {
-        let depth: Depth = 66
-        let volume: Volume = -6
-        let expectedError = Error.negative(volume, "PhysicsCalculator.airVolumeToSurface(from:with:)")
-        let sut = PhysicsCalculator(.imperial, water: .salt)
+    func imperialSaltwaterAirVolumeToSurfaceWithInvalidVolumeInput() async throws {
+        try await given {
+            let depth: Depth = 66
+            let volume: Volume = -6
+            let expectedError = Error.negative(volume, "PhysicsCalculator.airVolumeToSurface(from:with:)")
+            let sut = PhysicsCalculator(.imperial, water: .salt)
+            return (sut: sut, depth: depth, volume: volume, expectedError: expectedError)
+        } when: { input in
+            Result { try input.sut.airVolumeToSurface(from: input.depth, with: input.volume) }
+        } then: { input, result in
+            try expectThrowsError(when: result.get(), then: input.expectedError) {
+                #expect($0.localizationValue == "dive.kit.error.negative.volume")
+            }
+        }
+    }
 
-        do {
-            _ = try sut.airVolumeToSurface(from: depth, with: volume)
-            Issue.record("Expected an error to be thrown.")
-        } catch let error {
-            #expect(error == expectedError)
-            #expect(error.localizationValue == "dive.kit.error.negative.volume")
+    // MARK: Non-finite input
+
+    enum NonFiniteInput: CaseIterable, Sendable {
+        case gaugePressureDepth
+        case atmospheresAbsoluteDepth
+        case pressureChangeFromDepth
+        case pressureChangeToDepth
+        case airVolumeFromSurfaceDepth
+        case airVolumeFromSurfaceVolume
+        case airVolumeToSurfaceDepth
+        case airVolumeToSurfaceVolume
+
+        var callSite: CallSite {
+            switch self {
+                case .gaugePressureDepth: "PhysicsCalculator.gaugePressure(at:)"
+                case .atmospheresAbsoluteDepth: "PhysicsCalculator.atmospheresAbsolute(at:)"
+                case .pressureChangeFromDepth, .pressureChangeToDepth: "PhysicsCalculator.pressureChange(from:to:)"
+                case .airVolumeFromSurfaceDepth, .airVolumeFromSurfaceVolume: "PhysicsCalculator.airVolumeFromSurface(to:with:)"
+                case .airVolumeToSurfaceDepth, .airVolumeToSurfaceVolume: "PhysicsCalculator.airVolumeToSurface(from:with:)"
+            }
+        }
+
+        func run(with value: Double) throws {
+            let sut = PhysicsCalculator(.imperial, water: .salt)
+            switch self {
+                case .gaugePressureDepth: _ = try sut.gaugePressure(at: .init(value))
+                case .atmospheresAbsoluteDepth: _ = try sut.atmospheresAbsolute(at: .init(value))
+                case .pressureChangeFromDepth: _ = try sut.pressureChange(from: .init(value), to: 66)
+                case .pressureChangeToDepth: _ = try sut.pressureChange(from: 33, to: .init(value))
+                case .airVolumeFromSurfaceDepth: _ = try sut.airVolumeFromSurface(to: .init(value), with: 6)
+                case .airVolumeFromSurfaceVolume: _ = try sut.airVolumeFromSurface(to: 66, with: .init(value))
+                case .airVolumeToSurfaceDepth: _ = try sut.airVolumeToSurface(from: .init(value), with: 6)
+                case .airVolumeToSurfaceVolume: _ = try sut.airVolumeToSurface(from: 66, with: .init(value))
+            }
+        }
+    }
+
+    @Test(.tags(.error), arguments: NonFiniteInput.allCases, [Double.infinity, -.infinity])
+    func imperialSaltwaterRejectsInfiniteInput(input: NonFiniteInput, value: Double) async throws {
+        try await given {
+            let expectedError: Error = .range(.upperBound(value, .greatestFiniteMagnitude), input.callSite)
+            return (input: input, value: value, expectedError: expectedError)
+        } when: { input in
+            Result { try input.input.run(with: input.value) }
+        } then: { input, result in
+            try expectThrowsError(when: result.get(), then: input.expectedError) {
+                #expect($0.localizationValue == "dive.kit.error.range.upper.bound")
+            }
+        }
+    }
+
+    @Test(.tags(.error), arguments: NonFiniteInput.allCases)
+    func imperialSaltwaterRejectsNaNInput(input: NonFiniteInput) async {
+        await given {
+            input
+        } when: { input in
+            let error = #expect(throws: Error.self) {
+                try input.run(with: .nan)
+            }
+            guard case let .range(.upperBound(provided, upperBound), callSite) = error else {
+                Issue.record("Expected an upper-bound error, got \(String(describing: error)).")
+                return
+            }
+            #expect(provided.isNaN)
+            #expect(upperBound == .greatestFiniteMagnitude)
+            #expect(callSite == input.callSite)
+            #expect(error?.localizationValue == "dive.kit.error.range.upper.bound")
+        }
+    }
+
+    @Test(.tags(.error))
+    func imperialSaltwaterAirVolumeToSurfaceRejectsOverflowingResult() async throws {
+        try await given {
+            let depth: Depth = 33
+            let volume: Volume = .init(.greatestFiniteMagnitude)
+            let expectedError = Error.range(
+                .upperBound(.infinity, .greatestFiniteMagnitude),
+                "PhysicsCalculator.airVolumeToSurface(from:with:)")
+            let sut = PhysicsCalculator(.imperial, water: .salt)
+            return (sut: sut, depth: depth, volume: volume, expectedError: expectedError)
+        } when: { input in
+            Result { try input.sut.airVolumeToSurface(from: input.depth, with: input.volume) }
+        } then: { input, result in
+            try expectThrowsError(when: result.get(), then: input.expectedError) {
+                #expect($0.localizationValue == "dive.kit.error.range.upper.bound")
+            }
         }
     }
 }

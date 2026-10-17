@@ -28,7 +28,7 @@ struct BlendStaticMembersTests {
 
         #expect(oxygen.value == oxygenFraction)
         #expect(oxygen.gas == .oxygen)
-        #expect(abs(nitrogen.value - 0.68) <= 0.1)
+        #expect(nitrogen.value.isApproximately(0.68))
         #expect(nitrogen.gas == .nitrogen)
         #expect(sut.totalPressure == 1.0)
         #expect(sut.components().count == 2)
@@ -57,7 +57,9 @@ struct BlendStaticMembersTests {
 
         try expectThrowsError(
             when: try Blend.enrichedAir(fractionalPressure),
-            then: expectedError)
+            then: expectedError) {
+                #expect($0.localizationValue == "dive.kit.error.range.upper.bound")
+            }
     }
 
     @Test

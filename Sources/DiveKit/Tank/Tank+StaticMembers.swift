@@ -17,8 +17,7 @@ public extension Tank {
     /// let tank = Tank.cubicFeet(
     ///     80,
     ///     ratedPressure: 3000,
-    ///     with: blend
-    /// )
+    ///     with: blend)
     /// ```
     ///
     /// - Note: This method assumes the provided `blend` is already validated

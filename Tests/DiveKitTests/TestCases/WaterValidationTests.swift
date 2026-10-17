@@ -88,4 +88,66 @@ struct WaterValidationTests {
             weight: Water.salt.weight,
             pressure: { .init(increase: .init(increase, units: $0)) })
     }
+
+    enum BuoyancyOperation: CaseIterable, Sendable {
+        case buoyancy
+        case buoyancyOfObject
+        case volumeOfObject
+
+        var callSite: CallSite {
+            switch self {
+            case .buoyancy: "BuoyancyCalculator.buoyancy(of:)"
+            case .buoyancyOfObject: "BuoyancyCalculator.buoyancyOfObject(weighing:andDisplacing:)"
+            case .volumeOfObject: "BuoyancyCalculator.volumeOfObject(weighing:with:)"
+            }
+        }
+
+        func run(in water: Water) throws {
+            let calculator = BuoyancyCalculator(.metric, water: water)
+            switch self {
+            case .buoyancy:
+                _ = try calculator.buoyancy(of: .init(weight: 100, volume: 100))
+            case .buoyancyOfObject:
+                _ = try calculator.buoyancyOfObject(weighing: 100, andDisplacing: 100)
+            case .volumeOfObject:
+                _ = try calculator.volumeOfObject(weighing: 100, with: .neutral)
+            }
+        }
+    }
+
+    @Test(arguments: [0.0, -1.0], BuoyancyOperation.allCases)
+    func rejectsNonPositiveWaterWeight(weight: Double, operation: BuoyancyOperation) async throws {
+        try await given {
+            let expectedError: Error = .range(.lowerBound(weight, 0), operation.callSite)
+
+            return (water: water(weight: weight), expectedError: expectedError)
+        } when: { input in
+            try expectThrowsError(
+                when: try operation.run(in: input.water),
+                then: input.expectedError) { error in
+                #expect(error.localizationValue == "dive.kit.error.range.lower.bound")
+            }
+        }
+    }
+
+    @Test(arguments: [Double.infinity, -.infinity], BuoyancyOperation.allCases)
+    func rejectsInfiniteWaterWeight(weight: Double, operation: BuoyancyOperation) async throws {
+        try await given {
+            let expectedError: Error = .range(.upperBound(weight, .greatestFiniteMagnitude), operation.callSite)
+
+            return (water: water(weight: weight), expectedError: expectedError)
+        } when: { input in
+            try expectThrowsError(
+                when: try operation.run(in: input.water),
+                then: input.expectedError) { error in
+                #expect(error.localizationValue == "dive.kit.error.range.upper.bound")
+            }
+        }
+    }
+
+    private func water(weight: Double) -> Water {
+        .init(
+            weight: { .init(weight, units: $0) },
+            pressure: Water.salt.pressure)
+    }
 }

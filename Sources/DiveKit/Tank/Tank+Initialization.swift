@@ -17,8 +17,7 @@ public extension Tank {
     /// ```swift
     /// let tank = try Tank(
     ///     blend: unblendedBlend,
-    ///     size: size
-    /// )
+    ///     size: size)
     /// ```
     ///
     /// - Note: This initializer derives a `CallSite` automatically using `Tank`

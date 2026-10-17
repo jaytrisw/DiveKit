@@ -15,8 +15,7 @@ package extension Calculation where Result == Buoyancy {
     /// ```swift
     /// let calculation = Calculation.buoyancy(
     ///     1.5,
-    ///     configuration: configuration
-    /// )
+    ///     configuration: configuration)
     /// ```
     ///
     /// - Note: Positive values indicate positive buoyancy (tendency to float),

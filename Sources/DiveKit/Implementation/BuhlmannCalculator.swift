@@ -197,11 +197,7 @@ extension BuhlmannCalculator: DecompressionCalculating {
     ///
     /// - Since: 1.0.0
     public func surfaceTissues() throws(DiveKit.Error) -> Tissues {
-        let breathed = try Tissue.breathedPressure(
-            at: .init(.zero),
-            waterVapor: settings.waterVapor,
-            configuration: configuration,
-            .from(self))
+        let breathed = try Tissue.breathedPressure(at: .init(.zero), waterVapor: settings.waterVapor, configuration: configuration, .from(self))
         return .init(
             table: settings.table,
             compartments: try settings.table.compartments(nitrogen: .init(breathed * Blend.air.fractionalPressure(of: .nitrogen))))
@@ -235,10 +231,12 @@ extension BuhlmannCalculator: DecompressionCalculating {
     /// - Since: 1.0.0
     public func loaded(_ tissues: Tissues, through profile: [DiveSegment]) throws(DiveKit.Error) -> Tissues {
         let callSite: CallSite = .from(self)
+        let waterVapor = try Tissue.validatedWaterVapor(settings.waterVapor, callSite)
+        let increase = try configuration.pressureIncrease(callSite)
         var compartments = tissues.compartments
         for segment in profile {
-            let start = try Tissue.breathedPressure(at: segment.start, waterVapor: settings.waterVapor, configuration: configuration, callSite)
-            let end = try Tissue.breathedPressure(at: segment.end, waterVapor: settings.waterVapor, configuration: configuration, callSite)
+            let start = try Tissue.breathedPressure(at: segment.start, waterVapor: waterVapor, increase: increase, callSite)
+            let end = segment.end == segment.start ? start : try Tissue.breathedPressure(at: segment.end, waterVapor: waterVapor, increase: increase, callSite)
             let fractions = segment.blend.fractions
             compartments = try compartments.map { (compartment: Tissue.Compartment) throws(DiveKit.Error) in
                 try compartment.loaded(for: segment.duration.value, breathing: fractions, from: start, to: end, using: .schreiner, callSite)
@@ -278,7 +276,8 @@ extension BuhlmannCalculator: DecompressionCalculating {
         try tissues.table.ceiling(
             of: tissues.compartments,
             gradientFactor: settings.gradientFactors.low,
-            configuration: configuration)
+            configuration: configuration,
+            .from(self))
     }
 
     /// Calculates how long the tissues can stay at a depth and still ascend directly to the surface.
@@ -315,7 +314,8 @@ extension BuhlmannCalculator: DecompressionCalculating {
                     breathing: blend,
                     gradientFactor: settings.gradientFactors.high,
                     waterVapor: settings.waterVapor,
-                    configuration: configuration),
+                    configuration: configuration,
+                    .from(self)),
                 configuration: configuration)
         }
 
@@ -347,7 +347,9 @@ extension BuhlmannCalculator: DecompressionCalculating {
     ///   - gases: Gases to switch to during the ascent.
     /// - Returns: A calculation containing the schedule, which is empty if
     ///   `depth` is `0`.
-    /// - Throws: The errors of
+    /// - Throws: `Error.negative` if ``Settings/switchPartialPressure`` is
+    ///   negative, or `Error.range` if it is not finite or is zero, even when
+    ///   `gases` is empty. Throws the errors of
     ///   ``GasCalculator/maximumOperatingDepth(for:in:)`` for each gas, such as
     ///   `Error.range` if a gas has no oxygen. Throws `Error.negative` if a gas's
     ///   oxygen fraction is above ``Settings/switchPartialPressure``, since its
@@ -370,10 +372,15 @@ extension BuhlmannCalculator: DecompressionCalculating {
         from depth: Depth,
         breathing blend: Blend<Blended>,
         switchingTo gases: [Blend<Blended>]) throws(DiveKit.Error) -> Calculation<DecompressionSchedule> {
+            let callSite: CallSite = .from(self)
+            try settings.switchPartialPressure
+                .validate(using: .finite) { .range(.upperBound($0.value, .greatestFiniteMagnitude), callSite) }
+                .validate(using: .nonNegative) { .negative($0, callSite) }
+                .validate(using: .greater(than: .zero)) { .range(.lowerBound($0.value, .zero), callSite) }
             let gasCalculator = GasCalculator(configuration: configuration)
             var switches: [Depth: Blend<Blended>] = [:]
             for gas in gases {
-                let switchDepth = Depth(try gasCalculator.maximumOperatingDepth(for: settings.switchPartialPressure, in: gas).result.value)
+                let switchDepth = Depth(try gasCalculator.maximumOperatingDepth(for: settings.switchPartialPressure, in: gas, callSite).result.value)
                 if switches[switchDepth] == nil {
                     switches[switchDepth] = gas
                 }
@@ -386,6 +393,7 @@ extension BuhlmannCalculator: DecompressionCalculating {
                 gradientFactors: settings.gradientFactors,
                 ascent: settings.ascent,
                 waterVapor: settings.waterVapor,
-                configuration: configuration)
+                configuration: configuration,
+                callSite)
         }
 }

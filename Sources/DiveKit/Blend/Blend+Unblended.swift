@@ -40,7 +40,7 @@ public extension Blend where State == Unblended {
     ///
     /// - Since: 1.0.0
     mutating func add<Gas: GasRepresentable>(_ fractionalPressure: FractionalPressure<Gas>) throws(Error) {
-        try add(fractionalPressure.gas, pressure: fractionalPressure.value)
+        try set(fractionalPressure.gas, pressure: fractionalPressure.value, function: #function)
     }
 
     /// Updates the fractional pressure for a gas.
@@ -71,7 +71,7 @@ public extension Blend where State == Unblended {
     ///
     /// - Since: 1.0.0
     mutating func update<Gas: GasRepresentable>(_ fractionalPressure: FractionalPressure<Gas>) throws(Error) {
-        try update(fractionalPressure.gas, pressure: fractionalPressure.value)
+        try set(fractionalPressure.gas, pressure: fractionalPressure.value, function: #function)
     }
 
     /// Fills the remaining fractional pressure with the specified gas.
@@ -88,7 +88,7 @@ public extension Blend where State == Unblended {
     ///
     /// - Since: 1.0.0
     mutating func fill<Gas: GasRepresentable>(with gas: Gas) throws(Error) {
-        try add(.init(of: gas, fractionalPressure: 1 - totalPressure))
+        try set(gas, pressure: 1 - totalPressure, function: #function)
     }
 
     /// Returns a new blend by adding a gas.
@@ -107,7 +107,7 @@ public extension Blend where State == Unblended {
     @discardableResult
     func adding<Gas: GasRepresentable>(_ gas: Gas, pressure: Double) throws(Error) -> Self {
         var copy = self
-        try copy.add(gas, pressure: pressure)
+        try copy.set(gas, pressure: pressure, function: #function)
 
         return copy
     }
@@ -126,7 +126,10 @@ public extension Blend where State == Unblended {
     /// - Since: 1.0.0
     @discardableResult
     func adding<Gas: GasRepresentable>(_ fractionalPressure: FractionalPressure<Gas>) throws(Error) -> Self {
-        try adding(fractionalPressure.gas, pressure: fractionalPressure.value)
+        var copy = self
+        try copy.set(fractionalPressure.gas, pressure: fractionalPressure.value, function: #function)
+
+        return copy
     }
 
     /// Returns a new blend by updating a gas.
@@ -145,7 +148,7 @@ public extension Blend where State == Unblended {
     @discardableResult
     func updating<Gas: GasRepresentable>(_ gas: Gas, pressure: Double) throws(Error) -> Self {
         var copy = self
-        try copy.update(gas, pressure: pressure)
+        try copy.set(gas, pressure: pressure, function: #function)
 
         return copy
     }
@@ -164,7 +167,10 @@ public extension Blend where State == Unblended {
     /// - Since: 1.0.0
     @discardableResult
     func updating<Gas: GasRepresentable>(_ fractionalPressure: FractionalPressure<Gas>) throws(Error) -> Self {
-        try updating(fractionalPressure.gas, pressure: fractionalPressure.value)
+        var copy = self
+        try copy.set(fractionalPressure.gas, pressure: fractionalPressure.value, function: #function)
+
+        return copy
     }
 
     /// Returns a new blend by filling the remaining capacity with a gas.
@@ -182,7 +188,7 @@ public extension Blend where State == Unblended {
     @discardableResult
     func filling<Gas: GasRepresentable>(with gas: Gas) throws(Error) -> Self {
         var copy = self
-        try copy.fill(with: gas)
+        try copy.set(gas, pressure: 1 - totalPressure, function: #function)
 
         return copy
     }

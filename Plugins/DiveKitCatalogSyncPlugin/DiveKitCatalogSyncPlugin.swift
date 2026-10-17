@@ -7,8 +7,7 @@ struct DiveKitCatalogSyncPlugin: CommandPlugin {
         try runCatalogSync(
             toolURL: context.tool(named: "catalog-sync").url,
             workingDirectoryURL: context.package.directoryURL,
-            arguments: arguments
-        )
+            arguments: arguments)
     }
 }
 
@@ -20,8 +19,7 @@ extension DiveKitCatalogSyncPlugin: XcodeCommandPlugin {
         try runCatalogSync(
             toolURL: context.tool(named: "catalog-sync").url,
             workingDirectoryURL: context.xcodeProject.directoryURL,
-            arguments: normalizedXcodeArguments(arguments)
-        )
+            arguments: normalizedXcodeArguments(arguments))
     }
 }
 #endif
@@ -30,19 +28,19 @@ private func runCatalogSync(
     toolURL: URL,
     workingDirectoryURL: URL,
     arguments: [String]) throws {
-    let process = Process()
-    process.currentDirectoryURL = workingDirectoryURL
-    process.executableURL = toolURL
-    process.arguments = arguments
+        let process = Process()
+        process.currentDirectoryURL = workingDirectoryURL
+        process.executableURL = toolURL
+        process.arguments = arguments
 
-    try process.run()
-    process.waitUntilExit()
+        try process.run()
+        process.waitUntilExit()
 
-    guard process.terminationReason == .exit,
-          process.terminationStatus == EXIT_SUCCESS else {
-        throw CatalogSyncPluginError.toolFailed(process.terminationStatus)
+        guard process.terminationReason == .exit,
+              process.terminationStatus == EXIT_SUCCESS else {
+            throw CatalogSyncPluginError.toolFailed(process.terminationStatus)
+        }
     }
-}
 
 private func normalizedXcodeArguments(_ arguments: [String]) -> [String] {
     var normalizedArguments: [String] = []
