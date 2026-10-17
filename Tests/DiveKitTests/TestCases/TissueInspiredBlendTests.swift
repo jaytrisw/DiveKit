@@ -4,11 +4,11 @@ import Testing
 @Suite("Tissue inspired pressure from a blend", .tags(.technicalDiving, .blend))
 struct TissueInspiredBlendTests {
     @Test
-    func defaultWaterVapourIsBuhlmannsInAtmospheres() async {
+    func defaultWaterVaporIsBuhlmannsInAtmospheres() async {
         await given {
-            Tissue.alveolarWaterVapour
-        } when: { waterVapour in
-            waterVapour.value * 1.01325
+            Tissue.alveolarWaterVapor
+        } when: { waterVapor in
+            waterVapor.value * 1.01325
         } then: { _, bar in
             #expect(bar.isApproximately(0.0627))
         }
@@ -19,7 +19,7 @@ struct TissueInspiredBlendTests {
         (units: Units.metric, depth: 30.0),
         (units: Units.imperial, depth: 99.0)
     ])
-    func inspiredPressureIsAmbientLessWaterVapourTimesFraction(units: Units, depth: Double) async throws {
+    func inspiredPressureIsAmbientLessWaterVaporTimesFraction(units: Units, depth: Double) async throws {
         try await given {
             Configuration(units: units, water: .salt)
         } when: { configuration in
@@ -28,7 +28,7 @@ struct TissueInspiredBlendTests {
                 of: .nitrogen,
                 breathing: .air,
                 at: .init(depth),
-                waterVapour: .init(0),
+                waterVapor: .init(0),
                 configuration: configuration))
         } then: { _, inspired in
             #expect(inspired.nitrogen.start.value.isApproximately((4 - 0.0627 / 1.01325) * 0.79))
@@ -47,7 +47,7 @@ struct TissueInspiredBlendTests {
                 breathing: try .trimix(oxygen: 0.18, helium: 0.45),
                 from: .init(0),
                 to: .init(60),
-                waterVapour: .init(0.1),
+                waterVapor: .init(0.1),
                 configuration: configuration)
         } then: { _, inspired in
             #expect(inspired.start.value.isApproximately(0.9 * 0.45))
@@ -68,31 +68,31 @@ struct TissueInspiredBlendTests {
     }
 
     @Test
-    func waterVapourAboveAmbientClampsToZero() async throws {
+    func waterVaporAboveAmbientClampsToZero() async throws {
         try await given {
             Configuration(units: .metric, water: .salt)
         } when: { configuration in
-            try Tissue.Inspired(of: .nitrogen, breathing: .air, at: .init(0), waterVapour: .init(2), configuration: configuration)
+            try Tissue.Inspired(of: .nitrogen, breathing: .air, at: .init(0), waterVapor: .init(2), configuration: configuration)
         } then: { _, inspired in
             #expect(inspired.start.value == 0)
         }
     }
 
     @Test(arguments: [
-        (depth: -1.0, waterVapour: 0.06, expected: Error.negative(.depth(.init(-1)), Self.callSite), key: "dive.kit.error.negative.depth"),
+        (depth: -1.0, waterVapor: 0.06, expected: Error.negative(.depth(.init(-1)), Self.callSite), key: "dive.kit.error.negative.depth"),
         (
             depth: .infinity,
-            waterVapour: 0.06,
+            waterVapor: 0.06,
             expected: Error.range(.upperBound(.infinity, .greatestFiniteMagnitude), Self.callSite),
             key: "dive.kit.error.range.upper.bound"),
-        (depth: 30, waterVapour: -0.06, expected: Error.negative(.pressure(.init(-0.06)), Self.callSite), key: "dive.kit.error.negative.pressure"),
+        (depth: 30, waterVapor: -0.06, expected: Error.negative(.pressure(.init(-0.06)), Self.callSite), key: "dive.kit.error.negative.pressure"),
         (
             depth: 30,
-            waterVapour: .infinity,
+            waterVapor: .infinity,
             expected: Error.range(.upperBound(.infinity, .greatestFiniteMagnitude), Self.callSite),
             key: "dive.kit.error.range.upper.bound")
     ])
-    func rejectsInvalidDepthAndWaterVapour(depth: Double, waterVapour: Double, expected: Error, key: String) async throws {
+    func rejectsInvalidDepthAndWaterVapor(depth: Double, waterVapor: Double, expected: Error, key: String) async throws {
         try await given {
             Configuration(units: .metric, water: .salt)
         } when: { configuration in
@@ -101,10 +101,26 @@ struct TissueInspiredBlendTests {
                     of: .nitrogen,
                     breathing: .air,
                     at: .init(depth),
-                    waterVapour: .init(waterVapour),
+                    waterVapor: .init(waterVapor),
                     configuration: configuration),
                 then: expected) { error in
                 #expect(error.localizationValue == .init(key))
+            }
+        }
+    }
+
+    @Test
+    func rejectsNonFiniteAmbientPressure() async throws {
+        // A custom water with zero depth per atmosphere makes the ambient pressure infinite.
+        try await given {
+            Configuration(
+                units: .metric,
+                water: Water(weight: Water.salt.weight, pressure: { .init(increase: .init(0, units: $0)) }))
+        } when: { configuration in
+            try expectThrowsError(
+                when: try Tissue.Inspired(of: .nitrogen, breathing: .air, at: .init(30), configuration: configuration),
+                then: .range(.upperBound(.infinity, .greatestFiniteMagnitude), Self.callSite)) { error in
+                #expect(error.localizationValue == "dive.kit.error.range.upper.bound")
             }
         }
     }
@@ -121,7 +137,7 @@ struct TissueInspiredBlendTests {
                     from: .init(30),
                     to: .init(-1),
                     configuration: configuration),
-                then: .negative(.depth(.init(-1)), "Inspired<Nitrogen>.init(of:breathing:from:to:waterVapour:configuration:)")) { error in
+                then: .negative(.depth(.init(-1)), "Inspired<Nitrogen>.init(of:breathing:from:to:waterVapor:configuration:)")) { error in
                 #expect(error.localizationValue == "dive.kit.error.negative.depth")
             }
         }
@@ -129,5 +145,5 @@ struct TissueInspiredBlendTests {
 }
 
 private extension TissueInspiredBlendTests {
-    static let callSite: CallSite = "Inspired<Nitrogen>.init(of:breathing:at:waterVapour:configuration:)"
+    static let callSite: CallSite = "Inspired<Nitrogen>.init(of:breathing:at:waterVapor:configuration:)"
 }

@@ -152,6 +152,39 @@ struct BuhlmannNoDecompressionLimitTests {
     }
 
     @Test
+    func withoutWaterVaporLimitIsShorter() async throws {
+        try await given {
+            try Buhlmann.Table.zhl16c.compartments(nitrogen: .init(0.74))
+        } when: { compartments in
+            try Buhlmann.Table.zhl16c.noDecompressionLimit(
+                of: compartments,
+                at: .init(30),
+                breathing: .air,
+                waterVapor: .init(0),
+                configuration: Self.configuration)
+        } then: { _, limit in
+            #expect(limit == .minutes(.init(15)))
+        }
+    }
+
+    @Test
+    func loadingModelIsUsed() async throws {
+        // Every compartment reaches the inspired pressure at once, so a ceiling forms in the first minute.
+        try await given {
+            try Buhlmann.Table.zhl16c.compartments(nitrogen: .init(0.74))
+        } when: { compartments in
+            try Buhlmann.Table.zhl16c.noDecompressionLimit(
+                of: compartments,
+                at: .init(30),
+                breathing: .air,
+                configuration: Self.configuration,
+                using: Tissue.Loading { _, inspired, _, _ in inspired.to })
+        } then: { _, limit in
+            #expect(limit == .minutes(.init(0)))
+        }
+    }
+
+    @Test
     func limitDoesNotDependOnCompartmentOrder() async throws {
         try await given {
             try Buhlmann.Table.zhl16c.compartments(nitrogen: .init(0.74))
@@ -188,7 +221,7 @@ struct BuhlmannNoDecompressionLimitTests {
                     configuration: Self.configuration),
                 then: .gas(
                     .unmodeled(Helium.helium),
-                    "Table.noDecompressionLimit(of:at:breathing:gradientFactor:waterVapour:configuration:using:)")) { error in
+                    "Table.noDecompressionLimit(of:at:breathing:gradientFactor:waterVapor:configuration:using:)")) { error in
                 #expect(error.localizationValue == "dive.kit.error.gas.unmodeled")
             }
         }
@@ -210,8 +243,28 @@ struct BuhlmannNoDecompressionLimitTests {
                     configuration: Self.configuration),
                 then: .range(
                     .upperBound(.infinity, .greatestFiniteMagnitude),
-                    "Table.noDecompressionLimit(of:at:breathing:gradientFactor:waterVapour:configuration:using:)")) { error in
+                    "Table.noDecompressionLimit(of:at:breathing:gradientFactor:waterVapor:configuration:using:)")) { error in
                 #expect(error.localizationValue == "dive.kit.error.range.upper.bound")
+            }
+        }
+    }
+
+    @Test
+    func rejectsNegativeModelResult() async throws {
+        try await given {
+            try Buhlmann.Table.zhl16c.compartments(nitrogen: .init(0.74))
+        } when: { compartments in
+            try expectThrowsError(
+                when: try Buhlmann.Table.zhl16c.noDecompressionLimit(
+                    of: compartments,
+                    at: .init(30),
+                    breathing: .air,
+                    configuration: Self.configuration,
+                    using: Tissue.Loading { _, _, _, _ in -1 }),
+                then: .negative(
+                    .partialPressure(-1),
+                    "Table.noDecompressionLimit(of:at:breathing:gradientFactor:waterVapor:configuration:using:)")) { error in
+                #expect(error.localizationValue == "dive.kit.error.negative.partial.pressure")
             }
         }
     }
@@ -229,7 +282,7 @@ struct BuhlmannNoDecompressionLimitTests {
                     configuration: Self.configuration),
                 then: .negative(
                     .depth(.init(-1)),
-                    "Table.noDecompressionLimit(of:at:breathing:gradientFactor:waterVapour:configuration:using:)")) { error in
+                    "Table.noDecompressionLimit(of:at:breathing:gradientFactor:waterVapor:configuration:using:)")) { error in
                 #expect(error.localizationValue == "dive.kit.error.negative.depth")
             }
         }

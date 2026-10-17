@@ -93,7 +93,7 @@ extension Buhlmann.Table {
         gradientFactor: Buhlmann.GradientFactor,
         _ callSite: CallSite) throws(Error) -> Pressure {
             try Self.toleratedAmbientPressure(
-                of: try limits(of: compartment, callSite).map { (limit: $0.limit, tension: $0.entry.tension) },
+                of: try matchedGases(of: compartment, callSite).map { (limit: $0.limit, tension: $0.entry.tension) },
                 gradientFactor: gradientFactor,
                 callSite)
         }
@@ -101,7 +101,7 @@ extension Buhlmann.Table {
     /// Returns each tracked gas with its entry and the coefficients of the one row covering them all.
     ///
     /// The match depends only on gases and half-times, so it can be reused while tensions change.
-    func limits(
+    func matchedGases(
         of compartment: Tissue.Compartment,
         _ callSite: CallSite) throws(Error) -> [MatchedGas] {
             let tracked = compartment.storage

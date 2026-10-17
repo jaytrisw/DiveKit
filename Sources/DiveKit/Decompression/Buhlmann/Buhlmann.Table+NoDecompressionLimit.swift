@@ -15,9 +15,13 @@ public extension Buhlmann.Table {
     /// checked every second. A ceiling that forms and clears between checks is
     /// not detected.
     /// Inspired pressures are calculated as for
-    /// ``Tissue/Inspired/init(of:breathing:at:waterVapour:configuration:)``.
-    /// Inert gases in `blend` that a compartment does not track, such as air's
-    /// trace gases, are ignored. Ascent time is not included.
+    /// ``Tissue/Inspired/init(of:breathing:at:waterVapor:configuration:)``.
+    /// Inert gases in `blend` that a compartment does not track are ignored
+    /// without being reported, unlike
+    /// ``Tissue/Compartment/loaded(for:inspired:using:)``. That covers air's
+    /// trace gases, but also helium for a nitrogen-only compartment breathing
+    /// trimix: the compartment takes up none of that gas, so its limit is longer.
+    /// Ascent time is not included.
     ///
     /// - Parameters:
     ///   - compartments: The compartments at the start of the segment, in any order.
@@ -25,16 +29,16 @@ public extension Buhlmann.Table {
     ///   - blend: The breathing gas.
     ///   - gradientFactor: The gradient factor. Defaults to
     ///     ``Buhlmann/GradientFactor/full``.
-    ///   - waterVapour: The alveolar water vapour pressure in atmospheres.
-    ///     Defaults to ``Tissue/alveolarWaterVapour``.
+    ///   - waterVapor: The alveolar water vapor pressure in atmospheres.
+    ///     Defaults to ``Tissue/alveolarWaterVapor``.
     ///   - configuration: The units and water used to convert depth to pressure.
     ///   - model: The loading equation. Defaults to ``Tissue/Loading/schreiner``.
     /// - Returns: The limit in whole minutes, rounded down; `.unlimited` if no
     ///   ceiling forms within 999 minutes; or `.exceeded` if a compartment
     ///   already has a ceiling below the surface.
-    /// - Throws: `Error.negative` if `depth` or `waterVapour` is negative, or
-    ///   `Error.range` if either is not finite or a tolerated pressure is not
-    ///   finite. Also throws `Error.gas` if no single row covers every gas a
+    /// - Throws: `Error.negative` if `depth` or `waterVapor` is negative, or
+    ///   `Error.range` if either, the ambient pressure at `depth`, or a tolerated
+    ///   pressure is not finite. Also throws `Error.gas` if no single row covers every gas a
     ///   compartment tracks, as for
     ///   ``toleratedAmbientPressure(of:gradientFactor:)``, and the errors of
     ///   ``Tissue/Compartment/loaded(for:inspired:using:)`` if `model` returns an
@@ -58,13 +62,13 @@ public extension Buhlmann.Table {
         at depth: Depth,
         breathing blend: Blend<Blended>,
         gradientFactor: Buhlmann.GradientFactor = .full,
-        waterVapour: Pressure = Tissue.alveolarWaterVapour,
+        waterVapor: Pressure = Tissue.alveolarWaterVapor,
         configuration: Configuration,
         using model: Tissue.Loading = .schreiner) throws(Error) -> Buhlmann.NoDecompressionLimit {
             let callSite: CallSite = .from(Self.self)
             let breathed = try Tissue.breathedPressure(
                 at: depth,
-                waterVapour: waterVapour,
+                waterVapor: waterVapor,
                 configuration: configuration,
                 callSite)
             let fractions = Dictionary(blend.components().map { (AnyGas($0), blend.fractionalPressure(of: $0)) }) { $1 }
@@ -72,7 +76,7 @@ public extension Buhlmann.Table {
             // Matching a compartment to its row is the costly part and doesn't depend on
             // tension, so match every compartment once.
             let matched = try compartments.map { (compartment: Tissue.Compartment) throws(Error) in
-                try limits(of: compartment, callSite).map { matched in
+                try matchedGases(of: compartment, callSite).map { matched in
                     (matched: matched, inspired: breathed * (fractions[matched.gas] ?? .zero))
                 }
             }
