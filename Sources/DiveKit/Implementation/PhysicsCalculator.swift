@@ -36,7 +36,9 @@ extension PhysicsCalculator: PhysicsCalculating {
     ///
     /// - Parameter depth: The depth at which to calculate gauge pressure.
     /// - Returns: A calculation containing the gauge pressure.
-    /// - Throws: `Error.negative` if `depth` is negative.
+    /// - Throws: `Error.negative` if `depth` is negative,
+    ///   or `Error.range` if the water model's pressure increase is not
+    ///   finite or not greater than zero.
     ///
     /// ```swift
     /// let pressure = try calculator.gaugePressure(at: 30)
@@ -57,7 +59,9 @@ extension PhysicsCalculator: PhysicsCalculating {
     ///   - depth: The target depth.
     ///   - volume: The volume at the surface.
     /// - Returns: A calculation containing the compressed volume at depth.
-    /// - Throws: `Error.negative` if `volume` or `depth` is negative.
+    /// - Throws: `Error.negative` if `volume` or `depth` is negative,
+    ///   or `Error.range` if the water model's pressure increase is not
+    ///   finite or not greater than zero.
     ///
     /// ```swift
     /// let volumeAtDepth = try calculator.airVolumeFromSurface(
@@ -88,7 +92,9 @@ extension PhysicsCalculator: PhysicsCalculating {
     ///   - depth: The starting depth.
     ///   - volume: The volume at depth.
     /// - Returns: A calculation containing the expanded surface volume.
-    /// - Throws: `Error.negative` if `volume` or `depth` is negative.
+    /// - Throws: `Error.negative` if `volume` or `depth` is negative,
+    ///   or `Error.range` if the water model's pressure increase is not
+    ///   finite or not greater than zero.
     ///
     /// ```swift
     /// let surfaceVolume = try calculator.airVolumeToSurface(
@@ -118,7 +124,9 @@ extension PhysicsCalculator: PhysicsCalculating {
     ///
     /// - Parameter depth: The depth at which to calculate pressure.
     /// - Returns: A calculation containing the absolute pressure.
-    /// - Throws: `Error.negative` if `depth` is negative.
+    /// - Throws: `Error.negative` if `depth` is negative,
+    ///   or `Error.range` if the water model's pressure increase is not
+    ///   finite or not greater than zero.
     ///
     /// ```swift
     /// let pressure = try calculator.atmospheresAbsolute(at: 30)
@@ -137,7 +145,9 @@ extension PhysicsCalculator: PhysicsCalculating {
     ///   - firstDepth: The starting depth.
     ///   - secondDepth: The ending depth.
     /// - Returns: A calculation containing the pressure difference.
-    /// - Throws: `Error.negative` if either depth is negative.
+    /// - Throws: `Error.negative` if either depth is negative,
+    ///   or `Error.range` if the water model's pressure increase is not
+    ///   finite or not greater than zero.
     ///
     /// ```swift
     /// let delta = try calculator.pressureChange(
