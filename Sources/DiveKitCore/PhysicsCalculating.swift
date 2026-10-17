@@ -11,7 +11,9 @@ public protocol PhysicsCalculating {
     ///
     /// - Parameter depth: The depth at which to calculate gauge pressure.
     /// - Returns: A calculation containing gauge pressure.
-    /// - Throws: ``Error/negative(_:_:)`` if `depth` is negative.
+    /// - Throws: ``Error/negative(_:_:)`` if `depth` is negative, or
+    ///   ``Error/range(_:_:)`` if `depth` or the result is not finite, or if
+    ///   the water model's pressure increase is not finite or not greater than zero.
     /// - Since: 1.0.0
     func gaugePressure(
         at depth: Depth) throws(Error) -> Calculation<DecimalResult<Pressure>>
@@ -22,7 +24,9 @@ public protocol PhysicsCalculating {
     ///   - depth: The target depth.
     ///   - volume: The volume at the surface.
     /// - Returns: A calculation containing volume at depth.
-    /// - Throws: ``Error/negative(_:_:)`` if `depth` or `volume` is negative.
+    /// - Throws: ``Error/negative(_:_:)`` if `depth` or `volume` is negative,
+    ///   or ``Error/range(_:_:)`` if `depth`, `volume`, or the result is not
+    ///   finite, or if the water model's pressure increase is not finite or not greater than zero.
     /// - Since: 1.0.0
     func airVolumeFromSurface(
         to depth: Depth,
@@ -34,7 +38,9 @@ public protocol PhysicsCalculating {
     ///   - depth: The starting depth.
     ///   - volume: The volume at depth.
     /// - Returns: A calculation containing surface-equivalent volume.
-    /// - Throws: ``Error/negative(_:_:)`` if `depth` or `volume` is negative.
+    /// - Throws: ``Error/negative(_:_:)`` if `depth` or `volume` is negative,
+    ///   or ``Error/range(_:_:)`` if `depth`, `volume`, or the result is not
+    ///   finite, or if the water model's pressure increase is not finite or not greater than zero.
     /// - Since: 1.0.0
     func airVolumeToSurface(
         from depth: Depth,
@@ -44,7 +50,9 @@ public protocol PhysicsCalculating {
     ///
     /// - Parameter depth: The depth at which to calculate absolute pressure.
     /// - Returns: A calculation containing absolute pressure in atmospheres.
-    /// - Throws: ``Error/negative(_:_:)`` if `depth` is negative.
+    /// - Throws: ``Error/negative(_:_:)`` if `depth` is negative, or
+    ///   ``Error/range(_:_:)`` if `depth` or the result is not finite, or if
+    ///   the water model's pressure increase is not finite or not greater than zero.
     /// - Since: 1.0.0
     func atmospheresAbsolute(
         at depth: Depth) throws(Error) -> Calculation<DecimalResult<Pressure>>
@@ -55,7 +63,9 @@ public protocol PhysicsCalculating {
     ///   - firstDepth: The starting depth.
     ///   - secondDepth: The ending depth.
     /// - Returns: A calculation containing the pressure difference.
-    /// - Throws: ``Error/negative(_:_:)`` if either depth is negative.
+    /// - Throws: ``Error/negative(_:_:)`` if either depth is negative, or
+    ///   ``Error/range(_:_:)`` if either depth or either absolute pressure is
+    ///   not finite, or if the water model's pressure increase is not finite or not greater than zero.
     /// - Since: 1.0.0
     func pressureChange(
         from firstDepth: Depth,

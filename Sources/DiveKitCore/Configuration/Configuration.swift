@@ -5,6 +5,12 @@ import Foundation
 /// `Configuration` determines how domain values are interpreted and which
 /// water density and pressure model a calculator uses.
 ///
+/// - Important: Surface pressure is fixed at one atmosphere, as at sea level.
+///   No configuration models altitude. At altitude, maximum operating depth,
+///   equivalent air and narcotic depth, best mix, gas consumption,
+///   no-decompression limits, and ceilings are all wrong in the unsafe
+///   direction.
+///
 /// - Since: 1.0.0
 public struct Configuration: Sendable {
     /// The unit system used for calculation results.

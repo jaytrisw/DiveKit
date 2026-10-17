@@ -10,6 +10,14 @@ import DiveKitInternal
 ///
 /// All calculations are performed using the provided configuration.
 ///
+/// - Important: Surface pressure is fixed at one atmosphere, as at sea level.
+///   DiveKit does not model altitude. At altitude, results that depend on
+///   ambient pressure are wrong in the unsafe direction.
+///
+/// - Warning: These calculations have not been validated for planning real
+///   dives. Check them against published tables, a dive computer, or your
+///   training before relying on them.
+///
 /// - Since: 1.0.0
 final public class GasCalculator: ConfigurationProviding {
 
@@ -40,7 +48,9 @@ extension GasCalculator: GasCalculating {
     ///   - depth: The depth at which the calculation is performed.
     ///   - physicsCalculator: A calculator used to determine absolute pressure.
     /// - Returns: A calculation containing the partial pressure.
-    /// - Throws: A `Error` from the underlying absolute-pressure calculation.
+    /// - Throws: `Error.negative` if `depth` is negative, or `Error.range` if
+    ///   `depth` or the absolute pressure is not finite, or if the water
+    ///   model's pressure increase is not finite or not greater than zero.
     ///
     /// ```swift
     /// let oxygen = try FractionalPressure(of: Oxygen(), fractionalPressure: 0.32)
@@ -213,8 +223,9 @@ extension GasCalculator: GasCalculating {
     ///   - depth: The depth.
     ///   - physicsCalculator: A physics calculator.
     /// - Returns: A calculation containing the partial pressure.
-    /// - Throws: A `Error` if the blend cannot produce a valid
-    ///   fractional pressure for `gas`, or if the absolute-pressure calculation fails.
+    /// - Throws: `Error.negative` if `depth` is negative, or `Error.range` if
+    ///   `depth` or the absolute pressure is not finite, or if the water
+    ///   model's pressure increase is not finite or not greater than zero.
     ///
     /// ```swift
     /// let pp = try calculator.partialPressure(
@@ -248,9 +259,11 @@ extension GasCalculator: GasCalculating {
     ///   - endGas: Ending pressure.
     ///   - physicsCalculator: A physics calculator.
     /// - Returns: A calculation containing the SAC rate.
-    /// - Throws: `Error.negative` if `startGas` or `endGas` is negative,
-    ///   `Error.range` if `startGas` or `endGas` is not finite, or a `Error`
-    ///   from surface air consumption validation.
+    /// - Throws: `Error.negative` if `depth`, `minutes`, `startGas`, `endGas`,
+    ///   or the consumed pressure is negative, or `Error.range` if `minutes` is
+    ///   zero, if `depth`, `minutes`, `startGas`, `endGas`, or the result is
+    ///   not finite, or if the water model's pressure increase is not finite or
+    ///   not greater than zero.
     ///
     /// ```swift
     /// let sac = try calculator.surfaceAirConsumption(
@@ -302,9 +315,11 @@ extension GasCalculator: GasCalculating {
     ///   - physicsCalculator: A physics calculator.
     /// - Returns: A calculation containing the RMV.
     /// - Throws: `Error.tank` if the tank volume is negative or its rated
-    ///   pressure is not positive, `Error.range` if the tank volume, its rated
-    ///   pressure, or the result is not finite, or a `Error` from surface air
-    ///   consumption validation.
+    ///   pressure is not positive, `Error.negative` if `depth`, `minutes`, or
+    ///   `gasConsumed` is negative, or `Error.range` if `minutes` is zero, if
+    ///   `depth`, `minutes`, `gasConsumed`, the tank volume, its rated
+    ///   pressure, or the result is not finite, or if the water model's
+    ///   pressure increase is not finite or not greater than zero.
     ///
     /// ```swift
     /// let rmv = try calculator.respiratoryMinuteVolume(
@@ -315,6 +330,10 @@ extension GasCalculator: GasCalculating {
     ///     using: physicsCalculator)
     /// ```
     ///
+    /// - Note: Gas is treated as ideal: the volume consumed is the pressure
+    ///   drop multiplied by the tank's water capacity, with no compressibility
+    ///   factor. Near a 200–300 bar fill this overstates the gas in the tank,
+    ///   and so the RMV, by several percent.
     /// - Since: 1.0.0
     public func respiratoryMinuteVolume(
         at depth: Depth,

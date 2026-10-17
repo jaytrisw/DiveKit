@@ -11,7 +11,10 @@ public protocol BuoyancyCalculating {
     ///
     /// - Parameter object: The object to evaluate.
     /// - Returns: A calculation containing the object's buoyancy.
-    /// - Throws: ``Error/negative(_:_:)`` if the object's weight or volume is negative.
+    /// - Throws: ``Error/negative(_:_:)`` if the object's weight or volume is
+    ///   negative, or ``Error/range(_:_:)`` if the object's weight or volume,
+    ///   the water model's weight, or the displaced water's weight is not
+    ///   finite, or if the water model's weight is not greater than zero.
     /// - Since: 1.0.0
     func buoyancy(
         of object: Object) throws(Error) -> Calculation<Buoyancy>
@@ -22,7 +25,9 @@ public protocol BuoyancyCalculating {
     ///   - weight: The object's weight.
     ///   - volume: The object's displaced volume.
     /// - Returns: A calculation containing the resulting buoyancy.
-    /// - Throws: ``Error/negative(_:_:)`` if `weight` or `volume` is negative.
+    /// - Throws: ``Error/negative(_:_:)`` if `weight` or `volume` is negative,
+    ///   or ``Error/range(_:_:)`` if `weight`, `volume`, the water model's
+    ///   weight, or the displaced water's weight is not finite, or if the water model's weight is not greater than zero.
     /// - Since: 1.0.0
     func buoyancyOfObject(
         weighing weight: Mass,
@@ -34,7 +39,11 @@ public protocol BuoyancyCalculating {
     ///   - weight: The object's weight.
     ///   - buoyancy: The object's buoyancy.
     /// - Returns: A calculation containing the resulting volume.
-    /// - Throws: ``Error/negative(_:_:)`` if `weight` is negative.
+    /// - Throws: ``Error/negative(_:_:)`` if `weight` or the resulting volume
+    ///   is negative, or ``Error/range(_:_:)`` if `weight`, `buoyancy`, the
+    ///   water model's weight, or the result is not finite, or if a
+    ///   non-neutral `buoyancy` magnitude or the water model's weight is not
+    ///   greater than zero.
     /// - Since: 1.0.0
     func volumeOfObject(
         weighing weight: Mass,

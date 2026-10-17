@@ -8,6 +8,10 @@ import DiveKitInternal
 /// buoyancy from object properties, and solving for related values such as volume.
 /// All calculations are performed using the provided configuration.
 ///
+/// - Warning: These calculations have not been validated for planning real
+///   dives. Check them against published tables, a dive computer, or your
+///   training before relying on them.
+///
 /// - Since: 1.0.0
 public final class BuoyancyCalculator: ConfigurationProviding {
 

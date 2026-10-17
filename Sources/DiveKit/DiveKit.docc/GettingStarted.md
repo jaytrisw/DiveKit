@@ -43,7 +43,9 @@ Throwing DiveKit APIs throw `DiveKit.Error`.
 ```swift
 do {
     let pressure = try physicsCalculator.gaugePressure(at: -10)
-} catch let error as DiveKit.Error {
+    print(pressure.result.value)
+} catch {
+    // `error` is already a `DiveKit.Error`.
     print(error.localizedDescription)
 }
 ```

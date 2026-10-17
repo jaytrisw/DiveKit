@@ -9,6 +9,14 @@ import DiveKitInternal
 ///
 /// All calculations are performed using the provided configuration.
 ///
+/// - Important: Surface pressure is fixed at one atmosphere, as at sea level.
+///   DiveKit does not model altitude. At altitude, results that depend on
+///   ambient pressure are wrong in the unsafe direction.
+///
+/// - Warning: These calculations have not been validated for planning real
+///   dives. Check them against published tables, a dive computer, or your
+///   training before relying on them.
+///
 /// - Since: 1.0.0
 public class PhysicsCalculator: ConfigurationProviding {
 
@@ -37,8 +45,8 @@ extension PhysicsCalculator: PhysicsCalculating {
     /// - Parameter depth: The depth at which to calculate gauge pressure.
     /// - Returns: A calculation containing the gauge pressure.
     /// - Throws: `Error.negative` if `depth` is negative,
-    ///   or `Error.range` if the water model's pressure increase is not
-    ///   finite or not greater than zero.
+    ///   or `Error.range` if `depth` or the result is not finite, or if the
+    ///   water model's pressure increase is not finite or not greater than zero.
     ///
     /// ```swift
     /// let pressure = try calculator.gaugePressure(at: 30)
@@ -133,8 +141,8 @@ extension PhysicsCalculator: PhysicsCalculating {
     /// - Parameter depth: The depth at which to calculate pressure.
     /// - Returns: A calculation containing the absolute pressure.
     /// - Throws: `Error.negative` if `depth` is negative,
-    ///   or `Error.range` if the water model's pressure increase is not
-    ///   finite or not greater than zero.
+    ///   or `Error.range` if `depth` or the result is not finite, or if the
+    ///   water model's pressure increase is not finite or not greater than zero.
     ///
     /// ```swift
     /// let pressure = try calculator.atmospheresAbsolute(at: 30)
@@ -154,8 +162,9 @@ extension PhysicsCalculator: PhysicsCalculating {
     ///   - secondDepth: The ending depth.
     /// - Returns: A calculation containing the pressure difference.
     /// - Throws: `Error.negative` if either depth is negative,
-    ///   or `Error.range` if the water model's pressure increase is not
-    ///   finite or not greater than zero.
+    ///   or `Error.range` if either depth or either absolute pressure is not
+    ///   finite, or if the water model's pressure increase is not finite or
+    ///   not greater than zero.
     ///
     /// ```swift
     /// let delta = try calculator.pressureChange(

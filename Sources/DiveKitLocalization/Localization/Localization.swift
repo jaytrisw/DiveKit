@@ -24,7 +24,7 @@ public final class Localization: Sendable {
     /// resolver for the current task hierarchy. Outside a scoped override, it
     /// returns the shared default resolver.
     ///
-    /// Use ``set(_:)`` to replace the shared default resolver.
+    /// Use ``set(_:)-(LocalizationResolver)`` to replace the shared default resolver.
     ///
     /// - Since: 1.0.0
     public var resolver: LocalizationResolver {

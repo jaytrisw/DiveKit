@@ -49,6 +49,13 @@ package extension NarcoticPotency {
 ///
 /// - Since: 1.0.0
 extension NarcoticPotency: Equatable {
+    /// Returns whether two potencies have the same value relative to nitrogen.
+    ///
+    /// - Parameters:
+    ///   - lhs: The first potency.
+    ///   - rhs: The second potency.
+    /// - Returns: `true` when the values match, so `.relative(0)` equals `.none`.
+    /// - Since: 1.0.0
     public static func == (lhs: Self, rhs: Self) -> Bool {
         lhs.value == rhs.value
     }
@@ -58,6 +65,10 @@ extension NarcoticPotency: Equatable {
 ///
 /// - Since: 1.0.0
 extension NarcoticPotency: Hashable {
+    /// Hashes the potency's value relative to nitrogen.
+    ///
+    /// - Parameter hasher: The hasher to update.
+    /// - Since: 1.0.0
     public func hash(into hasher: inout Hasher) {
         hasher.combine(value)
     }

@@ -9,7 +9,8 @@ public extension Blend where State == Blended {
     ///
     /// - Parameter gas: The gas whose fractional pressure should be retrieved.
     /// - Returns: A ``FractionalPressure`` representing the gas's contribution to the blend.
-    /// - Throws: If the stored fractional pressure is negative or greater than `1`.
+    /// - Throws: `Error.negative` if the stored fractional pressure is
+    ///   negative, or `Error.range` if it is not finite or is greater than `1`.
     ///
     /// ```swift
     /// let oxygenFractionalPressure = try blend.fractionalPressure(of: .oxygen)

@@ -33,7 +33,7 @@ public extension Blend where State == Blended {
     /// - Parameter fraction: The fractional pressure of oxygen.
     /// - Returns: A ``Blend`` in the `Blended` state representing enriched air.
     /// - Throws: `Error.negative` if `fraction` is negative, or
-    ///   `Error.range` if `fraction` is greater than `1`.
+    ///   `Error.range` if `fraction` is not finite or is greater than `1`.
     ///
     /// ```swift
     /// let enrichedAir = try Blend.enrichedAir(0.32) // EAN32
