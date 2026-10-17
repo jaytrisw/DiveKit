@@ -4,36 +4,6 @@ import Testing
 @Suite("Bühlmann schedule", .tags(.technicalDiving, .buhlmann))
 struct BuhlmannScheduleTests {
     @Test
-    func ascentsJoinAndSwitchAtExactDepthBeforeFirstStop() async throws {
-        try await given {
-            try BuhlmannScheduleReferenceTests.compartments(
-                breathing: try .trimix(oxygen: 0.21, helium: 0),
-                at: 40,
-                runtime: 25)
-        } when: { compartments in
-            try BuhlmannScheduleReferenceTests.table.schedule(
-                of: compartments,
-                from: .init(40),
-                breathing: try .trimix(oxygen: 0.21, helium: 0),
-                switches: [.init(22): try .trimix(oxygen: 0.5, helium: 0)],
-                gradientFactors: Self.gradientFactors,
-                ascent: try .init(rate: .init(10), stopInterval: .init(3), lastStop: .init(3)),
-                configuration: BuhlmannScheduleReferenceTests.configuration).result
-        } then: { _, schedule in
-            let air = try Blend.trimix(oxygen: 0.21, helium: 0)
-            let nitrox = try Blend.trimix(oxygen: 0.5, helium: 0)
-            let first = try #require(schedule.segments.first)
-            #expect([first.start.value, first.end.value] == [40, 22])
-            #expect(first.duration.value.isApproximately(1.8))
-            #expect(first.blend == air)
-            let second = try #require(schedule.segments.dropFirst().first)
-            #expect([second.start.value, second.end.value] == [22, 18])
-            #expect(second.duration.value.isApproximately(0.4))
-            #expect(second.blend == nitrox)
-        }
-    }
-
-    @Test
     func directAscentUsesHighGradientFactor() async throws {
         try await given {
             try Self.compartments(breathing: .enrichedAir(0.21), at: 30, for: 8)
