@@ -64,6 +64,39 @@ struct BuhlmannNoDecompressionLimitTests {
     }
 
     @Test
+    func laterTransientCounterDiffusionCeilingEndsLimit() async throws {
+        // The compartment tolerates the surface at every whole minute through 4, but a
+        // ceiling forms and clears inside minute 4.
+        try await given {
+            [try Buhlmann.Table.zhl16c.compartments(nitrogen: .init(2.508))[0]]
+        } when: { compartments in
+            try Buhlmann.Table.zhl16c.noDecompressionLimit(
+                of: compartments,
+                at: .init(21.5),
+                breathing: try .trimix(oxygen: 0.2, helium: 0.8),
+                configuration: Self.configuration)
+        } then: { _, limit in
+            #expect(limit == .minutes(.init(3)))
+        }
+    }
+
+    @Test
+    func counterDiffusionWithoutCeilingIsUnlimited() async throws {
+        // Nitrogen off-gasses while helium on-gasses, but no ceiling ever forms.
+        try await given {
+            [try Buhlmann.Table.zhl16c.compartments(nitrogen: .init(0.74))[0]]
+        } when: { compartments in
+            try Buhlmann.Table.zhl16c.noDecompressionLimit(
+                of: compartments,
+                at: .init(3),
+                breathing: try .trimix(oxygen: 0.21, helium: 0.79),
+                configuration: Self.configuration)
+        } then: { _, limit in
+            #expect(limit == .unlimited)
+        }
+    }
+
+    @Test
     func shallowDepthIsUnlimited() async throws {
         try await given {
             try Buhlmann.Table.zhl16c.compartments(nitrogen: .init(0.74))
@@ -157,6 +190,28 @@ struct BuhlmannNoDecompressionLimitTests {
                     .unmodeled(Helium.helium),
                     "Table.noDecompressionLimit(of:at:breathing:gradientFactor:waterVapour:configuration:using:)")) { error in
                 #expect(error.localizationValue == "dive.kit.error.gas.unmodeled")
+            }
+        }
+    }
+
+    @Test
+    func rejectsOverflowingToleratedPressure() async throws {
+        // Each tension is finite, but their sum and the tolerated pressure are not.
+        try await given {
+            Tissue.Compartment(
+                try .init(of: .nitrogen, halfTime: .init(5), tension: .init(.greatestFiniteMagnitude)),
+                try .init(of: .helium, halfTime: .init(1.88), tension: .init(.greatestFiniteMagnitude)))
+        } when: { compartment in
+            try expectThrowsError(
+                when: try Buhlmann.Table.zhl16c.noDecompressionLimit(
+                    of: [compartment],
+                    at: .init(30),
+                    breathing: .air,
+                    configuration: Self.configuration),
+                then: .range(
+                    .upperBound(.infinity, .greatestFiniteMagnitude),
+                    "Table.noDecompressionLimit(of:at:breathing:gradientFactor:waterVapour:configuration:using:)")) { error in
+                #expect(error.localizationValue == "dive.kit.error.range.upper.bound")
             }
         }
     }

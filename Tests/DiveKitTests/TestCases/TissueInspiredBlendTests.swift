@@ -108,8 +108,26 @@ struct TissueInspiredBlendTests {
             }
         }
     }
+
+    @Test
+    func linearSegmentRejectsNegativeEndDepth() async throws {
+        try await given {
+            Configuration(units: .metric, water: .salt)
+        } when: { configuration in
+            try expectThrowsError(
+                when: try Tissue.Inspired(
+                    of: .nitrogen,
+                    breathing: .air,
+                    from: .init(30),
+                    to: .init(-1),
+                    configuration: configuration),
+                then: .negative(.depth(.init(-1)), "Inspired<Nitrogen>.init(of:breathing:from:to:waterVapour:configuration:)")) { error in
+                #expect(error.localizationValue == "dive.kit.error.negative.depth")
+            }
+        }
+    }
 }
 
 private extension TissueInspiredBlendTests {
-    static let callSite: CallSite = "Inspired<Nitrogen>.init(of:breathing:from:to:waterVapour:configuration:)"
+    static let callSite: CallSite = "Inspired<Nitrogen>.init(of:breathing:at:waterVapour:configuration:)"
 }

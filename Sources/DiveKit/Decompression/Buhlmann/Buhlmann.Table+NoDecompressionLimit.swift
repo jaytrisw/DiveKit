@@ -33,8 +33,9 @@ public extension Buhlmann.Table {
     ///   ceiling forms within 999 minutes; or `.exceeded` if a compartment
     ///   already has a ceiling below the surface.
     /// - Throws: `Error.negative` if `depth` or `waterVapour` is negative, or
-    ///   `Error.range` if either is not finite. Also throws `Error.gas` if no
-    ///   single row covers every gas a compartment tracks, as for
+    ///   `Error.range` if either is not finite or a tolerated pressure is not
+    ///   finite. Also throws `Error.gas` if no single row covers every gas a
+    ///   compartment tracks, as for
     ///   ``toleratedAmbientPressure(of:gradientFactor:)``, and the errors of
     ///   ``Tissue/Compartment/loaded(for:inspired:using:)`` if `model` returns an
     ///   invalid tension.

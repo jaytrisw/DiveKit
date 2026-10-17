@@ -56,7 +56,8 @@ public extension Tissue.Inspired {
                 from: depth,
                 to: depth,
                 waterVapour: waterVapour,
-                configuration: configuration)
+                configuration: configuration,
+                .from(Self.self))
         }
 
     /// Creates the inspired pressure of a gas breathed from a blend over a linear depth change.
@@ -92,7 +93,27 @@ public extension Tissue.Inspired {
         to end: Depth,
         waterVapour: Pressure = Tissue.alveolarWaterVapour,
         configuration: Configuration) throws(Error) {
-            let callSite: CallSite = .from(Self.self)
+            try self.init(
+                of: gas,
+                breathing: blend,
+                from: start,
+                to: end,
+                waterVapour: waterVapour,
+                configuration: configuration,
+                .from(Self.self))
+        }
+}
+
+extension Tissue.Inspired {
+    /// Creates the inspired pressure of a gas breathed from a blend, reporting errors at `callSite`.
+    init(
+        of gas: Gas,
+        breathing blend: Blend<Blended>,
+        from start: Depth,
+        to end: Depth,
+        waterVapour: Pressure,
+        configuration: Configuration,
+        _ callSite: CallSite) throws(Error) {
             let fraction = try blend.fractionalPressure(of: gas).value
             try self.init(
                 of: gas,
