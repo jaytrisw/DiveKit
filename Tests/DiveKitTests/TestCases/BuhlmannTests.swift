@@ -115,6 +115,21 @@ struct BuhlmannTests {
     }
 
     @Test
+    func maximalACoefficientsStayFiniteWhenWeighted() async throws {
+        // These tensions give weights that round to a sum above 1, so the weighted
+        // `a` overflows unless clamped; the tension is far below `a`, so any pressure is tolerated.
+        try await given {
+            try Self.compartment(nitrogen: 1, helium: 0.06793378374292536)
+        } when: { compartment in
+            (tolerated: try Self.maximalATable.toleratedAmbientPressure(of: compartment),
+             ceiling: try Self.maximalATable.ceiling(of: [compartment], configuration: .init(units: .metric, water: .salt)))
+        } then: { _, result in
+            #expect(result.tolerated.value == 0)
+            #expect(result.ceiling.result.value == 0)
+        }
+    }
+
+    @Test
     func largeFiniteTensionsKeepTensionWeighting() async throws {
         // The sum overflows if computed directly; weighting by the largest tension keeps it finite.
         try await given {
@@ -273,6 +288,17 @@ private extension BuhlmannTests {
                 .init(
                     nitrogen: try .init(of: .nitrogen, halfTime: .init(5), a: .init(0.5), b: 0.8),
                     helium: try .init(of: .helium, halfTime: .init(2), a: .init(1), b: 0.6))
+            ])
+        }
+    }
+
+    /// A one-row table with both `a` at `greatestFiniteMagnitude`, at the same half-times as ``table``.
+    static var maximalATable: Buhlmann.Table {
+        get throws {
+            .init([
+                .init(
+                    nitrogen: try .init(of: .nitrogen, halfTime: .init(5), a: .init(.greatestFiniteMagnitude), b: 0.8),
+                    helium: try .init(of: .helium, halfTime: .init(2), a: .init(.greatestFiniteMagnitude), b: 0.6))
             ])
         }
     }

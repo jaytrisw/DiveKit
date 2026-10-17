@@ -110,10 +110,17 @@ extension Buhlmann.Table {
             let largest = entries.reduce(.zero) { Swift.max($0, $1.tension) }
             guard largest > 0 else { return .init(.zero) }
             let scaledTotal = entries.reduce(.zero) { $0 + $1.tension / largest }
-            let weighted = entries.reduce((a: Double.zero, b: Double.zero)) { sum, entry in
+            let sums = entries.reduce((a: Double.zero, b: Double.zero)) { sum, entry in
                 let weight = entry.tension / largest / scaledTotal
                 return (sum.a + entry.limit.coefficientA * weight, sum.b + entry.limit.coefficientB * weight)
             }
+            // A weighted average lies within its inputs' range; clamping removes rounding,
+            // such as weights summing above 1 overflowing a maximal `a`.
+            let coefficientsA = entries.map(\.limit.coefficientA)
+            let coefficientsB = entries.map(\.limit.coefficientB)
+            let weighted = (
+                a: Swift.min(Swift.max(sums.a, coefficientsA.min() ?? .zero), coefficientsA.max() ?? .zero),
+                b: Swift.min(Swift.max(sums.b, coefficientsB.min() ?? .zero), coefficientsB.max() ?? .zero))
             let factor = gradientFactor.value
             // `b / (GF + (1 − GF)·b)` equals `1 / (GF / b − GF + 1)`. With `b` and
             // `factor` in [0.01, 1], it is in [0.01, 1].
