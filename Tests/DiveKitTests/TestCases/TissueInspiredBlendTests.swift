@@ -109,18 +109,26 @@ struct TissueInspiredBlendTests {
         }
     }
 
-    @Test
-    func rejectsNonFiniteAmbientPressure() async throws {
-        // A custom water with zero depth per atmosphere makes the ambient pressure infinite.
+    @Test(arguments: [
+        (increase: 0.0, expected: Error.Range.lowerBound(0, 0), key: "dive.kit.error.range.lower.bound"),
+        (increase: -10, expected: Error.Range.lowerBound(-10, 0), key: "dive.kit.error.range.lower.bound"),
+        (increase: .infinity, expected: Error.Range.upperBound(.infinity, .greatestFiniteMagnitude), key: "dive.kit.error.range.upper.bound"),
+        // A valid but tiny depth per atmosphere makes the ambient pressure at 30 m infinite.
+        (
+            increase: .leastNonzeroMagnitude,
+            expected: Error.Range.upperBound(.infinity, .greatestFiniteMagnitude),
+            key: "dive.kit.error.range.upper.bound")
+    ])
+    func rejectsInvalidDepthPerAtmosphere(increase: Double, expected: Error.Range, key: String) async throws {
         try await given {
             Configuration(
                 units: .metric,
-                water: Water(weight: Water.salt.weight, pressure: { .init(increase: .init(0, units: $0)) }))
+                water: Water(weight: Water.salt.weight, pressure: { .init(increase: .init(increase, units: $0)) }))
         } when: { configuration in
             try expectThrowsError(
                 when: try Tissue.Inspired(of: .nitrogen, breathing: .air, at: .init(30), configuration: configuration),
-                then: .range(.upperBound(.infinity, .greatestFiniteMagnitude), Self.callSite)) { error in
-                #expect(error.localizationValue == "dive.kit.error.range.upper.bound")
+                then: .range(expected, Self.callSite)) { error in
+                #expect(error.localizationValue == .init(key))
             }
         }
     }

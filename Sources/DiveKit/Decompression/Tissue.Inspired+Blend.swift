@@ -34,8 +34,9 @@ public extension Tissue.Inspired {
     ///     Defaults to ``Tissue/alveolarWaterVapor``.
     ///   - configuration: The units and water used to convert depth to pressure.
     /// - Throws: `Error.negative` if `depth` or `waterVapor` is negative, or
-    ///   `Error.range` if either, or the ambient pressure at `depth`, is not
-    ///   finite.
+    ///   `Error.range` if either is not finite. Also throws `Error.range` if the
+    ///   configured water's depth per atmosphere is not finite or not greater
+    ///   than `0`, or if the ambient pressure at `depth` is not finite.
     ///
     /// ```swift
     /// let nitrogen = try Tissue.Inspired(
@@ -76,8 +77,10 @@ public extension Tissue.Inspired {
     ///     Defaults to ``Tissue/alveolarWaterVapor``.
     ///   - configuration: The units and water used to convert depth to pressure.
     /// - Throws: `Error.negative` if either depth or `waterVapor` is negative,
-    ///   or `Error.range` if any of them, or the ambient pressure at either
-    ///   depth, is not finite.
+    ///   or `Error.range` if any of them is not finite. Also throws
+    ///   `Error.range` if the configured water's depth per atmosphere is not
+    ///   finite or not greater than `0`, or if the ambient pressure at either
+    ///   depth is not finite.
     ///
     /// ```swift
     /// let descent = try Tissue.Inspired(
@@ -138,7 +141,8 @@ extension Tissue {
             let depth = try depth
                 .validate(using: .finite) { .range(.upperBound($0.value, .greatestFiniteMagnitude), callSite) }
                 .validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
-            let ambient = try (1 + depth.value / configuration.water.pressure(configuration.units).increase.value)
+            let increase = try configuration.pressureIncrease(callSite)
+            let ambient = try (1 + depth.value / increase)
                 .validate(using: .finite) { .range(.upperBound($0, .greatestFiniteMagnitude), callSite) }
             return Swift.max(ambient - waterVapor.value, .zero)
         }

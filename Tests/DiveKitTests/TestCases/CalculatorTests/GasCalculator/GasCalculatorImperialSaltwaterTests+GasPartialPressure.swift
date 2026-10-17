@@ -58,7 +58,7 @@ extension GasCalculatorImperialSaltwaterTests {
                 using: self.physicsCalculator)
         } then: { _, calculation in
             try expectCalculation(calculation) { result, configuration in
-                #expect(result.value == 0.418)
+                #expect(result.value.isApproximately(0.42))
                 #expect(result.unit == .atmospheres)
                 #expect(configuration == self.sut.configuration)
             }

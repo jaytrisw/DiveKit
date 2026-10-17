@@ -57,7 +57,9 @@ public extension Buhlmann.Table {
     ///   compartment tolerates the surface.
     /// - Throws: `Error.gas` if no single row covers every gas a compartment
     ///   tracks, as for ``toleratedAmbientPressure(of:gradientFactor:)``, or
-    ///   `Error.range` if the tolerated pressure or the ceiling depth is not finite.
+    ///   `Error.range` if the tolerated pressure or the ceiling depth is not finite,
+    ///   or if the configured water's depth per atmosphere is not finite or not
+    ///   greater than `0`.
     ///
     /// - Warning: See ``Buhlmann`` before relying on this model.
     ///
@@ -74,13 +76,14 @@ public extension Buhlmann.Table {
         gradientFactor: Buhlmann.GradientFactor = .full,
         configuration: Configuration) throws(Error) -> Calculation<DecimalResult<Depth>> {
             let callSite: CallSite = .from(Self.self)
+            let increase = try configuration.pressureIncrease(callSite)
             let tolerated = try compartments
                 .map { (compartment: Tissue.Compartment) throws(Error) in
                     try toleratedAmbientPressure(of: compartment, gradientFactor: gradientFactor, callSite).value
                 }
                 .reduce(.zero, Swift.max)
             let gauge = Swift.max(tolerated - .one, .zero)
-            let depth = try (gauge * configuration.water.pressure(configuration.units).increase.value)
+            let depth = try (gauge * increase)
                 .validate(using: .finite) { .range(.upperBound($0, .greatestFiniteMagnitude), callSite) }
             return .decimal(depth, unit: \.depth, from: configuration)
         }
