@@ -49,9 +49,14 @@ public struct Blend<State: BlendState>: Sendable {
 
     /// The sum of all stored fractional pressures.
     ///
+    /// The fractions are summed in a fixed order, sorted by gas type name, so the
+    /// same blend gives the same total in every process launch.
+    ///
     /// - Since: 1.0.0
     public var totalPressure: Double {
-        storage.reduce(.zero, { $0 + $1.1 })
+        storage
+            .sorted { $0.key.qualifiedTypeName < $1.key.qualifiedTypeName }
+            .reduce(.zero) { $0 + $1.value }
     }
 
     /// Returns the fractional pressure for a gas.

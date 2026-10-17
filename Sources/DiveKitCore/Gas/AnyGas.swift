@@ -20,6 +20,16 @@ package struct AnyGas: Hashable, @unchecked Sendable {
         value as? (any GasRepresentable)
     }
 
+    /// The wrapped gas's module-qualified type name, used to visit gases in a stable order.
+    ///
+    /// Dictionary iteration order changes with each process launch, so code that
+    /// combines values per gas sorts by this name to get the same result every time.
+    ///
+    /// - Since: 1.0.0
+    package var qualifiedTypeName: String {
+        String(reflecting: type(of: value.base))
+    }
+
     /// Creates a type-erased gas identity.
     ///
     /// - Parameter gas: The gas to type erase.

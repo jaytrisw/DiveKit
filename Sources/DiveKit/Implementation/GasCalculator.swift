@@ -72,8 +72,10 @@ extension GasCalculator: GasCalculating {
     /// - Returns: A calculation containing the optimal blend.
     /// - Throws: `Error.negative` if `depth` or `partialPressure` is
     ///   negative, or `Error.range` if `depth` or `partialPressure` is not
-    ///   finite, if `partialPressure` is zero, or if the water model's pressure
-    ///   increase is not finite or not greater than zero.
+    ///   finite, if `partialPressure` is zero, if the oxygen fraction rounds
+    ///   down to zero (`partialPressure` is less than 1% of ambient pressure),
+    ///   or if the water model's pressure increase is not finite or not greater
+    ///   than zero.
     ///
     /// ```swift
     /// let blend = try calculator.bestBlend(
@@ -83,7 +85,10 @@ extension GasCalculator: GasCalculating {
     /// ```
     ///
     /// - Note: The oxygen fraction is rounded down to two decimal places before
-    ///   constructing the enriched air blend.
+    ///   constructing the enriched air blend. A fraction that is a whole percent
+    ///   within floating-point rounding, such as 1.45 / 5 = 0.29, keeps that
+    ///   percent. When `partialPressure` exceeds the ambient pressure, as at
+    ///   shallow depths, no mix reaches it and the result is pure oxygen.
     /// - Since: 1.0.0
     public func bestBlend(
         for depth: Depth,
@@ -103,9 +108,11 @@ extension GasCalculator: GasCalculating {
                     try physicsCalculator.atmospheresAbsolute(at: depth, with: configuration, callSite)
                 }
                 .map { partialPressure.value / $0.result.value }
-                .map { $0 * 100 }
-                .map { $0.rounded(.towardZero) }
-                .map { $0 / 100 }
+                .map { min($0, .one) }
+                // Nudge up by a relative 1e-12 so an exact percent survives truncation:
+                // 1.45 / 5 * 100 is 28.999999999999996, which would otherwise give 0.28.
+                .map { ($0 * 100 * (1 + 1e-12)).rounded(.down) / 100 }
+                .validate(using: .greater(than: 0)) { .range(.lowerBound($0, 0), callSite) }
                 .map { (fraction: Double) throws(DiveKit.Error) in
                     try .blend(.enrichedAir(fraction), configuration: configuration)
                 }
@@ -153,7 +160,11 @@ extension GasCalculator: GasCalculating {
     /// - Parameters:
     ///   - partialPressure: The maximum allowable oxygen partial pressure.
     ///   - blend: The gas mixture.
-    /// - Returns: A calculation containing the maximum operating depth.
+    /// - Returns: A calculation containing the maximum operating depth. The depth
+    ///   is negative when the blend's oxygen fraction exceeds `partialPressure`,
+    ///   because the blend exceeds the limit even at the surface. For example,
+    ///   EAN80 at 0.7 gives -4.125 ft in imperial salt water. Check the sign
+    ///   before presenting the result as a depth.
     /// - Throws: `Error.negative` if `partialPressure` is negative, or
     ///   `Error.range` if the oxygen fraction or `partialPressure` is zero, if
     ///   `partialPressure` or the result is not finite, or if the water model's

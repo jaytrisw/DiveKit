@@ -195,11 +195,12 @@ public extension Blend where State == Unblended {
 
     /// Converts the unblended mixture into a blended state.
     ///
-    /// This method validates that the total fractional pressure equals `1`
-    /// before producing a blended ``Blend``.
+    /// This method validates that the total fractional pressure equals `1`,
+    /// within `1e-12` to allow for floating-point rounding, before producing a
+    /// blended ``Blend``.
     ///
     /// - Returns: A blended gas mixture.
-    /// - Throws: `Error.blend` if the mixtures `totalPressure` is not `1`.
+    /// - Throws: `Error.blend` if the mixture's `totalPressure` is not within `1e-12` of `1`.
     ///
     /// ```swift
     /// let blended = try blend.blend()

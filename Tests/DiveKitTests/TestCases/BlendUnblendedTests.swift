@@ -1,5 +1,5 @@
 import Testing
-@testable import DiveKit
+@_spi(Experimental) @testable import DiveKit
 
 @Suite("Blend Unblended", .tags(.blend))
 struct BlendUnblendedTests {
@@ -194,6 +194,50 @@ struct BlendUnblendedTests {
 
         #expect(sut.totalPressure == 1.0)
         #expect(sut.components().count == 2)
+    }
+
+    static let wholePercentTrimixes: [(Int, Int)] = (1...100).flatMap { oxygen in
+        (0...(100 - oxygen)).map { helium in (oxygen, helium) }
+    }
+
+    @Test(arguments: wholePercentTrimixes)
+    func blendAcceptsEveryWholePercentTrimix(oxygen: Int, helium: Int) async throws {
+        try await given {
+            try Blend<Unblended>()
+                .adding(.oxygen, pressure: Double(oxygen) / 100)
+                .adding(.helium, pressure: Double(helium) / 100)
+                .filling(with: Nitrogen())
+        } when: { blend in
+            try blend.blend()
+        } then: { _, result in
+            #expect(result.totalPressure.isApproximately(1))
+        }
+    }
+
+    @Test(arguments: [[0, 1, 2], [0, 2, 1], [1, 0, 2], [1, 2, 0], [2, 0, 1], [2, 1, 0]])
+    func totalPressureIgnoresInsertionOrder(order: [Int]) async throws {
+        // Tx 18/35 sums to 0.9999999999999999 in two of the six orders, so an
+        // order-dependent sum shows up as an exact mismatch.
+        let additions: [(inout Blend<Unblended>) throws -> Void] = [
+            { try $0.add(.oxygen, pressure: 0.18) },
+            { try $0.add(.helium, pressure: 0.35) },
+            { try $0.add(.nitrogen, pressure: 0.47) }]
+        func build(_ order: [Int]) throws -> Blend<Unblended> {
+            var blend = Blend<Unblended>()
+            for index in order {
+                try additions[index](&blend)
+            }
+            return blend
+        }
+
+        try await given {
+            (reference: try build([0, 1, 2]), blend: try build(order))
+        } when: { input in
+            input.blend.totalPressure
+        } then: { input, totalPressure in
+            #expect(totalPressure == input.reference.totalPressure)
+            #expect(throws: Never.self) { try input.blend.blend() }
+        }
     }
 
     enum Mutation: CaseIterable, Sendable {

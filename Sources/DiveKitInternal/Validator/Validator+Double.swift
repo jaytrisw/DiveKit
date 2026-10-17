@@ -60,6 +60,25 @@ package extension Validator where Value == Double {
     static func equal(to other: Value) -> Self {
         .init { $0 == other }
     }
+
+    /// Returns a validator that succeeds when the value is within a tolerance of another value.
+    ///
+    /// Use this instead of ``Validator/equal(to:)`` for computed sums, whose last
+    /// bit depends on the order of the additions.
+    ///
+    /// - Parameters:
+    ///   - other: The value to compare against.
+    ///   - tolerance: The largest allowed absolute difference, inclusive.
+    /// - Returns: A validator that returns `true` if `|value - other| <= tolerance`.
+    ///
+    /// ```swift
+    /// Validator<Double>.approximatelyEqual(to: 1, tolerance: 1e-12).validate(0.9999999999999999) // true
+    /// ```
+    ///
+    /// - Since: 1.0.0
+    static func approximatelyEqual(to other: Value, tolerance: Value) -> Self {
+        .init { abs($0 - other) <= tolerance }
+    }
 }
 
 package extension Validator where Value == Double {

@@ -5,7 +5,7 @@ import Testing
 struct SaltWaterConstantsTests {
     @Test(arguments: [
         (units: Units.imperial, value: 64.0, unit: Mass.Unit.pounds, volume: Volume.Unit.cubicFeet),
-        (.metric, 1.03, .kilograms, .liters)
+        (.metric, 1.025, .kilograms, .liters)
     ])
     func weightConstants(units: Units, value: Double, unit: Mass.Unit, volume: Volume.Unit) {
         let result = Water.salt.weight(units)

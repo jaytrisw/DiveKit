@@ -6,6 +6,7 @@ struct BuoyancyCalculatorMetricSaltwaterTests {
 
     // MARK: buoyancy(of:)
 
+    /// 200 L × 1.025 kg/L − 209 kg = −4 kg.
     @Test
     func metricSaltwaterBuoyancyValidInput() async throws {
         let weight: Mass = 209
@@ -17,14 +18,19 @@ struct BuoyancyCalculatorMetricSaltwaterTests {
         } when: { sut in
             try sut.buoyancy(of: object)
         } then: { sut, calculation in
-            #expect(calculation.result == .negative(3))
+            guard case let .negative(force) = calculation.result else {
+                Issue.record("Expected negative buoyancy, got \(calculation.result)")
+                return
+            }
+            #expect(force.isApproximately(4))
             #expect(calculation.configuration == sut.configuration)
         }
     }
 
+    /// 300 L × 1.025 kg/L − 307.5 kg = 0 kg, exact in binary floating point.
     @Test
     func metricSaltwaterBuoyancyValidInputNeutral() async throws {
-        let weight: Mass = 309
+        let weight: Mass = 307.5
         let volume: Volume = 300
         let object: Object = .init(weight: weight, volume: volume)
 
@@ -70,6 +76,7 @@ struct BuoyancyCalculatorMetricSaltwaterTests {
 
     // MARK: buoyancyOfObject(weighing:andDisplacing:)
 
+    /// 50 L × 1.025 kg/L − 51 kg = 0.25 kg.
     @Test
     func metricSaltwaterBuoyancyOfObjectValidInput() async throws {
         let weight: Mass = 51
@@ -80,7 +87,11 @@ struct BuoyancyCalculatorMetricSaltwaterTests {
         } when: { sut in
             try sut.buoyancyOfObject(weighing: weight, andDisplacing: volume)
         } then: { sut, calculation in
-            #expect(calculation.result == .positive(0.5))
+            guard case let .positive(force) = calculation.result else {
+                Issue.record("Expected positive buoyancy, got \(calculation.result)")
+                return
+            }
+            #expect(force.isApproximately(0.25))
             #expect(calculation.configuration == sut.configuration)
         }
     }
@@ -115,6 +126,7 @@ struct BuoyancyCalculatorMetricSaltwaterTests {
 
     // MARK: volumeOfObject(weighing:with:)
 
+    /// (75 kg − 20 kg) / 1.025 kg/L = 53.658536585365853… L.
     @Test
     func metricSaltwaterVolumeOfObjectWithValidInput() async throws {
         let weight: Mass = 75
@@ -125,7 +137,7 @@ struct BuoyancyCalculatorMetricSaltwaterTests {
         } when: { sut in
             try sut.volumeOfObject(weighing: weight, with: buoyancy)
         } then: { sut, calculation in
-            #expect(calculation.result.value.isApproximately(53.398058252427184))
+            #expect(calculation.result.value.isApproximately(53.65853658536585))
             #expect(calculation.configuration == sut.configuration)
         }
     }
@@ -144,6 +156,7 @@ struct BuoyancyCalculatorMetricSaltwaterTests {
             }
     }
 
+    /// (75 kg + 20 kg) / 1.025 kg/L = 92.682926829268292… L.
     @Test
     func metricSaltwaterVolumeOfObjectAlternateWithValidInput() async throws {
         let weight: Mass = 75
@@ -154,7 +167,7 @@ struct BuoyancyCalculatorMetricSaltwaterTests {
         } when: { sut in
             try sut.volumeOfObject(weighing: weight, with: buoyancy)
         } then: { sut, calculation in
-            #expect(calculation.result.value.isApproximately(92.23300970873787))
+            #expect(calculation.result.value.isApproximately(92.68292682926829))
             #expect(calculation.configuration == sut.configuration)
         }
     }
@@ -177,8 +190,9 @@ struct BuoyancyCalculatorMetricSaltwaterTests {
 
     @Test(.tags(.error))
     func metricSaltwaterVolumeOfObjectRejectsNegativeResultingVolume() throws {
-        let weight: Mass = 10.3
-        let buoyancy: Buoyancy = .negative(20.6)
+        // (10.25 kg − 20.5 kg) / 1.025 kg/L = −10 L, exact in binary floating point.
+        let weight: Mass = 10.25
+        let buoyancy: Buoyancy = .negative(20.5)
         let expectedError = Error.negative(
             Volume(-10),
             "BuoyancyCalculator.volumeOfObject(weighing:with:)")

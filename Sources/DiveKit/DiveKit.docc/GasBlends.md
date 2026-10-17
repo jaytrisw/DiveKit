@@ -20,7 +20,7 @@ let nitrox32 = try Blend<Unblended>()
     .blend()
 ```
 
-The total fractional pressure must equal `1`.
+The total fractional pressure must equal `1`, within `1e-12` so that floating-point rounding in sums such as Tx 18/35 is accepted.
 
 ## Use Fractional Pressures
 

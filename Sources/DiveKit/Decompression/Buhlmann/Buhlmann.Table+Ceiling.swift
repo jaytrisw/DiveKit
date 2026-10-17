@@ -103,7 +103,7 @@ extension Buhlmann.Table {
         _ callSite: CallSite) throws(Error) -> [MatchedGas] {
             let tracked = compartment.storage
                 .map { (key: LimitKey(gas: $0.key, halfTime: $0.value.halfTime), entry: $0.value) }
-                .sorted { $0.key.qualifiedTypeName < $1.key.qualifiedTypeName }
+                .sorted { $0.key.gas.qualifiedTypeName < $1.key.gas.qualifiedTypeName }
             var candidates = Array(rowLimits.indices)
             for entry in tracked {
                 candidates = candidates.filter { rowLimits[$0][entry.key] != nil }

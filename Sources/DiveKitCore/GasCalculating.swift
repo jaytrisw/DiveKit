@@ -30,7 +30,9 @@ public protocol GasCalculating {
     /// - Returns: A calculation containing the resulting validated blend.
     /// - Throws: ``Error/negative(_:_:)`` if `depth` or `partialPressure` is
     ///   negative, or ``Error/range(_:_:)`` if `partialPressure` is zero or the
-    ///   resulting oxygen fraction is outside the valid blend range.
+    ///   resulting oxygen fraction rounds down to zero.
+    /// - Note: When `partialPressure` exceeds the ambient pressure, no mix
+    ///   reaches it and the result is pure oxygen.
     /// - Since: 1.0.0
     func bestBlend(
         for depth: Depth,
@@ -56,7 +58,9 @@ public protocol GasCalculating {
     /// - Parameters:
     ///   - partialPressure: The maximum allowed oxygen partial pressure.
     ///   - blend: The validated blend.
-    /// - Returns: A calculation containing maximum operating depth.
+    /// - Returns: A calculation containing maximum operating depth. The depth is
+    ///   negative when the blend's oxygen fraction exceeds `partialPressure`,
+    ///   because the blend exceeds the limit even at the surface.
     /// - Throws: ``Error/negative(_:_:)`` if `partialPressure` is negative, or
     ///   ``Error/range(_:_:)`` if `partialPressure` or the blend's oxygen
     ///   fraction is zero.

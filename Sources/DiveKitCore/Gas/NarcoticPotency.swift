@@ -3,7 +3,10 @@ import Foundation
 /// How narcotic a gas is.
 ///
 /// Relative potencies follow the lipid solubility of each gas (the
-/// Meyer–Overton correlation), as tabulated by Bennett (2004).
+/// Meyer–Overton correlation), as tabulated by Bennett and Rostain (2003):
+/// P. B. Bennett and J. C. Rostain, "Inert Gas Narcosis", in *Bennett and
+/// Elliott's Physiology and Medicine of Diving*, 5th ed., Saunders, 2003, p. 305.
+/// That table rates oxygen at 1.7 and helium at 0.045 relative to nitrogen.
 ///
 /// - Since: 1.0.0
 public enum NarcoticPotency: Sendable {

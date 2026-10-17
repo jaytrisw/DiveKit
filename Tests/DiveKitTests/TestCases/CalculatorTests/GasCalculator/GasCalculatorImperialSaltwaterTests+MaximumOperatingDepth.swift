@@ -22,6 +22,24 @@ extension GasCalculatorImperialSaltwaterTests {
         }
     }
 
+    /// (0.7 / 0.8 - 1) * 33 = -0.125 * 33 = -4.125 ft: the blend exceeds the limit at the surface.
+    @Test
+    func maximumOperatingDepthIsNegativeWhenOxygenFractionExceedsLimit() async throws {
+        try await given {
+            let partialPressure: PartialPressure<Oxygen> = 0.7
+            let blend = try Blend<Blended>.enrichedAir(0.80)
+            return (partialPressure: partialPressure, blend: blend)
+        } when: { input in
+            try self.sut.maximumOperatingDepth(for: input.partialPressure, in: input.blend)
+        } then: { _, calculation in
+            try expectCalculation(calculation) { result, configuration in
+                #expect(result.value.isApproximately(-4.125))
+                #expect(result.unit == .feet)
+                #expect(configuration == self.sut.configuration)
+            }
+        }
+    }
+
     @Test
     func maximumOperatingDepthForEAN30AtOnePointFour() async throws {
         try await given {

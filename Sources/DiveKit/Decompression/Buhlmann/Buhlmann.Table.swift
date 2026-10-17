@@ -220,10 +220,5 @@ extension Buhlmann.Table {
             self.gas = gas
             self.halfTime = halfTime
         }
-
-        /// The gas's module-qualified type name, used to check gases in a stable order.
-        var qualifiedTypeName: String {
-            String(reflecting: type(of: gas.value.base))
-        }
     }
 }

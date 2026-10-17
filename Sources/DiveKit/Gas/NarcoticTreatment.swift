@@ -44,8 +44,9 @@ public struct NarcoticTreatment: Sendable, Hashable {
         .init(gas: .init(gas), potency: potency)
     }
 
-    /// Treats helium as narcotic with its potency from Bennett (2004), about
-    /// 0.2 times that of nitrogen.
+    /// Treats helium as narcotic with its potency from Bennett and Rostain
+    /// (2003), 0.045 times that of nitrogen. See ``NarcoticPotency`` for the
+    /// full reference.
     ///
     /// - Parameter gas: Helium.
     /// - Returns: A treatment for helium.
@@ -56,11 +57,12 @@ public struct NarcoticTreatment: Sendable, Hashable {
     ///
     /// - Since: 1.0.0
     public static func bennett(_ gas: Helium) -> Self {
-        .narcotic(gas, potency: .relative(0.2))
+        .narcotic(gas, potency: .relative(0.045))
     }
 
-    /// Treats oxygen as narcotic with its potency from Bennett (2004), about
-    /// 1.7 times that of nitrogen.
+    /// Treats oxygen as narcotic with its potency from Bennett and Rostain
+    /// (2003), 1.7 times that of nitrogen. See ``NarcoticPotency`` for the
+    /// full reference.
     ///
     /// - Parameter gas: Oxygen.
     /// - Returns: A treatment for oxygen.
