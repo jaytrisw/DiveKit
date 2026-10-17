@@ -31,6 +31,16 @@
         }
       }
     },
+    "dive.kit.error.gas.unmodeled" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No decompression table row has coefficients for this gas at its half-time"
+          }
+        }
+      }
+    },
     "dive.kit.error.negative.depth" : {
       "localizations" : {
         "en" : {

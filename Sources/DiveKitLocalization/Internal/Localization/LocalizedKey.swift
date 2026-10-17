@@ -69,6 +69,11 @@ package extension LocalizedKey.Error {
         ///
         /// - Since: 1.0.0
         static let metabolic: String.LocalizationValue = "dive.kit.error.gas.metabolic"
+
+        /// Localization key for gases a decompression model has no coefficients for.
+        ///
+        /// - Since: 1.0.0
+        static let unmodeled: String.LocalizationValue = "dive.kit.error.gas.unmodeled"
     }
 }
 

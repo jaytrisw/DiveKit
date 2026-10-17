@@ -20,6 +20,7 @@ package extension Error.Gas {
     var localizationValue: String.LocalizationValue {
         switch self {
             case .metabolic: LocalizedKey.Error.Gas.metabolic
+            case .unmodeled: LocalizedKey.Error.Gas.unmodeled
         }
     }
 }

@@ -4,6 +4,7 @@ import DiveKit
 extension Tag {
     @Tag static var atmospheresAbsolute: Self
     @Tag static var blend: Self
+    @Tag static var buhlmann: Self
     @Tag static var buoyancy: Self
     @Tag static var buoyancyCalculator: Self
     @Tag static var constants: Self
