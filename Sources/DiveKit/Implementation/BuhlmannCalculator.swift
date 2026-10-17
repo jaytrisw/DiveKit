@@ -13,6 +13,11 @@ import DiveKitInternal
 /// All calculations use the provided configuration and ``settings``. Loading
 /// always uses ``Tissue/Loading/schreiner``.
 ///
+/// The ceiling uses the low gradient factor, while the no-decompression limit
+/// and a direct ascent use the high one. With different gradient factors, a
+/// dive can have a ceiling below the surface and still be within its
+/// no-decompression limit.
+///
 /// ```swift
 /// let calculator = BuhlmannCalculator(configuration: .init(units: .metric, water: .salt))
 /// let tissues = try calculator.loaded(
@@ -52,6 +57,8 @@ final public class BuhlmannCalculator: DecompressionCalculating {
     /// let calculator = BuhlmannCalculator(configuration: configuration)
     /// ```
     ///
+    /// - Warning: See ``Buhlmann`` before relying on this model.
+    ///
     /// - Since: 1.0.0
     required public convenience init(configuration: Configuration) {
         self.init(configuration: configuration, settings: .defaults(for: configuration.units))
@@ -69,6 +76,8 @@ final public class BuhlmannCalculator: DecompressionCalculating {
     /// settings.gradientFactors = try .init(low: try .init(0.3), high: try .init(0.85))
     /// let calculator = BuhlmannCalculator(configuration: configuration, settings: settings)
     /// ```
+    ///
+    /// - Warning: See ``Buhlmann`` before relying on this model.
     ///
     /// - Since: 1.0.0
     public init(configuration: Configuration, settings: Settings) {
@@ -241,9 +250,16 @@ extension BuhlmannCalculator {
     /// Calculates the shallowest depth the tissues tolerate at the low gradient factor.
     ///
     /// The low gradient factor is the one the first decompression stop is
-    /// chosen with, so this is the ceiling before an ascent begins. Calculated
-    /// as for ``Buhlmann/Table/ceiling(of:gradientFactor:configuration:)``
-    /// with the tissues' table.
+    /// chosen with. Calculated as for
+    /// ``Buhlmann/Table/ceiling(of:gradientFactor:configuration:)`` with the
+    /// tissues' table.
+    ///
+    /// The no-decompression limit and a schedule's direct-ascent check use the
+    /// high gradient factor instead. When the gradient factors differ, the
+    /// ceiling can be below the surface while
+    /// ``noDecompressionLimit(of:at:breathing:)`` is still a number of minutes
+    /// and ``schedule(of:from:breathing:switchingTo:)`` is a direct ascent with
+    /// no stops.
     ///
     /// - Parameter tissues: The tissues.
     /// - Returns: A calculation containing the ceiling depth, or `0` if the

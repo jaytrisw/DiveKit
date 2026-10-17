@@ -3,7 +3,9 @@ import Foundation
 /// An ascent from depth to the surface, as a sequence of segments.
 ///
 /// A decompression stop is a segment whose start and end depths are equal. A
-/// gas switch is where consecutive segments breathe different blends.
+/// gas switch is where consecutive segments breathe different blends. The
+/// segments can be passed to ``DecompressionCalculating/loaded(_:through:)``
+/// to load tissues through the ascent.
 ///
 /// - Warning: DiveKit's decompression calculations have not been validated for
 ///   planning real dives.

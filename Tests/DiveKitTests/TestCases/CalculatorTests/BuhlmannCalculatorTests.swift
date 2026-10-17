@@ -48,7 +48,7 @@ struct BuhlmannCalculatorTests {
                 try DiveSegment(start: .init(40), end: .init(21), duration: .init(1.9), blend: trimix)
             ]
         } when: { profile in
-            let calculator = Self.calculator
+            let calculator = try Self.calculator
             return try calculator.loaded(try calculator.surfaceTissues(), through: profile)
         } then: { profile, tissues in
             var expected = try Self.calculator.surfaceTissues().compartments
@@ -57,6 +57,38 @@ struct BuhlmannCalculatorTests {
             }
             #expect(tissues.compartments == expected)
             #expect(tissues.table == .zhl16c)
+        }
+    }
+
+    @Test
+    func scheduleSegmentsReloadThroughTheCalculator() async throws {
+        try await given { () throws -> (tissues: BuhlmannCalculator.Tissues, schedule: DecompressionSchedule) in
+            let tissues = try Self.tissues(breathing: .air, at: 40, for: 30)
+            return (tissues, try Self.calculator.schedule(of: tissues, from: .init(40), breathing: .air, switchingTo: []).result)
+        } when: { sut in
+            try Self.calculator.loaded(sut.tissues, through: sut.schedule.segments)
+        } then: { sut, surfaced in
+            var expected = sut.tissues.compartments
+            for segment in sut.schedule.segments {
+                expected = try BuhlmannScheduleTests.loaded(expected, over: segment, for: segment.duration.value)
+            }
+            #expect(surfaced.compartments == expected)
+
+            // The last stop ends once the tissues tolerate the surface at GF high, and not a minute sooner.
+            let lastStop = try #require(sut.schedule.segments.dropLast().last)
+            try #require(lastStop.start == lastStop.end && lastStop.duration.value >= 2)
+            var highOnly = try Self.calculator.settings
+            highOnly.gradientFactors = try .init(low: try .init(0.85), high: try .init(0.85))
+            let high = BuhlmannCalculator(configuration: Self.configuration, settings: highOnly)
+            let stopped = try Self.calculator.loaded(sut.tissues, through: sut.schedule.segments.dropLast())
+            let shortened = try Self.calculator.loaded(
+                sut.tissues,
+                through: sut.schedule.segments.dropLast(2) + [
+                    .init(unchecked: lastStop.start, end: lastStop.end, duration: .init(lastStop.duration.value - 1), blend: lastStop.blend)
+                ])
+            let ceilings = (stopped: try high.ceiling(of: stopped).result.value, shortened: try high.ceiling(of: shortened).result.value)
+            #expect(ceilings.stopped == 0)
+            #expect(ceilings.shortened > 0)
         }
     }
 
@@ -80,6 +112,21 @@ struct BuhlmannCalculatorTests {
                 configuration: Self.configuration)
             #expect(ceiling == expected)
             #expect(ceiling.result.value > 0)
+        }
+    }
+
+    @Test
+    func ceilingAtLowGradientFactorCanFormWithinTheNoDecompressionLimit() async throws {
+        try await given {
+            try Self.tissues(breathing: .air, at: 30, for: 6)
+        } when: { tissues in
+            (ceiling: try Self.calculator.ceiling(of: tissues).result.value,
+             limit: try Self.calculator.noDecompressionLimit(of: tissues, at: .init(30), breathing: .air).result,
+             schedule: try Self.calculator.schedule(of: tissues, from: .init(30), breathing: .air, switchingTo: []).result)
+        } then: { _, result in
+            #expect(result.ceiling > 0)
+            #expect(result.limit == .minutes(.init(4)))
+            #expect(result.schedule.segments.count == 1)
         }
     }
 
@@ -176,12 +223,29 @@ struct BuhlmannCalculatorTests {
         try await given {
             try Self.tissues(breathing: .air, at: 40, for: 30)
         } when: { tissues in
-            var settings = Self.calculator.settings
+            var settings = try Self.calculator.settings
             settings.table = Buhlmann.Table([])
             return try BuhlmannCalculator(configuration: Self.configuration, settings: settings).ceiling(of: tissues)
         } then: { tissues, ceiling in
             let expected = try Self.calculator.ceiling(of: tissues)
             #expect(ceiling == expected)
+        }
+    }
+
+    @Test
+    func loadingRejectsNegativeWaterVapor() async throws {
+        try await given { () throws -> (calculator: BuhlmannCalculator, tissues: BuhlmannCalculator.Tissues) in
+            var settings = BuhlmannCalculator.Settings.defaults(for: .metric)
+            settings.waterVapor = .init(-0.1)
+            return (BuhlmannCalculator(configuration: Self.configuration, settings: settings), try Self.calculator.surfaceTissues())
+        } when: { sut in
+            try expectThrowsError(
+                when: try sut.calculator.loaded(
+                    sut.tissues,
+                    through: [try DiveSegment(start: .init(0), end: .init(10), duration: .init(1), blend: .air)]),
+                then: .negative(.pressure(.init(-0.1)), "BuhlmannCalculator.loaded(_:through:)")) { error in
+                #expect(error.localizationValue == "dive.kit.error.negative.pressure")
+            }
         }
     }
 
@@ -203,7 +267,7 @@ struct BuhlmannCalculatorTests {
     @Test
     func scheduleRejectsGasRicherThanSwitchPartialPressure() async throws {
         try await given { () throws -> (calculator: BuhlmannCalculator, tissues: BuhlmannCalculator.Tissues) in
-            var settings = Self.calculator.settings
+            var settings = try Self.calculator.settings
             settings.switchPartialPressure = .init(0.9)
             return (
                 calculator: BuhlmannCalculator(configuration: Self.configuration, settings: settings),
@@ -254,9 +318,11 @@ extension BuhlmannCalculatorTests {
 
     /// A metric salt-water calculator with GF 30/85 and the default ascent.
     static var calculator: BuhlmannCalculator {
-        var settings = BuhlmannCalculator.Settings.defaults(for: .metric)
-        settings.gradientFactors = (try? gradientFactors) ?? .full
-        return .init(configuration: configuration, settings: settings)
+        get throws {
+            var settings = BuhlmannCalculator.Settings.defaults(for: .metric)
+            settings.gradientFactors = try gradientFactors
+            return .init(configuration: configuration, settings: settings)
+        }
     }
 
     /// Returns surface tissues after a 2-minute descent and `minutes` at `depth`.

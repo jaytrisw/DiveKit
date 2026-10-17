@@ -20,14 +20,14 @@ public typealias CallSite = DiveKitCore.CallSite
 public typealias Configuration = DiveKitCore.Configuration
 @_documentation(visibility: private)
 public typealias ConfigurationProviding = DiveKitCore.ConfigurationProviding
-@_spi(Experimental) @_documentation(visibility: private)
-public typealias DecompressionCalculating = DiveKitCore.DecompressionCalculating
-@_spi(Experimental) @_documentation(visibility: private)
-public typealias DecompressionSchedule = DiveKitCore.DecompressionSchedule
 @_documentation(visibility: private)
 public typealias DecimalResult = DiveKitCore.DecimalResult
 @_documentation(visibility: private)
 public typealias DecimalResultRepresentable = DiveKitCore.DecimalResultRepresentable
+@_spi(Experimental) @_documentation(visibility: private)
+public typealias DecompressionCalculating = DiveKitCore.DecompressionCalculating
+@_spi(Experimental) @_documentation(visibility: private)
+public typealias DecompressionSchedule = DiveKitCore.DecompressionSchedule
 @_documentation(visibility: private)
 public typealias Depth = DiveKitCore.Depth
 @_spi(Experimental) @_documentation(visibility: private)
