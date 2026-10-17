@@ -22,7 +22,9 @@ public extension GasCalculator {
     /// - Returns: A calculation containing the equivalent narcotic depth.
     /// - Throws: `Error.negative` if `depth` is negative, or `Error.range` if
     ///   a potency is negative or not finite, if air is not narcotic under the
-    ///   given treatments, or if the result is not finite.
+    ///   given treatments, if the result is not finite,
+    ///   or if the water model's pressure increase is not finite or not
+    ///   greater than zero.
     ///
     /// ```swift
     /// let end = try calculator.equivalentNarcoticDepth(
@@ -54,7 +56,9 @@ public extension GasCalculator {
     /// - Throws: `Error.blend` if the blend cannot be normalized,
     ///   `Error.negative` if `depth` is negative, or `Error.range` if a potency
     ///   is negative or not finite, if air is not narcotic under the given
-    ///   treatments, or if the result is not finite.
+    ///   treatments, if the result is not finite,
+    ///   or if the water model's pressure increase is not finite or not
+    ///   greater than zero.
     ///
     /// ```swift
     /// let end = try calculator.equivalentNarcoticDepth(
@@ -83,8 +87,9 @@ private extension GasCalculator {
         with blend: Blend<Blended>,
         treating overrides: [NarcoticTreatment],
         _ callSite: CallSite) throws(DiveKit.Error) -> Calculation<DecimalResult<Depth>> {
-            try depth.validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
-                .map { $0.value + configuration.water.pressure(configuration.units).increase.value }
+            let increase = try configuration.pressureIncrease(callSite)
+            return try depth.validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
+                .map { $0.value + increase }
                 .with { () throws(DiveKit.Error) in
                     var potencies: [AnyGas: NarcoticPotency] = [:]
                     for override in overrides {
@@ -96,7 +101,7 @@ private extension GasCalculator {
                 }
                 .map { $0.first * $0.second }
                 .validate(using: .finite) { .range(.upperBound($0, .greatestFiniteMagnitude), callSite) }
-                .map { $0 - configuration.water.pressure(configuration.units).increase.value }
+                .map { $0 - increase }
                 .map { .decimal($0, unit: \.depth, from: configuration) }
         }
 

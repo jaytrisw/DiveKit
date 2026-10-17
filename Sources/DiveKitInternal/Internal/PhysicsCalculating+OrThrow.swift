@@ -12,7 +12,9 @@ package extension PhysicsCalculating {
     ///   - configuration: The calculation configuration.
     ///   - callSite: The location where the calculation was requested.
     /// - Returns: A calculation containing the gauge pressure at `depth`.
-    /// - Throws: ``DiveKitCore/Error/negative(_:_:)`` if `depth` is negative.
+    /// - Throws: ``DiveKitCore/Error/negative(_:_:)`` if `depth` is negative, or
+    ///   ``DiveKitCore/Error/range(_:_:)`` if the water model's pressure increase
+    ///   is not finite or not greater than zero.
     ///
     /// ```swift
     /// let result = try calculator.gaugePressure(
@@ -28,8 +30,9 @@ package extension PhysicsCalculating {
         at depth: Depth,
         with configuration: Configuration,
         _ callSite: CallSite) throws(Error) -> Calculation<DecimalResult<Pressure>> {
-            try depth.validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
-                .map { $0.value / configuration.water.pressure(configuration.units).increase.value }
+            let increase = try configuration.pressureIncrease(callSite)
+            return try depth.validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
+                .map { $0.value / increase }
                 .map { .decimal($0, unit: .atmospheres, configuration: configuration) }
         }
 
@@ -43,8 +46,10 @@ package extension PhysicsCalculating {
     ///   - configuration: The calculation configuration.
     ///   - callSite: The location where the calculation was requested.
     /// - Returns: A calculation containing the absolute pressure at `depth`.
-    /// - Throws: ``DiveKitCore/Error/negative(_:_:)`` if `depth` is negative. This
-    ///   method only throws typed domain errors forwarded from ``gaugePressure(at:with:_:)``.
+    /// - Throws: ``DiveKitCore/Error/negative(_:_:)`` if `depth` is negative, or
+    ///   ``DiveKitCore/Error/range(_:_:)`` if the water model's pressure increase
+    ///   is not finite or not greater than zero. This method only throws typed
+    ///   domain errors forwarded from ``gaugePressure(at:with:_:)``.
     ///
     /// ```swift
     /// let result = try calculator.atmospheresAbsolute(
