@@ -6,10 +6,10 @@ struct BuhlmannScheduleValidationTests {
     @Test
     func gradientFactorsRejectLowAboveHigh() async throws {
         try await given {
-            (low: try Buhlmann.GradientFactor(0.9), high: try Buhlmann.GradientFactor(0.8))
+            (low: try GradientFactor(0.9), high: try GradientFactor(0.8))
         } when: { factors in
             try expectThrowsError(
-                when: try Buhlmann.GradientFactors(low: factors.low, high: factors.high),
+                when: try GradientFactors(low: factors.low, high: factors.high),
                 then: .range(.upperBound(0.9, 0.8), "GradientFactors.init(low:high:)")) { error in
                 #expect(error.localizationValue == "dive.kit.error.range.upper.bound")
             }
@@ -19,9 +19,9 @@ struct BuhlmannScheduleValidationTests {
     @Test
     func gradientFactorsAcceptEqualValues() async throws {
         try await given {
-            try Buhlmann.GradientFactor(0.7)
+            try GradientFactor(0.7)
         } when: { factor in
-            try Buhlmann.GradientFactors(low: factor, high: factor)
+            try GradientFactors(low: factor, high: factor)
         } then: { factor, factors in
             #expect(factors.low == factor && factors.high == factor)
         }
@@ -29,8 +29,8 @@ struct BuhlmannScheduleValidationTests {
 
     @Test
     func fullGradientFactorsAreOne() {
-        #expect(Buhlmann.GradientFactors.full.low.value == 1)
-        #expect(Buhlmann.GradientFactors.full.high.value == 1)
+        #expect(GradientFactors.full.low.value == 1)
+        #expect(GradientFactors.full.high.value == 1)
     }
 
     @Test(arguments: [
@@ -46,7 +46,7 @@ struct BuhlmannScheduleValidationTests {
             (rate: Rate<Depth>(rate), stopInterval: Depth(stopInterval), lastStop: Depth(lastStop))
         } when: { ascent in
             try expectThrowsError(
-                when: try Buhlmann.Ascent(rate: ascent.rate, stopInterval: ascent.stopInterval, lastStop: ascent.lastStop),
+                when: try Ascent(rate: ascent.rate, stopInterval: ascent.stopInterval, lastStop: ascent.lastStop),
                 then: .range(expected, "Ascent.init(rate:stopInterval:lastStop:)"))
         }
     }
@@ -135,7 +135,7 @@ private extension BuhlmannScheduleValidationTests {
         of compartments: [Tissue.Compartment],
         from depth: Depth,
         switches: [Depth: Blend<Blended>] = [:],
-        waterVapor: Pressure = Tissue.alveolarWaterVapor) throws -> Calculation<Buhlmann.Schedule> {
+        waterVapor: Pressure = Tissue.alveolarWaterVapor) throws -> Calculation<DecompressionSchedule> {
             try Buhlmann.Table.zhl16c.schedule(
                 of: compartments,
                 from: depth,

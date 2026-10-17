@@ -46,7 +46,7 @@ struct BuhlmannScheduleTests {
         } then: { _, result in
             let air = try Blend.enrichedAir(0.21)
             #expect(result.ceiling > 0)
-            #expect(result.schedule.segments == [.init(start: .init(30), end: .init(0), duration: .init(30.0 / 9), blend: air)])
+            #expect(result.schedule.segments == [.init(unchecked: .init(30), end: .init(0), duration: .init(30.0 / 9), blend: air)])
         }
     }
 
@@ -219,7 +219,7 @@ struct BuhlmannScheduleTests {
                     continue
                 }
                 let next = try #require(segments.dropFirst(index + 1).first).end.value
-                let gradientFactor = try Buhlmann.GradientFactor(0.85 - (0.85 - 0.3) * next / firstStop)
+                let gradientFactor = try GradientFactor(0.85 - (0.85 - 0.3) * next / firstStop)
                 let leaving = try Self.loaded(compartments, over: segment, for: segment.duration.value)
                 #expect(try Self.toleratedAmbientPressure(of: leaving, gradientFactor: gradientFactor) <= 1 + next / 10)
                 if segment.duration.value > 1 {
@@ -332,7 +332,7 @@ extension BuhlmannScheduleTests {
 
     static let callSite: CallSite = "Table.schedule(of:from:breathing:switches:gradientFactors:ascent:waterVapor:configuration:using:)"
 
-    static var gradientFactors: Buhlmann.GradientFactors {
+    static var gradientFactors: GradientFactors {
         get throws { try .init(low: try .init(0.3), high: try .init(0.85)) }
     }
 
@@ -340,7 +340,7 @@ extension BuhlmannScheduleTests {
     static func compartments(breathing blend: Blend<Blended>, at depth: Double, for minutes: Double) throws -> [Tissue.Compartment] {
         try loaded(
             try Buhlmann.Table.zhl16c.compartments(nitrogen: .init(0.74)),
-            over: .init(start: .init(depth), end: .init(depth), duration: .init(minutes), blend: blend),
+            over: .init(unchecked: .init(depth), end: .init(depth), duration: .init(minutes), blend: blend),
             for: minutes)
     }
 
@@ -350,8 +350,8 @@ extension BuhlmannScheduleTests {
         from depth: Double,
         breathing blend: Blend<Blended>,
         switches: [Depth: Blend<Blended>] = [:],
-        gradientFactors: Buhlmann.GradientFactors? = nil,
-        lastStop: Double = 3) throws -> Buhlmann.Schedule {
+        gradientFactors: GradientFactors? = nil,
+        lastStop: Double = 3) throws -> DecompressionSchedule {
             try Buhlmann.Table.zhl16c.schedule(
                 of: compartments,
                 from: .init(depth),
@@ -365,7 +365,7 @@ extension BuhlmannScheduleTests {
     /// Returns each compartment after the first `minutes` of a segment, through the public loading path.
     static func loaded(
         _ compartments: [Tissue.Compartment],
-        over segment: Buhlmann.Schedule.Segment,
+        over segment: DiveSegment,
         for minutes: Double) throws -> [Tissue.Compartment] {
             let end = minutes == segment.duration.value
                 ? segment.end.value
@@ -382,18 +382,18 @@ extension BuhlmannScheduleTests {
 
     static func toleratedAmbientPressure(
         of compartments: [Tissue.Compartment],
-        gradientFactor: Buhlmann.GradientFactor) throws -> Double {
+        gradientFactor: GradientFactor) throws -> Double {
             try compartments
                 .map { try Buhlmann.Table.zhl16c.toleratedAmbientPressure(of: $0, gradientFactor: gradientFactor).value }
                 .reduce(0, max)
         }
 
     /// Returns each stop as `[depth, minutes]`.
-    static func stops(of schedule: Buhlmann.Schedule) -> [[Double]] {
+    static func stops(of schedule: DecompressionSchedule) -> [[Double]] {
         schedule.segments.filter { $0.start == $0.end }.map { [$0.start.value, $0.duration.value] }
     }
 
-    static func stopTime(of schedule: Buhlmann.Schedule) -> Double {
+    static func stopTime(of schedule: DecompressionSchedule) -> Double {
         stops(of: schedule).reduce(0) { $0 + $1[1] }
     }
 }

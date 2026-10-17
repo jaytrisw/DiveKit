@@ -26,7 +26,7 @@ extension Buhlmann {
             of compartments: [[Buhlmann.Table.MatchedGas]],
             from depth: Double,
             breathing start: Gas,
-            switches: [Gas]) throws(Error) -> [Buhlmann.Schedule.Segment] {
+            switches: [Gas]) throws(Error) -> [DiveSegment] {
                 guard depth > 0 else { return [] }
                 let diver = Diver(depth: depth, gas: start, compartments: compartments, segments: [])
                 if let surfaced = try directAscent(from: diver) {
@@ -57,17 +57,17 @@ extension Buhlmann.Planner {
         var depth: Double
         var gas: Gas
         var compartments: [[Buhlmann.Table.MatchedGas]]
-        var segments: [Buhlmann.Schedule.Segment]
+        var segments: [DiveSegment]
 
         /// Appends a segment, joining consecutive ascents on the same blend.
-        mutating func append(_ segment: Buhlmann.Schedule.Segment) {
+        mutating func append(_ segment: DiveSegment) {
             if let last = segments.last,
                last.start != last.end,
                segment.start != segment.end,
                last.end == segment.start,
                last.blend == segment.blend {
                 segments[segments.count - 1] = .init(
-                    start: last.start,
+                    unchecked: last.start,
                     end: segment.end,
                     duration: .init(last.duration.value + segment.duration.value),
                     blend: segment.blend)
@@ -202,7 +202,7 @@ extension Buhlmann.Planner {
             } while try toleratedAmbientPressure(of: compartments, gradientFactor: gradientFactor) > pressure(at: next)
             stopTime += minutes
             diver.compartments = compartments
-            diver.append(.init(start: .init(diver.depth), end: .init(diver.depth), duration: .init(minutes), blend: diver.gas.blend))
+            diver.append(.init(unchecked: .init(diver.depth), end: .init(diver.depth), duration: .init(minutes), blend: diver.gas.blend))
             diver = try moved(diver, to: next)
         }
         return diver
@@ -230,7 +230,7 @@ extension Buhlmann.Planner {
         let duration = abs(diver.depth - depth) / rate
         var moved = diver
         moved.compartments = try loaded(diver.compartments, from: diver.depth, to: depth, for: duration, breathing: diver.gas)
-        moved.append(.init(start: .init(diver.depth), end: .init(depth), duration: .init(duration), blend: diver.gas.blend))
+        moved.append(.init(unchecked: .init(diver.depth), end: .init(depth), duration: .init(duration), blend: diver.gas.blend))
         moved.depth = depth
         return moved
     }
@@ -264,7 +264,7 @@ extension Buhlmann.Planner {
     /// Returns the highest ambient pressure any compartment requires, in atmospheres.
     func toleratedAmbientPressure(
         of compartments: [[Buhlmann.Table.MatchedGas]],
-        gradientFactor: Buhlmann.GradientFactor) throws(Error) -> Double {
+        gradientFactor: GradientFactor) throws(Error) -> Double {
             try compartments
                 .map { (compartment: [Buhlmann.Table.MatchedGas]) throws(Error) in
                     try Buhlmann.Table.toleratedAmbientPressure(

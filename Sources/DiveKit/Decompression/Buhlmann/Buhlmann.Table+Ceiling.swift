@@ -4,60 +4,34 @@ import DiveKitInternal
 
 @_spi(Experimental)
 public extension Buhlmann.Table {
-    /// Returns the lowest ambient pressure a compartment tolerates.
-    ///
-    /// The compartment is matched to the first row whose coefficients cover every
-    /// gas it tracks at the gas's half-time; gases are never matched across rows.
-    /// Half-times must be equal exactly, as they are for compartments built with
-    /// ``compartments(nitrogen:helium:)``.
-    /// With several inert gases, `a` and `b` are
-    /// averaged, weighted by each gas's tension. The tolerated pressure with
-    /// gradient factor `GF` is `(P − a·GF) / (GF / b − GF + 1)`, where `P` is the
-    /// total inert-gas tension. At `GF = 1` this is Bühlmann's `(P − a) · b`.
-    ///
-    /// - Parameters:
-    ///   - compartment: The compartment to check.
-    ///   - gradientFactor: The gradient factor. Defaults to
-    ///     ``Buhlmann/GradientFactor/full``.
-    /// - Returns: The tolerated ambient pressure in atmospheres, or `0` if the
-    ///   compartment holds no inert gas or tolerates any ambient pressure.
-    /// - Throws: `Error.gas` if no single row covers every tracked gas at its
-    ///   half-time. Gases are checked in order of their module-qualified type
-    ///   name, and the first that matches no row shared with the gases before it
-    ///   is reported. Throws `Error.range` if the tolerated pressure is not finite.
-    ///
-    /// - Warning: See ``Buhlmann`` before relying on this model.
-    ///
-    /// ```swift
-    /// let tolerated = try Buhlmann.Table.zhl16c.toleratedAmbientPressure(
-    ///     of: compartment,
-    ///     gradientFactor: try .init(0.85))
-    /// ```
-    ///
-    /// - Since: 1.0.0
-    func toleratedAmbientPressure(
-        of compartment: Tissue.Compartment,
-        gradientFactor: Buhlmann.GradientFactor = .full) throws(Error) -> Pressure {
-            try toleratedAmbientPressure(of: compartment, gradientFactor: gradientFactor, .from(Self.self))
-        }
-
     /// Returns the shallowest depth every compartment tolerates.
     ///
-    /// The controlling compartment is the one with the highest
-    /// ``toleratedAmbientPressure(of:gradientFactor:)``. Its pressure is
-    /// converted to depth using the configured water and units, with the surface
-    /// at one atmosphere.
+    /// Each compartment is matched to the first row whose coefficients cover
+    /// every gas it tracks at the gas's half-time; gases are never matched
+    /// across rows. Half-times must be equal exactly, as they are for
+    /// compartments built with ``compartments(nitrogen:helium:)``. With several
+    /// inert gases, `a` and `b` are averaged, weighted by each gas's tension.
+    /// The tolerated ambient pressure with gradient factor `GF` is
+    /// `(P − a·GF) / (GF / b − GF + 1)`, where `P` is the total inert-gas
+    /// tension, clamped at `0`; at `GF = 1` this is Bühlmann's `(P − a) · b`. A
+    /// compartment with no inert gas tolerates any pressure.
+    ///
+    /// The controlling compartment is the one with the highest tolerated
+    /// pressure. Its pressure is converted to depth using the configured water
+    /// and units, with the surface at one atmosphere.
     ///
     /// - Parameters:
     ///   - compartments: The compartments to check, in any order.
     ///   - gradientFactor: The gradient factor. Defaults to
-    ///     ``Buhlmann/GradientFactor/full``.
+    ///     ``GradientFactor/full``.
     ///   - configuration: The units and water used for the resulting depth.
     /// - Returns: A calculation containing the ceiling depth, or `0` if every
     ///   compartment tolerates the surface.
     /// - Throws: `Error.gas` if no single row covers every gas a compartment
-    ///   tracks, as for ``toleratedAmbientPressure(of:gradientFactor:)``, or
-    ///   `Error.range` if the tolerated pressure or the ceiling depth is not finite,
+    ///   tracks at its half-time. Gases are checked in order of their
+    ///   module-qualified type name, and the first that matches no row shared
+    ///   with the gases before it is reported. Throws `Error.range` if a
+    ///   tolerated pressure or the ceiling depth is not finite,
     ///   or if the configured water's depth per atmosphere is not finite or not
     ///   greater than `0`.
     ///
@@ -73,7 +47,7 @@ public extension Buhlmann.Table {
     /// - Since: 1.0.0
     func ceiling(
         of compartments: [Tissue.Compartment],
-        gradientFactor: Buhlmann.GradientFactor = .full,
+        gradientFactor: GradientFactor = .full,
         configuration: Configuration) throws(Error) -> Calculation<DecimalResult<Depth>> {
             let callSite: CallSite = .from(Self.self)
             let increase = try configuration.pressureIncrease(callSite)
@@ -90,10 +64,18 @@ public extension Buhlmann.Table {
 }
 
 extension Buhlmann.Table {
+    /// Returns the lowest ambient pressure a compartment tolerates, as described for
+    /// ``ceiling(of:gradientFactor:configuration:)``.
+    func toleratedAmbientPressure(
+        of compartment: Tissue.Compartment,
+        gradientFactor: GradientFactor = .full) throws(Error) -> Pressure {
+            try toleratedAmbientPressure(of: compartment, gradientFactor: gradientFactor, .from(Self.self))
+        }
+
     /// Returns the tolerated ambient pressure, reporting errors at `callSite`.
     func toleratedAmbientPressure(
         of compartment: Tissue.Compartment,
-        gradientFactor: Buhlmann.GradientFactor,
+        gradientFactor: GradientFactor,
         _ callSite: CallSite) throws(Error) -> Pressure {
             try Self.toleratedAmbientPressure(
                 of: try matchedGases(of: compartment, callSite).map { (limit: $0.limit, tension: $0.entry.tension) },
@@ -136,7 +118,7 @@ extension Buhlmann.Table {
     /// Returns the tolerated ambient pressure for tensions paired with their coefficients.
     static func toleratedAmbientPressure(
         of entries: [(limit: Limit, tension: Double)],
-        gradientFactor: Buhlmann.GradientFactor,
+        gradientFactor: GradientFactor,
         _ callSite: CallSite) throws(Error) -> Pressure {
             // Scale by the largest tension so the sum and weights cannot overflow.
             let largest = entries.reduce(.zero) { Swift.max($0, $1.tension) }

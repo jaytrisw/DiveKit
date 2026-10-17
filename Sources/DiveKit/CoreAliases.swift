@@ -1,5 +1,7 @@
 @_spi(Experimental) import DiveKitCore
 
+@_spi(Experimental) @_documentation(visibility: private)
+public typealias Ascent = DiveKitCore.Ascent
 @_documentation(visibility: private)
 public typealias Blend = DiveKitCore.Blend
 @_documentation(visibility: private)
@@ -18,12 +20,18 @@ public typealias CallSite = DiveKitCore.CallSite
 public typealias Configuration = DiveKitCore.Configuration
 @_documentation(visibility: private)
 public typealias ConfigurationProviding = DiveKitCore.ConfigurationProviding
+@_spi(Experimental) @_documentation(visibility: private)
+public typealias DecompressionCalculating = DiveKitCore.DecompressionCalculating
+@_spi(Experimental) @_documentation(visibility: private)
+public typealias DecompressionSchedule = DiveKitCore.DecompressionSchedule
 @_documentation(visibility: private)
 public typealias DecimalResult = DiveKitCore.DecimalResult
 @_documentation(visibility: private)
 public typealias DecimalResultRepresentable = DiveKitCore.DecimalResultRepresentable
 @_documentation(visibility: private)
 public typealias Depth = DiveKitCore.Depth
+@_spi(Experimental) @_documentation(visibility: private)
+public typealias DiveSegment = DiveKitCore.DiveSegment
 @_documentation(visibility: private)
 public typealias Error = DiveKitCore.Error
 @_documentation(visibility: private)
@@ -32,6 +40,10 @@ public typealias FractionalPressure = DiveKitCore.FractionalPressure
 public typealias GasCalculating = DiveKitCore.GasCalculating
 @_documentation(visibility: private)
 public typealias GasRepresentable = DiveKitCore.GasRepresentable
+@_spi(Experimental) @_documentation(visibility: private)
+public typealias GradientFactor = DiveKitCore.GradientFactor
+@_spi(Experimental) @_documentation(visibility: private)
+public typealias GradientFactors = DiveKitCore.GradientFactors
 @_spi(Experimental) @_documentation(visibility: private)
 public typealias Helium = DiveKitCore.Helium
 @_documentation(visibility: private)
@@ -42,6 +54,8 @@ public typealias Metabolism = DiveKitCore.Metabolism
 public typealias Minutes = DiveKitCore.Minutes
 @_documentation(visibility: private)
 public typealias NarcoticPotency = DiveKitCore.NarcoticPotency
+@_spi(Experimental) @_documentation(visibility: private)
+public typealias NoDecompressionLimit = DiveKitCore.NoDecompressionLimit
 @_documentation(visibility: private)
 public typealias Nitrogen = DiveKitCore.Nitrogen
 @_documentation(visibility: private)
