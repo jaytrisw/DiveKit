@@ -54,10 +54,10 @@ public typealias Metabolism = DiveKitCore.Metabolism
 public typealias Minutes = DiveKitCore.Minutes
 @_documentation(visibility: private)
 public typealias NarcoticPotency = DiveKitCore.NarcoticPotency
-@_spi(Experimental) @_documentation(visibility: private)
-public typealias NoDecompressionLimit = DiveKitCore.NoDecompressionLimit
 @_documentation(visibility: private)
 public typealias Nitrogen = DiveKitCore.Nitrogen
+@_spi(Experimental) @_documentation(visibility: private)
+public typealias NoDecompressionLimit = DiveKitCore.NoDecompressionLimit
 @_documentation(visibility: private)
 public typealias Object = DiveKitCore.Object
 @_documentation(visibility: private)
