@@ -1,7 +1,7 @@
 import Foundation
 import DiveKitCore
 
-/// Makes rate units provide localized titles, descriptions, and quantities.
+/// Allows rate units to provide localized titles, descriptions, and quantities.
 ///
 /// - Since: 1.0.0
 extension RateUnit: LocalizedTitleProviding, LocalizedDescriptionProviding, LocalizationProviding

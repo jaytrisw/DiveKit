@@ -19,7 +19,7 @@ import DiveKitCore
 /// ```
 ///
 /// - Note: The resulting ``DiveKitCore/Blend`` is not automatically validated. Call ``blend(_:)``
-///   to ensure the total pressure satisfies required invariants (e.g., sums to `1`).
+///   to ensure the total pressure satisfies required invariants (for example, sums to `1`).
 /// - Since: 1.0.0
 @resultBuilder
 package enum BlendBuilder {

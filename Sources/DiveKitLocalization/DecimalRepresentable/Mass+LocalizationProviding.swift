@@ -1,7 +1,7 @@
 import Foundation
 import DiveKitCore
 
-/// Makes mass units provide localized titles, descriptions, and quantities.
+/// Allows mass units to provide localized titles, descriptions, and quantities.
 ///
 /// - Since: 1.0.0
 extension Mass.Unit: LocalizationProviding {

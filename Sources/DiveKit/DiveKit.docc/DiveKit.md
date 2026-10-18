@@ -76,7 +76,7 @@ let formattedDepth = depth.formatted(.depth(.meters, style: .short))
 
 ### Limitations
 
-DiveKit's calculations have not been validated for planning real dives. Check results against published tables, a dive computer, or your training before relying on them.
+DiveKit's calculations have not been validated for planning real dives. Do not use them as a substitute for a dive computer, published tables, or training.
 
 - **Sea level only.** Surface pressure is fixed at one atmosphere. DiveKit does not model altitude, and at altitude every result that depends on ambient pressure is wrong in the unsafe direction.
 - **Ideal gas.** Respiratory minute volume treats gas as ideal, with no compressibility factor, which overstates the gas in a high-pressure cylinder by several percent.

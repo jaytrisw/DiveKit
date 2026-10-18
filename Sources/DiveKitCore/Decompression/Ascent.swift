@@ -1,9 +1,9 @@
 import Foundation
 
-/// How a diver ascends: the ascent rate and where decompression stops can be.
+/// The rate and stop depths of a diver's ascent.
 ///
-/// Stops can be at ``lastStop`` and every ``stopInterval`` below it. All
-/// values are in the configured units, so an ascent for metric depths is not
+/// Decompression stops fall at ``lastStop`` and at every ``stopInterval``
+/// below it. All values are in the configured units, so an ascent for metric depths is not
 /// valid for imperial ones. Public construction that validates each value
 /// lives in the top-level `DiveKit` module.
 ///

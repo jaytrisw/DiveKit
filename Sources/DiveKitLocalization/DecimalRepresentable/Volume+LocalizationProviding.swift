@@ -1,7 +1,7 @@
 import Foundation
 import DiveKitCore
 
-/// Makes volume units provide localized titles, descriptions, and quantities.
+/// Allows volume units to provide localized titles, descriptions, and quantities.
 ///
 /// - Since: 1.0.0
 extension Volume.Unit: LocalizationProviding {

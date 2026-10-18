@@ -15,10 +15,10 @@ public extension Water {
     ///
     /// - Note:
     ///   - Imperial units use a density of `64 lb/ft³` and `33 ft` per
-    ///     atmosphere, the feet of sea water (fsw) convention of the U.S. Navy
+    ///     atmosphere, the feet of seawater (fsw) convention of the U.S. Navy
     ///     Diving Manual, Revision 7 (2016).
     ///   - Metric units use a density of `1.025 kg/L` and `10 m` per
-    ///     atmosphere. The `10 m` is the metres of sea water (msw) convention,
+    ///     atmosphere. The `10 m` is the meters of seawater (msw) convention,
     ///     where 10 msw is 1 bar (EN 13319), applied here per atmosphere.
     ///   - The two conventions describe slightly different seas: 33 ft is
     ///     10.058 m, so metric depths gain pressure about 0.6% faster than

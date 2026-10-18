@@ -5,8 +5,6 @@ import DiveKitInternal
 public extension Blend where State == Unblended {
     /// Creates an empty unblended gas mixture.
     ///
-    /// - Returns: An empty ``Blend`` in an `Unblended` state.
-    ///
     /// - Since: 1.0.0
     init() {
         self.init([:])
@@ -32,7 +30,7 @@ public extension Blend where State == Unblended {
     /// Adds a ``FractionalPressure`` to the blend.
     ///
     /// - Parameter fractionalPressure: The fractional pressure to add.
-    /// - Throws: `Error.range` if the fractional pressure value is not finite,
+    /// - Throws: `Error.range` if the fractional-pressure value is not finite,
     ///   or `Error.blend` if it is not within `0...1` or the blend already
     ///   contains its gas.
     ///
@@ -65,7 +63,7 @@ public extension Blend where State == Unblended {
     /// Updates the ``FractionalPressure`` in the blend.
     ///
     /// - Parameter fractionalPressure: The new fractional pressure.
-    /// - Throws: `Error.range` if the fractional pressure value is not finite,
+    /// - Throws: `Error.range` if the fractional-pressure value is not finite,
     ///   or `Error.blend` if it is not within `0...1` or the blend does not
     ///   contain its gas.
     ///
@@ -80,12 +78,12 @@ public extension Blend where State == Unblended {
 
     /// Fills the remaining fractional pressure with the specified gas.
     ///
-    /// This method calculates the remaining capacity and assigns it to `gas`.
+    /// Filling with a gas the blend already contains replaces its fraction with
+    /// whatever brings the blend's total to one.
     ///
     /// - Parameter gas: The gas used to fill the remaining capacity.
-    /// - Throws: `Error.blend` if the remaining fractional pressure is
-    ///   not within `0...1`. Filling with a gas the blend already contains
-    ///   replaces its fraction with whatever brings the blend's total to one.
+    /// - Throws: `Error.blend` if the remaining fractional pressure is not
+    ///   within `0...1`.
     ///
     /// ```swift
     /// try blend.fill(with: .nitrogen)
@@ -122,7 +120,7 @@ public extension Blend where State == Unblended {
     ///
     /// - Parameter fractionalPressure: The fractional pressure to add.
     /// - Returns: A new blend with the value added.
-    /// - Throws: `Error.range` if the fractional pressure value is not finite,
+    /// - Throws: `Error.range` if the fractional-pressure value is not finite,
     ///   or `Error.blend` if it is not within `0...1` or the blend already
     ///   contains its gas.
     ///
@@ -165,7 +163,7 @@ public extension Blend where State == Unblended {
     ///
     /// - Parameter fractionalPressure: The new fractional pressure.
     /// - Returns: A new blend with the updated value.
-    /// - Throws: `Error.range` if the fractional pressure value is not finite,
+    /// - Throws: `Error.range` if the fractional-pressure value is not finite,
     ///   or `Error.blend` if it is not within `0...1` or the blend does not
     ///   contain its gas.
     ///
@@ -184,11 +182,13 @@ public extension Blend where State == Unblended {
 
     /// Returns a new blend by filling the remaining capacity with a gas.
     ///
+    /// Filling with a gas the blend already contains replaces its fraction with
+    /// whatever brings the blend's total to one.
+    ///
     /// - Parameter gas: The gas used to fill the remaining capacity.
     /// - Returns: A new blend with the remaining capacity filled.
-    /// - Throws: `Error.blend` if the remaining fractional pressure is
-    ///   not within `0...1`. Filling with a gas the blend already contains
-    ///   replaces its fraction with whatever brings the blend's total to one.
+    /// - Throws: `Error.blend` if the remaining fractional pressure is not
+    ///   within `0...1`.
     ///
     /// ```swift
     /// let updated = try blend.filling(with: .nitrogen)
@@ -205,12 +205,12 @@ public extension Blend where State == Unblended {
 
     /// Converts the unblended mixture into a blended state.
     ///
-    /// This method validates that the total fractional pressure equals `1`,
-    /// within `1e-12` to allow for floating-point rounding, before producing a
-    /// blended ``Blend``.
+    /// The total fractional pressure must equal `1`, within `1e-12` to allow
+    /// for floating-point rounding.
     ///
     /// - Returns: A blended gas mixture.
-    /// - Throws: `Error.blend` if the mixture's `totalPressure` is not within `1e-12` of `1`.
+    /// - Throws: `Error.blend` if the mixture's `totalPressure` is not within
+    ///   `1e-12` of `1`.
     ///
     /// ```swift
     /// let blended = try blend.blend()

@@ -19,7 +19,7 @@ public enum XcodeArguments {
     ///
     /// The target catalog, given as `--target <path>`, `--target=<path>`,
     /// `-t <path>`, or the first bare `.xcstrings` argument, moves to a single
-    /// trailing `--target <path>`. `--source`, `-s`, `--source=` and `--dry-run`
+    /// trailing `--target <path>`. `--source`, `-s`, `--source=`, and `--dry-run`
     /// pass through, as do other flags. Other values, such as Xcode's own
     /// arguments, are dropped. A trailing `--target` or `-t` with no value
     /// passes through so that parsing reports it.

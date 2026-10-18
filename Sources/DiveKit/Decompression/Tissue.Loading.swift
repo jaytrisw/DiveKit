@@ -5,7 +5,7 @@ public extension Tissue {
     /// An equation that updates one inert-gas tension in a tissue compartment.
     ///
     /// `Tissue.Loading` is a protocol witness: create one from a closure to supply
-    /// your own loading equation, or use a built-in model such as ``schreiner`` or
+    /// a custom loading equation, or use a built-in model such as ``schreiner`` or
     /// ``haldane``. The closure is applied separately to each inert gas with that
     /// gas's half-time.
     ///

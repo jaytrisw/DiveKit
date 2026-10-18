@@ -4,7 +4,7 @@ import DiveKitCore
 /// A marker protocol that provides package-internal mapping helpers.
 ///
 /// Types conforming to ``Mappable`` gain access to `map` functions that
-/// enable transforming values in a lightweight, composable way.
+/// enable transforming values inline.
 ///
 /// Unlike standard `map` operations on collections or optionals, these methods
 /// operate on the instance itself. They are used heavily in calculation
@@ -43,9 +43,6 @@ package extension Mappable {
 
     /// Transforms the instance using the provided closure.
     ///
-    /// This method passes `self` into the transformation closure, allowing
-    /// inline, composable transformations without introducing intermediate variables.
-    ///
     /// - Parameter transform: A closure that transforms `self`.
     /// - Returns: The result of applying `transform` to `self`.
     /// - Throws: The ``DiveKitCore/Error`` thrown by `transform`.
@@ -62,39 +59,39 @@ package extension Mappable {
         }
 }
 
-/// Enables internal mapping helpers on blends.
+/// Allows blends to be transformed with the internal mapping helpers.
 ///
 /// - Since: 1.0.0
 extension Blend: Mappable {}
-/// Enables internal mapping helpers on buoyancy values.
+/// Allows buoyancy values to be transformed with the internal mapping helpers.
 ///
 /// - Since: 1.0.0
 extension Buoyancy: Mappable {}
-/// Enables internal mapping helpers on calculations.
+/// Allows calculations to be transformed with the internal mapping helpers.
 ///
 /// - Since: 1.0.0
 extension Calculation: Mappable {}
-/// Enables internal mapping helpers on raw decimal values.
+/// Allows raw decimal values to be transformed with the internal mapping helpers.
 ///
 /// - Since: 1.0.0
 extension Double: Mappable {}
-/// Enables internal mapping helpers on physical objects.
+/// Allows physical objects to be transformed with the internal mapping helpers.
 ///
 /// - Since: 1.0.0
 extension Object: Mappable {}
-/// Enables internal mapping helpers on fractional pressures.
+/// Allows fractional pressures to be transformed with the internal mapping helpers.
 ///
 /// - Since: 1.0.0
 extension FractionalPressure: Mappable {}
-/// Enables internal mapping helpers on partial pressures.
+/// Allows partial pressures to be transformed with the internal mapping helpers.
 ///
 /// - Since: 1.0.0
 extension PartialPressure: Mappable {}
-/// Enables internal mapping helpers on tanks.
+/// Allows tanks to be transformed with the internal mapping helpers.
 ///
 /// - Since: 1.0.0
 extension Tank: Mappable {}
-/// Enables internal mapping helpers on internal tuples.
+/// Allows internal tuples to be transformed with the internal mapping helpers.
 ///
 /// - Since: 1.0.0
 extension Tuple: Mappable {}

@@ -1,24 +1,24 @@
 import Foundation
 import DiveKitCore
 
-/// Makes depth values formattable with localized units.
+/// Allows depth values to be formatted with localized units.
 ///
 /// - Since: 1.0.0
 extension Depth: DecimalUnitLocalizable {}
-/// Makes mass values formattable with localized units.
+/// Allows mass values to be formatted with localized units.
 ///
 /// - Since: 1.0.0
 extension Mass: DecimalUnitLocalizable {}
-/// Makes pressure values formattable with localized units.
+/// Allows pressure values to be formatted with localized units.
 ///
 /// - Since: 1.0.0
 extension Pressure: DecimalUnitLocalizable {}
-/// Makes volume values formattable with localized units.
+/// Allows volume values to be formatted with localized units.
 ///
 /// - Since: 1.0.0
 extension Volume: DecimalUnitLocalizable {}
 
-/// Makes rate values formattable with localized units.
+/// Allows rate values to be formatted with localized units.
 ///
 /// - Since: 1.0.0
 extension Rate: DecimalUnitLocalizable

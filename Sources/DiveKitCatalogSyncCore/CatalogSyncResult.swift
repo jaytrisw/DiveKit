@@ -74,8 +74,10 @@ public struct CatalogSyncResult: Equatable {
     /// - Parameters:
     ///   - action: The synchronization action that was taken or planned.
     ///   - sourceKeyCount: The number of localization keys in the source catalog.
-    ///   - targetKeyCountBeforeSync: The number of localization keys in the target catalog before synchronization.
-    ///   - targetKeyCountAfterSync: The number of localization keys in the target catalog after synchronization.
+    ///   - targetKeyCountBeforeSync: The number of localization keys in the target
+    ///     catalog before synchronization.
+    ///   - targetKeyCountAfterSync: The number of localization keys in the target
+    ///     catalog after synchronization.
     ///   - addedKeys: The sorted list of localization keys added to the target catalog.
     ///
     /// ```swift

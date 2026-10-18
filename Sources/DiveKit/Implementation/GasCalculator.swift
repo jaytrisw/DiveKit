@@ -15,8 +15,8 @@ import DiveKitInternal
 ///   ambient pressure are wrong in the unsafe direction.
 ///
 /// - Warning: These calculations have not been validated for planning real
-///   dives. Check them against published tables, a dive computer, or your
-///   training before relying on them.
+///   dives. Do not use them as a substitute for a dive computer, published
+///   tables, or training.
 ///
 /// - Since: 1.0.0
 final public class GasCalculator: ConfigurationProviding {
@@ -164,14 +164,15 @@ extension GasCalculator: GasCalculating {
 
     /// Calculates the maximum operating depth (MOD) for a gas mixture.
     ///
+    /// The depth is negative when the blend's oxygen fraction exceeds
+    /// `partialPressure`, because the blend exceeds the limit even at the
+    /// surface. For example, EAN80 at 0.7 gives -4.125 ft in imperial salt
+    /// water. Check the sign before presenting the result as a depth.
+    ///
     /// - Parameters:
     ///   - partialPressure: The maximum allowable oxygen partial pressure.
     ///   - blend: The gas mixture.
-    /// - Returns: A calculation containing the maximum operating depth. The depth
-    ///   is negative when the blend's oxygen fraction exceeds `partialPressure`,
-    ///   because the blend exceeds the limit even at the surface. For example,
-    ///   EAN80 at 0.7 gives -4.125 ft in imperial salt water. Check the sign
-    ///   before presenting the result as a depth.
+    /// - Returns: A calculation containing the maximum operating depth.
     /// - Throws: `Error.negative` if `partialPressure` is negative, or
     ///   `Error.range` if the oxygen fraction or `partialPressure` is zero, if
     ///   `partialPressure` or the result is not finite, or if the water model's
@@ -212,10 +213,10 @@ extension GasCalculator: GasCalculating {
     /// Calculates the partial pressure of a gas in a blend at depth.
     ///
     /// - Parameters:
-    ///   - gas: The gas.
-    ///   - blend: The blended mixture.
-    ///   - depth: The depth.
-    ///   - physicsCalculator: A physics calculator.
+    ///   - gas: The gas to evaluate.
+    ///   - blend: The validated blend.
+    ///   - depth: The depth at which to calculate partial pressure.
+    ///   - physicsCalculator: The physics calculator used for absolute pressure.
     /// - Returns: A calculation containing the partial pressure.
     /// - Throws: `Error.negative` if `depth` is negative, or `Error.range` if
     ///   `depth` or the absolute pressure is not finite, or if the water
@@ -247,11 +248,11 @@ extension GasCalculator: GasCalculating {
     /// Calculates surface air consumption (SAC) from start and end pressures.
     ///
     /// - Parameters:
-    ///   - depth: The depth.
+    ///   - depth: The depth at which gas was consumed.
     ///   - minutes: The elapsed time.
-    ///   - startGas: Starting pressure.
-    ///   - endGas: Ending pressure.
-    ///   - physicsCalculator: A physics calculator.
+    ///   - startGas: The starting tank pressure.
+    ///   - endGas: The ending tank pressure.
+    ///   - physicsCalculator: The physics calculator used for absolute pressure.
     /// - Returns: A calculation containing the SAC rate.
     /// - Throws: `Error.negative` if `depth`, `minutes`, `startGas`, `endGas`,
     ///   or the consumed pressure is negative, or `Error.range` if `minutes` is
@@ -300,11 +301,11 @@ extension GasCalculator: GasCalculating {
     /// Calculates respiratory minute volume (RMV).
     ///
     /// - Parameters:
-    ///   - depth: The depth.
+    ///   - depth: The depth at which gas was consumed.
     ///   - minutes: The elapsed time.
-    ///   - gasConsumed: Gas consumed.
-    ///   - tank: The tank used.
-    ///   - physicsCalculator: A physics calculator.
+    ///   - gasConsumed: The consumed tank pressure.
+    ///   - tank: The tank used for the dive.
+    ///   - physicsCalculator: The physics calculator used for absolute pressure.
     /// - Returns: A calculation containing the RMV.
     /// - Throws: `Error.tank` if the tank volume is negative or its rated
     ///   pressure is not positive, `Error.negative` if `depth`, `minutes`, or

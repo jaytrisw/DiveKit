@@ -58,10 +58,10 @@ func decimal(_ string: String) -> Decimal {
 
 // MARK: Model
 
-/// Water vapour 0.0627 bar, in atmospheres.
+/// Water vapor 0.0627 bar, in atmospheres.
 let waterVapor = decimal("0.0627") / decimal("1.01325")
 /// Metric salt water: 10 m per atmosphere.
-let metresPerAtmosphere = Decimal(10)
+let metersPerAtmosphere = Decimal(10)
 
 struct Coefficients {
     let halfTime: Decimal
@@ -143,7 +143,7 @@ for (minutes, nitrogen, helium, gradientFactor) in [
             row: row,
             gradientFactor: decimal(gradientFactor))
     }.max()!
-    let depth = toleratedMax > 1 ? (toleratedMax - 1) * metresPerAtmosphere : 0
+    let depth = toleratedMax > 1 ? (toleratedMax - 1) * metersPerAtmosphere : 0
     print("  \(minutes) min, N₂ \(nitrogen), He \(helium), GF \(gradientFactor): \(depth) m")
 }
 
@@ -156,7 +156,7 @@ for (depth, oxygen, helium, gradientFactor) in [
     ("30", "0.32", "0", "0.85"),
     ("40", "0.18", "0.45", "1")
 ] {
-    let breathed = 1 + decimal(depth) / metresPerAtmosphere - waterVapor
+    let breathed = 1 + decimal(depth) / metersPerAtmosphere - waterVapor
     let nitrogenFraction = 1 - decimal(oxygen) - decimal(helium)
     func ceilingTolerance(after minutes: Decimal) -> Decimal {
         zhl16c.map { row in

@@ -4,9 +4,6 @@ import DiveKitCore
 package extension Calculation {
     /// Creates a calculation representing a blended gas mixture.
     ///
-    /// This convenience method wraps a ``DiveKitCore/Blend`` value in a ``DiveKitCore/Calculation``,
-    /// associating it with the provided configuration.
-    ///
     /// - Parameters:
     ///   - blend: The blended gas mixture.
     ///   - configuration: The calculation configuration.

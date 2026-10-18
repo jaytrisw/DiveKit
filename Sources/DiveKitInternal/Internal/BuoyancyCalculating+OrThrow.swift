@@ -4,11 +4,11 @@ import DiveKitCore
 package extension BuoyancyCalculating {
     /// Calculates the buoyancy of an object in water using the provided configuration.
     ///
-    /// This method determines buoyancy by comparing the weight of the displaced water
-    /// with the object's weight.
+    /// Buoyancy is the weight of the displaced water compared with the object's
+    /// weight.
     ///
     /// Before performing the calculation, the object's weight and volume are validated
-    /// to ensure they are non-negative.
+    /// to ensure they are nonnegative.
     ///
     /// - Parameters:
     ///   - object: The object whose buoyancy is being calculated.

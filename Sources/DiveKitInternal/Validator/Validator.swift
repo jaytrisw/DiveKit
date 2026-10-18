@@ -35,9 +35,6 @@ package struct Validator<Value> {
 package extension Validator {
     /// Returns a validator that succeeds if either validator succeeds.
     ///
-    /// This method composes two validators using logical OR semantics, allowing
-    /// values that satisfy at least one condition to pass validation.
-    ///
     /// - Parameter other: Another validator to combine with.
     /// - Returns: A new validator that returns `true` if either validator returns `true`.
     ///

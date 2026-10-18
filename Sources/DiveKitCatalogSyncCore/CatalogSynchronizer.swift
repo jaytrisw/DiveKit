@@ -19,14 +19,18 @@ public struct CatalogSynchronizer {
         self.fileManager = fileManager
     }
 
-    /// Copies or merges missing keys from a source `.xcstrings` catalog into a target `.xcstrings` catalog.
+    /// Copies or merges missing keys from a source `.xcstrings` catalog into a
+    /// target `.xcstrings` catalog.
     ///
     /// - Parameters:
     ///   - sourceURL: The file URL of the source `.xcstrings` catalog.
     ///   - targetURL: The file URL of the target `.xcstrings` catalog.
-    ///   - dryRun: When `true`, reports the changes that would be made without modifying `targetURL`.
+    ///   - dryRun: When `true`, reports the changes that would be made without
+    ///     modifying `targetURL`.
     /// - Returns: A ``CatalogSyncResult`` describing the keys added or planned.
-    /// - Throws: ``CatalogSyncError`` if the source or target path is invalid or if either catalog cannot be parsed, or any file-system error thrown while reading or writing.
+    /// - Throws: ``CatalogSyncError`` if the source or target path is invalid
+    ///   or if either catalog cannot be parsed, or any file-system error thrown
+    ///   while reading or writing.
     ///
     /// ```swift
     /// let result = try CatalogSynchronizer().sync(

@@ -14,8 +14,8 @@ import DiveKitInternal
 ///   ambient pressure are wrong in the unsafe direction.
 ///
 /// - Warning: These calculations have not been validated for planning real
-///   dives. Check them against published tables, a dive computer, or your
-///   training before relying on them.
+///   dives. Do not use them as a substitute for a dive computer, published
+///   tables, or training.
 ///
 /// - Since: 1.0.0
 public class PhysicsCalculator: ConfigurationProviding {
@@ -61,7 +61,7 @@ extension PhysicsCalculator: PhysicsCalculating {
 
     /// Calculates the volume of air at depth from a known surface volume.
     ///
-    /// This applies Boyle’s Law, reducing volume as pressure increases.
+    /// This applies Boyle's law, reducing volume as pressure increases.
     ///
     /// - Parameters:
     ///   - depth: The target depth.
@@ -97,7 +97,7 @@ extension PhysicsCalculator: PhysicsCalculating {
 
     /// Calculates the surface-equivalent volume of air from a given depth.
     ///
-    /// This applies Boyle’s Law, increasing volume as pressure decreases.
+    /// This applies Boyle's law, increasing volume as pressure decreases.
     ///
     /// - Parameters:
     ///   - depth: The starting depth.

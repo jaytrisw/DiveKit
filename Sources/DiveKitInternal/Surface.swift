@@ -5,7 +5,7 @@ import Foundation
 ///
 /// DiveKit fixes the surface at one atmosphere, as at sea level, and does not
 /// model altitude. Conversions between depth and ambient pressure go through
-/// here, so modelling altitude would change one place.
+/// here, so modeling altitude would change one place.
 ///
 /// - Since: 1.0.0
 package enum Surface {

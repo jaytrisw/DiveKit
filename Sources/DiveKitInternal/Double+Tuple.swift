@@ -21,8 +21,6 @@ package extension Double {
     /// }
     /// ```
     ///
-    /// - Note: This method does not validate either value. It only preserves
-    ///   ordering while forwarding typed domain errors from `transform`.
     /// - Since: 1.0.0
     func with(
         _ transform: () throws(Error) -> Self) throws(Error) -> Tuple<Self, Self> {

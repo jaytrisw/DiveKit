@@ -3,7 +3,7 @@ import Foundation
 /// The localization keys of one unit: its quantity's title, and a description
 /// and quantity key for each ``LocalizationStyle``.
 ///
-/// Depth, mass, pressure and volume units each map themselves to one of these
+/// Depth, mass, pressure, and volume units each map themselves to one of these
 /// and resolve every ``LocalizationComponent`` through it.
 ///
 /// - Since: 1.0.0

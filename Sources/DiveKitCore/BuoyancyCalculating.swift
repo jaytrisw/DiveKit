@@ -27,7 +27,8 @@ public protocol BuoyancyCalculating {
     /// - Returns: A calculation containing the resulting buoyancy.
     /// - Throws: ``Error/negative(_:_:)`` if `weight` or `volume` is negative,
     ///   or ``Error/range(_:_:)`` if `weight`, `volume`, the water model's
-    ///   weight, or the displaced water's weight is not finite, or if the water model's weight is not greater than zero.
+    ///   weight, or the displaced water's weight is not finite, or if the water
+    ///   model's weight is not greater than zero.
     /// - Since: 1.0.0
     func buoyancyOfObject(
         weighing weight: Mass,

@@ -1,7 +1,7 @@
 import Foundation
 import DiveKitCore
 
-/// Makes pressure units provide localized titles, descriptions, and quantities.
+/// Allows pressure units to provide localized titles, descriptions, and quantities.
 ///
 /// - Since: 1.0.0
 extension Pressure.Unit: LocalizationProviding {

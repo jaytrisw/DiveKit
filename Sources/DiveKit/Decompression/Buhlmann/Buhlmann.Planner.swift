@@ -85,7 +85,8 @@ extension Buhlmann.Planner {
         let interval: Double
         let last: Double
 
-        /// Returns the shallowest stop at or deeper than `depth`, or the surface for a depth at or above it.
+        /// Returns the shallowest stop at or deeper than `depth`, or the surface for
+        /// a depth at or above it.
         func roundedUp(_ depth: Double) -> Double {
             guard depth > 0 else { return .zero }
             guard depth > last else { return last }
@@ -96,7 +97,8 @@ extension Buhlmann.Planner {
             return stop(at: index)
         }
 
-        /// Returns the deepest stop at or shallower than `depth`, or the surface for a depth above the last stop.
+        /// Returns the deepest stop at or shallower than `depth`, or the surface for
+        /// a depth above the last stop.
         func roundedDown(_ depth: Double) -> Double {
             guard depth >= last else { return .zero }
             var index = ((depth - last) / interval).rounded(.down)

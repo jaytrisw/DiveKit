@@ -9,11 +9,13 @@ public extension Buhlmann.Table {
     /// Each whole minute from `1` to `999` loads the starting compartments for
     /// that duration and checks that every compartment still tolerates the
     /// surface, at one atmosphere. The limit is the last whole minute before
-    /// the first check that fails. A compartment whose gases load in opposite
-    /// directions at the start, such as nitrogen off-gassing while helium
-    /// on-gasses, can briefly have a ceiling that clears again, so it is also
-    /// checked every second. A ceiling that forms and clears between checks is
-    /// not detected.
+    /// the first check that fails. Ascent time is not included.
+    ///
+    /// A compartment whose gases load in opposite directions at the start, such
+    /// as nitrogen off-gassing while helium on-gasses, can briefly have a
+    /// ceiling that clears again, so it is also checked every second. A
+    /// ceiling that forms and clears between checks is not detected.
+    ///
     /// Inspired pressures are calculated as for
     /// ``Tissue/Inspired/init(of:breathing:at:waterVapor:configuration:)``.
     /// Inert gases in `blend` that a compartment does not track are ignored
@@ -21,7 +23,6 @@ public extension Buhlmann.Table {
     /// ``Tissue/Compartment/loaded(for:inspired:using:)``. That covers air's
     /// trace gases, but also helium for a nitrogen-only compartment breathing
     /// trimix: the compartment takes up none of that gas, so its limit is longer.
-    /// Ascent time is not included.
     ///
     /// - Parameters:
     ///   - compartments: The compartments at the start of the segment, in any order.
@@ -36,17 +37,14 @@ public extension Buhlmann.Table {
     /// - Returns: The limit in whole minutes, rounded down; `.unlimited` if no
     ///   ceiling forms within 999 minutes; or `.exceeded` if a compartment
     ///   already has a ceiling below the surface.
-    /// - Throws: `Error.negative` if `depth` or `waterVapor` is negative, or
-    ///   `Error.range` if either is not finite. Also throws `Error.range` if the
-    ///   configured water's depth per atmosphere is not finite or not greater
-    ///   than `0`, or if the ambient pressure at `depth` or a tolerated pressure
-    ///   is not finite. Throws `Error.gas` if no single row covers every gas a
-    ///   compartment tracks, as for
-    ///   ``ceiling(of:gradientFactor:configuration:)``, and the errors of
-    ///   ``Tissue/Compartment/loaded(for:inspired:using:)`` if `model` returns an
-    ///   invalid tension.
-    ///
-    /// - Warning: See ``Buhlmann`` before relying on this model.
+    /// - Throws: `Error.negative` if `depth` or `waterVapor` is negative;
+    ///   `Error.range` if either is not finite, if the configured water's depth
+    ///   per atmosphere is not finite or not greater than `0`, or if the
+    ///   ambient pressure at `depth` or a tolerated pressure is not finite;
+    ///   `Error.gas` if no single row covers every gas a compartment tracks, as
+    ///   for ``ceiling(of:gradientFactor:configuration:)``; or the errors of
+    ///   ``Tissue/Compartment/loaded(for:inspired:using:)`` if `model` returns
+    ///   an invalid tension.
     ///
     /// ```swift
     /// let compartments = try Buhlmann.Table.zhl16c.compartments(nitrogen: .init(0.74))
@@ -58,6 +56,7 @@ public extension Buhlmann.Table {
     ///     configuration: .init(units: .metric, water: .salt))
     /// ```
     ///
+    /// - Warning: See ``Buhlmann`` before relying on this model.
     /// - Since: 1.0.0
     func noDecompressionLimit(
         of compartments: [Tissue.Compartment],
@@ -80,7 +79,8 @@ public extension Buhlmann.Table {
 }
 
 extension Buhlmann.Table {
-    /// Returns how long the compartments can stay at a constant depth before a ceiling forms, reporting errors at `callSite`.
+    /// Returns how long the compartments can stay at a constant depth before a
+    /// ceiling forms, reporting errors at `callSite`.
     func noDecompressionLimit(
         of compartments: [Tissue.Compartment],
         at depth: Depth,

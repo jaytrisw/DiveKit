@@ -21,8 +21,6 @@ package extension Calculation {
     /// }
     /// ```
     ///
-    /// - Note: The method does not merge configurations or results. It only
-    ///   preserves both calculations in their original form.
     /// - Since: 1.0.0
     func with(_ other: () throws(Error) -> Calculation) throws(Error) -> Tuple<Self, Self> {
         .init(first: self, second: try other())

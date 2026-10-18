@@ -12,7 +12,7 @@ public struct PartialPressure<Gas: GasRepresentable>: Sendable, Equatable, Hasha
     /// - Since: 1.0.0
     public let value: Double
 
-    /// The unit used for partial pressure values.
+    /// The unit used for partial-pressure values.
     ///
     /// - Returns: `.atmospheres`.
     /// - Since: 1.0.0
@@ -20,7 +20,7 @@ public struct PartialPressure<Gas: GasRepresentable>: Sendable, Equatable, Hasha
         .atmospheres
     }
 
-    /// Creates a partial pressure value.
+    /// Creates a partial-pressure value.
     ///
     /// - Parameter value: The raw partial-pressure value.
     /// - Since: 1.0.0

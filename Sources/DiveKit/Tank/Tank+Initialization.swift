@@ -5,9 +5,6 @@ import DiveKitInternal
 public extension Tank {
     /// Creates a tank from an unblended gas mixture and a tank size.
     ///
-    /// This initializer validates and converts the provided unblended gas mixture
-    /// into a blended state before creating the tank.
-    ///
     /// - Parameters:
     ///   - blend: The unblended gas mixture to store in the tank.
     ///   - size: The physical size specification of the tank.

@@ -56,7 +56,7 @@ public struct NarcoticTreatment: Sendable, Hashable {
     /// ```
     ///
     /// Published estimates for helium vary. To use a different one, define
-    /// your own treatment with ``narcotic(_:potency:)``:
+    /// a custom treatment with ``narcotic(_:potency:)``:
     ///
     /// ```swift
     /// extension NarcoticTreatment {

@@ -21,9 +21,9 @@ public extension GasCalculator {
     ///   - overrides: Narcotic potencies that replace each gas's own potency.
     /// - Returns: A calculation containing the equivalent narcotic depth.
     /// - Throws: `Error.negative` if `depth` is negative, or `Error.range` if
-    ///   `depth` is not finite, if a potency is negative or not finite, if air is not narcotic under the
-    ///   given treatments, if the result is not finite,
-    ///   or if the water model's pressure increase is not finite or not
+    ///   `depth` is not finite, if a potency is negative or not finite, if air
+    ///   is not narcotic under the given treatments, if the result is not
+    ///   finite, or if the water model's pressure increase is not finite or not
     ///   greater than zero.
     ///
     /// ```swift
@@ -44,9 +44,6 @@ public extension GasCalculator {
 
     /// Calculates the equivalent narcotic depth (END) for an unblended gas mixture.
     ///
-    /// This method converts an unblended mixture into a blended state and then
-    /// computes the equivalent narcotic depth.
-    ///
     /// - Parameters:
     ///   - depth: The actual depth.
     ///   - blend: The unblended gas mixture.
@@ -54,10 +51,10 @@ public extension GasCalculator {
     /// - Returns: A calculation containing the equivalent narcotic depth.
     /// - Throws: `Error.blend` if the blend cannot be normalized,
     ///   `Error.negative` if `depth` is negative, or `Error.range` if `depth`
-    ///   is not finite, if a potency is negative or not finite, if air is not narcotic under the given
-    ///   treatments, if the result is not finite,
-    ///   or if the water model's pressure increase is not finite or not
-    ///   greater than zero.
+    ///   is not finite, if a potency is negative or not finite, if air is not
+    ///   narcotic under the given treatments, if the result is not finite, or
+    ///   if the water model's pressure increase is not finite or not greater
+    ///   than zero.
     ///
     /// ```swift
     /// let end = try calculator.equivalentNarcoticDepth(

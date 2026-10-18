@@ -5,9 +5,6 @@ import DiveKitInternal
 package extension Blend where State == Blended {
     /// Creates a blended gas mixture using a result builder.
     ///
-    /// This initializer allows declarative construction of a ``Blend`` in the `Blended` state
-    /// using ``BlendBuilder``.
-    ///
     /// - Parameter builder: A result builder that produces a blended ``Blend``.
     ///
     /// ```swift
@@ -26,9 +23,6 @@ package extension Blend where State == Blended {
 
 package extension Blend where State == Unblended {
     /// Creates an unblended gas mixture using a result builder.
-    ///
-    /// This initializer allows declarative construction of a ``Blend`` in the ``Unblended`` state
-    /// using ``BlendBuilder``.
     ///
     /// - Parameter builder: A result builder that produces an unblended ``Blend``.
     ///
@@ -50,9 +44,6 @@ package extension Blend where State == Unblended {
 package extension Blend where State == Blended {
     /// Creates a blended gas mixture using a throwing result builder.
     ///
-    /// This initializer allows declarative construction of a `Blend` in the `Blended` state
-    /// where the builder may throw during evaluation.
-    ///
     /// - Parameter builder: A throwing result builder that produces a blended `Blend`.
     /// - Throws: The `Error` thrown by `builder`.
     ///
@@ -72,9 +63,6 @@ package extension Blend where State == Blended {
 
 package extension Blend where State == Unblended {
     /// Creates an unblended gas mixture using a throwing result builder.
-    ///
-    /// This initializer allows declarative construction of a ``Blend`` in the `Unblended` state
-    /// where the builder may throw during evaluation.
     ///
     /// - Parameter builder: A throwing result builder that produces an unblended ``Blend``.
     /// - Throws: The `Error` thrown by `builder`.

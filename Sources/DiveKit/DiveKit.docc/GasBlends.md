@@ -37,7 +37,7 @@ Fractional pressure values must be within `0...1`.
 
 ## Use Preset Blends
 
-Use `Blend.air` for standard air or `Blend.enrichedAir(_:)` for Nitrox-style mixes.
+Use `Blend.air` for standard air or `Blend.enrichedAir(_:)` for enriched-air mixes.
 
 ```swift
 let air = Blend.air

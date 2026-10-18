@@ -28,7 +28,7 @@ public extension Error {
 ///
 /// - Since: 1.0.0
 extension Error.Blend: Equatable {
-    /// Returns whether two blend payloads have the same case, values and gas identity.
+    /// Returns whether two blend payloads have the same case, values, and gas identity.
     ///
     /// - Parameters:
     ///   - lhs: The first payload.

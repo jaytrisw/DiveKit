@@ -18,9 +18,9 @@ public extension Tissue.Compartment {
     ///   - model: The loading equation. Defaults to ``Tissue/Loading/schreiner``.
     /// - Returns: `.tracked` with the updated compartment, or `.untracked` with
     ///   the updated compartment and the inspired gases it does not track.
-    /// - Throws: `Error.negative` if `duration` is negative, or `Error.range` if
-    ///   it is not finite. Also throws `Error.negative` or `Error.range` if
-    ///   `model` returns a negative or non-finite tension.
+    /// - Throws: `Error.negative` if `duration` is negative, or if `model`
+    ///   returns a negative tension; `Error.range` if `duration` or a tension
+    ///   returned by `model` is not finite.
     ///
     /// ```swift
     /// switch try compartment.loaded(
@@ -82,7 +82,7 @@ extension Tissue.Compartment.Entry {
     /// pressure changes linearly between `breathed.from` and `breathed.to` atmospheres.
     ///
     /// The inspired pressures are `pressure * fraction`, in that order, on every
-    /// loading path, so the calculator, the planner and the no-decompression
+    /// loading path, so the calculator, the planner, and the no-decompression
     /// limit produce bit-identical tensions.
     func loaded(
         for duration: Double,

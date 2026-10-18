@@ -9,7 +9,7 @@ public extension Tissue {
     /// A compartment tracks any number of gases, each with its own half-time and
     /// dissolved tension. All partial pressures are in atmospheres and durations
     /// are in minutes. Inspired pressures are supplied by the caller; this type
-    /// does not derive them from depth, breathing-gas fractions, or water vapour
+    /// does not derive them from depth, breathing-gas fractions, or water vapor
     /// pressure. The model tracks dissolved inert gas only. It does not compute
     /// ceilings, no-decompression limits, or a safe ascent schedule.
     ///
@@ -72,7 +72,7 @@ extension Tissue.Compartment {
     }
 }
 
-/// Enables internal mapping helpers on tissue compartments.
+/// Allows tissue compartments to be transformed with the internal mapping helpers.
 ///
 /// - Since: 1.0.0
 extension Tissue.Compartment: Mappable {}

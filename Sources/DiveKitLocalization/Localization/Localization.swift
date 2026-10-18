@@ -37,7 +37,7 @@ public final class Localization: Sendable {
     /// locale for the current task hierarchy. Outside a scoped override, it
     /// returns the shared default locale.
     ///
-    /// Use `set(_:)` to replace the shared default locale.
+    /// Use ``set(_:)-(Locale)`` to replace the shared default locale.
     ///
     /// - Since: 1.0.0
     public var locale: Locale {

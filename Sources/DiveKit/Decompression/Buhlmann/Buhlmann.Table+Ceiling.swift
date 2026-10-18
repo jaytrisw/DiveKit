@@ -9,9 +9,10 @@ public extension Buhlmann.Table {
     /// Each compartment is matched to the first row whose coefficients cover
     /// every gas it tracks at the gas's half-time; gases are never matched
     /// across rows. Half-times must be equal exactly, as they are for
-    /// compartments built with ``compartments(nitrogen:helium:)``. With several
-    /// inert gases, `a` and `b` are averaged, weighted by each gas's tension.
-    /// The tolerated ambient pressure with gradient factor `GF` is
+    /// compartments built with ``compartments(nitrogen:helium:)``.
+    ///
+    /// With several inert gases, `a` and `b` are averaged, weighted by each
+    /// gas's tension. The tolerated ambient pressure with gradient factor `GF` is
     /// `(P − a·GF) / (GF / b − GF + 1)`, where `P` is the total inert-gas
     /// tension, clamped at `0`; at `GF = 1` this is Bühlmann's `(P − a) · b`. A
     /// compartment with no inert gas tolerates any pressure.
@@ -28,14 +29,11 @@ public extension Buhlmann.Table {
     /// - Returns: A calculation containing the ceiling depth, or `0` if every
     ///   compartment tolerates the surface.
     /// - Throws: `Error.gas` if no single row covers every gas a compartment
-    ///   tracks at its half-time. Gases are checked in order of their
+    ///   tracks at its half-time (gases are checked in order of their
     ///   module-qualified type name, and the first that matches no row shared
-    ///   with the gases before it is reported. Throws `Error.range` if a
-    ///   tolerated pressure or the ceiling depth is not finite,
-    ///   or if the configured water's depth per atmosphere is not finite or not
-    ///   greater than `0`.
-    ///
-    /// - Warning: See ``Buhlmann`` before relying on this model.
+    ///   with the gases before it is reported); `Error.range` if a tolerated
+    ///   pressure or the ceiling depth is not finite, or if the configured
+    ///   water's depth per atmosphere is not finite or not greater than `0`.
     ///
     /// ```swift
     /// let ceiling = try Buhlmann.Table.zhl16c.ceiling(
@@ -44,6 +42,7 @@ public extension Buhlmann.Table {
     ///     configuration: .init(units: .metric, water: .salt))
     /// ```
     ///
+    /// - Warning: See ``Buhlmann`` before relying on this model.
     /// - Since: 1.0.0
     func ceiling(
         of compartments: [Tissue.Compartment],

@@ -7,7 +7,7 @@ public extension Buhlmann {
     /// A set of nitrogen and helium coefficients, one row per compartment.
     ///
     /// Tables are plain values: use a built-in table such as ``zhl16c`` or
-    /// create your own from rows. Compartment state is a plain
+    /// create a custom table from rows. Compartment state is a plain
     /// ``Tissue/Compartment``; the table matches each compartment to the row
     /// whose half-times its tracked gases share exactly, so compartments can be loaded
     /// with ``Tissue/Compartment/loaded(for:inspired:using:)`` and checked against
@@ -31,8 +31,6 @@ public extension Buhlmann {
         ///
         /// - Parameter rows: The table's rows, fastest compartment first.
         ///
-        /// - Warning: See ``Buhlmann`` before relying on this model.
-        ///
         /// ```swift
         /// let table = Buhlmann.Table([
         ///     .init(
@@ -41,6 +39,7 @@ public extension Buhlmann {
         /// ])
         /// ```
         ///
+        /// - Warning: See ``Buhlmann`` before relying on this model.
         /// - Since: 1.0.0
         public init(_ rows: [Row]) {
             self.rows = rows
@@ -80,14 +79,13 @@ public extension Buhlmann.Table {
         ///   - nitrogen: The nitrogen coefficients.
         ///   - helium: The helium coefficients.
         ///
-        /// - Warning: See ``Buhlmann`` before relying on this model.
-        ///
         /// ```swift
         /// let row = Buhlmann.Table.Row(
         ///     nitrogen: try .init(of: .nitrogen, halfTime: .init(5), a: .init(1.1543), b: 0.5578),
         ///     helium: try .init(of: .helium, halfTime: .init(1.88), a: .init(1.5977), b: 0.4770))
         /// ```
         ///
+        /// - Warning: See ``Buhlmann`` before relying on this model.
         /// - Since: 1.0.0
         public init(nitrogen: Buhlmann.Coefficients<Nitrogen>, helium: Buhlmann.Coefficients<Helium>) {
             self.nitrogen = nitrogen

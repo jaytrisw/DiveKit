@@ -19,27 +19,27 @@ public enum LocalizationComponent: Sendable {
     case quantity(_ quantity: Double, _ style: LocalizationStyle)
 }
 
-/// Makes localization components encodable and decodable.
+/// Allows localization components to be encoded and decoded.
 ///
 /// - Since: 1.0.0
 extension LocalizationComponent: Codable {}
-/// Makes localization components usable in hashed collections.
+/// Allows localization components to be used in hashed collections.
 ///
 /// - Since: 1.0.0
 extension LocalizationComponent: Hashable {}
-/// Makes localization components comparable.
+/// Allows localization components to be compared.
 ///
 /// - Since: 1.0.0
 extension LocalizationComponent: Equatable {}
-/// Makes ``LocalizationComponent/title`` satisfy title component requirements.
+/// Allows ``LocalizationComponent/title`` to satisfy title component requirements.
 ///
 /// - Since: 1.0.0
 extension LocalizationComponent: TitleLocalizationComponent {}
-/// Makes ``LocalizationComponent/description(_:)`` satisfy description component requirements.
+/// Allows ``LocalizationComponent/description(_:)`` to satisfy description component requirements.
 ///
 /// - Since: 1.0.0
 extension LocalizationComponent: DescriptionLocalizationComponent {}
-/// Makes ``LocalizationComponent/quantity(_:_:)`` satisfy quantity component requirements.
+/// Allows ``LocalizationComponent/quantity(_:_:)`` to satisfy quantity component requirements.
 ///
 /// - Since: 1.0.0
 extension LocalizationComponent: QuantityLocalizationComponent {}

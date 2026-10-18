@@ -1,7 +1,7 @@
 import Foundation
 import DiveKitCore
 
-/// Makes depth units provide localized titles, descriptions, and quantities.
+/// Allows depth units to provide localized titles, descriptions, and quantities.
 ///
 /// - Since: 1.0.0
 extension Depth.Unit: LocalizationProviding {

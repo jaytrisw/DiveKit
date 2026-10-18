@@ -13,7 +13,7 @@ import Foundation
 ///
 /// - Since: 1.0.0
 public protocol DecompressionCalculating: ConfigurationProviding {
-    /// The inert gas loading of a diver's tissues, in the calculator's model.
+    /// The inert-gas loading of a diver's tissues, in the calculator's model.
     ///
     /// - Since: 1.0.0
     associatedtype Tissues: Sendable, Equatable
@@ -66,7 +66,7 @@ public protocol DecompressionCalculating: ConfigurationProviding {
     ///   - blend: The gas breathed at the start of the ascent.
     ///   - gases: Gases to switch to during the ascent.
     /// - Returns: A calculation containing the schedule.
-    /// - Throws: ``Error`` if `depth`, a gas or the calculator's settings are
+    /// - Throws: ``Error`` if `depth`, a gas, or the calculator's settings are
     ///   invalid, or if no schedule can be found.
     /// - Since: 1.0.0
     func schedule(

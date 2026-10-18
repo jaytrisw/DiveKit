@@ -5,17 +5,14 @@ import DiveKitInternal
 public extension GasCalculating where Self: ConfigurationProviding {
     /// Calculates the partial pressure of a gas from an unblended mixture at depth.
     ///
-    /// This method first converts the unblended mixture into a blended state,
-    /// then calculates the gas's partial pressure at the specified depth.
-    ///
     /// - Parameters:
     ///   - gas: The gas whose partial pressure should be calculated.
     ///   - blend: The unblended gas mixture.
     ///   - depth: The depth at which to calculate partial pressure.
     ///   - physicsCalculator: A calculator used to determine absolute pressure at depth.
     /// - Returns: A calculation containing the partial pressure of the gas.
-    /// - Throws: `Error.blend` if the blend cannot be normalized, or a
-    ///   `Error` from the partial-pressure calculation.
+    /// - Throws: `Error.blend` if the blend cannot be normalized, or the
+    ///   `Error` thrown by the partial-pressure calculation.
     ///
     /// ```swift
     /// let result = try calculator.partialPressure(
@@ -45,7 +42,7 @@ public extension GasCalculating where Self: ConfigurationProviding {
 
     /// Calculates the surface air consumption (SAC) rate.
     ///
-    /// This is a convenience wrapper that uses the receiver’s configuration
+    /// This is a convenience wrapper that uses the receiver's configuration
     /// to normalize gas consumption to surface conditions.
     ///
     /// - Parameters:
@@ -83,9 +80,6 @@ public extension GasCalculating where Self: ConfigurationProviding {
         }
 
     /// Calculates the equivalent air depth (EAD) for a given depth and gas mixture.
-    ///
-    /// This method converts an unblended mixture into a blended state and then
-    /// computes the equivalent air depth based on the nitrogen content.
     ///
     /// - Parameters:
     ///   - depth: The actual depth.

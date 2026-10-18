@@ -88,7 +88,7 @@ final public class BuhlmannCalculator: ConfigurationProviding {
 
 @_spi(Experimental)
 public extension BuhlmannCalculator {
-    /// The inert gas loading of a diver's tissues under a Bühlmann table.
+    /// The inert-gas loading of a diver's tissues under a Bühlmann table.
     ///
     /// Tissues are created by ``BuhlmannCalculator/surfaceTissues()`` and
     /// ``BuhlmannCalculator/loaded(_:through:)``. They keep the table they were
@@ -186,7 +186,7 @@ extension BuhlmannCalculator: DecompressionCalculating {
     /// Calculates the shallowest depth the tissues tolerate at the low gradient factor.
     ///
     /// The low gradient factor is the one the first decompression stop is
-    /// chosen with. Calculated as for
+    /// chosen with. The ceiling is calculated as for
     /// ``Buhlmann/Table/ceiling(of:gradientFactor:configuration:)`` with the
     /// tissues' table.
     ///
@@ -220,10 +220,10 @@ extension BuhlmannCalculator: DecompressionCalculating {
 
     /// Calculates how long the tissues can stay at a depth and still ascend directly to the surface.
     ///
-    /// Uses the high gradient factor, which applies at the surface. Calculated
-    /// as for
+    /// The high gradient factor, which applies at the surface, is used. The
+    /// limit is calculated as for
     /// ``Buhlmann/Table/noDecompressionLimit(of:at:breathing:gradientFactor:waterVapor:configuration:using:)``
-    /// with the tissues' table, ``Settings/waterVapor`` and
+    /// with the tissues' table, ``Settings/waterVapor``, and
     /// ``Tissue/Loading/schreiner``.
     ///
     /// - Parameters:
@@ -261,20 +261,23 @@ extension BuhlmannCalculator: DecompressionCalculating {
     ///
     /// Each gas in `gases` is switched to at its maximum operating depth for
     /// ``Settings/switchPartialPressure``, calculated as for
-    /// ``GasCalculator/maximumOperatingDepth(for:in:)``. The depth is not
-    /// rounded to the stop grid: from the first stop on, a gas is switched to
-    /// at the first stop at or above its switch depth. For example, oxygen at
-    /// 1.6 in salt water has a maximum operating depth of about 19.8 ft, so on
-    /// the default 10 ft grid it is switched to at 10 ft, not 20 ft. A gas
-    /// whose switch depth is shallower than ``Ascent/lastStop`` is never used,
-    /// so with a 20 ft last stop that oxygen is not breathed. For other switch
-    /// depths, use
+    /// ``GasCalculator/maximumOperatingDepth(for:in:)``. If two gases have the
+    /// same switch depth, the first in `gases` is used.
+    ///
+    /// The depth is not rounded to the stop grid: from the first stop on, a gas
+    /// is switched to at the first stop at or above its switch depth. For
+    /// example, oxygen at 1.6 in salt water has a maximum operating depth of
+    /// about 19.8 ft, so on the default 10 ft grid it is switched to at 10 ft,
+    /// not 20 ft. A gas whose switch depth is shallower than
+    /// ``Ascent/lastStop`` is never used, so with a 20 ft last stop that oxygen
+    /// is not breathed.
+    ///
+    /// For other switch depths, use
     /// ``Buhlmann/Table/schedule(of:from:breathing:switches:gradientFactors:ascent:waterVapor:configuration:using:)``.
-    /// If two gases have the same switch depth, the first in `gases` is used.
     ///
     /// The ascent is calculated as for that method with the tissues' table,
     /// ``Settings/gradientFactors``, ``Settings/ascent``,
-    /// ``Settings/waterVapor`` and ``Tissue/Loading/schreiner``. As there, a
+    /// ``Settings/waterVapor``, and ``Tissue/Loading/schreiner``. As there, a
     /// gas whose switch depth is at or deeper than `depth` is breathed from the
     /// start instead of `blend`.
     ///
@@ -286,12 +289,11 @@ extension BuhlmannCalculator: DecompressionCalculating {
     /// - Returns: A calculation containing the schedule, which is empty if
     ///   `depth` is `0`.
     /// - Throws: `Error.negative` if ``Settings/switchPartialPressure`` is
-    ///   negative, or `Error.range` if it is not finite or is zero, even when
-    ///   `gases` is empty. Throws the errors of
+    ///   negative, or if a gas's oxygen fraction is above it, since its switch
+    ///   depth would then be above the surface; `Error.range` if it is not
+    ///   finite or is zero, even when `gases` is empty; the errors of
     ///   ``GasCalculator/maximumOperatingDepth(for:in:)`` for each gas, such as
-    ///   `Error.range` if a gas has no oxygen. Throws `Error.negative` if a gas's
-    ///   oxygen fraction is above ``Settings/switchPartialPressure``, since its
-    ///   switch depth would be above the surface. Also throws the errors of
+    ///   `Error.range` if a gas has no oxygen; or the errors of
     ///   ``Buhlmann/Table/schedule(of:from:breathing:switches:gradientFactors:ascent:waterVapor:configuration:using:)``.
     ///
     /// ```swift

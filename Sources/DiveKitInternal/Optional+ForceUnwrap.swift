@@ -55,7 +55,7 @@ extension Optional {
 ///   terminate execution. It should only be used when interoperating with APIs
 ///   that expect exception-based failure.
 ///
-/// - Note: The `preconditionFailure` is included as a fallback to satisfy Swift’s
+/// - Note: The `preconditionFailure` is included as a fallback to satisfy Swift's
 ///   control flow analysis, but is not expected to be reached under normal circumstances.
 /// - Since: 1.0.0
 package func raise<T>(

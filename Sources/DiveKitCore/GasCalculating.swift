@@ -16,7 +16,8 @@ public protocol GasCalculating {
     /// - Returns: A calculation containing gas partial pressure.
     /// - Throws: ``Error/negative(_:_:)`` if `depth` is negative, or
     ///   ``Error/range(_:_:)`` if `depth` or the absolute pressure is not
-    ///   finite, or if the water model's pressure increase is not finite or not greater than zero.
+    ///   finite, or if the water model's pressure increase is not finite or not
+    ///   greater than zero.
     /// - Since: 1.0.0
     func partialPressure<Gas: GasRepresentable>(
         of fractionalPressure: FractionalPressure<Gas>,
@@ -33,7 +34,8 @@ public protocol GasCalculating {
     /// - Throws: ``Error/negative(_:_:)`` if `depth` or `partialPressure` is
     ///   negative, or ``Error/range(_:_:)`` if `depth` or `partialPressure` is
     ///   not finite, if `partialPressure` is zero, if the resulting oxygen
-    ///   fraction rounds down to zero, or if the water model's pressure increase is not finite or not greater than zero.
+    ///   fraction rounds down to zero, or if the water model's pressure
+    ///   increase is not finite or not greater than zero.
     /// - Note: When `partialPressure` exceeds the ambient pressure, no mix
     ///   reaches it and the result is pure oxygen.
     /// - Since: 1.0.0
@@ -58,12 +60,14 @@ public protocol GasCalculating {
 
     /// Calculates maximum operating depth for a validated gas blend.
     ///
+    /// The depth is negative when the blend's oxygen fraction exceeds
+    /// `partialPressure`, because the blend exceeds the limit even at the
+    /// surface.
+    ///
     /// - Parameters:
     ///   - partialPressure: The maximum allowed oxygen partial pressure.
     ///   - blend: The validated blend.
-    /// - Returns: A calculation containing maximum operating depth. The depth is
-    ///   negative when the blend's oxygen fraction exceeds `partialPressure`,
-    ///   because the blend exceeds the limit even at the surface.
+    /// - Returns: A calculation containing maximum operating depth.
     /// - Throws: ``Error/negative(_:_:)`` if `partialPressure` is negative, or
     ///   ``Error/range(_:_:)`` if `partialPressure` or the blend's oxygen
     ///   fraction is zero, if `partialPressure` or the result is not finite, or
@@ -83,7 +87,8 @@ public protocol GasCalculating {
     /// - Returns: A calculation containing gas partial pressure.
     /// - Throws: ``Error/negative(_:_:)`` if `depth` is negative, or
     ///   ``Error/range(_:_:)`` if `depth` or the absolute pressure is not
-    ///   finite, or if the water model's pressure increase is not finite or not greater than zero.
+    ///   finite, or if the water model's pressure increase is not finite or not
+    ///   greater than zero.
     /// - Since: 1.0.0
     func partialPressure<Gas: GasRepresentable>(
         of gas: Gas,
@@ -103,7 +108,8 @@ public protocol GasCalculating {
     /// - Throws: ``Error/negative(_:_:)`` if `depth`, `minutes`, `startGas`,
     ///   `endGas`, or the consumed pressure is negative, or
     ///   ``Error/range(_:_:)`` if `minutes` is zero, if `depth`, `minutes`,
-    ///   `startGas`, `endGas`, or the result is not finite, or if the water model's pressure increase is not finite or not greater than zero.
+    ///   `startGas`, `endGas`, or the result is not finite, or if the water
+    ///   model's pressure increase is not finite or not greater than zero.
     /// - Since: 1.0.0
     func surfaceAirConsumption(
         at depth: Depth,

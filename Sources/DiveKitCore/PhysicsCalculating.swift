@@ -26,7 +26,8 @@ public protocol PhysicsCalculating {
     /// - Returns: A calculation containing volume at depth.
     /// - Throws: ``Error/negative(_:_:)`` if `depth` or `volume` is negative,
     ///   or ``Error/range(_:_:)`` if `depth`, `volume`, or the result is not
-    ///   finite, or if the water model's pressure increase is not finite or not greater than zero.
+    ///   finite, or if the water model's pressure increase is not finite or not
+    ///   greater than zero.
     /// - Since: 1.0.0
     func airVolumeFromSurface(
         to depth: Depth,
@@ -40,7 +41,8 @@ public protocol PhysicsCalculating {
     /// - Returns: A calculation containing surface-equivalent volume.
     /// - Throws: ``Error/negative(_:_:)`` if `depth` or `volume` is negative,
     ///   or ``Error/range(_:_:)`` if `depth`, `volume`, or the result is not
-    ///   finite, or if the water model's pressure increase is not finite or not greater than zero.
+    ///   finite, or if the water model's pressure increase is not finite or not
+    ///   greater than zero.
     /// - Since: 1.0.0
     func airVolumeToSurface(
         from depth: Depth,
@@ -65,7 +67,8 @@ public protocol PhysicsCalculating {
     /// - Returns: A calculation containing the pressure difference.
     /// - Throws: ``Error/negative(_:_:)`` if either depth is negative, or
     ///   ``Error/range(_:_:)`` if either depth or either absolute pressure is
-    ///   not finite, or if the water model's pressure increase is not finite or not greater than zero.
+    ///   not finite, or if the water model's pressure increase is not finite or
+    ///   not greater than zero.
     /// - Since: 1.0.0
     func pressureChange(
         from firstDepth: Depth,

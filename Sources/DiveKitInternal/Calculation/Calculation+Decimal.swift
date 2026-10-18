@@ -4,9 +4,6 @@ import DiveKitCore
 package extension Calculation {
     /// Creates a decimal calculation using a unit from the active configuration.
     ///
-    /// This factory wraps a raw ``Swift/Double`` in a ``DiveKitCore/DecimalResult`` and stores the
-    /// configuration used to produce it.
-    ///
     /// - Parameters:
     ///   - value: The numeric result of the calculation.
     ///   - keyPath: A key path to the configured unit for `Value`.
