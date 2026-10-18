@@ -3,7 +3,7 @@ import Foundation
 import DiveKitInternal
 
 @_spi(Experimental)
-public extension Ascent {
+public extension AscentProfile {
     /// Creates an ascent, validating each value.
     ///
     /// - Parameters:
@@ -13,7 +13,7 @@ public extension Ascent {
     /// - Throws: `Error.range` if any value is not finite or is not greater than `0`.
     ///
     /// ```swift
-    /// let ascent = try Ascent(rate: .init(9), stopInterval: .init(3), lastStop: .init(3))
+    /// let ascent = try AscentProfile(rate: .init(9), stopInterval: .init(3), lastStop: .init(3))
     /// ```
     ///
     /// - Warning: See ``Buhlmann`` before relying on this model.

@@ -269,7 +269,7 @@ extension BuhlmannCalculator: DecompressionCalculating {
     /// example, oxygen at 1.6 in salt water has a maximum operating depth of
     /// about 19.8 ft, so on the default 10 ft grid it is switched to at 10 ft,
     /// not 20 ft. A gas whose switch depth is shallower than
-    /// ``Ascent/lastStop`` is never used, so with a 20 ft last stop that oxygen
+    /// ``AscentProfile/lastStop`` is never used, so with a 20 ft last stop that oxygen
     /// is not breathed.
     ///
     /// For other switch depths, use

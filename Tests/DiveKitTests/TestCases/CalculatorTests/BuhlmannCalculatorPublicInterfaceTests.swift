@@ -10,7 +10,7 @@ struct BuhlmannCalculatorPublicInterfaceTests {
         try await given {
             var settings = BuhlmannCalculator.Settings.defaults(for: .metric)
             settings.gradientFactors = try GradientFactors(low: try GradientFactor(0.3), high: try GradientFactor(0.85))
-            settings.ascent = try Ascent(rate: .init(10), stopInterval: .init(3), lastStop: .init(6))
+            settings.ascent = try AscentProfile(rate: .init(10), stopInterval: .init(3), lastStop: .init(6))
             return BuhlmannCalculator(configuration: .init(units: .metric, water: .salt), settings: settings)
         } when: { (calculator: BuhlmannCalculator) throws -> (limit: NoDecompressionLimit, schedule: DecompressionSchedule) in
             let tissues = try calculator.loaded(

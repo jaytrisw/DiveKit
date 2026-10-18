@@ -11,7 +11,7 @@ import Foundation
 ///   planning real dives.
 ///
 /// - Since: 1.0.0
-public struct Ascent: Sendable, Hashable {
+public struct AscentProfile: Sendable, Hashable {
     /// The ascent rate, in the configured depth units per minute.
     ///
     /// - Since: 1.0.0
