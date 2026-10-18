@@ -191,25 +191,6 @@ extension GasCalculator: GasCalculating {
             try maximumOperatingDepth(for: partialPressure, in: blend, .from(self))
         }
 
-    func maximumOperatingDepth(
-        for partialPressure: PartialPressure<Oxygen>,
-        in blend: Blend<Blended>,
-        _ callSite: CallSite) throws(DiveKit.Error) -> Calculation<DecimalResult<Depth>> {
-            let increase = try configuration.pressureIncrease(callSite)
-            return try blend.fractionalPressure(of: .oxygen).value
-                .validate(using: .greater(than: 0)) {
-                    .range(.lowerBound($0, 0), callSite)
-                }
-                .with { (_: Double) throws(DiveKit.Error) in
-                    try partialPressure
-                        .validatedFiniteNonNegative(callSite)
-                        .validate(using: .greater(than: 0)) { .range(.lowerBound($0.value, 0), callSite) }
-                }
-                .map { Surface.depth(atAmbientPressure: $0.second.value / $0.first, increase: increase) }
-                .validatedFinite(callSite)
-                .map { .decimal($0, unit: \.depth, from: configuration) }
-        }
-
     /// Calculates the partial pressure of a gas in a blend at depth.
     ///
     /// - Parameters:
@@ -355,6 +336,32 @@ extension GasCalculator: GasCalculating {
                 .map { $0.result.value * tank.size.conversionFactor(for: configuration.units) }
                 .validatedFinite(callSite)
                 .map { .decimal($0, unit: .perMinute(configuration.units.volume), configuration: configuration) }
+        }
+}
+
+extension GasCalculator {
+    /// Calculates the maximum operating depth for a gas mixture, reporting
+    /// errors at `callSite`.
+    ///
+    /// `BuhlmannCalculator` uses this to derive switch depths, so its errors
+    /// keep the public method's call site.
+    func maximumOperatingDepth(
+        for partialPressure: PartialPressure<Oxygen>,
+        in blend: Blend<Blended>,
+        _ callSite: CallSite) throws(DiveKit.Error) -> Calculation<DecimalResult<Depth>> {
+            let increase = try configuration.pressureIncrease(callSite)
+            return try blend.fractionalPressure(of: .oxygen).value
+                .validate(using: .greater(than: 0)) {
+                    .range(.lowerBound($0, 0), callSite)
+                }
+                .with { (_: Double) throws(DiveKit.Error) in
+                    try partialPressure
+                        .validatedFiniteNonNegative(callSite)
+                        .validate(using: .greater(than: 0)) { .range(.lowerBound($0.value, 0), callSite) }
+                }
+                .map { Surface.depth(atAmbientPressure: $0.second.value / $0.first, increase: increase) }
+                .validatedFinite(callSite)
+                .map { .decimal($0, unit: \.depth, from: configuration) }
         }
 }
 
