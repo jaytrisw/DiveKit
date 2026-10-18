@@ -57,6 +57,7 @@ jobs:
           swift test --filter DiveKitCatalogSyncTests
 
       - name: Run tests
+        timeout-minutes: 15
         env:
           COLLECT_COVERAGE: ${{ inputs.collect_coverage }}
         run: |
@@ -157,6 +158,7 @@ jobs:
           retention-days: 7
 
       - name: Run iOS tests
+        timeout-minutes: 20
         run: |
           set -euo pipefail
 
