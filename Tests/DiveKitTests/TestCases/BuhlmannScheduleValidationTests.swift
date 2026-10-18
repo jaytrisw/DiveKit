@@ -47,8 +47,8 @@ struct BuhlmannScheduleValidationTests {
             (rate: Rate<Depth>(rate), stopInterval: Depth(stopInterval), lastStop: Depth(lastStop))
         } when: { ascent in
             try expectThrowsError(
-                when: try Ascent(rate: ascent.rate, stopInterval: ascent.stopInterval, lastStop: ascent.lastStop),
-                then: .range(expected, "Ascent.init(rate:stopInterval:lastStop:)")) { error in
+                when: try AscentProfile(rate: ascent.rate, stopInterval: ascent.stopInterval, lastStop: ascent.lastStop),
+                then: .range(expected, "AscentProfile.init(rate:stopInterval:lastStop:)")) { error in
                 #expect(error.localizationValue == .init(key))
             }
         }

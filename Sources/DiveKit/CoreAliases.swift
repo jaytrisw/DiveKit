@@ -1,7 +1,7 @@
 @_spi(Experimental) import DiveKitCore
 
 @_spi(Experimental) @_documentation(visibility: private)
-public typealias Ascent = DiveKitCore.Ascent
+public typealias AscentProfile = DiveKitCore.AscentProfile
 @_documentation(visibility: private)
 public typealias Blend = DiveKitCore.Blend
 @_documentation(visibility: private)

@@ -117,6 +117,22 @@ Localization.standard.withLocale(Locale(identifier: "en_US")) {
 }
 ```
 
+## Copy DiveKit's Strings into an App Catalog
+
+DiveKit includes the `catalog-sync` command plugin, which copies DiveKit's string catalog keys into a host app's catalog so the app can override or translate them. After syncing into the app's default catalog, install `.catalog(in: .main)` as shown above.
+
+```sh
+swift package plugin \
+  --package divekit \
+  --allow-writing-to-package-directory \
+  catalog-sync \
+  --target Sources/App/Resources/Localizable.xcstrings
+```
+
+Add `--dry-run` to preview the changes without writing. In Xcode, run the plugin from the host project or target and pass the catalog path as its argument.
+
+The sync only adds missing keys. When the target catalog doesn't exist, the plugin copies DiveKit's catalog to that path. After that, existing keys are never changed, so the app's overrides and translations survive, but a DiveKit release that changes a default string, adds plural variants, or adds a localization to an existing key is not picked up. Review those keys by hand when updating DiveKit. The README covers projects without a `Package.swift` and catalogs outside the package directory.
+
 ## Additional API Names
 
 ### Localization Types

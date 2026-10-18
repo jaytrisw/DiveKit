@@ -23,8 +23,8 @@ public extension Buhlmann.Table {
     ///    to the high value at the surface. From the first stop on, gases are
     ///    switched at the first stop at or above their switch depths.
     ///
-    /// Stops after the first are at ``Ascent/lastStop`` and every
-    /// ``Ascent/stopInterval`` below it; the free ascent never goes
+    /// Stops after the first are at ``AscentProfile/lastStop`` and every
+    /// ``AscentProfile/stopInterval`` below it; the free ascent never goes
     /// shallower than the last stop.
     ///
     /// A gas whose switch depth is at or deeper than `depth` is breathed from
@@ -90,7 +90,7 @@ public extension Buhlmann.Table {
         breathing blend: Blend<Blended>,
         switches: [Depth: Blend<Blended>] = [:],
         gradientFactors: GradientFactors = .full,
-        ascent: Ascent,
+        ascent: AscentProfile,
         waterVapor: Pressure = Tissue.alveolarWaterVapor,
         configuration: Configuration,
         using model: Tissue.Loading = .schreiner) throws(Error) -> Calculation<DecompressionSchedule> {
@@ -116,7 +116,7 @@ extension Buhlmann.Table {
         breathing blend: Blend<Blended>,
         switches: [Depth: Blend<Blended>] = [:],
         gradientFactors: GradientFactors = .full,
-        ascent: Ascent,
+        ascent: AscentProfile,
         waterVapor: Pressure = Tissue.alveolarWaterVapor,
         configuration: Configuration,
         using model: Tissue.Loading = .schreiner,

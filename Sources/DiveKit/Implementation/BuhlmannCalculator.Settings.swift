@@ -28,7 +28,7 @@ public extension BuhlmannCalculator {
         /// The ascent rate and stop depths, in the configured units.
         ///
         /// - Since: 1.0.0
-        public var ascent: Ascent
+        public var ascent: AscentProfile
 
         /// The alveolar water vapor pressure in atmospheres.
         ///
@@ -65,7 +65,7 @@ public extension BuhlmannCalculator {
         ///
         /// - Since: 1.0.0
         public static func defaults(for units: Units) -> Self {
-            let ascent: Ascent = switch units {
+            let ascent: AscentProfile = switch units {
                 case .metric: .init(unchecked: .init(9), stopInterval: .init(3), lastStop: .init(3))
                 case .imperial: .init(unchecked: .init(30), stopInterval: .init(10), lastStop: .init(10))
             }

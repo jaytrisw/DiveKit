@@ -6,7 +6,7 @@ Build diving calculations with typed values, validated gas blends, localized uni
 
 DiveKit provides calculators and model types for common recreational diving calculations. The public `DiveKit` module re-exports the core domain types and adds validated construction, convenience APIs, and localization support.
 
-Use `Configuration` to choose a unit system and water model, then create a calculator for the domain you need:
+Use `Configuration` to choose a unit system and water model, then create a calculator for the domain:
 
 ```swift
 import DiveKit
@@ -144,6 +144,7 @@ DiveKit's calculations have not been validated for planning real dives. Do not u
 - <doc:GasBlends>
 - <doc:Localization>
 - <doc:Errors>
+- <doc:ExperimentalAPIs>
 
 ### Calculators
 
