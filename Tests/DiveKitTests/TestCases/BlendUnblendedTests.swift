@@ -201,17 +201,32 @@ struct BlendUnblendedTests {
         (0...(100 - oxygen)).map { helium in (oxygen, helium) }
     }
 
-    @Test(arguments: wholePercentTrimixes)
-    func blendAcceptsEveryWholePercentTrimix(oxygen: Int, helium: Int) async throws {
-        try await given {
-            try Blend<Unblended>()
-                .adding(.oxygen, pressure: Double(oxygen) / 100)
-                .adding(.helium, pressure: Double(helium) / 100)
-                .filling(with: Nitrogen())
-        } when: { blend in
-            try blend.blend()
-        } then: { _, result in
-            #expect(result.totalPressure.isApproximately(1))
+    // One test that loops, not 5,050 parameterized cases: under xcodebuild each
+    // case is a reported event, and that many stalls the test run on CI.
+    @Test
+    func blendAcceptsEveryWholePercentTrimix() async {
+        await given {
+            Self.wholePercentTrimixes
+        } when: { mixes in
+            mixes.map { oxygen, helium in
+                Result {
+                    try Blend<Unblended>()
+                        .adding(.oxygen, pressure: Double(oxygen) / 100)
+                        .adding(.helium, pressure: Double(helium) / 100)
+                        .filling(with: Nitrogen())
+                        .blend()
+                        .totalPressure
+                }
+            }
+        } then: { mixes, totalPressures in
+            for ((oxygen, helium), totalPressure) in zip(mixes, totalPressures) {
+                switch totalPressure {
+                    case let .success(totalPressure):
+                        #expect(totalPressure.isApproximately(1), "Tx \(oxygen)/\(helium)")
+                    case let .failure(error):
+                        Issue.record(error, "Tx \(oxygen)/\(helium)")
+                }
+            }
         }
     }
 
