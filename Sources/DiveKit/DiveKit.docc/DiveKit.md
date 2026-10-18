@@ -144,6 +144,7 @@ DiveKit's calculations have not been validated for planning real dives. Do not u
 - <doc:GasBlends>
 - <doc:Localization>
 - <doc:Errors>
+- <doc:ExperimentalAPIs>
 
 ### Calculators
 
