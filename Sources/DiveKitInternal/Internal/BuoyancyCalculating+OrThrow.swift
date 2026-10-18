@@ -39,15 +39,13 @@ package extension BuoyancyCalculating {
         _ callSite: CallSite) throws(Error) -> Calculation<Buoyancy> {
             let waterWeight = try configuration.waterWeight(callSite)
             return try object.weight
-                .validate(using: .finite) { .range(.upperBound($0.value, .greatestFiniteMagnitude), callSite) }
-                .validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
+                .validatedFiniteNonNegative(callSite)
                 .map { (_: Mass) throws(Error) in
                     try object.volume
-                        .validate(using: .finite) { .range(.upperBound($0.value, .greatestFiniteMagnitude), callSite) }
-                        .validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
+                        .validatedFiniteNonNegative(callSite)
                 }
                 .map { $0.value * waterWeight }
-                .validate(using: .finite) { .range(.upperBound($0, .greatestFiniteMagnitude), callSite) }
+                .validatedFinite(callSite)
                 .map { $0 - object.weight.value }
                 .map { .buoyancy($0, configuration: configuration) }
         }

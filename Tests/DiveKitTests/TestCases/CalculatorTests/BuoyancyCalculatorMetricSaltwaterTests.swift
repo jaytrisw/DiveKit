@@ -252,21 +252,11 @@ struct BuoyancyCalculatorMetricSaltwaterTests {
     }
 
     @Test(.tags(.error), arguments: NonFiniteInput.allCases)
-    func metricSaltwaterRejectsNaNInput(input: NonFiniteInput) async {
-        await given {
+    func metricSaltwaterRejectsNaNInput(input: NonFiniteInput) async throws {
+        try await given {
             input
         } when: { input in
-            let error = #expect(throws: Error.self) {
-                try input.run(with: .nan)
-            }
-            guard case let .range(.upperBound(provided, upperBound), callSite) = error else {
-                Issue.record("Expected an upper-bound error, got \(String(describing: error)).")
-                return
-            }
-            #expect(provided.isNaN)
-            #expect(upperBound == .greatestFiniteMagnitude)
-            #expect(callSite == input.callSite)
-            #expect(error?.localizationValue == "dive.kit.error.range.upper.bound")
+            expectThrowsNaNUpperBound(when: try input.run(with: .nan), callSite: input.callSite)
         }
     }
 

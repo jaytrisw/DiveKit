@@ -69,21 +69,11 @@ extension GasCalculatorImperialSaltwaterTests {
     }
 
     @Test(.tags(.error), arguments: NonFiniteInput.all)
-    func rejectsNaNInput(input: NonFiniteInput) async {
-        await given {
+    func rejectsNaNInput(input: NonFiniteInput) async throws {
+        try await given {
             input
         } when: { input in
-            let error = #expect(throws: Error.self) {
-                try input.run(.nan, self.sut, self.physicsCalculator)
-            }
-            guard case let .range(.upperBound(provided, upperBound), callSite) = error else {
-                Issue.record("Expected an upper-bound error, got \(String(describing: error)).")
-                return
-            }
-            #expect(provided.isNaN)
-            #expect(upperBound == .greatestFiniteMagnitude)
-            #expect(callSite == input.callSite)
-            #expect(error?.localizationValue == "dive.kit.error.range.upper.bound")
+            expectThrowsNaNUpperBound(when: try input.run(.nan, self.sut, self.physicsCalculator), callSite: input.callSite)
         }
     }
 

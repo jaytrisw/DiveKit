@@ -108,19 +108,17 @@ extension BuoyancyCalculator: BuoyancyCalculating {
             switch buoyancy {
                 case let .positive(magnitude), let .negative(magnitude):
                     try magnitude
-                        .validate(using: .finite) { .range(.upperBound($0, .greatestFiniteMagnitude), callSite) }
+                        .validatedFinite(callSite)
                         .validate(using: .greater(than: 0)) { .range(.lowerBound($0, 0), callSite) }
                 case .neutral:
                     break
             }
             return try weight
-                .validate(using: .finite) { .range(.upperBound($0.value, .greatestFiniteMagnitude), callSite) }
-                .validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
+                .validatedFiniteNonNegative(callSite)
                 .map { $0.value + buoyancy.buoyantForce }
-                .validate(using: .finite) { .range(.upperBound($0, .greatestFiniteMagnitude), callSite) }
+                .validatedFinite(callSite)
                 .map { Volume($0 / waterWeight) }
-                .validate(using: .finite) { .range(.upperBound($0.value, .greatestFiniteMagnitude), callSite) }
-                .validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
+                .validatedFiniteNonNegative(callSite)
                 .map { .decimal($0.value, unit: \.volume, from: configuration) }
         }
 }

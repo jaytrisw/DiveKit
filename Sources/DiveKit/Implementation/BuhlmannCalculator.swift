@@ -169,11 +169,15 @@ extension BuhlmannCalculator: DecompressionCalculating {
         let increase = try configuration.pressureIncrease(callSite)
         var compartments = tissues.compartments
         for segment in profile {
-            let start = try Tissue.breathedPressure(at: segment.start, waterVapor: waterVapor, increase: increase, callSite)
-            let end = segment.end == segment.start ? start : try Tissue.breathedPressure(at: segment.end, waterVapor: waterVapor, increase: increase, callSite)
+            let breathed = try Tissue.breathedPressures(
+                from: segment.start,
+                to: segment.end,
+                waterVapor: waterVapor,
+                increase: increase,
+                callSite)
             let fractions = segment.blend.fractions
             compartments = try compartments.map { (compartment: Tissue.Compartment) throws(DiveKit.Error) in
-                try compartment.loaded(for: segment.duration.value, breathing: fractions, from: start, to: end, using: .schreiner, callSite)
+                try compartment.loaded(for: segment.duration.value, breathing: fractions, breathed: breathed, using: .schreiner, callSite)
             }
         }
         return .init(table: tissues.table, compartments: compartments)
@@ -308,8 +312,7 @@ extension BuhlmannCalculator: DecompressionCalculating {
         switchingTo gases: [Blend<Blended>]) throws(DiveKit.Error) -> Calculation<DecompressionSchedule> {
             let callSite: CallSite = .from(self)
             try settings.switchPartialPressure
-                .validate(using: .finite) { .range(.upperBound($0.value, .greatestFiniteMagnitude), callSite) }
-                .validate(using: .nonNegative) { .negative($0, callSite) }
+                .validatedFiniteNonNegative(callSite)
                 .validate(using: .greater(than: .zero)) { .range(.lowerBound($0.value, .zero), callSite) }
             let gasCalculator = GasCalculator(configuration: configuration)
             var switches: [Depth: Blend<Blended>] = [:]

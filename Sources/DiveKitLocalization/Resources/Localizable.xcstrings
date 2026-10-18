@@ -1,6 +1,26 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "dive.kit.error.blend.gas.already.present" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blend already contains this gas; update it instead"
+          }
+        }
+      }
+    },
+    "dive.kit.error.blend.gas.not.present" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blend does not contain this gas; add it first"
+          }
+        }
+      }
+    },
     "dive.kit.error.blend.pressure.range" : {
       "localizations" : {
         "en" : {

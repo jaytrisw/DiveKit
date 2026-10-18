@@ -115,16 +115,14 @@ package extension GasCalculating {
         with configuration: Configuration,
         _ callSite: CallSite) throws(Error) -> Calculation<DecimalResult<Rate<Pressure>>> {
             try minutes
-                .validate(using: .finite) { .range(.upperBound($0.value, .greatestFiniteMagnitude), callSite) }
-                .validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
+                .validatedFiniteNonNegative(callSite)
                 .validate(using: .greater(than: 0)) { .range(.lowerBound($0.value, 0), callSite) }
                 .map { (_: Minutes) throws(Error) in
                     try gasConsumed
-                        .validate(using: .finite) { .range(.upperBound($0.value, .greatestFiniteMagnitude), callSite) }
-                        .validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
+                        .validatedFiniteNonNegative(callSite)
                 }
                 .map { gasConsumed.value / minutes.value }
-                .validate(using: .finite) { .range(.upperBound($0, .greatestFiniteMagnitude), callSite) }
+                .validatedFinite(callSite)
                 .map { .decimal($0, unit: .perMinute(configuration.units.pressure), configuration: configuration) }
         }
 

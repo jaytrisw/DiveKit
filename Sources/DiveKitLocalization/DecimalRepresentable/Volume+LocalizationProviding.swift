@@ -11,51 +11,30 @@ extension Volume.Unit: LocalizationProviding {
     /// - Returns: The localized text for `component`.
     /// - Since: 1.0.0
     public func localization(for component: LocalizationComponent) -> String {
-        switch component {
-            case .title:
-                localizedString(for: LocalizedKey.Unit.Volume.title)
-            case let .description(style):
-                localizedString(for: description(style))
-            case let .quantity(value, style):
-                localizedString(for: quantity(style), quantity: value)
-        }
+        localizationKeys.localization(for: component)
     }
 }
 
 private extension Volume.Unit {
-    /// Returns the localization key for a volume unit description.
+    /// The localization keys for this unit.
     ///
-    /// - Parameter style: The localization style to use.
-    /// - Returns: A localization key.
     /// - Since: 1.0.0
-    func description(_ style: LocalizationStyle) -> String.LocalizationValue {
-        switch (self, style) {
-            case (.cubicFeet, .short):
-                LocalizedKey.Unit.Volume.shortDescriptionImperial
-            case (.cubicFeet, .full):
-                LocalizedKey.Unit.Volume.fullDescriptionImperial
-            case (.liters, .short):
-                LocalizedKey.Unit.Volume.shortDescriptionMetric
-            case (.liters, .full):
-                LocalizedKey.Unit.Volume.fullDescriptionMetric
-        }
-    }
-
-    /// Returns the localization key for a volume unit quantity.
-    ///
-    /// - Parameter style: The localization style to use.
-    /// - Returns: A localization key.
-    /// - Since: 1.0.0
-    func quantity(_ style: LocalizationStyle) -> String.LocalizationValue {
-        switch (self, style) {
-            case (.cubicFeet, .short):
-                LocalizedKey.Unit.Volume.shortQuantityImperial
-            case (.cubicFeet, .full):
-                LocalizedKey.Unit.Volume.fullQuantityImperial
-            case (.liters, .short):
-                LocalizedKey.Unit.Volume.shortQuantityMetric
-            case (.liters, .full):
-                LocalizedKey.Unit.Volume.fullQuantityMetric
+    var localizationKeys: UnitLocalizationKeys {
+        switch self {
+            case .cubicFeet:
+                .init(
+                    title: LocalizedKey.Unit.Volume.title,
+                    shortDescription: LocalizedKey.Unit.Volume.shortDescriptionImperial,
+                    fullDescription: LocalizedKey.Unit.Volume.fullDescriptionImperial,
+                    shortQuantity: LocalizedKey.Unit.Volume.shortQuantityImperial,
+                    fullQuantity: LocalizedKey.Unit.Volume.fullQuantityImperial)
+            case .liters:
+                .init(
+                    title: LocalizedKey.Unit.Volume.title,
+                    shortDescription: LocalizedKey.Unit.Volume.shortDescriptionMetric,
+                    fullDescription: LocalizedKey.Unit.Volume.fullDescriptionMetric,
+                    shortQuantity: LocalizedKey.Unit.Volume.shortQuantityMetric,
+                    fullQuantity: LocalizedKey.Unit.Volume.fullQuantityMetric)
         }
     }
 }

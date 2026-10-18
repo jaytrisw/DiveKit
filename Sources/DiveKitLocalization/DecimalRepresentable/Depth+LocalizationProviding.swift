@@ -11,51 +11,30 @@ extension Depth.Unit: LocalizationProviding {
     /// - Returns: The localized text for `component`.
     /// - Since: 1.0.0
     public func localization(for component: LocalizationComponent) -> String {
-        switch component {
-            case .title:
-                localizedString(for: LocalizedKey.Unit.Depth.title)
-            case let .description(style):
-                localizedString(for: description(style))
-            case let .quantity(value, style):
-                localizedString(for: quantity(style), quantity: value)
-        }
+        localizationKeys.localization(for: component)
     }
 }
 
 private extension Depth.Unit {
-    /// Returns the localization key for a depth unit description.
+    /// The localization keys for this unit.
     ///
-    /// - Parameter style: The localization style to use.
-    /// - Returns: A localization key.
     /// - Since: 1.0.0
-    func description(_ style: LocalizationStyle) -> String.LocalizationValue {
-        switch (self, style) {
-            case (.feet, .short):
-                LocalizedKey.Unit.Depth.shortDescriptionImperial
-            case (.feet, .full):
-                LocalizedKey.Unit.Depth.fullDescriptionImperial
-            case (.meters, .short):
-                LocalizedKey.Unit.Depth.shortDescriptionMetric
-            case (.meters, .full):
-                LocalizedKey.Unit.Depth.fullDescriptionMetric
-        }
-    }
-
-    /// Returns the localization key for a depth unit quantity.
-    ///
-    /// - Parameter style: The localization style to use.
-    /// - Returns: A localization key.
-    /// - Since: 1.0.0
-    func quantity(_ style: LocalizationStyle) -> String.LocalizationValue {
-        switch (self, style) {
-            case (.feet, .short):
-                LocalizedKey.Unit.Depth.shortQuantityImperial
-            case (.feet, .full):
-                LocalizedKey.Unit.Depth.fullQuantityImperial
-            case (.meters, .short):
-                LocalizedKey.Unit.Depth.shortQuantityMetric
-            case (.meters, .full):
-                LocalizedKey.Unit.Depth.fullQuantityMetric
+    var localizationKeys: UnitLocalizationKeys {
+        switch self {
+            case .feet:
+                .init(
+                    title: LocalizedKey.Unit.Depth.title,
+                    shortDescription: LocalizedKey.Unit.Depth.shortDescriptionImperial,
+                    fullDescription: LocalizedKey.Unit.Depth.fullDescriptionImperial,
+                    shortQuantity: LocalizedKey.Unit.Depth.shortQuantityImperial,
+                    fullQuantity: LocalizedKey.Unit.Depth.fullQuantityImperial)
+            case .meters:
+                .init(
+                    title: LocalizedKey.Unit.Depth.title,
+                    shortDescription: LocalizedKey.Unit.Depth.shortDescriptionMetric,
+                    fullDescription: LocalizedKey.Unit.Depth.fullDescriptionMetric,
+                    shortQuantity: LocalizedKey.Unit.Depth.shortQuantityMetric,
+                    fullQuantity: LocalizedKey.Unit.Depth.fullQuantityMetric)
         }
     }
 }

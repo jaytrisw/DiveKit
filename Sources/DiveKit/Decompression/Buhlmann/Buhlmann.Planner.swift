@@ -127,7 +127,7 @@ extension Buhlmann.Planner {
     /// Follows decotengu's `_ndl_ascent`.
     func directAscent(from diver: Diver) throws(Error) -> Diver? {
         let surfaced = try moved(diver, to: .zero)
-        return try toleratedAmbientPressure(of: surfaced.compartments, gradientFactor: gradientFactors.high) <= 1 ? surfaced : nil
+        return try toleratedAmbientPressure(of: surfaced.compartments, gradientFactor: gradientFactors.high) <= Surface.pressure ? surfaced : nil
     }
 
     /// Returns the diver at the first stop.
@@ -252,18 +252,20 @@ extension Buhlmann.Planner {
         to end: Double,
         for duration: Double,
         breathing gas: Gas) throws(Error) -> [[Buhlmann.Table.MatchedGas]] {
-            let startPressure = try Tissue.breathedPressure(at: .init(start), waterVapor: waterVapor, increase: increase, callSite)
-            let endPressure = end == start
-                ? startPressure
-                : try Tissue.breathedPressure(at: .init(end), waterVapor: waterVapor, increase: increase, callSite)
+            let breathed = try Tissue.breathedPressures(
+                from: .init(start),
+                to: .init(end),
+                waterVapor: waterVapor,
+                increase: increase,
+                callSite)
             return try compartments.map { (compartment: [Buhlmann.Table.MatchedGas]) throws(Error) in
                 try compartment.map { (matched: Buhlmann.Table.MatchedGas) throws(Error) in
-                    let fraction = gas.fractions[matched.gas] ?? .zero
-                    return .init(
+                    .init(
                         gas: matched.gas,
                         entry: try matched.entry.loaded(
                             for: duration,
-                            inspired: (startPressure * fraction, endPressure * fraction),
+                            fraction: gas.fractions[matched.gas] ?? .zero,
+                            breathed: breathed,
                             using: model,
                             callSite),
                         limit: matched.limit)
@@ -275,23 +277,16 @@ extension Buhlmann.Planner {
     func toleratedAmbientPressure(
         of compartments: [[Buhlmann.Table.MatchedGas]],
         gradientFactor: GradientFactor) throws(Error) -> Double {
-            try compartments
-                .map { (compartment: [Buhlmann.Table.MatchedGas]) throws(Error) in
-                    try Buhlmann.Table.toleratedAmbientPressure(
-                        of: compartment.map { (limit: $0.limit, tension: $0.entry.tension) },
-                        gradientFactor: gradientFactor,
-                        callSite).value
-                }
-                .reduce(.zero, Swift.max)
+            try Buhlmann.Table.maximumToleratedAmbientPressure(of: compartments, gradientFactor: gradientFactor, callSite)
         }
 
     /// Returns the ambient pressure at `depth`, in atmospheres, with the surface at one atmosphere.
     func pressure(at depth: Double) -> Double {
-        1 + depth / increase
+        Surface.ambientPressure(atDepth: depth, increase: increase)
     }
 
     /// Returns the depth at an ambient pressure, negative above the surface.
     func depth(at pressure: Double) -> Double {
-        (pressure - 1) * increase
+        Surface.depth(atAmbientPressure: pressure, increase: increase)
     }
 }

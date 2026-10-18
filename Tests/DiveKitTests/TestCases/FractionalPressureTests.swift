@@ -89,21 +89,11 @@ struct FractionalPressureTests {
     }
 
     @Test(.tags(.error))
-    func initializationRejectsNaNFractionalPressure() async {
-        await given {
+    func initializationRejectsNaNFractionalPressure() async throws {
+        try await given {
             Oxygen()
         } when: { gas in
-            let error = #expect(throws: Error.self) {
-                try FractionalPressure(of: gas, fractionalPressure: .nan)
-            }
-            guard case let .range(.upperBound(provided, upperBound), callSite) = error else {
-                Issue.record("Expected an upper-bound error, got \(String(describing: error)).")
-                return
-            }
-            #expect(provided.isNaN)
-            #expect(upperBound == .greatestFiniteMagnitude)
-            #expect(callSite == "FractionalPressure<Oxygen>.init(of:fractionalPressure:)")
-            #expect(error?.localizationValue == "dive.kit.error.range.upper.bound")
+            expectThrowsNaNUpperBound(when: try FractionalPressure(of: gas, fractionalPressure: .nan), callSite: "FractionalPressure<Oxygen>.init(of:fractionalPressure:)")
         }
     }
 }

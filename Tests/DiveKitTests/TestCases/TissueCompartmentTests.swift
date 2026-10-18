@@ -182,17 +182,7 @@ struct TissueCompartmentTests {
         try await given {
             Tissue.Compartment(try .init(of: .nitrogen, halfTime: .init(10), tension: .init(0.7)))
         } when: { input in
-            let error = #expect(throws: Error.self) {
-                try input.loaded(for: Minutes(.nan), inspired: try .init(of: .nitrogen, pressure: .init(1)))
-            }
-            guard case let .range(.upperBound(provided, upperBound), callSite) = error else {
-                Issue.record("Expected an upper-bound error, got \(String(describing: error)).")
-                return
-            }
-            #expect(provided.isNaN)
-            #expect(upperBound == .greatestFiniteMagnitude)
-            #expect(callSite == "Compartment.loaded(for:inspired:using:)")
-            #expect(error?.localizationValue == "dive.kit.error.range.upper.bound")
+            expectThrowsNaNUpperBound(when: try input.loaded(for: Minutes(.nan), inspired: try .init(of: .nitrogen, pressure: .init(1))), callSite: "Compartment.loaded(for:inspired:using:)")
         }
     }
 }

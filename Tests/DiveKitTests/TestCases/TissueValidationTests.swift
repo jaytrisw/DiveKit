@@ -54,21 +54,11 @@ struct TissueValidationTests {
     }
 
     @Test
-    func componentRejectsNaNHalfTime() async {
-        await given {
+    func componentRejectsNaNHalfTime() async throws {
+        try await given {
             Minutes(.nan)
         } when: { halfTime in
-            let error = #expect(throws: Error.self) {
-                try Tissue.Compartment.Component(of: .nitrogen, halfTime: halfTime, tension: .init(0.7))
-            }
-            guard case let .range(.upperBound(provided, upperBound), callSite) = error else {
-                Issue.record("Expected an upper-bound error, got \(String(describing: error)).")
-                return
-            }
-            #expect(provided.isNaN)
-            #expect(upperBound == .greatestFiniteMagnitude)
-            #expect(callSite == "Component<Nitrogen>.init(of:halfTime:tension:)")
-            #expect(error?.localizationValue == "dive.kit.error.range.upper.bound")
+            expectThrowsNaNUpperBound(when: try Tissue.Compartment.Component(of: .nitrogen, halfTime: halfTime, tension: .init(0.7)), callSite: "Component<Nitrogen>.init(of:halfTime:tension:)")
         }
     }
 
@@ -91,21 +81,11 @@ struct TissueValidationTests {
     }
 
     @Test
-    func componentRejectsNaNTension() async {
-        await given {
+    func componentRejectsNaNTension() async throws {
+        try await given {
             PartialPressure<Nitrogen>(.nan)
         } when: { value in
-            let error = #expect(throws: Error.self) {
-                try Tissue.Compartment.Component(of: .nitrogen, halfTime: .init(10), tension: value)
-            }
-            guard case let .range(.upperBound(provided, upperBound), callSite) = error else {
-                Issue.record("Expected an upper-bound error, got \(String(describing: error)).")
-                return
-            }
-            #expect(provided.isNaN)
-            #expect(upperBound == .greatestFiniteMagnitude)
-            #expect(callSite == "Component<Nitrogen>.init(of:halfTime:tension:)")
-            #expect(error?.localizationValue == "dive.kit.error.range.upper.bound")
+            expectThrowsNaNUpperBound(when: try Tissue.Compartment.Component(of: .nitrogen, halfTime: .init(10), tension: value), callSite: "Component<Nitrogen>.init(of:halfTime:tension:)")
         }
     }
 
@@ -143,40 +123,20 @@ struct TissueValidationTests {
     }
 
     @Test
-    func constantInspiredRejectsNaNPressure() async {
-        await given {
+    func constantInspiredRejectsNaNPressure() async throws {
+        try await given {
             PartialPressure<Nitrogen>(.nan)
         } when: { value in
-            let error = #expect(throws: Error.self) {
-                try Tissue.Inspired(of: .nitrogen, pressure: value)
-            }
-            guard case let .range(.upperBound(provided, upperBound), callSite) = error else {
-                Issue.record("Expected an upper-bound error, got \(String(describing: error)).")
-                return
-            }
-            #expect(provided.isNaN)
-            #expect(upperBound == .greatestFiniteMagnitude)
-            #expect(callSite == "Inspired<Nitrogen>.init(of:pressure:)")
-            #expect(error?.localizationValue == "dive.kit.error.range.upper.bound")
+            expectThrowsNaNUpperBound(when: try Tissue.Inspired(of: .nitrogen, pressure: value), callSite: "Inspired<Nitrogen>.init(of:pressure:)")
         }
     }
 
     @Test
-    func linearInspiredRejectsNaNPressure() async {
-        await given {
+    func linearInspiredRejectsNaNPressure() async throws {
+        try await given {
             PartialPressure<Helium>(.nan)
         } when: { value in
-            let error = #expect(throws: Error.self) {
-                try Tissue.Inspired(of: .helium, from: .init(0.2), to: value)
-            }
-            guard case let .range(.upperBound(provided, upperBound), callSite) = error else {
-                Issue.record("Expected an upper-bound error, got \(String(describing: error)).")
-                return
-            }
-            #expect(provided.isNaN)
-            #expect(upperBound == .greatestFiniteMagnitude)
-            #expect(callSite == "Inspired<Helium>.init(of:from:to:)")
-            #expect(error?.localizationValue == "dive.kit.error.range.upper.bound")
+            expectThrowsNaNUpperBound(when: try Tissue.Inspired(of: .helium, from: .init(0.2), to: value), callSite: "Inspired<Helium>.init(of:from:to:)")
         }
     }
 }

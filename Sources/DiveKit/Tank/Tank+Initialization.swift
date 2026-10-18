@@ -24,7 +24,7 @@ public extension Tank {
     ///   as the originating object and the current function name.
     /// - Since: 1.0.0
     init(blend: Blend<Unblended>, size: Size) throws(Error) {
-        let callSite = CallSite(object: .init(describing: Self.self), function: #function)
+        let callSite: CallSite = .from(Self.self)
         self = .init(blend: try blend.blend(callSite), size: size)
     }
 }

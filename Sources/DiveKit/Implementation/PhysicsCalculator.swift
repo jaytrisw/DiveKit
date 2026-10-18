@@ -86,13 +86,12 @@ extension PhysicsCalculator: PhysicsCalculating {
         with volume: Volume) throws(DiveKit.Error) -> Calculation<DecimalResult<Volume>> {
             let callSite: CallSite = .from(self)
             return try volume
-                .validate(using: .finite) { .range(.upperBound($0.value, .greatestFiniteMagnitude), callSite) }
-                .validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
+                .validatedFiniteNonNegative(callSite)
                 .map { (_: Volume) throws(DiveKit.Error) in
                     try atmospheresAbsolute(at: depth, with: configuration, callSite)
                 }
                 .map { volume.value / $0.result.value }
-                .validate(using: .finite) { .range(.upperBound($0, .greatestFiniteMagnitude), callSite) }
+                .validatedFinite(callSite)
                 .map { .decimal($0, unit: \.volume, from: configuration) }
         }
 
@@ -123,13 +122,12 @@ extension PhysicsCalculator: PhysicsCalculating {
         with volume: Volume) throws(DiveKit.Error) -> Calculation<DecimalResult<Volume>> {
             let callSite: CallSite = .from(self)
             return try volume
-                .validate(using: .finite) { .range(.upperBound($0.value, .greatestFiniteMagnitude), callSite) }
-                .validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
+                .validatedFiniteNonNegative(callSite)
                 .map { (_: Volume) throws(DiveKit.Error) in
                     try atmospheresAbsolute(at: depth, with: configuration, callSite)
                 }
                 .map { volume.value * $0.result.value }
-                .validate(using: .finite) { .range(.upperBound($0, .greatestFiniteMagnitude), callSite) }
+                .validatedFinite(callSite)
                 .map { .decimal($0, unit: \.volume, from: configuration) }
         }
 

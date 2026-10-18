@@ -68,6 +68,15 @@ public struct Blend<State: BlendState>: Sendable {
         .init(storage[.init(gas)] ?? .zero)
     }
 
+    /// Returns whether the blend stores a fraction for a gas, including a fraction of `0`.
+    ///
+    /// - Parameter gas: The gas to look up.
+    /// - Returns: `true` when `gas` is in the blend.
+    /// - Since: 1.0.0
+    package func contains(_ gas: some GasRepresentable) -> Bool {
+        storage[.init(gas)] != nil
+    }
+
     /// Returns the gases currently present in the blend.
     ///
     /// - Returns: The stored gas components.

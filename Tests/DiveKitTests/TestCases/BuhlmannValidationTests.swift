@@ -79,21 +79,11 @@ struct BuhlmannValidationTests {
     }
 
     @Test
-    func coefficientsRejectNaNB() async {
-        await given {
+    func coefficientsRejectNaNB() async throws {
+        try await given {
             Double.nan
         } when: { coefficientB in
-            let error = #expect(throws: Error.self) {
-                try Buhlmann.Coefficients(of: .nitrogen, halfTime: .init(5), a: .init(1), b: coefficientB)
-            }
-            guard case let .range(.upperBound(provided, upperBound), callSite) = error else {
-                Issue.record("Expected an upper-bound error, got \(String(describing: error)).")
-                return
-            }
-            #expect(provided.isNaN)
-            #expect(upperBound == .greatestFiniteMagnitude)
-            #expect(callSite == "Coefficients<Nitrogen>.init(of:halfTime:a:b:)")
-            #expect(error?.localizationValue == "dive.kit.error.range.upper.bound")
+            expectThrowsNaNUpperBound(when: try Buhlmann.Coefficients(of: .nitrogen, halfTime: .init(5), a: .init(1), b: coefficientB), callSite: "Coefficients<Nitrogen>.init(of:halfTime:a:b:)")
         }
     }
 
@@ -120,21 +110,11 @@ struct BuhlmannValidationTests {
     }
 
     @Test
-    func gradientFactorRejectsNaN() async {
-        await given {
+    func gradientFactorRejectsNaN() async throws {
+        try await given {
             Double.nan
         } when: { value in
-            let error = #expect(throws: Error.self) {
-                try GradientFactor(value)
-            }
-            guard case let .range(.upperBound(provided, upperBound), callSite) = error else {
-                Issue.record("Expected an upper-bound error, got \(String(describing: error)).")
-                return
-            }
-            #expect(provided.isNaN)
-            #expect(upperBound == .greatestFiniteMagnitude)
-            #expect(callSite == "GradientFactor.init(_:)")
-            #expect(error?.localizationValue == "dive.kit.error.range.upper.bound")
+            expectThrowsNaNUpperBound(when: try GradientFactor(value), callSite: "GradientFactor.init(_:)")
         }
     }
 

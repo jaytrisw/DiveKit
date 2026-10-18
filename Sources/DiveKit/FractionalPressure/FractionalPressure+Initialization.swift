@@ -23,11 +23,9 @@ public extension FractionalPressure {
     /// - Important: Fractional pressure must be within the closed range `0...1`.
     /// - Since: 1.0.0
     init(of gas: Gas, fractionalPressure: Double) throws(Error) {
-        let callSite: CallSite = .init(object: .init(describing: Self.self), function: #function)
+        let callSite: CallSite = .from(Self.self)
         try fractionalPressure
-            .validate(using: .finite) {
-                .range(.upperBound($0, .greatestFiniteMagnitude), callSite)
-            }
+            .validatedFinite(callSite)
             .validate(using: .greaterThanOrEqual(to: .zero)) {
                 .negative(.fractionalPressure($0), callSite)
             }

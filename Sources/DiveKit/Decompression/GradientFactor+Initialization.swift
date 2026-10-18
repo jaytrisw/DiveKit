@@ -20,7 +20,7 @@ public extension GradientFactor {
     init(_ value: Double) throws(Error) {
         let callSite: CallSite = .from(Self.self)
         self.init(unchecked: try value
-            .validate(using: .finite) { .range(.upperBound($0, .greatestFiniteMagnitude), callSite) }
+            .validatedFinite(callSite)
             .validate(using: .greaterThanOrEqual(to: Buhlmann.minimumFactor)) { .range(.lowerBound($0, Buhlmann.minimumFactor), callSite) }
             .validate(using: .lessThanOrEqual(to: .one)) { .range(.upperBound($0, .one), callSite) })
     }

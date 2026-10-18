@@ -67,13 +67,12 @@ public extension Buhlmann {
                 guard gas.metabolism == .inert else { throw .gas(.metabolic(gas), callSite) }
                 self.gas = gas
                 self.halfTime = try halfTime
-                    .validate(using: .finite) { .range(.upperBound($0.value, .greatestFiniteMagnitude), callSite) }
+                    .validatedFinite(callSite)
                     .validate(using: .greater(than: 0)) { .range(.lowerBound($0.value, 0), callSite) }
                 self.coefficientA = try coefficientA
-                    .validate(using: .finite) { .range(.upperBound($0.value, .greatestFiniteMagnitude), callSite) }
-                    .validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
+                    .validatedFiniteNonNegative(callSite)
                 self.coefficientB = try coefficientB
-                    .validate(using: .finite) { .range(.upperBound($0, .greatestFiniteMagnitude), callSite) }
+                    .validatedFinite(callSite)
                     .validate(using: .greaterThanOrEqual(to: Buhlmann.minimumFactor)) { .range(.lowerBound($0, Buhlmann.minimumFactor), callSite) }
                     .validate(using: .lessThanOrEqual(to: .one)) { .range(.upperBound($0, .one), callSite) }
             }

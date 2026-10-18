@@ -241,60 +241,6 @@ struct BlendUnblendedTests {
         }
     }
 
-    enum Mutation: CaseIterable, Sendable {
-        case add
-        case addFractionalPressure
-        case update
-        case updateFractionalPressure
-        case adding
-        case addingFractionalPressure
-        case updating
-        case updatingFractionalPressure
-
-        var callSite: CallSite {
-            switch self {
-                case .add: "Blend<Unblended>.add(_:pressure:)"
-                case .addFractionalPressure: "Blend<Unblended>.add(_:)"
-                case .update: "Blend<Unblended>.update(_:pressure:)"
-                case .updateFractionalPressure: "Blend<Unblended>.update(_:)"
-                case .adding: "Blend<Unblended>.adding(_:pressure:)"
-                case .addingFractionalPressure: "Blend<Unblended>.adding(_:)"
-                case .updating: "Blend<Unblended>.updating(_:pressure:)"
-                case .updatingFractionalPressure: "Blend<Unblended>.updating(_:)"
-            }
-        }
-
-        func run(on blend: Blend<Unblended>, pressure: Double) throws {
-            var blend = blend
-            let fractionalPressure = FractionalPressure(.oxygen, fractionalPressure: pressure)
-            switch self {
-                case .add: try blend.add(.oxygen, pressure: pressure)
-                case .addFractionalPressure: try blend.add(fractionalPressure)
-                case .update: try blend.update(.oxygen, pressure: pressure)
-                case .updateFractionalPressure: try blend.update(fractionalPressure)
-                case .adding: _ = try blend.adding(.oxygen, pressure: pressure)
-                case .addingFractionalPressure: _ = try blend.adding(fractionalPressure)
-                case .updating: _ = try blend.updating(.oxygen, pressure: pressure)
-                case .updatingFractionalPressure: _ = try blend.updating(fractionalPressure)
-            }
-        }
-    }
-
-    @Test(.tags(.error), arguments: Mutation.allCases, [-0.8, 1.01])
-    func mutationReportsItsOwnCallSite(mutation: Mutation, pressure: Double) async throws {
-        try await given {
-            let blend = Blend<Unblended>()
-            let expectedError = Error.blend(.pressureRange(pressure, blend), mutation.callSite)
-            return (blend: blend, expectedError: expectedError)
-        } when: { input in
-            try expectThrowsError(
-                when: try mutation.run(on: input.blend, pressure: pressure),
-                then: input.expectedError) {
-                    #expect($0.localizationValue == "dive.kit.error.blend.pressure.range")
-                }
-        }
-    }
-
     enum Fill: CaseIterable, Sendable {
         case fill
         case filling

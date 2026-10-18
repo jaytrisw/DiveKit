@@ -110,21 +110,11 @@ struct WaterValidationTests {
     }
 
     @Test(arguments: Operation.allCases)
-    func rejectsNaNIncrease(operation: Operation) async {
-        await given {
+    func rejectsNaNIncrease(operation: Operation) async throws {
+        try await given {
             water(increase: .nan)
         } when: { water in
-            let error = #expect(throws: Error.self) {
-                try operation.run(in: water)
-            }
-            guard case let .range(.upperBound(provided, expected), callSite) = error else {
-                Issue.record("Expected an upper-bound error, got \(String(describing: error)).")
-                return
-            }
-            #expect(provided.isNaN)
-            #expect(expected == .greatestFiniteMagnitude)
-            #expect(callSite == operation.callSite)
-            #expect(error?.localizationValue == "dive.kit.error.range.upper.bound")
+            expectThrowsNaNUpperBound(when: try operation.run(in: water), callSite: operation.callSite)
         }
     }
 

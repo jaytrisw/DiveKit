@@ -101,13 +101,13 @@ extension Buhlmann.Table {
             // tension, so match every compartment once.
             let matched = try compartments.map { (compartment: Tissue.Compartment) throws(Error) in
                 try matchedGases(of: compartment, callSite).map { matched in
-                    (matched: matched, inspired: breathed * (fractions[matched.gas] ?? .zero))
+                    (matched: matched, fraction: fractions[matched.gas] ?? .zero)
                 }
             }
 
             /// Returns whether any of `compartments` has a ceiling below the surface after `minutes`.
             func hasCeiling(
-                _ compartments: [[(matched: MatchedGas, inspired: Double)]],
+                _ compartments: [[(matched: MatchedGas, fraction: Double)]],
                 after minutes: Double) throws(Error) -> Bool {
                     // Check every compartment so an invalid model tension throws regardless of order.
                     var hasCeiling = false
@@ -115,10 +115,10 @@ extension Buhlmann.Table {
                         let tensions = try compartment.map { (gas) throws(Error) in
                             (limit: gas.matched.limit,
                              tension: minutes > 0
-                                ? try gas.matched.entry.loaded(for: minutes, inspired: (gas.inspired, gas.inspired), using: model, callSite).tension
+                                ? try gas.matched.entry.loaded(for: minutes, fraction: gas.fraction, breathed: (breathed, breathed), using: model, callSite).tension
                                 : gas.matched.entry.tension)
                         }
-                        if try Self.toleratedAmbientPressure(of: tensions, gradientFactor: gradientFactor, callSite).value > 1 {
+                        if try Self.toleratedAmbientPressure(of: tensions, gradientFactor: gradientFactor, callSite).value > Surface.pressure {
                             hasCeiling = true
                         }
                     }
@@ -127,7 +127,8 @@ extension Buhlmann.Table {
 
             let counterDiffusing = matched.filter { compartment in
                 Set(compartment.compactMap { gas in
-                    gas.inspired == gas.matched.entry.tension ? nil : gas.inspired > gas.matched.entry.tension
+                    let inspired = breathed * gas.fraction
+                    return inspired == gas.matched.entry.tension ? nil : inspired > gas.matched.entry.tension
                 }).count > 1
             }
 

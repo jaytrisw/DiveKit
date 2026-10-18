@@ -87,8 +87,7 @@ private extension GasCalculator {
         _ callSite: CallSite) throws(DiveKit.Error) -> Calculation<DecimalResult<Depth>> {
             let increase = try configuration.pressureIncrease(callSite)
             return try depth
-                .validate(using: .finite) { .range(.upperBound($0.value, .greatestFiniteMagnitude), callSite) }
-                .validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
+                .validatedFiniteNonNegative(callSite)
                 .map { $0.value + increase }
                 .with { () throws(DiveKit.Error) in
                     var potencies: [AnyGas: NarcoticPotency] = [:]
@@ -100,7 +99,7 @@ private extension GasCalculator {
                     return try narcoticLoad(of: blend, potencies, callSite) / air
                 }
                 .map { $0.first * $0.second }
-                .validate(using: .finite) { .range(.upperBound($0, .greatestFiniteMagnitude), callSite) }
+                .validatedFinite(callSite)
                 .map { $0 - increase }
                 .map { .decimal($0, unit: \.depth, from: configuration) }
         }
@@ -127,7 +126,7 @@ private extension GasCalculator {
                 return potency
             case let .relative(value):
                 try value
-                    .validate(using: .finite) { .range(.upperBound($0, .greatestFiniteMagnitude), callSite) }
+                    .validatedFinite(callSite)
                     .validate(using: .greaterThanOrEqual(to: 0)) { .range(.lowerBound($0, 0), callSite) }
                 return potency
         }

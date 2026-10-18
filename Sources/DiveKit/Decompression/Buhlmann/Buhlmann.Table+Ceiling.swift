@@ -65,14 +65,12 @@ extension Buhlmann.Table {
         configuration: Configuration,
         _ callSite: CallSite) throws(Error) -> Calculation<DecimalResult<Depth>> {
             let increase = try configuration.pressureIncrease(callSite)
-            let tolerated = try compartments
-                .map { (compartment: Tissue.Compartment) throws(Error) in
-                    try toleratedAmbientPressure(of: compartment, gradientFactor: gradientFactor, callSite).value
-                }
-                .reduce(.zero, Swift.max)
-            let gauge = Swift.max(tolerated - .one, .zero)
-            let depth = try (gauge * increase)
-                .validate(using: .finite) { .range(.upperBound($0, .greatestFiniteMagnitude), callSite) }
+            let tolerated = try Self.maximumToleratedAmbientPressure(
+                of: try compartments.map { (compartment: Tissue.Compartment) throws(Error) in try matchedGases(of: compartment, callSite) },
+                gradientFactor: gradientFactor,
+                callSite)
+            let depth = try Swift.max(Surface.depth(atAmbientPressure: tolerated, increase: increase), .zero)
+                .validatedFinite(callSite)
             return .decimal(depth, unit: \.depth, from: configuration)
         }
 
@@ -121,6 +119,21 @@ extension Buhlmann.Table {
         }
 
     /// A tracked gas with its entry and matched coefficients.
+    /// Returns the highest ambient pressure any of `compartments` requires, or `0` for none.
+    static func maximumToleratedAmbientPressure(
+        of compartments: [[MatchedGas]],
+        gradientFactor: GradientFactor,
+        _ callSite: CallSite) throws(Error) -> Double {
+            try compartments
+                .map { (compartment: [MatchedGas]) throws(Error) in
+                    try toleratedAmbientPressure(
+                        of: compartment.map { (limit: $0.limit, tension: $0.entry.tension) },
+                        gradientFactor: gradientFactor,
+                        callSite).value
+                }
+                .reduce(.zero, Swift.max)
+        }
+
     struct MatchedGas {
         let gas: AnyGas
         let entry: Tissue.Compartment.Entry
@@ -157,7 +170,7 @@ extension Buhlmann.Table {
             let tolerated = try (total.isFinite
                 ? (total - weighted.a * factor) * ratio
                 : largest * ((scaledTotal - weighted.a * factor / largest) * ratio))
-                .validate(using: .finite) { .range(.upperBound($0, .greatestFiniteMagnitude), callSite) }
+                .validatedFinite(callSite)
             return .init(Swift.max(tolerated, .zero))
         }
 }

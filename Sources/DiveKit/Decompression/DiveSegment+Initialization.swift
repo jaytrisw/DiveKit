@@ -28,14 +28,11 @@ public extension DiveSegment {
         let callSite: CallSite = .from(Self.self)
         self.init(
             unchecked: try start
-                .validate(using: .finite) { .range(.upperBound($0.value, .greatestFiniteMagnitude), callSite) }
-                .validate(using: .nonNegative, orThrow: { .negative($0, callSite) }),
+                .validatedFiniteNonNegative(callSite),
             end: try end
-                .validate(using: .finite) { .range(.upperBound($0.value, .greatestFiniteMagnitude), callSite) }
-                .validate(using: .nonNegative, orThrow: { .negative($0, callSite) }),
+                .validatedFiniteNonNegative(callSite),
             duration: try duration
-                .validate(using: .finite) { .range(.upperBound($0.value, .greatestFiniteMagnitude), callSite) }
-                .validate(using: .nonNegative, orThrow: { .negative($0, callSite) }),
+                .validatedFiniteNonNegative(callSite),
             blend: blend)
     }
 }

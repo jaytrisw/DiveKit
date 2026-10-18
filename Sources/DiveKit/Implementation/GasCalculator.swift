@@ -106,12 +106,10 @@ extension GasCalculator: GasCalculating {
         using physicsCalculator: PhysicsCalculating) throws(DiveKit.Error) -> Calculation<Blend<Blended>> {
             let callSite: CallSite = .from(self)
             return try depth
-                .validate(using: .finite) { .range(.upperBound($0.value, .greatestFiniteMagnitude), callSite) }
-                .validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
+                .validatedFiniteNonNegative(callSite)
                 .map { (_: Depth) throws(DiveKit.Error) in
                     try partialPressure
-                        .validate(using: .finite) { .range(.upperBound($0.value, .greatestFiniteMagnitude), callSite) }
-                        .validate(using: .nonNegative) { .negative($0, callSite) }
+                        .validatedFiniteNonNegative(callSite)
                         .validate(using: .greater(than: 0)) { .range(.lowerBound($0.value, 0), callSite) }
                 }
                 .map { (_: PartialPressure<Oxygen>) throws(DiveKit.Error) in
@@ -153,14 +151,13 @@ extension GasCalculator: GasCalculating {
             let callSite: CallSite = .from(self)
             let increase = try configuration.pressureIncrease(callSite)
             return try depth
-                .validate(using: .finite) { .range(.upperBound($0.value, .greatestFiniteMagnitude), callSite) }
-                .validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
+                .validatedFiniteNonNegative(callSite)
                 .map { $0.value + increase }
                 .with { () throws(DiveKit.Error) in
                     try blend.fractionalPressure(of: .nitrogen).value / Blend.air.fractionalPressure(of: .nitrogen).value
                 }
                 .map { $0.first * $0.second }
-                .validate(using: .finite) { .range(.upperBound($0, .greatestFiniteMagnitude), callSite) }
+                .validatedFinite(callSite)
                 .map { $0 - increase }
                 .map { .decimal($0, unit: \.depth, from: configuration) }
         }
@@ -204,14 +201,11 @@ extension GasCalculator: GasCalculating {
                 }
                 .with { (_: Double) throws(DiveKit.Error) in
                     try partialPressure
-                        .validate(using: .finite) { .range(.upperBound($0.value, .greatestFiniteMagnitude), callSite) }
-                        .validate(using: .nonNegative) { .negative($0, callSite) }
+                        .validatedFiniteNonNegative(callSite)
                         .validate(using: .greater(than: 0)) { .range(.lowerBound($0.value, 0), callSite) }
                 }
-                .map { $0.second.value / $0.first }
-                .map { $0 - 1 }
-                .map { $0 * increase }
-                .validate(using: .finite) { .range(.upperBound($0, .greatestFiniteMagnitude), callSite) }
+                .map { Surface.depth(atAmbientPressure: $0.second.value / $0.first, increase: increase) }
+                .validatedFinite(callSite)
                 .map { .decimal($0, unit: \.depth, from: configuration) }
         }
 
@@ -286,12 +280,10 @@ extension GasCalculator: GasCalculating {
         using physicsCalculator: PhysicsCalculating) throws(DiveKit.Error) -> Calculation<DecimalResult<Rate<Pressure>>> {
             let callSite: CallSite = .from(self)
             return try startGas
-                .validate(using: .finite) { .range(.upperBound($0.value, .greatestFiniteMagnitude), callSite) }
-                .validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
+                .validatedFiniteNonNegative(callSite)
                 .map { (_: Pressure) throws(DiveKit.Error) in
                     try endGas
-                        .validate(using: .finite) { .range(.upperBound($0.value, .greatestFiniteMagnitude), callSite) }
-                        .validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
+                        .validatedFiniteNonNegative(callSite)
                 }
                 .map { startGas.value - endGas.value }
                 .map { (consumedPressure: Double) throws(DiveKit.Error) in
@@ -343,11 +335,11 @@ extension GasCalculator: GasCalculating {
         using physicsCalculator: PhysicsCalculating) throws(DiveKit.Error) -> Calculation<DecimalResult<Rate<Volume>>> {
             let callSite: CallSite = .from(self)
             return try tank.size.volume
-                .validate(using: .finite) { .range(.upperBound($0.value, .greatestFiniteMagnitude), callSite) }
+                .validatedFinite(callSite)
                 .validate(using: .nonNegative, orThrow: { .tank(.volume($0, tank), callSite) })
                 .map { (_: Volume) throws(DiveKit.Error) in
                     try tank.size.ratedPressure
-                        .validate(using: .finite) { .range(.upperBound($0.value, .greatestFiniteMagnitude), callSite) }
+                        .validatedFinite(callSite)
                         .validate(using: .greater(than: 0), orThrow: { .tank(.ratedPressure($0, tank), callSite) })
                 }
                 .map { (_: Pressure) throws(DiveKit.Error) in
@@ -360,7 +352,7 @@ extension GasCalculator: GasCalculating {
                         callSite)
                 }
                 .map { $0.result.value * tank.size.conversionFactor(for: configuration.units) }
-                .validate(using: .finite) { .range(.upperBound($0, .greatestFiniteMagnitude), callSite) }
+                .validatedFinite(callSite)
                 .map { .decimal($0, unit: .perMinute(configuration.units.volume), configuration: configuration) }
         }
 }

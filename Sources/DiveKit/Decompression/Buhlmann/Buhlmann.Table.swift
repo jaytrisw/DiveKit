@@ -117,11 +117,9 @@ public extension Buhlmann.Table {
         helium: PartialPressure<Helium> = .init(.zero)) throws(Error) -> [Tissue.Compartment] {
             let callSite: CallSite = .from(Self.self)
             let nitrogen = try nitrogen
-                .validate(using: .finite) { .range(.upperBound($0.value, .greatestFiniteMagnitude), callSite) }
-                .validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
+                .validatedFiniteNonNegative(callSite)
             let helium = try helium
-                .validate(using: .finite) { .range(.upperBound($0.value, .greatestFiniteMagnitude), callSite) }
-                .validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
+                .validatedFiniteNonNegative(callSite)
             var compartments: [Tissue.Compartment] = []
             compartments.reserveCapacity(rows.count)
             for row in rows {

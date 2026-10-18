@@ -22,7 +22,7 @@ public extension Blend where State == Blended {
     static func trimix(
         oxygen: Double,
         helium: Double) throws(Error) -> Blend<Blended> {
-            let callSite: CallSite = .init(object: .init(describing: Self.self), function: #function)
+            let callSite: CallSite = .from(Self.self)
             let oxygenFraction = try FractionalPressure(of: .oxygen, fractionalPressure: oxygen)
             let heliumFraction = try FractionalPressure(of: .helium, fractionalPressure: helium)
             let combinedFraction = try (oxygen + helium).validate(using: .lessThanOrEqual(to: .one)) {

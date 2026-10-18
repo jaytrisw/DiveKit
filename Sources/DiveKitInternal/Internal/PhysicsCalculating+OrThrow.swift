@@ -32,10 +32,9 @@ package extension PhysicsCalculating {
         _ callSite: CallSite) throws(Error) -> Calculation<DecimalResult<Pressure>> {
             let increase = try configuration.pressureIncrease(callSite)
             return try depth
-                .validate(using: .finite) { .range(.upperBound($0.value, .greatestFiniteMagnitude), callSite) }
-                .validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
+                .validatedFiniteNonNegative(callSite)
                 .map { $0.value / increase }
-                .validate(using: .finite) { .range(.upperBound($0, .greatestFiniteMagnitude), callSite) }
+                .validatedFinite(callSite)
                 .map { .decimal($0, unit: .atmospheres, configuration: configuration) }
         }
 
@@ -69,8 +68,8 @@ package extension PhysicsCalculating {
         with configuration: Configuration,
         _ callSite: CallSite) throws(Error) -> Calculation<DecimalResult<Pressure>> {
             try gaugePressure(at: depth, with: configuration, callSite)
-                .map { $0.result.value + 1 }
-                .validate(using: .finite) { .range(.upperBound($0, .greatestFiniteMagnitude), callSite) }
+                .map { Surface.pressure + $0.result.value }
+                .validatedFinite(callSite)
                 .map { .decimal($0, unit: .atmospheres, configuration: configuration) }
         }
 }

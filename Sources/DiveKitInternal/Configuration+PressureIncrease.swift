@@ -18,7 +18,7 @@ package extension Configuration {
     /// - Since: 1.0.0
     func pressureIncrease(_ callSite: CallSite) throws(Error) -> Double {
         try water.pressure(units).increase.value
-            .validate(using: .finite) { .range(.upperBound($0, .greatestFiniteMagnitude), callSite) }
+            .validatedFinite(callSite)
             .validate(using: .greater(than: 0)) { .range(.lowerBound($0, 0), callSite) }
     }
 
@@ -38,7 +38,7 @@ package extension Configuration {
     /// - Since: 1.0.0
     func waterWeight(_ callSite: CallSite) throws(Error) -> Double {
         try water.weight(units).value
-            .validate(using: .finite) { .range(.upperBound($0, .greatestFiniteMagnitude), callSite) }
+            .validatedFinite(callSite)
             .validate(using: .greater(than: 0)) { .range(.lowerBound($0, 0), callSite) }
     }
 }

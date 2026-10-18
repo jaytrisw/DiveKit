@@ -51,11 +51,10 @@ public extension Tissue.Compartment {
                 guard gas.metabolism == .inert else { throw .gas(.metabolic(gas), callSite) }
                 self.gas = gas
                 self.halfTime = try halfTime
-                    .validate(using: .finite) { .range(.upperBound($0.value, .greatestFiniteMagnitude), callSite) }
+                    .validatedFinite(callSite)
                     .validate(using: .greater(than: 0)) { .range(.lowerBound($0.value, 0), callSite) }
                 self.tension = try tension
-                    .validate(using: .finite) { .range(.upperBound($0.value, .greatestFiniteMagnitude), callSite) }
-                    .validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
+                    .validatedFiniteNonNegative(callSite)
             }
     }
 }
