@@ -14,8 +14,9 @@ package extension GasCalculating {
     ///   - configuration: The calculation configuration.
     ///   - callSite: The location where the calculation was requested.
     /// - Returns: A calculation containing the partial pressure of the gas at `depth`.
-    /// - Throws: A ``DiveKitCore/Error`` from the underlying absolute-pressure calculation,
-    ///   currently ``DiveKitCore/Error/negative(_:_:)`` when `depth` is negative.
+    /// - Throws: ``DiveKitCore/Error/negative(_:_:)`` if `depth` is negative, or
+    ///   ``DiveKitCore/Error/range(_:_:)`` if `depth` or the absolute pressure is not
+    ///   finite, or if the water model's pressure increase is not finite or not greater than zero.
     ///
     /// ```swift
     /// let result = try calculator.partialPressure(
@@ -51,9 +52,9 @@ package extension GasCalculating {
     ///   - configuration: The calculation configuration.
     ///   - callSite: The location where the calculation was requested.
     /// - Returns: A calculation containing the partial pressure of `gas` at `depth`.
-    /// - Throws: A ``DiveKitCore/Error`` if the blend cannot produce a valid
-    ///   fractional pressure for `gas`, or if the underlying absolute-pressure
-    ///   calculation fails.
+    /// - Throws: ``DiveKitCore/Error/negative(_:_:)`` if `depth` is negative, or
+    ///   ``DiveKitCore/Error/range(_:_:)`` if `depth` or the absolute pressure is not
+    ///   finite, or if the water model's pressure increase is not finite or not greater than zero.
     ///
     /// ```swift
     /// let result = try calculator.partialPressure(
@@ -139,9 +140,10 @@ package extension GasCalculating {
     ///   - configuration: The calculation configuration.
     ///   - callSite: The location where the calculation was requested.
     /// - Returns: A calculation containing the surface air consumption rate.
-    /// - Throws: A ``DiveKitCore/Error`` from the absolute-pressure calculation
-    ///   or depth air consumption validation. This includes negative `depth`,
-    ///   negative `minutes`, negative `gasConsumed`, and zero `minutes`.
+    /// - Throws: ``DiveKitCore/Error/negative(_:_:)`` if `depth`, `minutes`, or
+    ///   `gasConsumed` is negative, or ``DiveKitCore/Error/range(_:_:)`` if `minutes`
+    ///   is zero, if `depth`, `minutes`, `gasConsumed`, or the result is not finite,
+    ///   or if the water model's pressure increase is not finite or not greater than zero.
     ///
     /// ```swift
     /// let result = try calculator.surfaceAirConsumption(

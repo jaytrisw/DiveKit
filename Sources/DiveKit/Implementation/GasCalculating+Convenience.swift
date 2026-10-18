@@ -56,7 +56,8 @@ public extension GasCalculating where Self: ConfigurationProviding {
     /// - Returns: A calculation containing the surface air consumption rate.
     /// - Throws: `Error.negative` for negative `depth`, `minutes`, or
     ///   `gasConsumed`, or `Error.range` when `depth`, `minutes`,
-    ///   `gasConsumed`, or the result is not finite, or when `minutes` is zero.
+    ///   `gasConsumed`, or the result is not finite, when `minutes` is zero, or
+    ///   when the water model's pressure increase is not finite or not greater than zero.
     ///
     /// ```swift
     /// let sac = try calculator.surfaceAirConsumption(

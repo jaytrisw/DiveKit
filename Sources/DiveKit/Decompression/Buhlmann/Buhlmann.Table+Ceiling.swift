@@ -118,7 +118,6 @@ extension Buhlmann.Table {
             }
         }
 
-    /// A tracked gas with its entry and matched coefficients.
     /// Returns the highest ambient pressure any of `compartments` requires, or `0` for none.
     static func maximumToleratedAmbientPressure(
         of compartments: [[MatchedGas]],
@@ -134,6 +133,7 @@ extension Buhlmann.Table {
                 .reduce(.zero, Swift.max)
         }
 
+    /// A tracked gas with its entry and matched coefficients.
     struct MatchedGas {
         let gas: AnyGas
         let entry: Tissue.Compartment.Entry
