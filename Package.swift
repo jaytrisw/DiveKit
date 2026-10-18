@@ -104,10 +104,21 @@ let package = Package(
                 .plugin(name: "SwiftLintBuildToolPlugin", package: "SwiftLintPlugins")
             ]
         ),
+        .target(
+            name: "DiveKitTestSupport",
+            dependencies: [
+                "DiveKit"
+            ],
+            path: "Tests/DiveKitTestSupport",
+            plugins: [
+                .plugin(name: "SwiftLintBuildToolPlugin", package: "SwiftLintPlugins")
+            ]),
         .testTarget(
             name: "DiveKitCatalogSyncTests",
             dependencies: [
-                "DiveKitCatalogSyncCore"
+                "catalog-sync",
+                "DiveKitCatalogSyncCore",
+                "DiveKitTestSupport"
             ],
             plugins: [
                 .plugin(name: "SwiftLintBuildToolPlugin", package: "SwiftLintPlugins")
@@ -115,7 +126,8 @@ let package = Package(
         .testTarget(
             name: "DiveKitTests",
             dependencies: [
-                "DiveKit"
+                "DiveKit",
+                "DiveKitTestSupport"
             ],
             resources: [
                 .process("Resources")

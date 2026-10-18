@@ -16,10 +16,14 @@ import XcodeProjectPlugin
 
 extension DiveKitCatalogSyncPlugin: XcodeCommandPlugin {
     func performCommand(context: XcodePluginContext, arguments: [String]) throws {
+        // Plugins cannot import DiveKitCatalogSyncCore, so catalog-sync
+        // normalizes Xcode's arguments when this variable is set. It matches
+        // `XcodeArguments.environmentKey`.
         try runCatalogSync(
             toolURL: context.tool(named: "catalog-sync").url,
             workingDirectoryURL: context.xcodeProject.directoryURL,
-            arguments: normalizedXcodeArguments(arguments))
+            arguments: arguments,
+            environment: ["DIVEKIT_CATALOG_SYNC_XCODE_ARGUMENTS": "1"])
     }
 }
 #endif
@@ -27,11 +31,13 @@ extension DiveKitCatalogSyncPlugin: XcodeCommandPlugin {
 private func runCatalogSync(
     toolURL: URL,
     workingDirectoryURL: URL,
-    arguments: [String]) throws {
+    arguments: [String],
+    environment: [String: String] = [:]) throws {
         let process = Process()
         process.currentDirectoryURL = workingDirectoryURL
         process.executableURL = toolURL
         process.arguments = arguments
+        process.environment = ProcessInfo.processInfo.environment.merging(environment) { $1 }
 
         try process.run()
         process.waitUntilExit()
@@ -41,66 +47,6 @@ private func runCatalogSync(
             throw CatalogSyncPluginError.toolFailed(process.terminationStatus)
         }
     }
-
-private func normalizedXcodeArguments(_ arguments: [String]) -> [String] {
-    var normalizedArguments: [String] = []
-    var target: String?
-    var index = arguments.startIndex
-
-    while index < arguments.endIndex {
-        let argument = arguments[index]
-
-        if argument.hasPrefix("--target=") {
-            target = String(argument.dropFirst("--target=".count))
-            index = arguments.index(after: index)
-        } else if argument.hasPrefix("--source=") {
-            normalizedArguments.append(argument)
-            index = arguments.index(after: index)
-        } else {
-            switch argument {
-                case "--target", "-t":
-                    let valueIndex = arguments.index(after: index)
-                    if valueIndex < arguments.endIndex {
-                        target = arguments[valueIndex]
-                        index = arguments.index(after: valueIndex)
-                    } else {
-                        normalizedArguments.append(argument)
-                        index = valueIndex
-                    }
-                case "--source", "-s":
-                    normalizedArguments.append(argument)
-
-                    let valueIndex = arguments.index(after: index)
-                    if valueIndex < arguments.endIndex {
-                        normalizedArguments.append(arguments[valueIndex])
-                        index = arguments.index(after: valueIndex)
-                    } else {
-                        index = valueIndex
-                    }
-                case "--dry-run":
-                    normalizedArguments.append(argument)
-                    index = arguments.index(after: index)
-                default:
-                    if target == nil, argument.hasSuffix(".xcstrings") {
-                        target = argument
-                    } else if argument.hasPrefix("-") {
-                        normalizedArguments.append(argument)
-                    }
-
-                    index = arguments.index(after: index)
-            }
-        }
-    }
-
-    if let target {
-        normalizedArguments.append(contentsOf: [
-            "--target",
-            target
-        ])
-    }
-
-    return normalizedArguments
-}
 
 private enum CatalogSyncPluginError: Error, CustomStringConvertible, LocalizedError {
     case toolFailed(Int32)

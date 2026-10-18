@@ -1,6 +1,7 @@
 import Foundation
 import Testing
 @testable import DiveKit
+import DiveKitTestSupport
 
 @Suite(.tags(.localization))
 struct DepthFormatStyleTests {
@@ -86,24 +87,19 @@ struct DepthFormatStyleTests {
         }
     }
 
-    @Test func fullFormatStylePreservesSingularAndPluralUnits() async {
+    @Test(arguments: [
+        FormatStyleExpectation<Depth>(input: Depth(1), style: .depth(.feet, style: .full).locale(.english), output: "1 foot"),
+        FormatStyleExpectation<Depth>(input: Depth(2), style: .depth(.feet, style: .full).locale(.english), output: "2 feet"),
+        FormatStyleExpectation<Depth>(input: Depth(1), style: .depth(.meters, style: .full).locale(.english), output: "1 meter"),
+        FormatStyleExpectation<Depth>(input: Depth(2), style: .depth(.meters, style: .full).locale(.english), output: "2 meters")])
+    func fullFormatStylePreservesSingularAndPluralUnits(expectation: FormatStyleExpectation<Depth>) async {
         await withTestLocalization(.test) {
-            let locale = Locale.english
-            let data: [FormatStyleExpectation<Depth>] = [
-                .init(input: Depth(1), style: .depth(.feet, style: .full).locale(locale), output: "1 foot"),
-                .init(input: Depth(2), style: .depth(.feet, style: .full).locale(locale), output: "2 feet"),
-                .init(input: Depth(1), style: .depth(.meters, style: .full).locale(locale), output: "1 meter"),
-                .init(input: Depth(2), style: .depth(.meters, style: .full).locale(locale), output: "2 meters")
-            ]
-
-            for datum in data {
-                await given {
-                    datum
-                } when: { datum in
-                    datum.input.formatted(datum.style)
-                } then: { datum, result in
-                    #expect(result == datum.output)
-                }
+            await given {
+                expectation
+            } when: { expectation in
+                expectation.input.formatted(expectation.style)
+            } then: { expectation, result in
+                #expect(result == expectation.output)
             }
         }
     }

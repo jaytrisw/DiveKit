@@ -1,5 +1,6 @@
 import Testing
 @testable import DiveKit
+import DiveKitTestSupport
 
 extension GasCalculatorImperialSaltwaterTests {
 

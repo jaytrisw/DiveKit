@@ -1,5 +1,6 @@
 import Testing
 @_spi(Experimental) @testable import DiveKit
+import DiveKitTestSupport
 
 @Suite("Bühlmann schedule validation", .tags(.technicalDiving, .buhlmann, .error))
 struct BuhlmannScheduleValidationTests {

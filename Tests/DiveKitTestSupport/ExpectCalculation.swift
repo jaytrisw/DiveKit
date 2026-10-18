@@ -1,4 +1,4 @@
-import DiveKit
+@_spi(Experimental) import DiveKit
 import Foundation
 import Testing
 

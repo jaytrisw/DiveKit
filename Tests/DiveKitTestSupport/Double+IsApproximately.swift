@@ -2,7 +2,7 @@ package enum Tolerance {
     case standard
     case loose
 
-    var value: Double {
+    package var value: Double {
         switch self {
         case .standard:
             1e-12
@@ -13,7 +13,7 @@ package enum Tolerance {
 }
 
 extension Double {
-    func isApproximately(_ other: Self, with tolerance: Tolerance = .standard) -> Bool {
+    package func isApproximately(_ other: Self, with tolerance: Tolerance = .standard) -> Bool {
         abs(self - other) <= tolerance.value
     }
 }

@@ -1,5 +1,6 @@
 import Testing
 @_spi(Experimental) @testable import DiveKit
+import DiveKitTestSupport
 
 /// Checks results against worked examples published outside DiveKit, rounded
 /// the way the source rounds them.

@@ -1,6 +1,7 @@
 import Foundation
 import Testing
 @testable import DiveKit
+import DiveKitTestSupport
 
 @Suite(.tags(.localization, .rate))
 struct RateFormatStyleTests {

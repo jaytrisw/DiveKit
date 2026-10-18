@@ -77,7 +77,11 @@ struct DiveKitCatalogSync: ParsableCommand {
     }
 }
 
-DiveKitCatalogSync.main()
+let arguments = Array(CommandLine.arguments.dropFirst())
+DiveKitCatalogSync.main(
+    ProcessInfo.processInfo.environment[XcodeArguments.environmentKey] == "1"
+        ? XcodeArguments.normalized(arguments)
+        : arguments)
 
 private extension URL {
     static func expandingPath(_ path: String) -> URL {

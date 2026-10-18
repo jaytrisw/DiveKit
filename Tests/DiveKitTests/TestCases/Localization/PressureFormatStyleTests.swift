@@ -1,6 +1,7 @@
 import Foundation
 import Testing
 @testable import DiveKit
+import DiveKitTestSupport
 
 @Suite(.tags(.localization))
 struct PressureFormatStyleTests {
@@ -61,24 +62,19 @@ struct PressureFormatStyleTests {
         }
     }
 
-    @Test func fullFormatStylePreservesSingularAndPluralUnits() async {
+    @Test(arguments: [
+        FormatStyleExpectation<Pressure>(input: Pressure(1), style: .pressure(.psi, style: .full).locale(.english), output: "1 pound per square inch"),
+        FormatStyleExpectation<Pressure>(input: Pressure(2), style: .pressure(.psi, style: .full).locale(.english), output: "2 pounds per square inch"),
+        FormatStyleExpectation<Pressure>(input: Pressure(1), style: .pressure(.atmospheres, style: .full).locale(.english), output: "1 atmosphere"),
+        FormatStyleExpectation<Pressure>(input: Pressure(2), style: .pressure(.atmospheres, style: .full).locale(.english), output: "2 atmospheres")])
+    func fullFormatStylePreservesSingularAndPluralUnits(expectation: FormatStyleExpectation<Pressure>) async {
         await withTestLocalization(.test) {
-            let locale = Locale.english
-            let data: [FormatStyleExpectation<Pressure>] = [
-                .init(input: Pressure(1), style: .pressure(.psi, style: .full).locale(locale), output: "1 pound per square inch"),
-                .init(input: Pressure(2), style: .pressure(.psi, style: .full).locale(locale), output: "2 pounds per square inch"),
-                .init(input: Pressure(1), style: .pressure(.atmospheres, style: .full).locale(locale), output: "1 atmosphere"),
-                .init(input: Pressure(2), style: .pressure(.atmospheres, style: .full).locale(locale), output: "2 atmospheres")
-            ]
-
-            for datum in data {
-                await given {
-                    datum
-                } when: { datum in
-                    datum.input.formatted(datum.style)
-                } then: { datum, result in
-                    #expect(result == datum.output)
-                }
+            await given {
+                expectation
+            } when: { expectation in
+                expectation.input.formatted(expectation.style)
+            } then: { expectation, result in
+                #expect(result == expectation.output)
             }
         }
     }

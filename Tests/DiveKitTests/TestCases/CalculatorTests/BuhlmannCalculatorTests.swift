@@ -1,5 +1,6 @@
 import Testing
 @_spi(Experimental) @testable import DiveKit
+import DiveKitTestSupport
 
 @Suite("Bühlmann calculator", .tags(.technicalDiving, .buhlmann, .buhlmannCalculator))
 struct BuhlmannCalculatorTests {

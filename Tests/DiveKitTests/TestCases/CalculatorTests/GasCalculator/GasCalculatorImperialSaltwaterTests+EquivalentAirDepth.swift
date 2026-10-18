@@ -1,5 +1,6 @@
 import Testing
 @testable import DiveKit
+import DiveKitTestSupport
 
 extension GasCalculatorImperialSaltwaterTests {
 
@@ -15,7 +16,8 @@ extension GasCalculatorImperialSaltwaterTests {
             try self.sut.equivalentAirDepth(for: input.depth, with: input.blend)
         } then: { _, calculation in
             try expectCalculation(calculation) { result, configuration in
-                #expect(result.value == 52.82278481012658)
+                // (80 + 33) × 0.60 / 0.79 − 33 = 52.822784810126582… ft, by exact decimal arithmetic.
+                #expect(result.value.isApproximately(52.82278481012658))
                 #expect(result.unit == .feet)
                 #expect(configuration == self.sut.configuration)
             }
@@ -34,7 +36,8 @@ extension GasCalculatorImperialSaltwaterTests {
             try self.sut.equivalentAirDepth(for: input.depth, with: input.blend)
         } then: { _, calculation in
             try expectCalculation(calculation) { result, configuration in
-                #expect(result.value == 52.82278481012658)
+                // (80 + 33) × 0.60 / 0.79 − 33 = 52.822784810126582… ft, by exact decimal arithmetic.
+                #expect(result.value.isApproximately(52.82278481012658))
                 #expect(result.unit == .feet)
                 #expect(configuration == self.sut.configuration)
             }

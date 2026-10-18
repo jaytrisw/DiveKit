@@ -1,5 +1,6 @@
 import Testing
 @testable import DiveKit
+import DiveKitTestSupport
 
 @Suite("Buoyancy Calculator", .tags(.buoyancyCalculator, .saltWater, .metric))
 struct BuoyancyCalculatorMetricSaltwaterTests {

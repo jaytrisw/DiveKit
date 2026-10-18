@@ -1,5 +1,6 @@
 import Testing
 @_spi(Experimental) @testable import DiveKit
+import DiveKitTestSupport
 
 @Suite("Tissue validation", .tags(.technicalDiving, .error))
 struct TissueValidationTests {

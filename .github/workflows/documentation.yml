@@ -137,6 +137,9 @@ jobs:
             echo "swift package dump-symbol-graph exited with status ${DUMP_SYMBOL_GRAPH_STATUS}, but the required DiveKit symbol graphs were generated."
           fi
 
+          # Test support is not shipped, so keep it out of the published archive.
+          rm -f "$SYMBOL_GRAPH_DIR"/DiveKitTestSupport*.symbols.json
+
           swift package --allow-writing-to-directory "$OUTPUT_DIR" \
             generate-documentation \
             --target DiveKit \

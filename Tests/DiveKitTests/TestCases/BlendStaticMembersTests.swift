@@ -1,5 +1,6 @@
 import Testing
 @testable import DiveKit
+import DiveKitTestSupport
 
 @Suite("Blend Static Members", .tags(.blend))
 struct BlendStaticMembersTests {

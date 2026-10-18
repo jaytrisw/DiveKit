@@ -1,37 +1,80 @@
 import Testing
 @_spi(Experimental) @testable import DiveKit
+import DiveKitTestSupport
 
 @Suite("Water validation", .tags(.error))
 struct WaterValidationTests {
     enum Operation: CaseIterable, Sendable {
         case gaugePressure
         case atmospheresAbsolute
+        case pressureChange
+        case airVolumeFromSurface
+        case airVolumeToSurface
+        case partialPressure
+        case partialPressureInBlend
+        case bestBlend
         case equivalentAirDepth
         case maximumOperatingDepth
         case equivalentNarcoticDepth
+        case surfaceAirConsumption
+        case respiratoryMinuteVolume
 
         var callSite: CallSite {
             switch self {
             case .gaugePressure: "PhysicsCalculator.gaugePressure(at:)"
             case .atmospheresAbsolute: "PhysicsCalculator.atmospheresAbsolute(at:)"
+            case .pressureChange: "PhysicsCalculator.pressureChange(from:to:)"
+            case .airVolumeFromSurface: "PhysicsCalculator.airVolumeFromSurface(to:with:)"
+            case .airVolumeToSurface: "PhysicsCalculator.airVolumeToSurface(from:with:)"
+            case .partialPressure: "GasCalculator.partialPressure(of:at:using:)"
+            case .partialPressureInBlend: "GasCalculator.partialPressure(of:in:at:using:)"
+            case .bestBlend: "GasCalculator.bestBlend(for:partialPressure:using:)"
             case .equivalentAirDepth: "GasCalculator.equivalentAirDepth(for:with:)"
             case .maximumOperatingDepth: "GasCalculator.maximumOperatingDepth(for:in:)"
             case .equivalentNarcoticDepth: "GasCalculator.equivalentNarcoticDepth(for:with:treating:)"
+            case .surfaceAirConsumption: "GasCalculator.surfaceAirConsumption(at:for:start:end:using:)"
+            case .respiratoryMinuteVolume: "GasCalculator.respiratoryMinuteVolume(at:for:consuming:with:using:)"
             }
         }
 
         func run(in water: Water) throws {
+            let physics = PhysicsCalculator(.metric, water: water)
             switch self {
-            case .gaugePressure:
-                _ = try PhysicsCalculator(.metric, water: water).gaugePressure(at: 30)
-            case .atmospheresAbsolute:
-                _ = try PhysicsCalculator(.metric, water: water).atmospheresAbsolute(at: 30)
-            case .equivalentAirDepth:
-                _ = try GasCalculator(.metric, water: water).equivalentAirDepth(for: 30, with: .air)
-            case .maximumOperatingDepth:
-                _ = try GasCalculator(.metric, water: water).maximumOperatingDepth(for: 1.4, in: .air)
-            case .equivalentNarcoticDepth:
-                _ = try GasCalculator(.metric, water: water).equivalentNarcoticDepth(for: 30, with: .air)
+            case .gaugePressure, .atmospheresAbsolute, .pressureChange, .airVolumeFromSurface, .airVolumeToSurface:
+                try runPhysics(physics)
+            default:
+                try runGas(GasCalculator(.metric, water: water), physics)
+            }
+        }
+
+        private func runPhysics(_ physics: PhysicsCalculator) throws {
+            switch self {
+            case .gaugePressure: _ = try physics.gaugePressure(at: 30)
+            case .atmospheresAbsolute: _ = try physics.atmospheresAbsolute(at: 30)
+            case .pressureChange: _ = try physics.pressureChange(from: 10, to: 30)
+            case .airVolumeFromSurface: _ = try physics.airVolumeFromSurface(to: 30, with: 10)
+            default: _ = try physics.airVolumeToSurface(from: 30, with: 10)
+            }
+        }
+
+        private func runGas(_ gas: GasCalculator, _ physics: PhysicsCalculator) throws {
+            switch self {
+            case .partialPressure:
+                _ = try gas.partialPressure(of: FractionalPressure(of: .oxygen, fractionalPressure: 0.21), at: 30, using: physics)
+            case .partialPressureInBlend: _ = try gas.partialPressure(of: Oxygen(), in: .air, at: 30, using: physics)
+            case .bestBlend: _ = try gas.bestBlend(for: 30, partialPressure: 1.4, using: physics)
+            case .equivalentAirDepth: _ = try gas.equivalentAirDepth(for: 30, with: .air)
+            case .maximumOperatingDepth: _ = try gas.maximumOperatingDepth(for: 1.4, in: .air)
+            case .equivalentNarcoticDepth: _ = try gas.equivalentNarcoticDepth(for: 30, with: .air)
+            case .surfaceAirConsumption:
+                _ = try gas.surfaceAirConsumption(at: 30, for: 10, start: 200, end: 150, using: physics)
+            default:
+                _ = try gas.respiratoryMinuteVolume(
+                    at: 30,
+                    for: 10,
+                    consuming: 50,
+                    with: Tank(blend: .air, size: .init(volume: 12, ratedPressure: 200, unit: .liters)),
+                    using: physics)
             }
         }
     }
@@ -74,12 +117,14 @@ struct WaterValidationTests {
             let error = #expect(throws: Error.self) {
                 try operation.run(in: water)
             }
-            guard case let .range(.upperBound(provided, _), callSite) = error else {
+            guard case let .range(.upperBound(provided, expected), callSite) = error else {
                 Issue.record("Expected an upper-bound error, got \(String(describing: error)).")
                 return
             }
             #expect(provided.isNaN)
+            #expect(expected == .greatestFiniteMagnitude)
             #expect(callSite == operation.callSite)
+            #expect(error?.localizationValue == "dive.kit.error.range.upper.bound")
         }
     }
 

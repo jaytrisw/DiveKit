@@ -1,10 +1,12 @@
 import Testing
 @_spi(Experimental) @testable import DiveKit
+import DiveKitTestSupport
 
 extension GasCalculatorMetricSaltwaterTests {
 
     // MARK: equivalentNarcoticDepth(for:with:treating:)
 
+    /// Tx 18/50 at 60 m, nitrogen only: (60 + 10) × 0.32 / 0.79 − 10 = 18.3544303797468354… m.
     @Test(.tags(.technicalDiving))
     func metricSaltwaterEquivalentNarcoticDepth() async throws {
         try await given {
@@ -20,6 +22,7 @@ extension GasCalculatorMetricSaltwaterTests {
         }
     }
 
+    /// Oxygen as narcotic as nitrogen: (60 + 10) × (0.32 + 0.18) / (0.79 + 0.21) − 10 = 25 m.
     @Test(.tags(.technicalDiving))
     func metricSaltwaterEquivalentNarcoticDepthWithNarcoticOxygen() async throws {
         try await given {

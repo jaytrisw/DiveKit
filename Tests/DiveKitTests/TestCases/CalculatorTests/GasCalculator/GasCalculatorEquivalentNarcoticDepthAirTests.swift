@@ -1,5 +1,6 @@
 import Testing
 @_spi(Experimental) @testable import DiveKit
+import DiveKitTestSupport
 
 @Suite("Gas Calculator Air END", .tags(.gasCalculator, .metric, .technicalDiving))
 struct GasCalculatorEquivalentNarcoticDepthAirTests {

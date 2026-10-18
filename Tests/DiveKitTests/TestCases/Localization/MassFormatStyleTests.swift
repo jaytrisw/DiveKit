@@ -1,6 +1,7 @@
 import Foundation
 import Testing
 @testable import DiveKit
+import DiveKitTestSupport
 
 @Suite(.tags(.localization))
 struct MassFormatStyleTests {
@@ -61,24 +62,19 @@ struct MassFormatStyleTests {
         }
     }
 
-    @Test func fullFormatStylePreservesSingularAndPluralUnits() async {
+    @Test(arguments: [
+        FormatStyleExpectation<Mass>(input: Mass(1), style: .mass(.pounds, style: .full).locale(.english), output: "1 pound"),
+        FormatStyleExpectation<Mass>(input: Mass(2), style: .mass(.pounds, style: .full).locale(.english), output: "2 pounds"),
+        FormatStyleExpectation<Mass>(input: Mass(1), style: .mass(.kilograms, style: .full).locale(.english), output: "1 kilogram"),
+        FormatStyleExpectation<Mass>(input: Mass(2), style: .mass(.kilograms, style: .full).locale(.english), output: "2 kilograms")])
+    func fullFormatStylePreservesSingularAndPluralUnits(expectation: FormatStyleExpectation<Mass>) async {
         await withTestLocalization(.test) {
-            let locale = Locale.english
-            let data: [FormatStyleExpectation<Mass>] = [
-                .init(input: Mass(1), style: .mass(.pounds, style: .full).locale(locale), output: "1 pound"),
-                .init(input: Mass(2), style: .mass(.pounds, style: .full).locale(locale), output: "2 pounds"),
-                .init(input: Mass(1), style: .mass(.kilograms, style: .full).locale(locale), output: "1 kilogram"),
-                .init(input: Mass(2), style: .mass(.kilograms, style: .full).locale(locale), output: "2 kilograms")
-            ]
-
-            for datum in data {
-                await given {
-                    datum
-                } when: { datum in
-                    datum.input.formatted(datum.style)
-                } then: { datum, result in
-                    #expect(result == datum.output)
-                }
+            await given {
+                expectation
+            } when: { expectation in
+                expectation.input.formatted(expectation.style)
+            } then: { expectation, result in
+                #expect(result == expectation.output)
             }
         }
     }

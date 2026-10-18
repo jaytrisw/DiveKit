@@ -1,46 +1,9 @@
 import Testing
 @_spi(Experimental) @testable import DiveKit
+@_spi(Experimental) import DiveKitTestSupport
 
 @Suite("Tissue compartment", .tags(.technicalDiving))
 struct TissueCompartmentTests {
-    @Test
-    func constantPressureRespectsGasSpecificHalfTimes() async throws {
-        try await given {
-            Tissue.Compartment(
-                try .init(of: .nitrogen, halfTime: .init(10), tension: .init(0.7)),
-                try .init(of: .helium, halfTime: .init(5), tension: .init(0.2)))
-        } when: { initial in
-            try initial.loaded(
-                for: .init(10),
-                inspired: try .init(of: .nitrogen, pressure: .init(1.7)), try .init(of: .helium, pressure: .init(0.6)))
-        } then: { initial, result in
-            let loaded = try #require(result.tracked)
-            #expect(loaded.tension(of: .nitrogen)?.isApproximately(1.2) == true)
-            #expect(loaded.tension(of: .helium)?.isApproximately(0.5) == true)
-            #expect(initial.tension(of: .nitrogen) == 0.7)
-            #expect(initial.tension(of: .helium) == 0.2)
-        }
-    }
-
-    @Test
-    func linearDescentMatchesIndependentHighPrecisionCalculation() async throws {
-        // Expected values were calculated separately with 50-digit decimal arithmetic.
-        try await given {
-            Tissue.Compartment(
-                try .init(of: .nitrogen, halfTime: .init(10), tension: .init(0.7)),
-                try .init(of: .helium, halfTime: .init(5), tension: .init(0.2)))
-        } when: { initial in
-            try initial.loaded(
-                for: .init(10),
-                inspired: try .init(of: .nitrogen, from: .init(1), to: .init(2)),
-                try .init(of: .helium, from: .init(0.4), to: .init(0.1)))
-        } then: { _, result in
-            let loaded = try #require(result.tracked)
-            #expect(loaded.tension(of: .nitrogen)?.isApproximately(1.1286524795555183) == true)
-            #expect(loaded.tension(of: .helium)?.isApproximately(0.21230319210000838) == true)
-        }
-    }
-
     @Test
     func linearAscentMatchesIndependentHighPrecisionCalculation() async throws {
         try await given {

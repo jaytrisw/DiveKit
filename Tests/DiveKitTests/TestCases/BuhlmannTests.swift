@@ -1,5 +1,6 @@
 import Testing
 @_spi(Experimental) @testable import DiveKit
+@_spi(Experimental) import DiveKitTestSupport
 
 @Suite("Bühlmann", .tags(.technicalDiving, .buhlmann))
 struct BuhlmannTests {
@@ -214,7 +215,8 @@ struct BuhlmannTests {
     }
 
     @Test(arguments: [
-        // Expected values were calculated separately with 50-digit decimal arithmetic.
+        // Expected values are from Tests/Reference/BuhlmannReference.swift (38-digit Decimal),
+        // compared within the standard 1e-12 tolerance.
         (minutes: 30.0, nitrogen: 3.1, helium: 0.0, gradientFactor: 1.0, depth: 3.016449948805441),
         (minutes: 30.0, nitrogen: 3.1, helium: 0.0, gradientFactor: 0.5, depth: 9.179342238227694),
         (minutes: 20.0, nitrogen: 2.59, helium: 3.15, gradientFactor: 0.8, depth: 19.988528920866735)

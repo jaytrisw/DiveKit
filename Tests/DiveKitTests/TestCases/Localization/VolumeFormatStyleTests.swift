@@ -1,6 +1,7 @@
 import Foundation
 import Testing
 @testable import DiveKit
+import DiveKitTestSupport
 
 @Suite(.tags(.localization))
 struct VolumeFormatStyleTests {
@@ -61,24 +62,19 @@ struct VolumeFormatStyleTests {
         }
     }
 
-    @Test func fullFormatStylePreservesSingularAndPluralUnits() async {
+    @Test(arguments: [
+        FormatStyleExpectation<Volume>(input: Volume(1), style: .volume(.cubicFeet, style: .full).locale(.english), output: "1 cubic foot"),
+        FormatStyleExpectation<Volume>(input: Volume(2), style: .volume(.cubicFeet, style: .full).locale(.english), output: "2 cubic feet"),
+        FormatStyleExpectation<Volume>(input: Volume(1), style: .volume(.liters, style: .full).locale(.english), output: "1 liter"),
+        FormatStyleExpectation<Volume>(input: Volume(2), style: .volume(.liters, style: .full).locale(.english), output: "2 liters")])
+    func fullFormatStylePreservesSingularAndPluralUnits(expectation: FormatStyleExpectation<Volume>) async {
         await withTestLocalization(.test) {
-            let locale = Locale.english
-            let data: [FormatStyleExpectation<Volume>] = [
-                .init(input: Volume(1), style: .volume(.cubicFeet, style: .full).locale(locale), output: "1 cubic foot"),
-                .init(input: Volume(2), style: .volume(.cubicFeet, style: .full).locale(locale), output: "2 cubic feet"),
-                .init(input: Volume(1), style: .volume(.liters, style: .full).locale(locale), output: "1 liter"),
-                .init(input: Volume(2), style: .volume(.liters, style: .full).locale(locale), output: "2 liters")
-            ]
-
-            for datum in data {
-                await given {
-                    datum
-                } when: { datum in
-                    datum.input.formatted(datum.style)
-                } then: { datum, result in
-                    #expect(result == datum.output)
-                }
+            await given {
+                expectation
+            } when: { expectation in
+                expectation.input.formatted(expectation.style)
+            } then: { expectation, result in
+                #expect(result == expectation.output)
             }
         }
     }

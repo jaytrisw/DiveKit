@@ -1,10 +1,12 @@
 import Testing
 @_spi(Experimental) @testable import DiveKit
+import DiveKitTestSupport
 
 @Suite("Bühlmann no-decompression limit", .tags(.technicalDiving, .buhlmann))
 struct BuhlmannNoDecompressionLimitTests {
     @Test(arguments: [
-        // Expected values were calculated separately with 50-digit decimal arithmetic.
+        // Expected values are from Tests/Reference/BuhlmannReference.swift (38-digit Decimal),
+        // compared within the standard 1e-12 tolerance.
         (depth: 30.0, oxygen: 0.21, helium: 0.0, gradientFactor: 1.0, minutes: 16.0),
         (depth: 18.0, oxygen: 0.21, helium: 0.0, gradientFactor: 1.0, minutes: 58.0),
         (depth: 30.0, oxygen: 0.32, helium: 0.0, gradientFactor: 0.85, minutes: 18.0),

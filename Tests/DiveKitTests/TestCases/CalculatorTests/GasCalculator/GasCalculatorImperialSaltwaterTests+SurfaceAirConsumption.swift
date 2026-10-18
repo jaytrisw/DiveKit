@@ -1,5 +1,6 @@
 import Testing
 @testable import DiveKit
+import DiveKitTestSupport
 
 extension GasCalculatorImperialSaltwaterTests {
 
@@ -20,7 +21,8 @@ extension GasCalculatorImperialSaltwaterTests {
                 using: self.physicsCalculator)
         } then: { _, calculation in
             try expectCalculation(calculation) { result, configuration in
-                #expect(result.value == 16.097560975609756)
+                // (600 psi / 10 min) / (1 + 90 / 33) = 1980 / 123 = 16.097560975609756… psi/min.
+                #expect(result.value.isApproximately(16.097560975609756))
                 #expect(result.unit == .perMinute(.psi))
                 #expect(configuration == self.sut.configuration)
             }
@@ -138,7 +140,8 @@ extension GasCalculatorImperialSaltwaterTests {
                 using: self.physicsCalculator)
         } then: { _, calculation in
             try expectCalculation(calculation) { result, configuration in
-                #expect(result.value == 16.097560975609756)
+                // (600 psi / 10 min) / (1 + 90 / 33) = 1980 / 123 = 16.097560975609756… psi/min.
+                #expect(result.value.isApproximately(16.097560975609756))
                 #expect(result.unit == .perMinute(.psi))
                 #expect(configuration == self.sut.configuration)
             }

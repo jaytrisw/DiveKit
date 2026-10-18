@@ -1,5 +1,6 @@
 import Testing
 @testable import DiveKit
+import DiveKitTestSupport
 
 @Suite("Fresh Water Constants", .tags(.constants, .freshWater))
 struct FreshWaterConstantsTests {

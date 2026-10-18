@@ -1,5 +1,6 @@
 import Testing
 @_spi(Experimental) @testable import DiveKit
+import DiveKitTestSupport
 
 @Suite("Tissue inspired pressure from a blend", .tags(.technicalDiving, .blend))
 struct TissueInspiredBlendTests {

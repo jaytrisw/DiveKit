@@ -1,5 +1,6 @@
 import Testing
 @_spi(Experimental) @testable import DiveKit
+@_spi(Experimental) import DiveKitTestSupport
 
 /// Schedules checked against decotengu 0.14.1, an independent ZH-L16-GF planner.
 ///

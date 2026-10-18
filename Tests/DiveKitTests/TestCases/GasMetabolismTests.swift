@@ -1,5 +1,6 @@
 import Testing
 @_spi(Experimental) @testable import DiveKit
+import DiveKitTestSupport
 
 @Suite("Gas metabolism", .tags(.technicalDiving))
 struct GasMetabolismTests {

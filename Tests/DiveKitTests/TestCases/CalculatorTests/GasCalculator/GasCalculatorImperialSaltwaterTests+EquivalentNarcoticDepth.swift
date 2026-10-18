@@ -1,10 +1,12 @@
 import Testing
 @_spi(Experimental) @testable import DiveKit
+@_spi(Experimental) import DiveKitTestSupport
 
 extension GasCalculatorImperialSaltwaterTests {
 
     // MARK: equivalentNarcoticDepth(for:with:treating:)
 
+    /// Standard END, nitrogen only: (165 + 33) × 0.37 / 0.79 − 33 = 59.7341772151898734… ft.
     @Test(.tags(.technicalDiving))
     func equivalentNarcoticDepthValidInput() async throws {
         try await given {
@@ -22,6 +24,7 @@ extension GasCalculatorImperialSaltwaterTests {
         }
     }
 
+    /// Oxygen as narcotic as nitrogen: (165 + 33) × (0.37 + 0.18) / (0.79 + 0.21) − 33 = 75.9 ft.
     @Test(.tags(.technicalDiving))
     func equivalentNarcoticDepthWithNarcoticOxygen() async throws {
         try await given {
@@ -55,6 +58,8 @@ extension GasCalculatorImperialSaltwaterTests {
         }
     }
 
+    /// Bennett and Rostain (2003) oxygen potency 1.7:
+    /// (165 + 33) × (0.37 + 1.7 × 0.18) / (0.79 + 1.7 × 0.21) − 33 = 83.6939843068875326… ft.
     @Test(.tags(.technicalDiving))
     func equivalentNarcoticDepthWithBennettOxygen() async throws {
         try await given {
