@@ -18,9 +18,9 @@ public extension Tissue.Compartment {
     ///   - model: The loading equation. Defaults to ``Tissue/Loading/schreiner``.
     /// - Returns: `.tracked` with the updated compartment, or `.untracked` with
     ///   the updated compartment and the inspired gases it does not track.
-    /// - Throws: `Error.negative` if `duration` is negative, or `Error.range` if
-    ///   it is not finite. Also throws `Error.negative` or `Error.range` if
-    ///   `model` returns a negative or non-finite tension.
+    /// - Throws: `Error.negative` if `duration` is negative, or if `model`
+    ///   returns a negative tension; `Error.range` if `duration` or a tension
+    ///   returned by `model` is not finite.
     ///
     /// ```swift
     /// switch try compartment.loaded(
@@ -43,8 +43,7 @@ public extension Tissue.Compartment {
             var pressures: [AnyGas: (from: Double, to: Double)] = [:]
             repeat (each inspired).record(into: &pressures)
             return try duration
-                .validate(using: .finite) { .range(.upperBound($0.value, .greatestFiniteMagnitude), callSite) }
-                .validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
+                .validatedFiniteNonNegative(callSite)
                 .value
                 .map { (duration: Double) throws(Error) in
                     guard duration > 0 else { return self }
@@ -61,26 +60,39 @@ public extension Tissue.Compartment {
 
 extension Tissue.Compartment {
     /// Returns this compartment after breathing gases at `fractions` while the breathed
-    /// pressure changes linearly from `start` to `end` atmospheres.
+    /// pressure changes linearly between `breathed.from` and `breathed.to` atmospheres.
     ///
     /// Each tracked gas is loaded as for ``loaded(for:inspired:using:)`` with the blend
     /// initializers of ``Tissue/Inspired``; gases the compartment does not track are ignored.
     func loaded(
         for duration: Double,
         breathing fractions: [AnyGas: Double],
-        from start: Double,
-        to end: Double,
+        breathed: (from: Double, to: Double),
         using model: Tissue.Loading,
         _ callSite: CallSite) throws(Error) -> Self {
             guard duration > 0 else { return self }
             return Self(Dictionary(uniqueKeysWithValues: try storage.map { (gas, entry) throws(Error) in
-                let fraction = fractions[gas] ?? .zero
-                return (gas, try entry.loaded(for: duration, inspired: (start * fraction, end * fraction), using: model, callSite))
+                (gas, try entry.loaded(for: duration, fraction: fractions[gas] ?? .zero, breathed: breathed, using: model, callSite))
             }))
         }
 }
 
 extension Tissue.Compartment.Entry {
+    /// Returns this entry after breathing its gas at `fraction` while the breathed
+    /// pressure changes linearly between `breathed.from` and `breathed.to` atmospheres.
+    ///
+    /// The inspired pressures are `pressure * fraction`, in that order, on every
+    /// loading path, so the calculator, the planner, and the no-decompression
+    /// limit produce bit-identical tensions.
+    func loaded(
+        for duration: Double,
+        fraction: Double,
+        breathed: (from: Double, to: Double),
+        using model: Tissue.Loading,
+        _ callSite: CallSite) throws(Error) -> Self {
+            try loaded(for: duration, inspired: (breathed.from * fraction, breathed.to * fraction), using: model, callSite)
+        }
+
     /// Returns this entry after a segment, validating the model's tension.
     func loaded(
         for duration: Double,
@@ -89,7 +101,7 @@ extension Tissue.Compartment.Entry {
         _ callSite: CallSite) throws(Error) -> Self {
             try model
                 .load(tension, inspired, halfTime.value, duration)
-                .validate(using: .finite) { .range(.upperBound($0, .greatestFiniteMagnitude), callSite) }
+                .validatedFinite(callSite)
                 .validate(using: .greaterThanOrEqual(to: .zero)) { .negative(.partialPressure($0), callSite) }
                 .map { .init(halfTime: halfTime, tension: $0) }
         }

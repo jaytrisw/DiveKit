@@ -4,9 +4,6 @@ import DiveKitCore
 package extension Error {
     /// Creates a domain error for a negative numeric input.
     ///
-    /// This method allows domain-specific types to provide a strongly-typed
-    /// representation of invalid negative inputs while centralizing error creation.
-    ///
     /// - Parameters:
     ///   - value: A value capable of producing a corresponding negative input representation.
     ///   - callSite: The location where the error originated.

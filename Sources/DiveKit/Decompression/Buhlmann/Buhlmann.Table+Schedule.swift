@@ -25,21 +25,27 @@ public extension Buhlmann.Table {
     ///
     /// Stops after the first are at ``Ascent/lastStop`` and every
     /// ``Ascent/stopInterval`` below it; the free ascent never goes
-    /// shallower than the last stop. A gas whose switch depth is at or deeper
-    /// than `depth` is breathed from the start instead of `blend`; if there are
-    /// several, the shallowest is used. A gas whose switch depth is shallower
-    /// than the last stop is never used. Inspired pressures are calculated as
-    /// for ``Tissue/Inspired/init(of:breathing:from:to:waterVapor:configuration:)``,
+    /// shallower than the last stop.
+    ///
+    /// A gas whose switch depth is at or deeper than `depth` is breathed from
+    /// the start instead of `blend`; if there are several, the shallowest is
+    /// used. A gas whose switch depth is shallower than the last stop is never
+    /// used.
+    ///
+    /// Inspired pressures are calculated as for
+    /// ``Tissue/Inspired/init(of:breathing:from:to:waterVapor:configuration:)``,
     /// and inert gases a compartment does not track are ignored, as for
     /// ``noDecompressionLimit(of:at:breathing:gradientFactor:waterVapor:configuration:using:)``.
     ///
     /// Decisions use the compartments at the start of a move or the end of a
     /// stop minute. A ceiling that forms and clears during a move or within a
     /// minute, as can happen when gases load in opposite directions after a
-    /// switch, is not detected. The schedule never descends. If the diver cannot
-    /// leave `depth`, because the ceiling at the low gradient factor rounds to a
-    /// stop at or below it or because `depth` is shallower than the last stop,
-    /// `depth` is the first stop, even off the stop grid.
+    /// switch, is not detected.
+    ///
+    /// The schedule never descends. If the diver cannot leave `depth`, because
+    /// the ceiling at the low gradient factor rounds to a stop at or below it or
+    /// because `depth` is shallower than the last stop, `depth` is the first
+    /// stop, even off the stop grid.
     ///
     /// - Parameters:
     ///   - compartments: The compartments at the end of the bottom phase, in any order.
@@ -55,19 +61,15 @@ public extension Buhlmann.Table {
     ///   - model: The loading equation. Defaults to ``Tissue/Loading/schreiner``.
     /// - Returns: A calculation containing the schedule, which is empty if
     ///   `depth` is `0`.
-    /// - Throws: `Error.negative` if `depth`, a switch depth, or `waterVapor` is
-    ///   negative, or `Error.range` if any of them, or the ambient pressure at
-    ///   any of them, is not finite. Also throws `Error.range` if the configured
-    ///   water's depth per atmosphere is not finite or not greater than `0`.
-    ///   Throws `Error.range` if the stops would take more than 999 minutes in
-    ///   total. Also throws `Error.gas` if no
-    ///   single row covers every gas a compartment tracks, as for
-    ///   ``ceiling(of:gradientFactor:configuration:)``, `Error.range` if a
-    ///   tolerated pressure is not finite, and the errors of
-    ///   ``Tissue/Compartment/loaded(for:inspired:using:)`` if `model` returns an
-    ///   invalid tension.
-    ///
-    /// - Warning: See ``Buhlmann`` before relying on this model.
+    /// - Throws: `Error.negative` if `depth`, a switch depth, or `waterVapor`
+    ///   is negative; `Error.range` if any of them, or the ambient pressure at
+    ///   any of them, is not finite, if the configured water's depth per
+    ///   atmosphere is not finite or not greater than `0`, if the stops would
+    ///   take more than 999 minutes in total, or if a tolerated pressure is not
+    ///   finite; `Error.gas` if no single row covers every gas a compartment
+    ///   tracks, as for ``ceiling(of:gradientFactor:configuration:)``; or the
+    ///   errors of ``Tissue/Compartment/loaded(for:inspired:using:)`` if
+    ///   `model` returns an invalid tension.
     ///
     /// ```swift
     /// let schedule = try Buhlmann.Table.zhl16c.schedule(
@@ -80,6 +82,7 @@ public extension Buhlmann.Table {
     ///     configuration: .init(units: .metric, water: .salt))
     /// ```
     ///
+    /// - Warning: See ``Buhlmann`` before relying on this model.
     /// - Since: 1.0.0
     func schedule(
         of compartments: [Tissue.Compartment],
@@ -91,12 +94,39 @@ public extension Buhlmann.Table {
         waterVapor: Pressure = Tissue.alveolarWaterVapor,
         configuration: Configuration,
         using model: Tissue.Loading = .schreiner) throws(Error) -> Calculation<DecompressionSchedule> {
-            let callSite: CallSite = .from(Self.self)
-            _ = try Tissue.breathedPressure(at: depth, waterVapor: waterVapor, configuration: configuration, callSite)
+            try schedule(
+                of: compartments,
+                from: depth,
+                breathing: blend,
+                switches: switches,
+                gradientFactors: gradientFactors,
+                ascent: ascent,
+                waterVapor: waterVapor,
+                configuration: configuration,
+                using: model,
+                .from(Self.self))
+        }
+}
+
+extension Buhlmann.Table {
+    /// Returns an ascent from depth to the surface, reporting errors at `callSite`.
+    func schedule(
+        of compartments: [Tissue.Compartment],
+        from depth: Depth,
+        breathing blend: Blend<Blended>,
+        switches: [Depth: Blend<Blended>] = [:],
+        gradientFactors: GradientFactors = .full,
+        ascent: Ascent,
+        waterVapor: Pressure = Tissue.alveolarWaterVapor,
+        configuration: Configuration,
+        using model: Tissue.Loading = .schreiner,
+        _ callSite: CallSite) throws(Error) -> Calculation<DecompressionSchedule> {
+            let waterVapor = try Tissue.validatedWaterVapor(waterVapor, callSite)
             let increase = try configuration.pressureIncrease(callSite)
+            _ = try Tissue.breathedPressure(at: depth, waterVapor: waterVapor, increase: increase, callSite)
             let switchDepths = switches.keys.sorted { $0.value > $1.value }
             for switchDepth in switchDepths {
-                _ = try Tissue.breathedPressure(at: switchDepth, waterVapor: waterVapor, configuration: configuration, callSite)
+                _ = try Tissue.breathedPressure(at: switchDepth, waterVapor: waterVapor, increase: increase, callSite)
             }
             let matched = try compartments.map { (compartment: Tissue.Compartment) throws(Error) in
                 try matchedGases(of: compartment, callSite)
@@ -115,7 +145,6 @@ public extension Buhlmann.Table {
                 grid: .init(interval: ascent.stopInterval.value, last: ascent.lastStop.value),
                 rate: ascent.rate.value,
                 waterVapor: waterVapor,
-                configuration: configuration,
                 increase: increase,
                 model: model,
                 callSite: callSite)

@@ -16,6 +16,6 @@ public extension FormatStyle where Self == DecimalUnitFormatStyle<Depth> {
         style: LocalizationStyle,
         locale: Locale? = nil,
         precision: NumberFormatStyleConfiguration.Precision? = .none) -> Self {
-        .init(unit, style: style, locale: locale, precision: precision)
-    }
+            .init(unit, style: style, locale: locale, precision: precision)
+        }
 }

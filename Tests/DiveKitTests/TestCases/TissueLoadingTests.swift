@@ -1,5 +1,6 @@
 import Testing
 @_spi(Experimental) @testable import DiveKit
+@_spi(Experimental) import DiveKitTestSupport
 
 @Suite("Tissue loading", .tags(.technicalDiving))
 struct TissueLoadingTests {
@@ -14,10 +15,12 @@ struct TissueLoadingTests {
                 for: .init(10),
                 inspired: try .init(of: .nitrogen, pressure: .init(1.7)), try .init(of: .helium, pressure: .init(0.6)),
                 using: .schreiner)
-        } then: { _, result in
+        } then: { initial, result in
             let loaded = try #require(result.tracked)
             #expect(loaded.tension(of: .nitrogen)?.isApproximately(1.2) == true)
             #expect(loaded.tension(of: .helium)?.isApproximately(0.5) == true)
+            #expect(initial.tension(of: .nitrogen) == 0.7)
+            #expect(initial.tension(of: .helium) == 0.2)
         }
     }
 
@@ -41,7 +44,8 @@ struct TissueLoadingTests {
 
     @Test(.tags(.schreiner))
     func schreinerIsExactDuringLinearChange() async throws {
-        // Expected values were calculated separately with 50-digit decimal arithmetic.
+        // Expected values are from Tests/Reference/BuhlmannReference.swift (38-digit Decimal),
+        // compared within the standard 1e-12 tolerance.
         try await given {
             Tissue.Compartment(
                 try .init(of: .nitrogen, halfTime: .init(10), tension: .init(0.7)),
@@ -196,17 +200,12 @@ struct TissueLoadingTests {
                 compartment: Tissue.Compartment(try .init(of: .nitrogen, halfTime: .init(10), tension: .init(0.7))),
                 model: Tissue.Loading { _, _, _, _ in .nan })
         } when: { input in
-            let error = #expect(throws: Error.self) {
-                try input.compartment.loaded(
+            expectThrowsNaNUpperBound(
+                when: try input.compartment.loaded(
                     for: .init(5),
                     inspired: try .init(of: .nitrogen, pressure: .init(1)),
-                    using: input.model)
-            }
-            guard case let .range(.upperBound(provided, _), _) = error else {
-                Issue.record("Expected an upper-bound error, got \(String(describing: error)).")
-                return
-            }
-            #expect(provided.isNaN)
+                    using: input.model),
+                callSite: "Compartment.loaded(for:inspired:using:)")
         }
     }
 }

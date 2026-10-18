@@ -24,7 +24,7 @@ public final class Localization: Sendable {
     /// resolver for the current task hierarchy. Outside a scoped override, it
     /// returns the shared default resolver.
     ///
-    /// Use ``set(_:)`` to replace the shared default resolver.
+    /// Use ``set(_:)-(LocalizationResolver)`` to replace the shared default resolver.
     ///
     /// - Since: 1.0.0
     public var resolver: LocalizationResolver {
@@ -37,7 +37,7 @@ public final class Localization: Sendable {
     /// locale for the current task hierarchy. Outside a scoped override, it
     /// returns the shared default locale.
     ///
-    /// Use `set(_:)` to replace the shared default locale.
+    /// Use ``set(_:)-(Locale)`` to replace the shared default locale.
     ///
     /// - Since: 1.0.0
     public var locale: Locale {
@@ -94,10 +94,10 @@ public final class Localization: Sendable {
     public func withResolver<Result>(
         _ resolver: LocalizationResolver,
         operation: () throws -> Result) rethrows -> Result {
-        try Self.$scopedState.withValue(Self.scopedState.setting(resolver)) {
-            try operation()
+            try Self.$scopedState.withValue(Self.scopedState.setting(resolver)) {
+                try operation()
+            }
         }
-    }
 
     /// Performs an asynchronous operation with a temporary localization resolver.
     ///
@@ -112,10 +112,10 @@ public final class Localization: Sendable {
     public func withResolver<Result>(
         _ resolver: LocalizationResolver,
         operation: () async throws -> Result) async rethrows -> Result {
-        try await Self.$scopedState.withValue(Self.scopedState.setting(resolver)) {
-            try await operation()
+            try await Self.$scopedState.withValue(Self.scopedState.setting(resolver)) {
+                try await operation()
+            }
         }
-    }
 
     /// Performs an operation with a temporary localization locale.
     ///
@@ -130,10 +130,10 @@ public final class Localization: Sendable {
     public func withLocale<Result>(
         _ locale: Locale,
         operation: () throws -> Result) rethrows -> Result {
-        try Self.$scopedState.withValue(Self.scopedState.setting(locale)) {
-            try operation()
+            try Self.$scopedState.withValue(Self.scopedState.setting(locale)) {
+                try operation()
+            }
         }
-    }
 
     /// Performs an asynchronous operation with a temporary localization locale.
     ///
@@ -148,10 +148,10 @@ public final class Localization: Sendable {
     public func withLocale<Result>(
         _ locale: Locale,
         operation: () async throws -> Result) async rethrows -> Result {
-        try await Self.$scopedState.withValue(Self.scopedState.setting(locale)) {
-            try await operation()
+            try await Self.$scopedState.withValue(Self.scopedState.setting(locale)) {
+                try await operation()
+            }
         }
-    }
 }
 
 private extension Localization {

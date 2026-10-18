@@ -1,5 +1,6 @@
 import Testing
 @testable import DiveKit
+import DiveKitTestSupport
 
 @Suite(.tags(.blend))
 struct FractionalPressureTests {
@@ -67,6 +68,32 @@ struct FractionalPressureTests {
                 then: input.expectedError) { error in
                 #expect(error.localizationValue == "dive.kit.error.negative.fractional.pressure")
             }
+        }
+    }
+
+    @Test(.tags(.error), arguments: [Double.infinity, -.infinity])
+    func initializationRejectsInfiniteFractionalPressure(fractionalPressure: Double) async throws {
+        try await given {
+            let expectedError: Error = .range(
+                .upperBound(fractionalPressure, .greatestFiniteMagnitude),
+                "FractionalPressure<Oxygen>.init(of:fractionalPressure:)")
+
+            return (gas: Oxygen(), fractionalPressure: fractionalPressure, expectedError: expectedError)
+        } when: { input in
+            try expectThrowsError(
+                when: try FractionalPressure(of: input.gas, fractionalPressure: input.fractionalPressure),
+                then: input.expectedError) { error in
+                #expect(error.localizationValue == "dive.kit.error.range.upper.bound")
+            }
+        }
+    }
+
+    @Test(.tags(.error))
+    func initializationRejectsNaNFractionalPressure() async throws {
+        try await given {
+            Oxygen()
+        } when: { gas in
+            expectThrowsNaNUpperBound(when: try FractionalPressure(of: gas, fractionalPressure: .nan), callSite: "FractionalPressure<Oxygen>.init(of:fractionalPressure:)")
         }
     }
 }

@@ -10,8 +10,7 @@ import Foundation
 /// let end = try calculator.equivalentNarcoticDepth(
 ///     for: 60,
 ///     with: .trimix(oxygen: 0.18, helium: 0.45),
-///     treating: .narcotic(.oxygen)
-/// )
+///     treating: .narcotic(.oxygen))
 /// ```
 ///
 /// - Since: 1.0.0
@@ -45,8 +44,9 @@ public struct NarcoticTreatment: Sendable, Hashable {
         .init(gas: .init(gas), potency: potency)
     }
 
-    /// Treats helium as narcotic with its potency from Bennett (2004), about
-    /// 0.2 times that of nitrogen.
+    /// Treats helium as narcotic with its potency from Bennett and Rostain
+    /// (2003), 0.2 times that of nitrogen. See ``NarcoticPotency`` for the
+    /// full reference.
     ///
     /// - Parameter gas: Helium.
     /// - Returns: A treatment for helium.
@@ -55,13 +55,25 @@ public struct NarcoticTreatment: Sendable, Hashable {
     /// let helium = NarcoticTreatment.bennett(.helium)
     /// ```
     ///
+    /// Published estimates for helium vary. To use a different one, define
+    /// a custom treatment with ``narcotic(_:potency:)``:
+    ///
+    /// ```swift
+    /// extension NarcoticTreatment {
+    ///     static func lipidSolubility(_ gas: Helium) -> Self {
+    ///         .narcotic(gas, potency: .relative(0.23))
+    ///     }
+    /// }
+    /// ```
+    ///
     /// - Since: 1.0.0
     public static func bennett(_ gas: Helium) -> Self {
         .narcotic(gas, potency: .relative(0.2))
     }
 
-    /// Treats oxygen as narcotic with its potency from Bennett (2004), about
-    /// 1.7 times that of nitrogen.
+    /// Treats oxygen as narcotic with its potency from Bennett and Rostain
+    /// (2003), 1.7 times that of nitrogen. See ``NarcoticPotency`` for the
+    /// full reference.
     ///
     /// - Parameter gas: Oxygen.
     /// - Returns: A treatment for oxygen.

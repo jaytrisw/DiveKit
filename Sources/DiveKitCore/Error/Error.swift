@@ -7,7 +7,7 @@ import Foundation
 ///
 /// - Since: 1.0.0
 public enum Error: Swift.Error, Sendable {
-    /// A negative input was provided where only non-negative values are valid.
+    /// A negative input was provided where only nonnegative values are valid.
     ///
     /// - Since: 1.0.0
     case negative(_ negative: Negative, _ callSite: CallSite)

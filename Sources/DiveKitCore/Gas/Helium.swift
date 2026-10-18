@@ -18,8 +18,9 @@ public struct Helium: GasRepresentable, Sendable {
     }
 
     /// Helium is treated as not narcotic, matching the standard equivalent
-    /// narcotic depth. Bennett (2004) rates it about 0.2 times as narcotic as
-    /// nitrogen; opt in for a single calculation with `NarcoticTreatment`.
+    /// narcotic depth. Bennett and Rostain (2003) rate it 0.2 times as
+    /// narcotic as nitrogen (see ``NarcoticPotency``); opt in for a single
+    /// calculation with `NarcoticTreatment`.
     ///
     /// - Since: 1.0.0
     public var narcoticPotency: NarcoticPotency {

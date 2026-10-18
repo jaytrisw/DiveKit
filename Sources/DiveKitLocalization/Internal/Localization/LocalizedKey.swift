@@ -57,6 +57,14 @@ package extension LocalizedKey.Error {
         ///
         /// - Since: 1.0.0
         static let pressureRange: String.LocalizationValue = "dive.kit.error.blend.pressure.range"
+        /// Localization key for adding a gas a blend already contains.
+        ///
+        /// - Since: 1.0.0
+        static let gasAlreadyPresent: String.LocalizationValue = "dive.kit.error.blend.gas.already.present"
+        /// Localization key for updating a gas a blend does not contain.
+        ///
+        /// - Since: 1.0.0
+        static let gasNotPresent: String.LocalizationValue = "dive.kit.error.blend.gas.not.present"
     }
 }
 

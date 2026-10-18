@@ -49,9 +49,13 @@ public struct Blend<State: BlendState>: Sendable {
 
     /// The sum of all stored fractional pressures.
     ///
+    /// The fractions are summed smallest first, so the total depends only on the
+    /// stored values and the same blend gives the same total in every process
+    /// launch, even when several gases share a type.
+    ///
     /// - Since: 1.0.0
     public var totalPressure: Double {
-        storage.reduce(.zero, { $0 + $1.1 })
+        storage.values.sorted().reduce(.zero, +)
     }
 
     /// Returns the fractional pressure for a gas.
@@ -61,6 +65,15 @@ public struct Blend<State: BlendState>: Sendable {
     /// - Since: 1.0.0
     public func fractionalPressure(of gas: some GasRepresentable) -> Double {
         .init(storage[.init(gas)] ?? .zero)
+    }
+
+    /// Returns whether the blend stores a fraction for a gas, including a fraction of `0`.
+    ///
+    /// - Parameter gas: The gas to look up.
+    /// - Returns: `true` when `gas` is in the blend.
+    /// - Since: 1.0.0
+    package func contains(_ gas: some GasRepresentable) -> Bool {
+        storage[.init(gas)] != nil
     }
 
     /// Returns the gases currently present in the blend.

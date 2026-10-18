@@ -1,5 +1,6 @@
 import Testing
 @testable import DiveKit
+import DiveKitTestSupport
 
 @Suite("Gas Calculator", .tags(.gasCalculator, .saltWater, .metric))
 struct GasCalculatorMetricSaltwaterTests {

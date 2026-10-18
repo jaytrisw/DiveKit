@@ -1,5 +1,6 @@
 import Testing
 @_spi(Experimental) @testable import DiveKit
+import DiveKitTestSupport
 
 @Suite("Blend Trimix", .tags(.blend, .technicalDiving))
 struct BlendTrimixTests {

@@ -1,5 +1,6 @@
 import Testing
-@testable import DiveKit
+@_spi(Experimental) @testable import DiveKit
+import DiveKitTestSupport
 
 @Suite("Blend Unblended", .tags(.blend))
 struct BlendUnblendedTests {
@@ -19,7 +20,7 @@ struct BlendUnblendedTests {
     func addWithInvalidInput_consumingUnsafeAPI(oxygenFraction: Double) throws {
         var sut = Blend<Unblended>()
         let fractionalPressure = FractionalPressure(.oxygen, fractionalPressure: oxygenFraction)
-        let expectedError = Error.blend(.pressureRange(oxygenFraction, sut), "Blend<Unblended>.add(_:pressure:)")
+        let expectedError = Error.blend(.pressureRange(oxygenFraction, sut), "Blend<Unblended>.add(_:)")
 
         try expectThrowsError(
             when: sut.add(fractionalPressure),
@@ -194,5 +195,116 @@ struct BlendUnblendedTests {
 
         #expect(sut.totalPressure == 1.0)
         #expect(sut.components().count == 2)
+    }
+
+    static let wholePercentTrimixes: [(Int, Int)] = (1...100).flatMap { oxygen in
+        (0...(100 - oxygen)).map { helium in (oxygen, helium) }
+    }
+
+    // One test that loops, not 5,050 parameterized cases: under xcodebuild each
+    // case is a reported event, and that many stalls the test run on CI.
+    @Test
+    func blendAcceptsEveryWholePercentTrimix() async {
+        await given {
+            Self.wholePercentTrimixes
+        } when: { mixes in
+            mixes.map { oxygen, helium in
+                Result {
+                    try Blend<Unblended>()
+                        .adding(.oxygen, pressure: Double(oxygen) / 100)
+                        .adding(.helium, pressure: Double(helium) / 100)
+                        .filling(with: Nitrogen())
+                        .blend()
+                        .totalPressure
+                }
+            }
+        } then: { mixes, totalPressures in
+            for ((oxygen, helium), totalPressure) in zip(mixes, totalPressures) {
+                switch totalPressure {
+                    case let .success(totalPressure):
+                        #expect(totalPressure.isApproximately(1), "Tx \(oxygen)/\(helium)")
+                    case let .failure(error):
+                        Issue.record(error, "Tx \(oxygen)/\(helium)")
+                }
+            }
+        }
+    }
+
+    @Test(arguments: [[0, 1, 2], [0, 2, 1], [1, 0, 2], [1, 2, 0], [2, 0, 1], [2, 1, 0]])
+    func totalPressureIgnoresInsertionOrder(order: [Int]) async throws {
+        // Tx 18/35 sums to 0.9999999999999999 in two of the six orders, so an
+        // order-dependent sum shows up as an exact mismatch.
+        let additions: [(inout Blend<Unblended>) throws -> Void] = [
+            { try $0.add(.oxygen, pressure: 0.18) },
+            { try $0.add(.helium, pressure: 0.35) },
+            { try $0.add(.nitrogen, pressure: 0.47) }]
+        func build(_ order: [Int]) throws -> Blend<Unblended> {
+            var blend = Blend<Unblended>()
+            for index in order {
+                try additions[index](&blend)
+            }
+            return blend
+        }
+
+        try await given {
+            (reference: try build([0, 1, 2]), blend: try build(order))
+        } when: { input in
+            input.blend.totalPressure
+        } then: { input, totalPressure in
+            #expect(totalPressure == input.reference.totalPressure)
+            #expect(throws: Never.self) { try input.blend.blend() }
+        }
+    }
+
+    enum Fill: CaseIterable, Sendable {
+        case fill
+        case filling
+
+        var callSite: CallSite {
+            switch self {
+                case .fill: "Blend<Unblended>.fill(with:)"
+                case .filling: "Blend<Unblended>.filling(with:)"
+            }
+        }
+
+        @discardableResult
+        func run(on blend: Blend<Unblended>) throws -> Blend<Unblended> {
+            var blend = blend
+            switch self {
+                case .fill: try blend.fill(with: Nitrogen())
+                case .filling: blend = try blend.filling(with: Nitrogen())
+            }
+            return blend
+        }
+    }
+
+    @Test(arguments: Fill.allCases)
+    func fillReplacesFractionOfGasAlreadyPresent(fill: Fill) throws {
+        let blend = try Blend<Unblended>()
+            .adding(.oxygen, pressure: 0.25)
+            .adding(.nitrogen, pressure: 0.5)
+
+        let result = try fill.run(on: blend)
+
+        #expect(result.fractionalPressure(of: .oxygen) == 0.25)
+        #expect(result.fractionalPressure(of: .nitrogen) == 0.75)
+        #expect(throws: Never.self) { try result.blend() }
+    }
+
+    @Test(.tags(.error), arguments: Fill.allCases)
+    func fillRejectsOverfullBlend(fill: Fill) async throws {
+        try await given {
+            let blend = try Blend<Unblended>()
+                .adding(.oxygen, pressure: 0.8)
+                .adding(.helium, pressure: 0.8)
+            let expectedError = Error.blend(.pressureRange(1 - blend.totalPressure, blend), fill.callSite)
+            return (blend: blend, expectedError: expectedError)
+        } when: { input in
+            try expectThrowsError(
+                when: try fill.run(on: input.blend),
+                then: input.expectedError) {
+                    #expect($0.localizationValue == "dive.kit.error.blend.pressure.range")
+                }
+        }
     }
 }

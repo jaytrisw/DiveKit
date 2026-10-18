@@ -10,7 +10,8 @@ public extension Blend where State == Blended {
     ///   - helium: The helium fraction in `0...1`.
     /// - Returns: A validated oxygen, helium, and nitrogen blend.
     /// - Throws: `Error.negative` if either fraction is negative, or
-    ///   `Error.range` if either fraction or their sum is greater than `1`.
+    ///   `Error.range` if either fraction is not finite, or if either fraction
+    ///   or their sum is greater than `1`.
     ///
     /// ```swift
     /// let trimix = try Blend.trimix(oxygen: 0.18, helium: 0.45) // Tx 18/45
@@ -21,7 +22,7 @@ public extension Blend where State == Blended {
     static func trimix(
         oxygen: Double,
         helium: Double) throws(Error) -> Blend<Blended> {
-            let callSite: CallSite = .init(object: .init(describing: Self.self), function: #function)
+            let callSite: CallSite = .from(Self.self)
             let oxygenFraction = try FractionalPressure(of: .oxygen, fractionalPressure: oxygen)
             let heliumFraction = try FractionalPressure(of: .helium, fractionalPressure: helium)
             let combinedFraction = try (oxygen + helium).validate(using: .lessThanOrEqual(to: .one)) {

@@ -8,7 +8,7 @@ public extension Tissue {
     ///
     /// Water vapor in the lungs displaces part of each breath, so the inspired
     /// pressure of a gas is `(P_amb − P_wv) · f`. Other models use other values,
-    /// such as Schreiner's 0.0567 bar; pass your own where a parameter takes one.
+    /// such as Schreiner's 0.0567 bar; pass a custom value where a parameter takes one.
     ///
     /// - Since: 1.0.0
     static var alveolarWaterVapor: Pressure {
@@ -33,10 +33,10 @@ public extension Tissue.Inspired {
     ///   - waterVapor: The alveolar water vapor pressure in atmospheres.
     ///     Defaults to ``Tissue/alveolarWaterVapor``.
     ///   - configuration: The units and water used to convert depth to pressure.
-    /// - Throws: `Error.negative` if `depth` or `waterVapor` is negative, or
-    ///   `Error.range` if either is not finite. Also throws `Error.range` if the
-    ///   configured water's depth per atmosphere is not finite or not greater
-    ///   than `0`, or if the ambient pressure at `depth` is not finite.
+    /// - Throws: `Error.negative` if `depth` or `waterVapor` is negative;
+    ///   `Error.range` if either is not finite, if the configured water's
+    ///   depth per atmosphere is not finite or not greater than `0`, or if the
+    ///   ambient pressure at `depth` is not finite.
     ///
     /// ```swift
     /// let nitrogen = try Tissue.Inspired(
@@ -76,11 +76,10 @@ public extension Tissue.Inspired {
     ///   - waterVapor: The alveolar water vapor pressure in atmospheres.
     ///     Defaults to ``Tissue/alveolarWaterVapor``.
     ///   - configuration: The units and water used to convert depth to pressure.
-    /// - Throws: `Error.negative` if either depth or `waterVapor` is negative,
-    ///   or `Error.range` if any of them is not finite. Also throws
-    ///   `Error.range` if the configured water's depth per atmosphere is not
-    ///   finite or not greater than `0`, or if the ambient pressure at either
-    ///   depth is not finite.
+    /// - Throws: `Error.negative` if either depth or `waterVapor` is negative;
+    ///   `Error.range` if any of them is not finite, if the configured water's
+    ///   depth per atmosphere is not finite or not greater than `0`, or if the
+    ///   ambient pressure at either depth is not finite.
     ///
     /// ```swift
     /// let descent = try Tissue.Inspired(
@@ -120,30 +119,66 @@ extension Tissue.Inspired {
         waterVapor: Pressure,
         configuration: Configuration,
         _ callSite: CallSite) throws(Error) {
+            let waterVapor = try Tissue.validatedWaterVapor(waterVapor, callSite)
+            let increase = try configuration.pressureIncrease(callSite)
+            let breathed = try Tissue.breathedPressures(from: start, to: end, waterVapor: waterVapor, increase: increase, callSite)
             let fraction = try blend.fractionalPressure(of: gas).value
             try self.init(
                 of: gas,
-                from: .init(try Tissue.breathedPressure(at: start, waterVapor: waterVapor, configuration: configuration, callSite) * fraction),
-                to: .init(try Tissue.breathedPressure(at: end, waterVapor: waterVapor, configuration: configuration, callSite) * fraction))
+                from: .init(breathed.from * fraction),
+                to: .init(breathed.to * fraction))
         }
 }
 
 extension Tissue {
+    /// Validates `waterVapor` and returns its value in atmospheres.
+    static func validatedWaterVapor(
+        _ waterVapor: Pressure,
+        _ callSite: CallSite) throws(Error) -> Double {
+            try waterVapor
+                .validatedFiniteNonNegative(callSite)
+                .value
+        }
+
+    /// Returns the ambient pressure at a depth less validated water vapor, in
+    /// atmospheres, clamped at `0`.
+    static func breathedPressure(
+        at depth: Depth,
+        waterVapor: Double,
+        increase: Double,
+        _ callSite: CallSite) throws(Error) -> Double {
+            let depth = try depth
+                .validatedFiniteNonNegative(callSite)
+            let ambient = try Surface.ambientPressure(atDepth: depth.value, increase: increase)
+                .validatedFinite(callSite)
+            return Swift.max(ambient - waterVapor, .zero)
+        }
+
+    /// Returns the breathed pressures at the start and end of a segment, in atmospheres.
+    ///
+    /// Every loading path uses this, so a segment's pressures are computed the
+    /// same way wherever it is loaded.
+    static func breathedPressures(
+        from start: Depth,
+        to end: Depth,
+        waterVapor: Double,
+        increase: Double,
+        _ callSite: CallSite) throws(Error) -> (from: Double, to: Double) {
+            let startPressure = try breathedPressure(at: start, waterVapor: waterVapor, increase: increase, callSite)
+            let endPressure = end == start
+                ? startPressure
+                : try breathedPressure(at: end, waterVapor: waterVapor, increase: increase, callSite)
+            return (startPressure, endPressure)
+        }
+
     /// Returns the ambient pressure at a depth less water vapor, in atmospheres, clamped at `0`.
     static func breathedPressure(
         at depth: Depth,
         waterVapor: Pressure,
         configuration: Configuration,
         _ callSite: CallSite) throws(Error) -> Double {
-            let waterVapor = try waterVapor
-                .validate(using: .finite) { .range(.upperBound($0.value, .greatestFiniteMagnitude), callSite) }
-                .validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
-            let depth = try depth
-                .validate(using: .finite) { .range(.upperBound($0.value, .greatestFiniteMagnitude), callSite) }
-                .validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
+            let waterVapor = try validatedWaterVapor(waterVapor, callSite)
             let increase = try configuration.pressureIncrease(callSite)
-            let ambient = try (1 + depth.value / increase)
-                .validate(using: .finite) { .range(.upperBound($0, .greatestFiniteMagnitude), callSite) }
-            return Swift.max(ambient - waterVapor.value, .zero)
+            return try breathedPressure(at: depth, waterVapor: waterVapor, increase: increase, callSite)
         }
 }

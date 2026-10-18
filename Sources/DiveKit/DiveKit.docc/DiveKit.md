@@ -24,7 +24,9 @@ do {
     let oxygen = try FractionalPressure(of: Oxygen(), fractionalPressure: 0.32)
     let partialPressure = try GasCalculator(configuration: configuration)
         .partialPressure(of: oxygen, at: 30, using: physicsCalculator)
-} catch let error as DiveKit.Error {
+    print(partialPressure.result.value)
+} catch {
+    // `error` is already a `DiveKit.Error`.
     print(error.localizedDescription)
 }
 ```
@@ -71,6 +73,14 @@ DiveKit includes localization helpers for unit titles, descriptions, quantities,
 let depth = Depth(30)
 let formattedDepth = depth.formatted(.depth(.meters, style: .short))
 ```
+
+### Limitations
+
+DiveKit's calculations have not been validated for planning real dives. Do not use them as a substitute for a dive computer, published tables, or training.
+
+- **Sea level only.** Surface pressure is fixed at one atmosphere. DiveKit does not model altitude, so do not rely on any result that depends on ambient pressure at altitude.
+- **Ideal gas.** Respiratory minute volume treats gas as ideal, with no compressibility factor, which overstates the gas in a high-pressure cylinder by several percent.
+- **Unit conventions.** Metric salt water uses 10 m and imperial salt water 33 ft per atmosphere. These differ by about 0.6%, so the same dive gives slightly different results in each unit system.
 
 ## Additional API Names
 

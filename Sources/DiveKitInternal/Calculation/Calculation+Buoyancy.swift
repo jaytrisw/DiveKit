@@ -4,9 +4,6 @@ import DiveKitCore
 package extension Calculation where Result == Buoyancy {
     /// Creates a calculation representing a buoyancy value.
     ///
-    /// This convenience method wraps a raw ``Swift/Double`` buoyancy value into a
-    /// ``DiveKitCore/Buoyancy`` result and associates it with the provided configuration.
-    ///
     /// - Parameters:
     ///   - value: The buoyancy value.
     ///   - configuration: The calculation configuration.
@@ -15,8 +12,7 @@ package extension Calculation where Result == Buoyancy {
     /// ```swift
     /// let calculation = Calculation.buoyancy(
     ///     1.5,
-    ///     configuration: configuration
-    /// )
+    ///     configuration: configuration)
     /// ```
     ///
     /// - Note: Positive values indicate positive buoyancy (tendency to float),

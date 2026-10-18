@@ -10,6 +10,14 @@ import DiveKitInternal
 ///
 /// All calculations are performed using the provided configuration.
 ///
+/// - Important: Surface pressure is fixed at one atmosphere, as at sea level.
+///   DiveKit does not model altitude, so do not rely on results that depend
+///   on ambient pressure at altitude.
+///
+/// - Warning: These calculations have not been validated for planning real
+///   dives. Do not use them as a substitute for a dive computer, published
+///   tables, or training.
+///
 /// - Since: 1.0.0
 final public class GasCalculator: ConfigurationProviding {
 
@@ -40,15 +48,16 @@ extension GasCalculator: GasCalculating {
     ///   - depth: The depth at which the calculation is performed.
     ///   - physicsCalculator: A calculator used to determine absolute pressure.
     /// - Returns: A calculation containing the partial pressure.
-    /// - Throws: A `Error` from the underlying absolute-pressure calculation.
+    /// - Throws: `Error.negative` if `depth` is negative, or `Error.range` if
+    ///   `depth` or the absolute pressure is not finite, or if the water
+    ///   model's pressure increase is not finite or not greater than zero.
     ///
     /// ```swift
     /// let oxygen = try FractionalPressure(of: Oxygen(), fractionalPressure: 0.32)
     /// let pp = try calculator.partialPressure(
     ///     of: oxygen,
     ///     at: 30,
-    ///     using: physicsCalculator
-    /// )
+    ///     using: physicsCalculator)
     /// ```
     ///
     /// - Since: 1.0.0
@@ -72,37 +81,46 @@ extension GasCalculator: GasCalculating {
     ///   - physicsCalculator: A calculator used to determine absolute pressure.
     /// - Returns: A calculation containing the optimal blend.
     /// - Throws: `Error.negative` if `depth` or `partialPressure` is
-    ///   negative, or `Error.range` if `partialPressure` is zero.
+    ///   negative, or `Error.range` if `depth` or `partialPressure` is not
+    ///   finite, if `partialPressure` is zero, if the oxygen fraction rounds
+    ///   down to zero (`partialPressure` is less than 1% of ambient pressure),
+    ///   or if the water model's pressure increase is not finite or not greater
+    ///   than zero.
     ///
     /// ```swift
     /// let blend = try calculator.bestBlend(
     ///     for: 30,
     ///     partialPressure: 1.4,
-    ///     using: physicsCalculator
-    /// )
+    ///     using: physicsCalculator)
     /// ```
     ///
     /// - Note: The oxygen fraction is rounded down to two decimal places before
-    ///   constructing the enriched air blend.
+    ///   constructing the enriched air blend. A fraction that is a whole percent
+    ///   within floating-point rounding, such as 1.45 / 5 = 0.29, keeps that
+    ///   percent. When `partialPressure` exceeds the ambient pressure, as at
+    ///   shallow depths, no mix reaches it and the result is pure oxygen.
     /// - Since: 1.0.0
     public func bestBlend(
         for depth: Depth,
         partialPressure: PartialPressure<Oxygen>,
         using physicsCalculator: PhysicsCalculating) throws(DiveKit.Error) -> Calculation<Blend<Blended>> {
-            try depth.validate(using: .nonNegative, orThrow: { .negative($0, .from(self)) })
+            let callSite: CallSite = .from(self)
+            return try depth
+                .validatedFiniteNonNegative(callSite)
                 .map { (_: Depth) throws(DiveKit.Error) in
-                    try partialPressure.validate(using: .nonNegative) { .negative($0, .from(self)) }
-                        .map { (partialPressure: PartialPressure<Oxygen>) throws(DiveKit.Error) in
-                            try partialPressure.validate(using: .greater(than: 0)) { .range(.lowerBound($0.value, 0), .from(self)) }
-                        }
+                    try partialPressure
+                        .validatedFiniteNonNegative(callSite)
+                        .validate(using: .greater(than: 0)) { .range(.lowerBound($0.value, 0), callSite) }
                 }
                 .map { (_: PartialPressure<Oxygen>) throws(DiveKit.Error) in
-                    try physicsCalculator.atmospheresAbsolute(at: depth, with: configuration, .from(self))
+                    try physicsCalculator.atmospheresAbsolute(at: depth, with: configuration, callSite)
                 }
                 .map { partialPressure.value / $0.result.value }
-                .map { $0 * 100 }
-                .map { $0.rounded(.towardZero) }
-                .map { $0 / 100 }
+                .map { min($0, .one) }
+                // Nudge up by a relative 1e-12 so an exact percent survives truncation:
+                // 1.45 / 5 * 100 is 28.999999999999996, which would otherwise give 0.28.
+                .map { ($0 * 100 * (1 + 1e-12)).rounded(.down) / 100 }
+                .validate(using: .greater(than: 0)) { .range(.lowerBound($0, 0), callSite) }
                 .map { (fraction: Double) throws(DiveKit.Error) in
                     try .blend(.enrichedAir(fraction), configuration: configuration)
                 }
@@ -115,14 +133,13 @@ extension GasCalculator: GasCalculating {
     ///   - blend: The gas mixture.
     /// - Returns: A calculation containing the equivalent air depth.
     /// - Throws: `Error.negative` if `depth` is negative,
-    ///   or `Error.range` if the water model's pressure increase is not
-    ///   finite or not greater than zero.
+    ///   or `Error.range` if `depth` or the result is not finite, or if the
+    ///   water model's pressure increase is not finite or not greater than zero.
     ///
     /// ```swift
     /// let ead = try calculator.equivalentAirDepth(
     ///     for: 30,
-    ///     with: blend
-    /// )
+    ///     with: blend)
     /// ```
     ///
     /// - Note: The nitrogen ratio is the blend's nitrogen fraction divided by
@@ -131,74 +148,86 @@ extension GasCalculator: GasCalculating {
     public func equivalentAirDepth(
         for depth: Depth,
         with blend: Blend<Blended>) throws(DiveKit.Error) -> Calculation<DecimalResult<Depth>> {
-            let increase = try configuration.pressureIncrease(.from(self))
-            return try depth.validate(using: .nonNegative, orThrow: { .negative($0, .from(self)) })
+            let callSite: CallSite = .from(self)
+            let increase = try configuration.pressureIncrease(callSite)
+            return try depth
+                .validatedFiniteNonNegative(callSite)
                 .map { $0.value + increase }
                 .with { () throws(DiveKit.Error) in
                     try blend.fractionalPressure(of: .nitrogen).value / Blend.air.fractionalPressure(of: .nitrogen).value
                 }
                 .map { $0.first * $0.second }
+                .validatedFinite(callSite)
                 .map { $0 - increase }
                 .map { .decimal($0, unit: \.depth, from: configuration) }
         }
 
     /// Calculates the maximum operating depth (MOD) for a gas mixture.
     ///
+    /// The depth is negative when the blend's oxygen fraction exceeds
+    /// `partialPressure`, because the blend exceeds the limit even at the
+    /// surface. For example, EAN80 at 0.7 gives -4.125 ft in imperial salt
+    /// water. Check the sign before presenting the result as a depth.
+    ///
     /// - Parameters:
     ///   - partialPressure: The maximum allowable oxygen partial pressure.
     ///   - blend: The gas mixture.
     /// - Returns: A calculation containing the maximum operating depth.
     /// - Throws: `Error.negative` if `partialPressure` is negative, or
-    ///   `Error.range` if the oxygen fraction or `partialPressure` is zero, or
-    ///   if the water model's pressure increase is not finite or not greater
-    ///   than zero.
+    ///   `Error.range` if the oxygen fraction or `partialPressure` is zero, if
+    ///   `partialPressure` or the result is not finite, or if the water model's
+    ///   pressure increase is not finite or not greater than zero.
     ///
     /// ```swift
     /// let mod = try calculator.maximumOperatingDepth(
     ///     for: 1.4,
-    ///     in: blend
-    /// )
+    ///     in: blend)
     /// ```
     ///
     /// - Since: 1.0.0
     public func maximumOperatingDepth(
         for partialPressure: PartialPressure<Oxygen>,
         in blend: Blend<Blended>) throws(DiveKit.Error) -> Calculation<DecimalResult<Depth>> {
-            let increase = try configuration.pressureIncrease(.from(self))
+            try maximumOperatingDepth(for: partialPressure, in: blend, .from(self))
+        }
+
+    func maximumOperatingDepth(
+        for partialPressure: PartialPressure<Oxygen>,
+        in blend: Blend<Blended>,
+        _ callSite: CallSite) throws(DiveKit.Error) -> Calculation<DecimalResult<Depth>> {
+            let increase = try configuration.pressureIncrease(callSite)
             return try blend.fractionalPressure(of: .oxygen).value
                 .validate(using: .greater(than: 0)) {
-                    .range(.lowerBound($0, 0), .from(self))
+                    .range(.lowerBound($0, 0), callSite)
                 }
                 .with { (_: Double) throws(DiveKit.Error) in
-                    try partialPressure.validate(using: .nonNegative) { .negative($0, .from(self)) }
-                        .map { (partialPressure: PartialPressure<Oxygen>) throws(DiveKit.Error) in
-                            try partialPressure.validate(using: .greater(than: 0)) { .range(.lowerBound($0.value, 0), .from(self)) }
-                        }
+                    try partialPressure
+                        .validatedFiniteNonNegative(callSite)
+                        .validate(using: .greater(than: 0)) { .range(.lowerBound($0.value, 0), callSite) }
                 }
-                .map { $0.second.value / $0.first }
-                .map { $0 - 1 }
-                .map { $0 * increase }
+                .map { Surface.depth(atAmbientPressure: $0.second.value / $0.first, increase: increase) }
+                .validatedFinite(callSite)
                 .map { .decimal($0, unit: \.depth, from: configuration) }
         }
 
     /// Calculates the partial pressure of a gas in a blend at depth.
     ///
     /// - Parameters:
-    ///   - gas: The gas.
-    ///   - blend: The blended mixture.
-    ///   - depth: The depth.
-    ///   - physicsCalculator: A physics calculator.
+    ///   - gas: The gas to evaluate.
+    ///   - blend: The validated blend.
+    ///   - depth: The depth at which to calculate partial pressure.
+    ///   - physicsCalculator: The physics calculator used for absolute pressure.
     /// - Returns: A calculation containing the partial pressure.
-    /// - Throws: A `Error` if the blend cannot produce a valid
-    ///   fractional pressure for `gas`, or if the absolute-pressure calculation fails.
+    /// - Throws: `Error.negative` if `depth` is negative, or `Error.range` if
+    ///   `depth` or the absolute pressure is not finite, or if the water
+    ///   model's pressure increase is not finite or not greater than zero.
     ///
     /// ```swift
     /// let pp = try calculator.partialPressure(
     ///     of: Oxygen(),
     ///     in: blend,
     ///     at: 30,
-    ///     using: physicsCalculator
-    /// )
+    ///     using: physicsCalculator)
     /// ```
     ///
     /// - Since: 1.0.0
@@ -219,14 +248,17 @@ extension GasCalculator: GasCalculating {
     /// Calculates surface air consumption (SAC) from start and end pressures.
     ///
     /// - Parameters:
-    ///   - depth: The depth.
+    ///   - depth: The depth at which gas was consumed.
     ///   - minutes: The elapsed time.
-    ///   - startGas: Starting pressure.
-    ///   - endGas: Ending pressure.
-    ///   - physicsCalculator: A physics calculator.
+    ///   - startGas: The starting tank pressure.
+    ///   - endGas: The ending tank pressure.
+    ///   - physicsCalculator: The physics calculator used for absolute pressure.
     /// - Returns: A calculation containing the SAC rate.
-    /// - Throws: `Error.negative` if `startGas` or `endGas` is negative,
-    ///   or a `Error` from surface air consumption validation.
+    /// - Throws: `Error.negative` if `depth`, `minutes`, `startGas`, `endGas`,
+    ///   or the consumed pressure is negative, or `Error.range` if `minutes` is
+    ///   zero, if `depth`, `minutes`, `startGas`, `endGas`, or the result is
+    ///   not finite, or if the water model's pressure increase is not finite or
+    ///   not greater than zero.
     ///
     /// ```swift
     /// let sac = try calculator.surfaceAirConsumption(
@@ -234,8 +266,7 @@ extension GasCalculator: GasCalculating {
     ///     for: 20,
     ///     start: 200,
     ///     end: 100,
-    ///     using: physicsCalculator
-    /// )
+    ///     using: physicsCalculator)
     /// ```
     ///
     /// - Warning: This method does not explicitly reject an end pressure greater
@@ -248,9 +279,12 @@ extension GasCalculator: GasCalculating {
         start startGas: Pressure,
         end endGas: Pressure,
         using physicsCalculator: PhysicsCalculating) throws(DiveKit.Error) -> Calculation<DecimalResult<Rate<Pressure>>> {
-            try startGas.validate(using: .nonNegative, orThrow: { .negative($0, .from(self)) })
+            let callSite: CallSite = .from(self)
+            return try startGas
+                .validatedFiniteNonNegative(callSite)
                 .map { (_: Pressure) throws(DiveKit.Error) in
-                    try endGas.validate(using: .nonNegative, orThrow: { .negative($0, .from(self)) })
+                    try endGas
+                        .validatedFiniteNonNegative(callSite)
                 }
                 .map { startGas.value - endGas.value }
                 .map { (consumedPressure: Double) throws(DiveKit.Error) in
@@ -260,21 +294,25 @@ extension GasCalculator: GasCalculating {
                         consuming: .init(consumedPressure),
                         using: physicsCalculator,
                         with: configuration,
-                        .from(self))
+                        callSite)
                 }
         }
 
     /// Calculates respiratory minute volume (RMV).
     ///
     /// - Parameters:
-    ///   - depth: The depth.
+    ///   - depth: The depth at which gas was consumed.
     ///   - minutes: The elapsed time.
-    ///   - gasConsumed: Gas consumed.
-    ///   - tank: The tank used.
-    ///   - physicsCalculator: A physics calculator.
+    ///   - gasConsumed: The consumed tank pressure.
+    ///   - tank: The tank used for the dive.
+    ///   - physicsCalculator: The physics calculator used for absolute pressure.
     /// - Returns: A calculation containing the RMV.
     /// - Throws: `Error.tank` if the tank volume is negative or its rated
-    ///   pressure is not positive, or a `Error` from surface air consumption validation.
+    ///   pressure is not positive, `Error.negative` if `depth`, `minutes`, or
+    ///   `gasConsumed` is negative, or `Error.range` if `minutes` is zero, if
+    ///   `depth`, `minutes`, `gasConsumed`, the tank volume, its rated
+    ///   pressure, or the result is not finite, or if the water model's
+    ///   pressure increase is not finite or not greater than zero.
     ///
     /// ```swift
     /// let rmv = try calculator.respiratoryMinuteVolume(
@@ -282,10 +320,13 @@ extension GasCalculator: GasCalculating {
     ///     for: 20,
     ///     consuming: 50,
     ///     with: tank,
-    ///     using: physicsCalculator
-    /// )
+    ///     using: physicsCalculator)
     /// ```
     ///
+    /// - Note: Gas is treated as ideal: the volume consumed is the pressure
+    ///   drop multiplied by the tank's water capacity, with no compressibility
+    ///   factor. Near a 200–300 bar fill this overstates the gas in the tank,
+    ///   and so the RMV, by several percent.
     /// - Since: 1.0.0
     public func respiratoryMinuteVolume(
         at depth: Depth,
@@ -293,9 +334,14 @@ extension GasCalculator: GasCalculating {
         consuming gasConsumed: Pressure,
         with tank: Tank,
         using physicsCalculator: PhysicsCalculating) throws(DiveKit.Error) -> Calculation<DecimalResult<Rate<Volume>>> {
-            try tank.size.volume.validate(using: .nonNegative, orThrow: { .tank(.volume($0, tank), .from(self)) })
+            let callSite: CallSite = .from(self)
+            return try tank.size.volume
+                .validatedFinite(callSite)
+                .validate(using: .nonNegative, orThrow: { .tank(.volume($0, tank), callSite) })
                 .map { (_: Volume) throws(DiveKit.Error) in
-                    try tank.size.ratedPressure.validate(using: .greater(than: 0), orThrow: { .tank(.ratedPressure($0, tank), .from(self)) })
+                    try tank.size.ratedPressure
+                        .validatedFinite(callSite)
+                        .validate(using: .greater(than: 0), orThrow: { .tank(.ratedPressure($0, tank), callSite) })
                 }
                 .map { (_: Pressure) throws(DiveKit.Error) in
                     try surfaceAirConsumption(
@@ -304,9 +350,10 @@ extension GasCalculator: GasCalculating {
                         consuming: gasConsumed,
                         using: physicsCalculator,
                         with: configuration,
-                        .from(self))
+                        callSite)
                 }
                 .map { $0.result.value * tank.size.conversionFactor(for: configuration.units) }
+                .validatedFinite(callSite)
                 .map { .decimal($0, unit: .perMinute(configuration.units.volume), configuration: configuration) }
         }
 }

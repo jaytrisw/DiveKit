@@ -26,14 +26,13 @@ public extension Blend where State == Blended {
 
     /// Creates an enriched air gas mixture.
     ///
-    /// This method constructs a two-gas blend consisting of oxygen and nitrogen,
-    /// where the oxygen fraction is specified and the nitrogen fraction fills
-    /// the remainder.
+    /// The blend holds oxygen and nitrogen; nitrogen fills the fraction that
+    /// oxygen leaves.
     ///
     /// - Parameter fraction: The fractional pressure of oxygen.
     /// - Returns: A ``Blend`` in the `Blended` state representing enriched air.
     /// - Throws: `Error.negative` if `fraction` is negative, or
-    ///   `Error.range` if `fraction` is greater than `1`.
+    ///   `Error.range` if `fraction` is not finite or is greater than `1`.
     ///
     /// ```swift
     /// let enrichedAir = try Blend.enrichedAir(0.32) // EAN32

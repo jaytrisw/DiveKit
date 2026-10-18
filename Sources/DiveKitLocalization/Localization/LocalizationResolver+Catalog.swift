@@ -9,14 +9,14 @@ public extension LocalizationResolver {
     /// - Since: 1.0.0
     static let `default`: Self = .catalog(in: .module)
 
-    /// Creates a resolver that reads a strings catalog from a bundle.
+    /// Creates a resolver that reads a string catalog from a bundle.
     ///
     /// The resolver uses the locale passed to ``LocalizationResolver/resolve``
     /// for string-catalog lookup and format-argument application.
     ///
     /// - Parameters:
-    ///   - table: The strings catalog table name. Defaults to `Localizable`.
-    ///   - bundle: The bundle that contains the strings catalog.
+    ///   - table: The string catalog table name. Defaults to `Localizable`.
+    ///   - bundle: The bundle that contains the string catalog.
     /// - Returns: A resolver backed by the specified catalog.
     /// - Since: 1.0.0
     static func catalog(

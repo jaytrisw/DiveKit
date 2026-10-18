@@ -21,17 +21,16 @@ public extension GasCalculator {
     ///   - overrides: Narcotic potencies that replace each gas's own potency.
     /// - Returns: A calculation containing the equivalent narcotic depth.
     /// - Throws: `Error.negative` if `depth` is negative, or `Error.range` if
-    ///   a potency is negative or not finite, if air is not narcotic under the
-    ///   given treatments, if the result is not finite,
-    ///   or if the water model's pressure increase is not finite or not
+    ///   `depth` is not finite, if a potency is negative or not finite, if air
+    ///   is not narcotic under the given treatments, if the result is not
+    ///   finite, or if the water model's pressure increase is not finite or not
     ///   greater than zero.
     ///
     /// ```swift
     /// let end = try calculator.equivalentNarcoticDepth(
     ///     for: 60,
     ///     with: .trimix(oxygen: 0.18, helium: 0.45),
-    ///     treating: .narcotic(.oxygen)
-    /// )
+    ///     treating: .narcotic(.oxygen))
     /// ```
     ///
     /// - Since: 1.0.0
@@ -45,26 +44,22 @@ public extension GasCalculator {
 
     /// Calculates the equivalent narcotic depth (END) for an unblended gas mixture.
     ///
-    /// This method converts an unblended mixture into a blended state and then
-    /// computes the equivalent narcotic depth.
-    ///
     /// - Parameters:
     ///   - depth: The actual depth.
     ///   - blend: The unblended gas mixture.
     ///   - overrides: Narcotic potencies that replace each gas's own potency.
     /// - Returns: A calculation containing the equivalent narcotic depth.
     /// - Throws: `Error.blend` if the blend cannot be normalized,
-    ///   `Error.negative` if `depth` is negative, or `Error.range` if a potency
-    ///   is negative or not finite, if air is not narcotic under the given
-    ///   treatments, if the result is not finite,
-    ///   or if the water model's pressure increase is not finite or not
-    ///   greater than zero.
+    ///   `Error.negative` if `depth` is negative, or `Error.range` if `depth`
+    ///   is not finite, if a potency is negative or not finite, if air is not
+    ///   narcotic under the given treatments, if the result is not finite, or
+    ///   if the water model's pressure increase is not finite or not greater
+    ///   than zero.
     ///
     /// ```swift
     /// let end = try calculator.equivalentNarcoticDepth(
     ///     for: 60,
-    ///     with: blend
-    /// )
+    ///     with: blend)
     /// ```
     ///
     /// - Since: 1.0.0
@@ -88,7 +83,8 @@ private extension GasCalculator {
         treating overrides: [NarcoticTreatment],
         _ callSite: CallSite) throws(DiveKit.Error) -> Calculation<DecimalResult<Depth>> {
             let increase = try configuration.pressureIncrease(callSite)
-            return try depth.validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
+            return try depth
+                .validatedFiniteNonNegative(callSite)
                 .map { $0.value + increase }
                 .with { () throws(DiveKit.Error) in
                     var potencies: [AnyGas: NarcoticPotency] = [:]
@@ -100,7 +96,7 @@ private extension GasCalculator {
                     return try narcoticLoad(of: blend, potencies, callSite) / air
                 }
                 .map { $0.first * $0.second }
-                .validate(using: .finite) { .range(.upperBound($0, .greatestFiniteMagnitude), callSite) }
+                .validatedFinite(callSite)
                 .map { $0 - increase }
                 .map { .decimal($0, unit: \.depth, from: configuration) }
         }
@@ -127,7 +123,7 @@ private extension GasCalculator {
                 return potency
             case let .relative(value):
                 try value
-                    .validate(using: .finite) { .range(.upperBound($0, .greatestFiniteMagnitude), callSite) }
+                    .validatedFinite(callSite)
                     .validate(using: .greaterThanOrEqual(to: 0)) { .range(.lowerBound($0, 0), callSite) }
                 return potency
         }

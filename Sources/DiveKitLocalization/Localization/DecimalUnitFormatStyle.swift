@@ -42,11 +42,11 @@ public struct DecimalUnitFormatStyle<Decimal: DecimalUnitLocalizable>: Sendable 
         style: LocalizationStyle,
         locale: Locale? = nil,
         precision: NumberFormatStyleConfiguration.Precision? = .none) {
-        self.unit = unit
-        self.style = style
-        self.locale = locale
-        self.precision = precision
-    }
+            self.unit = unit
+            self.style = style
+            self.locale = locale
+            self.precision = precision
+        }
 
     /// Returns a copy of this style using the specified locale.
     ///
@@ -67,20 +67,20 @@ public struct DecimalUnitFormatStyle<Decimal: DecimalUnitLocalizable>: Sendable 
     }
 }
 
-/// Makes decimal unit format styles encodable and decodable.
+/// Allows decimal unit format styles to be encoded and decoded.
 ///
 /// - Since: 1.0.0
 extension DecimalUnitFormatStyle: Codable {}
-/// Makes decimal unit format styles usable in hashed collections.
+/// Allows decimal unit format styles to be used in hashed collections.
 ///
 /// - Since: 1.0.0
 extension DecimalUnitFormatStyle: Hashable {}
-/// Makes decimal unit format styles comparable.
+/// Allows decimal unit format styles to be compared.
 ///
 /// - Since: 1.0.0
 extension DecimalUnitFormatStyle: Equatable {}
 
-/// Makes decimal unit format styles usable with Swift formatting APIs.
+/// Allows decimal unit format styles to be used with Swift formatting APIs.
 ///
 /// - Since: 1.0.0
 extension DecimalUnitFormatStyle: FormatStyle {

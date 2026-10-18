@@ -1,5 +1,6 @@
 import Testing
 @_spi(Experimental) import DiveKit
+import DiveKitTestSupport
 
 /// Uses only what a client of `@_spi(Experimental) import DiveKit` can name.
 @Suite("Bühlmann calculator public interface", .tags(.technicalDiving, .buhlmannCalculator))

@@ -1,31 +1,31 @@
 import Foundation
 import DiveKitCore
 
-/// Makes ``DiveKitCore/Depth`` participate in internal decimal calculation pipelines.
+/// Allows ``DiveKitCore/Depth`` to participate in internal decimal calculation pipelines.
 ///
 /// - Since: 1.0.0
 extension Depth: DecimalRepresentable {}
-/// Makes ``DiveKitCore/Mass`` participate in internal decimal calculation pipelines.
+/// Allows ``DiveKitCore/Mass`` to participate in internal decimal calculation pipelines.
 ///
 /// - Since: 1.0.0
 extension Mass: DecimalRepresentable {}
-/// Makes ``DiveKitCore/Minutes`` participate in internal decimal calculation pipelines.
+/// Allows ``DiveKitCore/Minutes`` to participate in internal decimal calculation pipelines.
 ///
 /// - Since: 1.0.0
 extension Minutes: DecimalRepresentable {}
-/// Makes ``DiveKitCore/PartialPressure`` participate in internal decimal calculation pipelines.
+/// Allows ``DiveKitCore/PartialPressure`` to participate in internal decimal calculation pipelines.
 ///
 /// - Since: 1.0.0
 extension PartialPressure: DecimalRepresentable {}
-/// Makes ``DiveKitCore/Pressure`` participate in internal decimal calculation pipelines.
+/// Allows ``DiveKitCore/Pressure`` to participate in internal decimal calculation pipelines.
 ///
 /// - Since: 1.0.0
 extension Pressure: DecimalRepresentable {}
-/// Makes ``DiveKitCore/Rate`` participate in internal decimal calculation pipelines.
+/// Allows ``DiveKitCore/Rate`` to participate in internal decimal calculation pipelines.
 ///
 /// - Since: 1.0.0
 extension Rate: DecimalRepresentable {}
-/// Makes ``DiveKitCore/Volume`` participate in internal decimal calculation pipelines.
+/// Allows ``DiveKitCore/Volume`` to participate in internal decimal calculation pipelines.
 ///
 /// - Since: 1.0.0
 extension Volume: DecimalRepresentable {}

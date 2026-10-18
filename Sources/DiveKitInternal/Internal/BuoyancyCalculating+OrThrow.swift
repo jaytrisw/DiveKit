@@ -4,11 +4,11 @@ import DiveKitCore
 package extension BuoyancyCalculating {
     /// Calculates the buoyancy of an object in water using the provided configuration.
     ///
-    /// This method determines buoyancy by comparing the weight of the displaced water
-    /// with the object's weight.
+    /// Buoyancy is the weight of the displaced water compared with the object's
+    /// weight.
     ///
     /// Before performing the calculation, the object's weight and volume are validated
-    /// to ensure they are non-negative.
+    /// to ensure they are nonnegative.
     ///
     /// - Parameters:
     ///   - object: The object whose buoyancy is being calculated.
@@ -18,14 +18,15 @@ package extension BuoyancyCalculating {
     /// - Returns: A ``DiveKitCore/Calculation`` containing the resulting ``DiveKitCore/Buoyancy``.
     ///
     /// - Throws: ``DiveKitCore/Error/negative(_:_:)`` if the object's weight or volume
-    ///   is negative.
+    ///   is negative, or ``DiveKitCore/Error/range(_:_:)`` if the object's weight or
+    ///   volume, the water model's weight, or the displaced water's weight is not
+    ///   finite, or if the water model's weight is not greater than zero.
     ///
     /// ```swift
     /// let result = try calculator.buoyancy(
     ///     of: object,
     ///     with: configuration,
-    ///     callSite
-    /// )
+    ///     callSite)
     /// ```
     ///
     /// - Note: Positive buoyancy indicates the object tends to float, negative
@@ -36,11 +37,15 @@ package extension BuoyancyCalculating {
         of object: Object,
         with configuration: Configuration,
         _ callSite: CallSite) throws(Error) -> Calculation<Buoyancy> {
-            try object.weight.validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
+            let waterWeight = try configuration.waterWeight(callSite)
+            return try object.weight
+                .validatedFiniteNonNegative(callSite)
                 .map { (_: Mass) throws(Error) in
-                    try object.volume.validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
+                    try object.volume
+                        .validatedFiniteNonNegative(callSite)
                 }
-                .map { object.volume.value * configuration.water.weight(configuration.units).value }
+                .map { $0.value * waterWeight }
+                .validatedFinite(callSite)
                 .map { $0 - object.weight.value }
                 .map { .buoyancy($0, configuration: configuration) }
         }

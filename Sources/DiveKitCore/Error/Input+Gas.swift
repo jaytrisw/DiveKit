@@ -22,6 +22,13 @@ public extension Error {
 ///
 /// - Since: 1.0.0
 extension Error.Gas: Equatable {
+    /// Returns whether two gas payloads have the same case and gas identity.
+    ///
+    /// - Parameters:
+    ///   - lhs: The first payload.
+    ///   - rhs: The second payload.
+    /// - Returns: `true` when both cases match and wrap the same gas.
+    /// - Since: 1.0.0
     public static func == (lhs: Self, rhs: Self) -> Bool {
         switch (lhs, rhs) {
             case let (.metabolic(lhs), .metabolic(rhs)): AnyGas(lhs) == AnyGas(rhs)

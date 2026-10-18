@@ -13,7 +13,7 @@ func printGaugePressure(at depth: Depth, configuration: Configuration) {
     do {
         let gaugePressure = try physicsCalculator.gaugePressure(at: depth)
         print(gaugePressure.result.value)
-    } catch let error as DiveKit.Error {
+    } catch {
         print(error.localizedDescription)
     }
 }
@@ -40,7 +40,7 @@ func localizedErrorMessage(for depth: Depth, configuration: Configuration) -> St
     do {
         _ = try physicsCalculator.gaugePressure(at: depth)
         return nil
-    } catch let error as DiveKit.Error {
+    } catch {
         return error.localizedDescription
     }
 }

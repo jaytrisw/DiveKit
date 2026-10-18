@@ -1,7 +1,7 @@
 import Foundation
 import DiveKitCore
 
-/// Makes pressure units provide localized titles, descriptions, and quantities.
+/// Allows pressure units to provide localized titles, descriptions, and quantities.
 ///
 /// - Since: 1.0.0
 extension Pressure.Unit: LocalizationProviding {
@@ -11,59 +11,37 @@ extension Pressure.Unit: LocalizationProviding {
     /// - Returns: The localized text for `component`.
     /// - Since: 1.0.0
     public func localization(for component: LocalizationComponent) -> String {
-        switch component {
-            case .title:
-                localizedString(for: LocalizedKey.Unit.Pressure.title)
-            case let .description(style):
-                localizedString(for: description(style))
-            case let .quantity(value, style):
-                localizedString(for: quantity(style), quantity: value)
-        }
+        localizationKeys.localization(for: component)
     }
 }
 
 private extension Pressure.Unit {
-    /// Returns the localization key for a pressure unit description.
+    /// The localization keys for this unit.
     ///
-    /// - Parameter style: The localization style to use.
-    /// - Returns: A localization key.
     /// - Since: 1.0.0
-    func description(_ style: LocalizationStyle) -> String.LocalizationValue {
-        switch (self, style) {
-            case (.psi, .short):
-                LocalizedKey.Unit.Pressure.shortDescriptionImperial
-            case (.psi, .full):
-                LocalizedKey.Unit.Pressure.fullDescriptionImperial
-            case (.bar, .short):
-                LocalizedKey.Unit.Pressure.shortDescriptionMetric
-            case (.bar, .full):
-                LocalizedKey.Unit.Pressure.fullDescriptionMetric
-            case (.atmospheres, .short):
-                LocalizedKey.Unit.Pressure.shortDescriptionAtmospheres
-            case (.atmospheres, .full):
-                LocalizedKey.Unit.Pressure.fullDescriptionAtmospheres
-        }
-    }
-
-    /// Returns the localization key for a pressure unit quantity.
-    ///
-    /// - Parameter style: The localization style to use.
-    /// - Returns: A localization key.
-    /// - Since: 1.0.0
-    func quantity(_ style: LocalizationStyle) -> String.LocalizationValue {
-        switch (self, style) {
-            case (.psi, .short):
-                LocalizedKey.Unit.Pressure.shortQuantityImperial
-            case (.psi, .full):
-                LocalizedKey.Unit.Pressure.fullQuantityImperial
-            case (.bar, .short):
-                LocalizedKey.Unit.Pressure.shortQuantityMetric
-            case (.bar, .full):
-                LocalizedKey.Unit.Pressure.fullQuantityMetric
-            case (.atmospheres, .short):
-                LocalizedKey.Unit.Pressure.shortQuantityAtmospheres
-            case (.atmospheres, .full):
-                LocalizedKey.Unit.Pressure.fullQuantityAtmospheres
+    var localizationKeys: UnitLocalizationKeys {
+        switch self {
+            case .psi:
+                .init(
+                    title: LocalizedKey.Unit.Pressure.title,
+                    shortDescription: LocalizedKey.Unit.Pressure.shortDescriptionImperial,
+                    fullDescription: LocalizedKey.Unit.Pressure.fullDescriptionImperial,
+                    shortQuantity: LocalizedKey.Unit.Pressure.shortQuantityImperial,
+                    fullQuantity: LocalizedKey.Unit.Pressure.fullQuantityImperial)
+            case .bar:
+                .init(
+                    title: LocalizedKey.Unit.Pressure.title,
+                    shortDescription: LocalizedKey.Unit.Pressure.shortDescriptionMetric,
+                    fullDescription: LocalizedKey.Unit.Pressure.fullDescriptionMetric,
+                    shortQuantity: LocalizedKey.Unit.Pressure.shortQuantityMetric,
+                    fullQuantity: LocalizedKey.Unit.Pressure.fullQuantityMetric)
+            case .atmospheres:
+                .init(
+                    title: LocalizedKey.Unit.Pressure.title,
+                    shortDescription: LocalizedKey.Unit.Pressure.shortDescriptionAtmospheres,
+                    fullDescription: LocalizedKey.Unit.Pressure.fullDescriptionAtmospheres,
+                    shortQuantity: LocalizedKey.Unit.Pressure.shortQuantityAtmospheres,
+                    fullQuantity: LocalizedKey.Unit.Pressure.fullQuantityAtmospheres)
         }
     }
 }

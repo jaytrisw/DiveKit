@@ -16,9 +16,9 @@ public struct Oxygen: GasRepresentable, Sendable {
         .metabolic
     }
 
-    /// Oxygen is not narcotic by default. Bennett (2004) rates it about 1.7
-    /// times as narcotic as nitrogen; opt in for a single calculation with
-    /// `NarcoticTreatment`.
+    /// Oxygen is not narcotic by default. Bennett and Rostain (2003) rate it
+    /// 1.7 times as narcotic as nitrogen (see ``NarcoticPotency``); opt in for
+    /// a single calculation with `NarcoticTreatment`.
     ///
     /// - Since: 1.0.0
     public var narcoticPotency: NarcoticPotency {

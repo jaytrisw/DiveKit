@@ -1,5 +1,6 @@
 import Testing
 @_spi(Experimental) @testable import DiveKit
+import DiveKitTestSupport
 
 @Suite("Bühlmann schedule validation", .tags(.technicalDiving, .buhlmann, .error))
 struct BuhlmannScheduleValidationTests {
@@ -34,20 +35,22 @@ struct BuhlmannScheduleValidationTests {
     }
 
     @Test(arguments: [
-        (rate: 0.0, stopInterval: 3.0, lastStop: 3.0, expected: Error.Range.lowerBound(0, 0)),
-        (rate: .infinity, stopInterval: 3.0, lastStop: 3.0, expected: .upperBound(.infinity, .greatestFiniteMagnitude)),
-        (rate: 9.0, stopInterval: -3.0, lastStop: 3.0, expected: .lowerBound(-3, 0)),
-        (rate: 9.0, stopInterval: .infinity, lastStop: 3.0, expected: .upperBound(.infinity, .greatestFiniteMagnitude)),
-        (rate: 9.0, stopInterval: 3.0, lastStop: 0.0, expected: .lowerBound(0, 0)),
-        (rate: 9.0, stopInterval: 3.0, lastStop: -.infinity, expected: .upperBound(-.infinity, .greatestFiniteMagnitude))
+        (rate: 0.0, stopInterval: 3.0, lastStop: 3.0, expected: Error.Range.lowerBound(0, 0), key: "dive.kit.error.range.lower.bound"),
+        (rate: .infinity, stopInterval: 3.0, lastStop: 3.0, expected: .upperBound(.infinity, .greatestFiniteMagnitude), key: "dive.kit.error.range.upper.bound"),
+        (rate: 9.0, stopInterval: -3.0, lastStop: 3.0, expected: .lowerBound(-3, 0), key: "dive.kit.error.range.lower.bound"),
+        (rate: 9.0, stopInterval: .infinity, lastStop: 3.0, expected: .upperBound(.infinity, .greatestFiniteMagnitude), key: "dive.kit.error.range.upper.bound"),
+        (rate: 9.0, stopInterval: 3.0, lastStop: 0.0, expected: .lowerBound(0, 0), key: "dive.kit.error.range.lower.bound"),
+        (rate: 9.0, stopInterval: 3.0, lastStop: -.infinity, expected: .upperBound(-.infinity, .greatestFiniteMagnitude), key: "dive.kit.error.range.upper.bound")
     ])
-    func ascentRejectsInvalidValues(rate: Double, stopInterval: Double, lastStop: Double, expected: Error.Range) async throws {
+    func ascentRejectsInvalidValues(rate: Double, stopInterval: Double, lastStop: Double, expected: Error.Range, key: String) async throws {
         try await given {
             (rate: Rate<Depth>(rate), stopInterval: Depth(stopInterval), lastStop: Depth(lastStop))
         } when: { ascent in
             try expectThrowsError(
                 when: try Ascent(rate: ascent.rate, stopInterval: ascent.stopInterval, lastStop: ascent.lastStop),
-                then: .range(expected, "Ascent.init(rate:stopInterval:lastStop:)"))
+                then: .range(expected, "Ascent.init(rate:stopInterval:lastStop:)")) { error in
+                #expect(error.localizationValue == .init(key))
+            }
         }
     }
 
@@ -125,6 +128,21 @@ struct BuhlmannScheduleValidationTests {
                 when: try Self.schedule(of: compartments, from: .init(30), waterVapor: .init(-0.1)),
                 then: .negative(.pressure(.init(-0.1)), BuhlmannScheduleTests.callSite)) { error in
                 #expect(error.localizationValue == "dive.kit.error.negative.pressure")
+            }
+        }
+    }
+
+    @Test
+    func scheduleAtSurfaceRejectsOverflowingToleratedPressure() async throws {
+        try await given {
+            Tissue.Compartment(
+                try .init(of: .nitrogen, halfTime: .init(5), tension: .init(.greatestFiniteMagnitude)),
+                try .init(of: .helium, halfTime: .init(1.88), tension: .init(.greatestFiniteMagnitude)))
+        } when: { compartment in
+            try expectThrowsError(
+                when: try Self.schedule(of: [compartment], from: .init(0)),
+                then: .range(.upperBound(.infinity, .greatestFiniteMagnitude), BuhlmannScheduleTests.callSite)) { error in
+                #expect(error.localizationValue == "dive.kit.error.range.upper.bound")
             }
         }
     }

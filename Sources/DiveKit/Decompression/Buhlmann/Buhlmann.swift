@@ -13,6 +13,10 @@ import Foundation
 /// - Warning: This model has not been validated for planning real dives. Do not
 ///   use it as a substitute for a dive computer, published tables, or training.
 ///
+/// - Important: Surface pressure is fixed at one atmosphere, as at sea level.
+///   The model does not adjust for altitude, so at altitude no-decompression
+///   limits are too long and ceilings too shallow.
+///
 /// - Since: 1.0.0
 @_spi(Experimental)
 public enum Buhlmann {}

@@ -1,10 +1,12 @@
 import Testing
 @_spi(Experimental) @testable import DiveKit
+@_spi(Experimental) import DiveKitTestSupport
 
 extension GasCalculatorImperialSaltwaterTests {
 
     // MARK: equivalentNarcoticDepth(for:with:treating:)
 
+    /// Standard END, nitrogen only: (165 + 33) × 0.37 / 0.79 − 33 = 59.7341772151898734… ft.
     @Test(.tags(.technicalDiving))
     func equivalentNarcoticDepthValidInput() async throws {
         try await given {
@@ -22,6 +24,7 @@ extension GasCalculatorImperialSaltwaterTests {
         }
     }
 
+    /// Oxygen as narcotic as nitrogen: (165 + 33) × (0.37 + 0.18) / (0.79 + 0.21) − 33 = 75.9 ft.
     @Test(.tags(.technicalDiving))
     func equivalentNarcoticDepthWithNarcoticOxygen() async throws {
         try await given {
@@ -38,6 +41,8 @@ extension GasCalculatorImperialSaltwaterTests {
         }
     }
 
+    /// Bennett and Rostain (2003) helium potency 0.2:
+    /// (165 + 33) * (0.37 + 0.2 * 0.45) / 0.79 - 33 = 82.29113924050632… ft, by exact decimal arithmetic.
     @Test(.tags(.technicalDiving))
     func equivalentNarcoticDepthWithBennettHelium() async throws {
         try await given {
@@ -53,6 +58,8 @@ extension GasCalculatorImperialSaltwaterTests {
         }
     }
 
+    /// Bennett and Rostain (2003) oxygen potency 1.7:
+    /// (165 + 33) × (0.37 + 1.7 × 0.18) / (0.79 + 1.7 × 0.21) − 33 = 83.6939843068875326… ft.
     @Test(.tags(.technicalDiving))
     func equivalentNarcoticDepthWithBennettOxygen() async throws {
         try await given {
@@ -166,12 +173,12 @@ extension GasCalculatorImperialSaltwaterTests {
         try await given {
             let depth: Depth = -165.0
             let blend = try Blend<Blended>.trimix(oxygen: 0.18, helium: 0.45)
-            self.expectedError = .negative(depth, "GasCalculator.equivalentNarcoticDepth(for:with:treating:)")
-            return (depth: depth, blend: blend)
+            let expectedError: Error = .negative(depth, "GasCalculator.equivalentNarcoticDepth(for:with:treating:)")
+            return (depth: depth, blend: blend, expectedError: expectedError)
         } when: { input in
             Result { try self.sut.equivalentNarcoticDepth(for: input.depth, with: input.blend) }
-        } then: { _, result in
-            try expectThrowsError(when: result.get(), then: self.expectedError) {
+        } then: { input, result in
+            try expectThrowsError(when: result.get(), then: input.expectedError) {
                 #expect($0.localizationValue == "dive.kit.error.negative.depth")
             }
         }
@@ -182,8 +189,8 @@ extension GasCalculatorImperialSaltwaterTests {
         try await given {
             let depth: Depth = 165.0
             let blend = try Blend<Blended>.trimix(oxygen: 0.18, helium: 0.45)
-            self.expectedError = .range(.lowerBound(-1, 0), "GasCalculator.equivalentNarcoticDepth(for:with:treating:)")
-            return (depth: depth, blend: blend)
+            let expectedError: Error = .range(.lowerBound(-1, 0), "GasCalculator.equivalentNarcoticDepth(for:with:treating:)")
+            return (depth: depth, blend: blend, expectedError: expectedError)
         } when: { input in
             Result {
                 try self.sut.equivalentNarcoticDepth(
@@ -191,8 +198,8 @@ extension GasCalculatorImperialSaltwaterTests {
                     with: input.blend,
                     treating: .narcotic(.oxygen, potency: .relative(-1)))
             }
-        } then: { _, result in
-            try expectThrowsError(when: result.get(), then: self.expectedError) {
+        } then: { input, result in
+            try expectThrowsError(when: result.get(), then: input.expectedError) {
                 #expect($0.localizationValue == "dive.kit.error.range.lower.bound")
             }
         }
@@ -203,10 +210,10 @@ extension GasCalculatorImperialSaltwaterTests {
         try await given {
             let depth: Depth = 165.0
             let blend = try Blend<Blended>.trimix(oxygen: 0.18, helium: 0.45)
-            self.expectedError = .range(
+            let expectedError: Error = .range(
                 .upperBound(.infinity, .greatestFiniteMagnitude),
                 "GasCalculator.equivalentNarcoticDepth(for:with:treating:)")
-            return (depth: depth, blend: blend)
+            return (depth: depth, blend: blend, expectedError: expectedError)
         } when: { input in
             Result {
                 try self.sut.equivalentNarcoticDepth(
@@ -214,8 +221,8 @@ extension GasCalculatorImperialSaltwaterTests {
                     with: input.blend,
                     treating: .narcotic(.oxygen, potency: .relative(.infinity)))
             }
-        } then: { _, result in
-            try expectThrowsError(when: result.get(), then: self.expectedError) {
+        } then: { input, result in
+            try expectThrowsError(when: result.get(), then: input.expectedError) {
                 #expect($0.localizationValue == "dive.kit.error.range.upper.bound")
             }
         }
@@ -226,12 +233,12 @@ extension GasCalculatorImperialSaltwaterTests {
         try await given {
             let depth: Depth = 165.0
             let blend = Blend<Blended>((Oxygen(), 0.21), (InvalidPotencyGas(), 0.79))
-            self.expectedError = .range(.lowerBound(-1, 0), "GasCalculator.equivalentNarcoticDepth(for:with:treating:)")
-            return (depth: depth, blend: blend)
+            let expectedError: Error = .range(.lowerBound(-1, 0), "GasCalculator.equivalentNarcoticDepth(for:with:treating:)")
+            return (depth: depth, blend: blend, expectedError: expectedError)
         } when: { input in
             Result { try self.sut.equivalentNarcoticDepth(for: input.depth, with: input.blend) }
-        } then: { _, result in
-            try expectThrowsError(when: result.get(), then: self.expectedError) {
+        } then: { input, result in
+            try expectThrowsError(when: result.get(), then: input.expectedError) {
                 #expect($0.localizationValue == "dive.kit.error.range.lower.bound")
             }
         }
@@ -258,8 +265,8 @@ extension GasCalculatorImperialSaltwaterTests {
         try await given {
             let depth: Depth = 165.0
             let blend = try Blend<Blended>.trimix(oxygen: 0.18, helium: 0.45)
-            self.expectedError = .range(.lowerBound(0, 0), "GasCalculator.equivalentNarcoticDepth(for:with:treating:)")
-            return (depth: depth, blend: blend)
+            let expectedError: Error = .range(.lowerBound(0, 0), "GasCalculator.equivalentNarcoticDepth(for:with:treating:)")
+            return (depth: depth, blend: blend, expectedError: expectedError)
         } when: { input in
             Result {
                 try self.sut.equivalentNarcoticDepth(
@@ -267,8 +274,8 @@ extension GasCalculatorImperialSaltwaterTests {
                     with: input.blend,
                     treating: .narcotic(.nitrogen, potency: .relative(0)))
             }
-        } then: { _, result in
-            try expectThrowsError(when: result.get(), then: self.expectedError) {
+        } then: { input, result in
+            try expectThrowsError(when: result.get(), then: input.expectedError) {
                 #expect($0.localizationValue == "dive.kit.error.range.lower.bound")
             }
         }
@@ -279,10 +286,10 @@ extension GasCalculatorImperialSaltwaterTests {
         try await given {
             let depth: Depth = 165.0
             let blend = Blend<Blended>((Oxygen(), 0.21), (Neon(), 0.79))
-            self.expectedError = .range(
+            let expectedError: Error = .range(
                 .upperBound(.infinity, .greatestFiniteMagnitude),
                 "GasCalculator.equivalentNarcoticDepth(for:with:treating:)")
-            return (depth: depth, blend: blend)
+            return (depth: depth, blend: blend, expectedError: expectedError)
         } when: { input in
             Result {
                 try self.sut.equivalentNarcoticDepth(
@@ -290,8 +297,8 @@ extension GasCalculatorImperialSaltwaterTests {
                     with: input.blend,
                     treating: .narcotic(.nitrogen, potency: .relative(.leastNonzeroMagnitude)))
             }
-        } then: { _, result in
-            try expectThrowsError(when: result.get(), then: self.expectedError) {
+        } then: { input, result in
+            try expectThrowsError(when: result.get(), then: input.expectedError) {
                 #expect($0.localizationValue == "dive.kit.error.range.upper.bound")
             }
         }
@@ -303,14 +310,14 @@ extension GasCalculatorImperialSaltwaterTests {
             let depth: Depth = 165.0
             let fractionalPressure = 0.18
             let blend = try Blend<Unblended>(.init(of: .oxygen, fractionalPressure: fractionalPressure))
-            self.expectedError = .blend(
+            let expectedError: Error = .blend(
                 .totalPressure(fractionalPressure, blend),
                 "GasCalculator.equivalentNarcoticDepth(for:with:treating:)")
-            return (depth: depth, blend: blend)
+            return (depth: depth, blend: blend, expectedError: expectedError)
         } when: { input in
             Result { try self.sut.equivalentNarcoticDepth(for: input.depth, with: input.blend) }
-        } then: { _, result in
-            try expectThrowsError(when: result.get(), then: self.expectedError) {
+        } then: { input, result in
+            try expectThrowsError(when: result.get(), then: input.expectedError) {
                 #expect($0.localizationValue == "dive.kit.error.blend.total.pressure")
             }
         }

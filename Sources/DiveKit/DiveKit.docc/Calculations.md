@@ -26,7 +26,7 @@ let surfaceVolume = try physicsCalculator.airVolumeToSurface(from: 99, with: 20)
 let pressureChange = try physicsCalculator.pressureChange(from: 33, to: 99)
 ```
 
-`Depth` and `Volume` inputs must be non-negative. When validation fails, these APIs throw `DiveKit.Error`.
+`Depth` and `Volume` inputs must be nonnegative. When validation fails, these APIs throw `DiveKit.Error`.
 
 ## Gas Calculations
 
@@ -39,8 +39,7 @@ let oxygen = try FractionalPressure(of: Oxygen(), fractionalPressure: 0.32)
 let partialPressure = try gasCalculator.partialPressure(
     of: oxygen,
     at: 99,
-    using: physicsCalculator
-)
+    using: physicsCalculator)
 ```
 
 Use ``GasCalculator/bestBlend(for:partialPressure:using:)``, ``GasCalculator/maximumOperatingDepth(for:in:)``, and ``GasCalculator/equivalentAirDepth(for:with:)`` for planning calculations.
@@ -56,11 +55,10 @@ let buoyancyCalculator = BuoyancyCalculator(configuration: configuration)
 
 let buoyancy = try buoyancyCalculator.buoyancyOfObject(
     weighing: 10,
-    andDisplacing: 12
-)
+    andDisplacing: 12)
 ```
 
-Weight and volume inputs must be non-negative.
+Weight and volume inputs must be nonnegative.
 
 ## Additional API Names
 

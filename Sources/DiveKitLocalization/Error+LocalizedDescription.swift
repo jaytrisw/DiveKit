@@ -1,7 +1,7 @@
 import Foundation
 import DiveKitCore
 
-/// Makes DiveKit domain errors provide localized descriptions.
+/// Allows DiveKit domain errors to provide localized descriptions.
 ///
 /// - Since: 1.0.0
 extension Error: LocalizedError {

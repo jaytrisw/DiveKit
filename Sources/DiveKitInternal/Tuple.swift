@@ -1,6 +1,6 @@
 import Foundation
 
-/// A lightweight package-internal pair of values.
+/// A package-internal pair of values.
 ///
 /// ``Tuple`` gives internal calculation pipelines a named return type when two
 /// intermediate values need to travel together. It is intentionally small and

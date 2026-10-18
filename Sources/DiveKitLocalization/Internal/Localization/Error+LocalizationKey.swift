@@ -57,6 +57,8 @@ package extension Error.Blend {
         switch self {
             case .totalPressure: LocalizedKey.Error.Blend.totalPressure
             case .pressureRange: LocalizedKey.Error.Blend.pressureRange
+            case .gasAlreadyPresent: LocalizedKey.Error.Blend.gasAlreadyPresent
+            case .gasNotPresent: LocalizedKey.Error.Blend.gasNotPresent
         }
     }
 }

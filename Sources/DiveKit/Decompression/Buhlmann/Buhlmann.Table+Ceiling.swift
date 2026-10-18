@@ -9,9 +9,10 @@ public extension Buhlmann.Table {
     /// Each compartment is matched to the first row whose coefficients cover
     /// every gas it tracks at the gas's half-time; gases are never matched
     /// across rows. Half-times must be equal exactly, as they are for
-    /// compartments built with ``compartments(nitrogen:helium:)``. With several
-    /// inert gases, `a` and `b` are averaged, weighted by each gas's tension.
-    /// The tolerated ambient pressure with gradient factor `GF` is
+    /// compartments built with ``compartments(nitrogen:helium:)``.
+    ///
+    /// With several inert gases, `a` and `b` are averaged, weighted by each
+    /// gas's tension. The tolerated ambient pressure with gradient factor `GF` is
     /// `(P − a·GF) / (GF / b − GF + 1)`, where `P` is the total inert-gas
     /// tension, clamped at `0`; at `GF = 1` this is Bühlmann's `(P − a) · b`. A
     /// compartment with no inert gas tolerates any pressure.
@@ -28,14 +29,11 @@ public extension Buhlmann.Table {
     /// - Returns: A calculation containing the ceiling depth, or `0` if every
     ///   compartment tolerates the surface.
     /// - Throws: `Error.gas` if no single row covers every gas a compartment
-    ///   tracks at its half-time. Gases are checked in order of their
+    ///   tracks at its half-time (gases are checked in order of their
     ///   module-qualified type name, and the first that matches no row shared
-    ///   with the gases before it is reported. Throws `Error.range` if a
-    ///   tolerated pressure or the ceiling depth is not finite,
-    ///   or if the configured water's depth per atmosphere is not finite or not
-    ///   greater than `0`.
-    ///
-    /// - Warning: See ``Buhlmann`` before relying on this model.
+    ///   with the gases before it is reported); `Error.range` if a tolerated
+    ///   pressure or the ceiling depth is not finite, or if the configured
+    ///   water's depth per atmosphere is not finite or not greater than `0`.
     ///
     /// ```swift
     /// let ceiling = try Buhlmann.Table.zhl16c.ceiling(
@@ -44,26 +42,37 @@ public extension Buhlmann.Table {
     ///     configuration: .init(units: .metric, water: .salt))
     /// ```
     ///
+    /// - Warning: See ``Buhlmann`` before relying on this model.
     /// - Since: 1.0.0
     func ceiling(
         of compartments: [Tissue.Compartment],
         gradientFactor: GradientFactor = .full,
         configuration: Configuration) throws(Error) -> Calculation<DecimalResult<Depth>> {
-            let callSite: CallSite = .from(Self.self)
-            let increase = try configuration.pressureIncrease(callSite)
-            let tolerated = try compartments
-                .map { (compartment: Tissue.Compartment) throws(Error) in
-                    try toleratedAmbientPressure(of: compartment, gradientFactor: gradientFactor, callSite).value
-                }
-                .reduce(.zero, Swift.max)
-            let gauge = Swift.max(tolerated - .one, .zero)
-            let depth = try (gauge * increase)
-                .validate(using: .finite) { .range(.upperBound($0, .greatestFiniteMagnitude), callSite) }
-            return .decimal(depth, unit: \.depth, from: configuration)
+            try ceiling(
+                of: compartments,
+                gradientFactor: gradientFactor,
+                configuration: configuration,
+                .from(Self.self))
         }
 }
 
 extension Buhlmann.Table {
+    /// Returns the shallowest depth every compartment tolerates, reporting errors at `callSite`.
+    func ceiling(
+        of compartments: [Tissue.Compartment],
+        gradientFactor: GradientFactor,
+        configuration: Configuration,
+        _ callSite: CallSite) throws(Error) -> Calculation<DecimalResult<Depth>> {
+            let increase = try configuration.pressureIncrease(callSite)
+            let tolerated = try Self.maximumToleratedAmbientPressure(
+                of: try compartments.map { (compartment: Tissue.Compartment) throws(Error) in try matchedGases(of: compartment, callSite) },
+                gradientFactor: gradientFactor,
+                callSite)
+            let depth = try Swift.max(Surface.depth(atAmbientPressure: tolerated, increase: increase), .zero)
+                .validatedFinite(callSite)
+            return .decimal(depth, unit: \.depth, from: configuration)
+        }
+
     /// Returns the lowest ambient pressure a compartment tolerates, as described for
     /// ``ceiling(of:gradientFactor:configuration:)``.
     func toleratedAmbientPressure(
@@ -91,7 +100,7 @@ extension Buhlmann.Table {
         _ callSite: CallSite) throws(Error) -> [MatchedGas] {
             let tracked = compartment.storage
                 .map { (key: LimitKey(gas: $0.key, halfTime: $0.value.halfTime), entry: $0.value) }
-                .sorted { $0.key.qualifiedTypeName < $1.key.qualifiedTypeName }
+                .sorted { $0.key.gas.qualifiedTypeName < $1.key.gas.qualifiedTypeName }
             var candidates = Array(rowLimits.indices)
             for entry in tracked {
                 candidates = candidates.filter { rowLimits[$0][entry.key] != nil }
@@ -106,6 +115,21 @@ extension Buhlmann.Table {
                     entry: entry.entry,
                     limit: rowLimits[row][entry.key].forceUnwrap("Every candidate row covers every tracked gas."))
             }
+        }
+
+    /// Returns the highest ambient pressure any of `compartments` requires, or `0` for none.
+    static func maximumToleratedAmbientPressure(
+        of compartments: [[MatchedGas]],
+        gradientFactor: GradientFactor,
+        _ callSite: CallSite) throws(Error) -> Double {
+            try compartments
+                .map { (compartment: [MatchedGas]) throws(Error) in
+                    try toleratedAmbientPressure(
+                        of: compartment.map { (limit: $0.limit, tension: $0.entry.tension) },
+                        gradientFactor: gradientFactor,
+                        callSite).value
+                }
+                .reduce(.zero, Swift.max)
         }
 
     /// A tracked gas with its entry and matched coefficients.
@@ -145,7 +169,7 @@ extension Buhlmann.Table {
             let tolerated = try (total.isFinite
                 ? (total - weighted.a * factor) * ratio
                 : largest * ((scaledTotal - weighted.a * factor / largest) * ratio))
-                .validate(using: .finite) { .range(.upperBound($0, .greatestFiniteMagnitude), callSite) }
+                .validatedFinite(callSite)
             return .init(Swift.max(tolerated, .zero))
         }
 }

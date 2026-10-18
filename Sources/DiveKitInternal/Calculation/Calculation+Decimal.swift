@@ -4,9 +4,6 @@ import DiveKitCore
 package extension Calculation {
     /// Creates a decimal calculation using a unit from the active configuration.
     ///
-    /// This factory wraps a raw ``Swift/Double`` in a ``DiveKitCore/DecimalResult`` and stores the
-    /// configuration used to produce it.
-    ///
     /// - Parameters:
     ///   - value: The numeric result of the calculation.
     ///   - keyPath: A key path to the configured unit for `Value`.
@@ -17,8 +14,7 @@ package extension Calculation {
     /// let calculation: Calculation<DecimalResult<Depth>> = .decimal(
     ///     30,
     ///     unit: \.depth,
-    ///     from: configuration
-    /// )
+    ///     from: configuration)
     /// ```
     ///
     /// - Since: 1.0.0
@@ -46,8 +42,7 @@ package extension Calculation {
     /// let calculation: Calculation<DecimalResult<Rate<Pressure>>> = .decimal(
     ///     18,
     ///     unit: .perMinute(configuration.units.pressure),
-    ///     configuration: configuration
-    /// )
+    ///     configuration: configuration)
     /// ```
     ///
     /// - Since: 1.0.0

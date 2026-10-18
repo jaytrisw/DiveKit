@@ -4,8 +4,8 @@ import DiveKitCore
 package extension GasCalculating {
     /// Calculates the partial pressure of a gas at a given depth from its fractional pressure.
     ///
-    /// This method multiplies the gas's fractional pressure by the absolute pressure
-    /// at the specified depth.
+    /// The partial pressure is the gas's fractional pressure multiplied by the
+    /// absolute pressure at the specified depth.
     ///
     /// - Parameters:
     ///   - fractionalPressure: The fractional pressure of the gas in the breathing mix.
@@ -14,8 +14,10 @@ package extension GasCalculating {
     ///   - configuration: The calculation configuration.
     ///   - callSite: The location where the calculation was requested.
     /// - Returns: A calculation containing the partial pressure of the gas at `depth`.
-    /// - Throws: A ``DiveKitCore/Error`` from the underlying absolute-pressure calculation,
-    ///   currently ``DiveKitCore/Error/negative(_:_:)`` when `depth` is negative.
+    /// - Throws: ``DiveKitCore/Error/negative(_:_:)`` if `depth` is negative,
+    ///   or ``DiveKitCore/Error/range(_:_:)`` if `depth` or the absolute
+    ///   pressure is not finite, or if the water model's pressure increase is
+    ///   not finite or not greater than zero.
     ///
     /// ```swift
     /// let result = try calculator.partialPressure(
@@ -23,8 +25,7 @@ package extension GasCalculating {
     ///     at: 30,
     ///     using: physicsCalculator,
     ///     with: configuration,
-    ///     callSite
-    /// )
+    ///     callSite)
     /// ```
     ///
     /// - Since: 1.0.0
@@ -41,8 +42,8 @@ package extension GasCalculating {
 
     /// Calculates the partial pressure of a gas in a blended mix at a given depth.
     ///
-    /// This method retrieves the gas's fractional pressure from `blend`, then uses it
-    /// to calculate the gas's partial pressure at `depth`.
+    /// The gas's fractional pressure is read from `blend` and multiplied by the
+    /// absolute pressure at `depth`.
     ///
     /// - Parameters:
     ///   - gas: The gas whose partial pressure should be calculated.
@@ -52,9 +53,10 @@ package extension GasCalculating {
     ///   - configuration: The calculation configuration.
     ///   - callSite: The location where the calculation was requested.
     /// - Returns: A calculation containing the partial pressure of `gas` at `depth`.
-    /// - Throws: A ``DiveKitCore/Error`` if the blend cannot produce a valid
-    ///   fractional pressure for `gas`, or if the underlying absolute-pressure
-    ///   calculation fails.
+    /// - Throws: ``DiveKitCore/Error/negative(_:_:)`` if `depth` is negative,
+    ///   or ``DiveKitCore/Error/range(_:_:)`` if `depth` or the absolute
+    ///   pressure is not finite, or if the water model's pressure increase is
+    ///   not finite or not greater than zero.
     ///
     /// ```swift
     /// let result = try calculator.partialPressure(
@@ -63,8 +65,7 @@ package extension GasCalculating {
     ///     at: 30,
     ///     using: physicsCalculator,
     ///     with: configuration,
-    ///     callSite
-    /// )
+    ///     callSite)
     /// ```
     ///
     /// - Since: 1.0.0
@@ -88,8 +89,8 @@ package extension GasCalculating {
 
     /// Calculates the gas consumption rate at depth.
     ///
-    /// This method divides the amount of gas consumed by the elapsed time to produce
-    /// a rate expressed as pressure per minute.
+    /// The rate is the amount of gas consumed divided by the elapsed time, in
+    /// pressure per minute.
     ///
     /// - Parameters:
     ///   - minutes: The elapsed time during which gas was consumed.
@@ -98,15 +99,15 @@ package extension GasCalculating {
     ///   - callSite: The location where the calculation was requested.
     /// - Returns: A calculation containing the gas consumption rate at depth.
     /// - Throws: ``DiveKitCore/Error/negative(_:_:)`` if `minutes` or `gasConsumed` is
-    ///   negative, or ``DiveKitCore/Error/range(_:_:)`` if `minutes` is zero.
+    ///   negative, or ``DiveKitCore/Error/range(_:_:)`` if `minutes`, `gasConsumed`,
+    ///   or the result is not finite, or if `minutes` is zero.
     ///
     /// ```swift
     /// let result = try calculator.depthAirConsumption(
     ///     for: 20,
     ///     consuming: 50,
     ///     with: configuration,
-    ///     callSite
-    /// )
+    ///     callSite)
     /// ```
     ///
     /// - Important: `minutes` must be greater than zero.
@@ -116,21 +117,22 @@ package extension GasCalculating {
         consuming gasConsumed: Pressure,
         with configuration: Configuration,
         _ callSite: CallSite) throws(Error) -> Calculation<DecimalResult<Rate<Pressure>>> {
-            try minutes.validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
-                .map { (minutes: Minutes) throws(Error) in
-                    try minutes.validate(using: .greater(than: 0)) { .range(.lowerBound($0.value, 0), callSite) }
-                }
+            try minutes
+                .validatedFiniteNonNegative(callSite)
+                .validate(using: .greater(than: 0)) { .range(.lowerBound($0.value, 0), callSite) }
                 .map { (_: Minutes) throws(Error) in
-                    try gasConsumed.validate(using: .nonNegative, orThrow: { .negative($0, callSite) })
+                    try gasConsumed
+                        .validatedFiniteNonNegative(callSite)
                 }
                 .map { gasConsumed.value / minutes.value }
+                .validatedFinite(callSite)
                 .map { .decimal($0, unit: .perMinute(configuration.units.pressure), configuration: configuration) }
         }
 
     /// Calculates the surface air consumption rate for gas used at depth.
     ///
-    /// This method normalizes gas consumption at depth to an equivalent surface rate
-    /// by dividing the depth consumption rate by the absolute pressure at depth.
+    /// The surface rate is the depth consumption rate divided by the absolute
+    /// pressure at depth.
     ///
     /// - Parameters:
     ///   - depth: The depth at which the gas was consumed.
@@ -140,9 +142,10 @@ package extension GasCalculating {
     ///   - configuration: The calculation configuration.
     ///   - callSite: The location where the calculation was requested.
     /// - Returns: A calculation containing the surface air consumption rate.
-    /// - Throws: A ``DiveKitCore/Error`` from the absolute-pressure calculation
-    ///   or depth air consumption validation. This includes negative `depth`,
-    ///   negative `minutes`, negative `gasConsumed`, and zero `minutes`.
+    /// - Throws: ``DiveKitCore/Error/negative(_:_:)`` if `depth`, `minutes`, or
+    ///   `gasConsumed` is negative, or ``DiveKitCore/Error/range(_:_:)`` if `minutes`
+    ///   is zero, if `depth`, `minutes`, `gasConsumed`, or the result is not finite,
+    ///   or if the water model's pressure increase is not finite or not greater than zero.
     ///
     /// ```swift
     /// let result = try calculator.surfaceAirConsumption(
@@ -151,8 +154,7 @@ package extension GasCalculating {
     ///     consuming: 50,
     ///     using: physicsCalculator,
     ///     with: configuration,
-    ///     callSite
-    /// )
+    ///     callSite)
     /// ```
     ///
     /// - Since: 1.0.0

@@ -25,7 +25,7 @@ let formattedPressureIncrease = pressureIncrease.formatted(
 
 ## Format Raw Values
 
-You can also format a raw `Double` when the format style supplies the domain type.
+Format a raw `Double` when the format style supplies the domain type.
 
 ```swift
 let formattedDepth = 30.0.formatted(.depth(.meters, style: .full))
@@ -49,7 +49,7 @@ let localizedTitle = Pressure.Unit.bar.localizedTitle
 let localizedDescription = Pressure.Unit.bar.localizedDescription(for: .full)
 ```
 
-## Use a Custom Strings Catalog
+## Use a Custom String Catalog
 
 DiveKit resolves localized strings through `Localization.standard.resolver`.
 Install a resolver during app startup when an app or package provides DiveKit

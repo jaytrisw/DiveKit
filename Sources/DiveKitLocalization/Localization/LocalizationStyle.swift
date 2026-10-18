@@ -15,15 +15,15 @@ public enum LocalizationStyle: Sendable {
     case short
 }
 
-/// Makes localization styles encodable and decodable.
+/// Allows localization styles to be encoded and decoded.
 ///
 /// - Since: 1.0.0
 extension LocalizationStyle: Codable {}
-/// Makes localization styles usable in hashed collections.
+/// Allows localization styles to be used in hashed collections.
 ///
 /// - Since: 1.0.0
 extension LocalizationStyle: Hashable {}
-/// Makes localization styles comparable.
+/// Allows localization styles to be compared.
 ///
 /// - Since: 1.0.0
 extension LocalizationStyle: Equatable {}

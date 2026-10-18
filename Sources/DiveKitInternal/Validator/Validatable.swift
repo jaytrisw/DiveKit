@@ -13,9 +13,6 @@ package protocol Validatable {}
 package extension Validatable {
     /// Validates the instance using the provided validator.
     ///
-    /// This method allows domain types to enforce invariants in a composable
-    /// way while keeping error construction flexible and context-aware.
-    ///
     /// - Parameters:
     ///   - validator: A ``Validator`` that determines whether the value is valid.
     ///   - error: A closure that produces the domain error when validation fails.
@@ -28,8 +25,8 @@ package extension Validatable {
     /// }
     /// ```
     ///
-    /// - Note: This method returns `self` to support fluent chaining of validation
-    ///   and transformation operations.
+    /// - Note: The instance is returned so validation and transformation calls
+    ///   can be chained.
     /// - Since: 1.0.0
     @discardableResult
     func validate(
@@ -42,11 +39,11 @@ package extension Validatable {
         }
 }
 
-/// Makes ``Swift/Double`` values validatable by internal helpers.
+/// Allows ``Swift/Double`` values to be validated by internal helpers.
 ///
 /// - Since: 1.0.0
 extension Double: Validatable {}
-/// Makes ``DiveKitCore/Depth`` values validatable by internal helpers.
+/// Allows ``DiveKitCore/Depth`` values to be validated by internal helpers.
 ///
 /// - Since: 1.0.0
 extension Depth: Validatable {}

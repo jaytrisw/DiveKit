@@ -23,13 +23,13 @@ public extension Ascent {
         let callSite: CallSite = .from(Self.self)
         self.init(
             unchecked: try rate
-                .validate(using: .finite) { .range(.upperBound($0.value, .greatestFiniteMagnitude), callSite) }
+                .validatedFinite(callSite)
                 .validate(using: .greater(than: .zero)) { .range(.lowerBound($0.value, 0), callSite) },
             stopInterval: try stopInterval
-                .validate(using: .finite) { .range(.upperBound($0.value, .greatestFiniteMagnitude), callSite) }
+                .validatedFinite(callSite)
                 .validate(using: .greater(than: .zero)) { .range(.lowerBound($0.value, 0), callSite) },
             lastStop: try lastStop
-                .validate(using: .finite) { .range(.upperBound($0.value, .greatestFiniteMagnitude), callSite) }
+                .validatedFinite(callSite)
                 .validate(using: .greater(than: .zero)) { .range(.lowerBound($0.value, 0), callSite) })
     }
 }

@@ -1,4 +1,4 @@
-import DiveKit
+@_spi(Experimental) import DiveKit
 
 extension CallSite: ExpressibleByStringLiteral {
     public init(stringLiteral: String) {
