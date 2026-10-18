@@ -6,10 +6,8 @@ import Foundation
 /// water density and pressure model a calculator uses.
 ///
 /// - Important: Surface pressure is fixed at one atmosphere, as at sea level.
-///   No configuration models altitude. At altitude, maximum operating depth,
-///   equivalent air and narcotic depth, best mix, gas consumption,
-///   no-decompression limits, and ceilings are all wrong in the unsafe
-///   direction.
+///   No configuration models altitude, so do not rely on any result at
+///   altitude.
 ///
 /// - Since: 1.0.0
 public struct Configuration: Sendable {

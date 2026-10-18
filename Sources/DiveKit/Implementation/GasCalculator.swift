@@ -11,8 +11,8 @@ import DiveKitInternal
 /// All calculations are performed using the provided configuration.
 ///
 /// - Important: Surface pressure is fixed at one atmosphere, as at sea level.
-///   DiveKit does not model altitude. At altitude, results that depend on
-///   ambient pressure are wrong in the unsafe direction.
+///   DiveKit does not model altitude, so do not rely on results that depend
+///   on ambient pressure at altitude.
 ///
 /// - Warning: These calculations have not been validated for planning real
 ///   dives. Do not use them as a substitute for a dive computer, published
