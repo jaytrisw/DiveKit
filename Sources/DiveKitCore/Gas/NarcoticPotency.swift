@@ -5,8 +5,12 @@ import Foundation
 /// Relative potencies follow the lipid solubility of each gas (the
 /// Meyer–Overton correlation), as tabulated by Bennett and Rostain (2003):
 /// P. B. Bennett and J. C. Rostain, "Inert Gas Narcosis", in *Bennett and
-/// Elliott's Physiology and Medicine of Diving*, 5th ed., Saunders, 2003, p. 305.
-/// That table rates oxygen at 1.7 and helium at 0.045 relative to nitrogen.
+/// Elliott's Physiology and Medicine of Diving*, 5th ed., Saunders, 2003,
+/// pp. 300–322. DiveKit takes the values from that table as reproduced by
+/// J. E. Clark, "Moving in extreme environments: inert gas narcosis and
+/// underwater activities", *Extreme Physiology & Medicine* 4:1, 2015, Table 2,
+/// which rates oxygen at 1.7 and helium at 0.2 relative to nitrogen. Other
+/// published estimates for helium range from 0.23 down to 0.045.
 ///
 /// - Since: 1.0.0
 public enum NarcoticPotency: Sendable {

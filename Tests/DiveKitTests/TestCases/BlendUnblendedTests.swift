@@ -252,13 +252,28 @@ struct BlendUnblendedTests {
             }
         }
 
-        func run(on blend: Blend<Unblended>) throws {
+        @discardableResult
+        func run(on blend: Blend<Unblended>) throws -> Blend<Unblended> {
             var blend = blend
             switch self {
                 case .fill: try blend.fill(with: Nitrogen())
-                case .filling: _ = try blend.filling(with: Nitrogen())
+                case .filling: blend = try blend.filling(with: Nitrogen())
             }
+            return blend
         }
+    }
+
+    @Test(arguments: Fill.allCases)
+    func fillReplacesFractionOfGasAlreadyPresent(fill: Fill) throws {
+        let blend = try Blend<Unblended>()
+            .adding(.oxygen, pressure: 0.25)
+            .adding(.nitrogen, pressure: 0.5)
+
+        let result = try fill.run(on: blend)
+
+        #expect(result.fractionalPressure(of: .oxygen) == 0.25)
+        #expect(result.fractionalPressure(of: .nitrogen) == 0.75)
+        #expect(throws: Never.self) { try result.blend() }
     }
 
     @Test(.tags(.error), arguments: Fill.allCases)
@@ -266,7 +281,7 @@ struct BlendUnblendedTests {
         try await given {
             let blend = try Blend<Unblended>()
                 .adding(.oxygen, pressure: 0.8)
-                .adding(.nitrogen, pressure: 0.8)
+                .adding(.helium, pressure: 0.8)
             let expectedError = Error.blend(.pressureRange(1 - blend.totalPressure, blend), fill.callSite)
             return (blend: blend, expectedError: expectedError)
         } when: { input in

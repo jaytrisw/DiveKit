@@ -41,8 +41,8 @@ extension GasCalculatorImperialSaltwaterTests {
         }
     }
 
-    /// Bennett and Rostain (2003) helium potency 0.045:
-    /// (165 + 33) * (0.37 + 0.045 * 0.45) / 0.79 - 33 = 64.80949367088607… ft, by exact decimal arithmetic.
+    /// Bennett and Rostain (2003) helium potency 0.2:
+    /// (165 + 33) * (0.37 + 0.2 * 0.45) / 0.79 - 33 = 82.29113924050632… ft, by exact decimal arithmetic.
     @Test(.tags(.technicalDiving))
     func equivalentNarcoticDepthWithBennettHelium() async throws {
         try await given {
@@ -53,7 +53,7 @@ extension GasCalculatorImperialSaltwaterTests {
             try self.sut.equivalentNarcoticDepth(for: input.depth, with: input.blend, treating: .bennett(.helium))
         } then: { _, calculation in
             try expectCalculation(calculation) { result, _ in
-                #expect(result.value.isApproximately(64.80949367088608))
+                #expect(result.value.isApproximately(82.29113924050633))
             }
         }
     }

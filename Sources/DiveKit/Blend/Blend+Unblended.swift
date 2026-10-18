@@ -85,7 +85,7 @@ public extension Blend where State == Unblended {
     /// - Parameter gas: The gas used to fill the remaining capacity.
     /// - Throws: `Error.blend` if the remaining fractional pressure is
     ///   not within `0...1`. Filling with a gas the blend already contains
-    ///   replaces its fraction.
+    ///   replaces its fraction with whatever brings the blend's total to one.
     ///
     /// ```swift
     /// try blend.fill(with: .nitrogen)
@@ -93,7 +93,7 @@ public extension Blend where State == Unblended {
     ///
     /// - Since: 1.0.0
     mutating func fill<Gas: GasRepresentable>(with gas: Gas) throws(Error) {
-        try set(gas, pressure: 1 - totalPressure, requiring: .any, function: #function)
+        try set(gas, pressure: remainingPressure(for: gas), requiring: .any, function: #function)
     }
 
     /// Returns a new blend by adding a gas.
@@ -188,7 +188,7 @@ public extension Blend where State == Unblended {
     /// - Returns: A new blend with the remaining capacity filled.
     /// - Throws: `Error.blend` if the remaining fractional pressure is
     ///   not within `0...1`. Filling with a gas the blend already contains
-    ///   replaces its fraction.
+    ///   replaces its fraction with whatever brings the blend's total to one.
     ///
     /// ```swift
     /// let updated = try blend.filling(with: .nitrogen)
@@ -198,7 +198,7 @@ public extension Blend where State == Unblended {
     @discardableResult
     func filling<Gas: GasRepresentable>(with gas: Gas) throws(Error) -> Self {
         var copy = self
-        try copy.set(gas, pressure: 1 - totalPressure, requiring: .any, function: #function)
+        try copy.set(gas, pressure: remainingPressure(for: gas), requiring: .any, function: #function)
 
         return copy
     }
@@ -223,6 +223,11 @@ public extension Blend where State == Unblended {
 }
 
 private extension Blend where State == Unblended {
+    /// The fraction that brings the total to one once `gas` is replaced.
+    func remainingPressure<Gas: GasRepresentable>(for gas: Gas) -> Double {
+        1 - (totalPressure - fractionalPressure(of: gas))
+    }
+
     /// Whether a gas must already be in the blend before it is set.
     enum Presence {
         case absent

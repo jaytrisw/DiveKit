@@ -45,7 +45,7 @@ public struct NarcoticTreatment: Sendable, Hashable {
     }
 
     /// Treats helium as narcotic with its potency from Bennett and Rostain
-    /// (2003), 0.045 times that of nitrogen. See ``NarcoticPotency`` for the
+    /// (2003), 0.2 times that of nitrogen. See ``NarcoticPotency`` for the
     /// full reference.
     ///
     /// - Parameter gas: Helium.
@@ -55,9 +55,20 @@ public struct NarcoticTreatment: Sendable, Hashable {
     /// let helium = NarcoticTreatment.bennett(.helium)
     /// ```
     ///
+    /// Published estimates for helium vary. To use a different one, define
+    /// your own treatment with ``narcotic(_:potency:)``:
+    ///
+    /// ```swift
+    /// extension NarcoticTreatment {
+    ///     static func lipidSolubility(_ gas: Helium) -> Self {
+    ///         .narcotic(gas, potency: .relative(0.23))
+    ///     }
+    /// }
+    /// ```
+    ///
     /// - Since: 1.0.0
     public static func bennett(_ gas: Helium) -> Self {
-        .narcotic(gas, potency: .relative(0.045))
+        .narcotic(gas, potency: .relative(0.2))
     }
 
     /// Treats oxygen as narcotic with its potency from Bennett and Rostain
