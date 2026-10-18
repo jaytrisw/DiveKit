@@ -10,6 +10,25 @@ DiveKit calculations are built around three ideas:
 - Calculators perform domain-specific work.
 - A `Calculation` stores both the result and the configuration that produced it.
 
+## Add DiveKit to a Package
+
+DiveKit is distributed with Swift Package Manager and supports macOS 13 and iOS 16 or later. Add the package to the dependencies in `Package.swift`, then add the `DiveKit` product to each target that uses it.
+
+```swift
+dependencies: [
+    .package(url: "https://github.com/jaytrisw/DiveKit", from: "1.0.0")
+],
+targets: [
+    .target(
+        name: "App",
+        dependencies: [
+            .product(name: "DiveKit", package: "DiveKit")
+        ])
+]
+```
+
+In an Xcode project, choose File > Add Package Dependencies and enter the same URL.
+
 ## Create a Configuration
 
 Use a unit system and water model to create a configuration.
